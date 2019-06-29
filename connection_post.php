@@ -1,14 +1,14 @@
 <?php include("connection_bdd.php"); ?>
 
 <?php 
-if (isset($_POST['login'], $_POST['user_pass'])) {
-    $login = htmlspecialchars($_POST['login']);
+if (isset($_POST['user_login'], $_POST['user_pass'])) {
+    $user_login = htmlspecialchars($_POST['user_login']);
     $user_pass = htmlspecialchars($_POST['user_pass']);
 
     //  Récupération de l'utilisateur et de son pass hashé
-    $req = $bdd->prepare('SELECT id, user_pass FROM users WHERE pseudo = :pseudo');
+    $req = $bdd->prepare('SELECT id, user_pass FROM users WHERE user_login = :user_login');
     $req->execute(array(
-        'pseudo' => $login));
+        'user_login' => $user_login));
     $resultat = $req->fetch();
 
     // Comparaison du pass envoyé via le formulaire avec la base
@@ -23,7 +23,7 @@ if (isset($_POST['login'], $_POST['user_pass'])) {
         if ($isPasswordCorrect) {
             session_start();
             $_SESSION['id'] = $resultat['id'];
-            $_SESSION['login'] = $login;
+            $_SESSION['user_login'] = $user_login;
             echo 'Vous êtes connecté !';
         }
         else {

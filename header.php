@@ -40,10 +40,15 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Search">
                 <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Rechercher</button>
             </form>
+
+            <div class="ml-3 text-light">
             <?php 
-            $_SESSION['login']
+            echo $_SESSION['user_login']
             ?>
-            
+            <br />
+            <a  class="text-info" href="deconnection.php">Vous déconnecter</a>
+            </div>
+
         </div>
     </nav>
 </header>
