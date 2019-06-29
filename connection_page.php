@@ -15,11 +15,11 @@
             <form action="connection_page.php" method="post" class="form-signin mx-auto text-center">
                 <img class="mb-4" src="" alt="" width="72" height="72">
                 <h1 class="h3 mb-3 font-weight-normal">Merci de vous connecter</h1>
-                <label for="login" class="sr-only">Login</label>
-                <input type="text" name="login" id="login" class="form-control" placeholder="Login" required autofocus="">
+                <label for="user_login" class="sr-only">Login</label>
+                <input type="text" name="user_login" id="user_login" class="form-control" placeholder="Login" required autofocus="">
                 <br />
-                <label for="password" class="sr-only">Mot de passe</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Mot de passe" required>
+                <label for="user_pass" class="sr-only">Mot de passe</label>
+                <input type="password" name="user_pass" id="user_pass" class="form-control" placeholder="Mot de passe" required>
                 <br />
                 <div class="checkbox mb-3">
                     <label>
@@ -33,18 +33,18 @@
 
         <?php 
             // Vérifie si Login et Password existent
-            if (isset($_POST['login'], $_POST['password'])) {
-                $login = htmlspecialchars($_POST['login']);
-                $password = htmlspecialchars($_POST['password']);
+            if (isset($_POST['user_login'], $_POST['user_pass'])) {
+                $user_login = htmlspecialchars($_POST['user_login']);
+                $user_pass = htmlspecialchars($_POST['user_pass']);
 
                 //  Récupération de l'utilisateur et de son pass hashé
-                $req = $bdd->prepare('SELECT id, pass FROM users WHERE pseudo = :pseudo');
+                $req = $bdd->prepare('SELECT ID, user_pass FROM users WHERE user_login = :user_login');
                 $req->execute(array(
-                    'pseudo' => $login));
+                    'user_login' => $user_login));
                 $resultat = $req->fetch();
 
                 // Comparaison du pass envoyé via le formulaire avec la base
-                $isPasswordCorrect = password_verify($_POST['password'], $resultat['pass']);
+                $isPasswordCorrect = password_verify($_POST['user_pass'], $resultat['user_pass']);
 
                 if (!$resultat)
                 {
@@ -55,8 +55,8 @@
                 else
                 {
                     if ($isPasswordCorrect) {
-                        $_SESSION['id'] = $resultat['id'];
-                        $_SESSION['login'] = $login;
+                        $_SESSION['ID'] = $resultat['ID'];
+                        $_SESSION['user_login'] = $user_login;
                         ?>
                         <p>Vous êtes connecté !<p>
                         <?php
