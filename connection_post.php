@@ -6,7 +6,7 @@ if (isset($_POST['login'], $_POST['password'])) {
     $password = htmlspecialchars($_POST['password']);
 
     //  Récupération de l'utilisateur et de son pass hashé
-    $req = $bdd->prepare('SELECT id, pass FROM membres WHERE pseudo = :pseudo');
+    $req = $bdd->prepare('SELECT id, pass FROM users WHERE pseudo = :pseudo');
     $req->execute(array(
         'pseudo' => $login));
     $resultat = $req->fetch();
