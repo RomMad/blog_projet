@@ -6,7 +6,7 @@
 
 <body>
 
-    <?php include("header.html"); ?>
+    <?php include("header.php"); ?>
 
     <div class="container">
 
