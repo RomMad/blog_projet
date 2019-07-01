@@ -43,10 +43,14 @@
 
             <div class="ml-3 text-light">
             <?php 
-            echo $_SESSION['user_login']
+            if (isset($_SESSION['user_login'])) {
+                echo $_SESSION['user_login'];
             ?>
             <br />
             <a  class="text-info" href="deconnection.php">Vous déconnecter</a>
+            <?php 
+            };
+            ?>
             </div>
 
         </div>
