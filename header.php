@@ -49,6 +49,10 @@
             <br />
             <a  class="text-info" href="deconnection.php">Vous déconnecter</a>
             <?php 
+            } else {
+                ?>
+                <a  class="text-info" href="connection_page.php">Se connecter</a>
+            <?php
             };
             ?>
             </div>
