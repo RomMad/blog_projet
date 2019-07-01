@@ -59,6 +59,7 @@
                         $_SESSION['user_login'] = $user_login;
                         ?>
                         <p>Vous êtes connecté !<p>
+                        <meta http-equiv="refresh" content="1;url=index.php"/>
                         <?php
                     }
                     else {
