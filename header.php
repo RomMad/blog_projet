@@ -12,13 +12,13 @@
                     <a class="nav-link" href="index.php">Accueil <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="blog_page.php">Blog</a>
+                    <a class="nav-link" href="blog.php">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="connection_page.php">Connexion</a>
+                    <a class="nav-link" href="connection.php">Connexion</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="inscription_page.php">Inscription</a>
+                    <a class="nav-link" href="inscription.php">Inscription</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

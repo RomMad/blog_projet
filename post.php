@@ -16,14 +16,13 @@
 
             <?php
             // Récupère les derniers posts
-            $req = $bdd->query('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %Hh%imn\') AS post_date_creation_fr 
+            $req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %Hh%imn\') AS post_date_creation_fr 
             FROM posts p
             LEFT JOIN users u
             ON p.post_author = u.ID
-            ORDER BY p.post_date_creation 
-            DESC LIMIT 0, 10');
-            while ($data = $req->fetch())
-            {
+            WHERE p.ID=?');
+            $req->execute(array($_GET['post']));
+            $data = $req->fetch();
             ?>
             <div class="card">
                 <div class="card-header bg-dark text-light">
@@ -37,13 +36,34 @@
                 // Affiche le contenu du post
                 echo nl2br(htmlspecialchars($data['post_content']));
                 ?>
-                <br /><br />
-                <em><a href="post_page.php?post=<?php echo $data['ID']; ?>">Voir les commentaires</a></em>
                 </div>
             </div>
+
+            <h2>Commentaires</h2>
+
             <?php
-            } // Fin de la boucle des posts
             $req->closeCursor();
+
+            // Récupération des commentaires
+            $req = $bdd->prepare('SELECT u.user_login, c.comment, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %Hh%imin%ss\') AS date_comment_fr 
+            FROM comments c
+            LEFT JOIN users u
+            ON p.post_author = u.ID
+            ORDER BY c.date_creation');
+            $req->execute(array($_GET['post']));
+
+            while ($data = $req->fetch())
+            {
+            ?>
+            <p><strong><?php echo htmlspecialchars($data['user_login']); ?></strong> le <?php echo $data['date_comment_fr']; ?></p>
+            <p><?php echo nl2br(htmlspecialchars($data['comment'])); ?></p>
+            <?php
+            } // Fin de la boucle des commentaires
+            $req->closeCursor();
+            ?>
+
+
+            <?php
             ?>  
             <br />
             <a href="new_post_page">Rédiger un nouvel article<a>

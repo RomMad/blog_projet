@@ -1,4 +1,46 @@
-<?php session_start(); ?>
+<?php 
+
+session_start();
+
+include("connection_bdd.php");
+
+var_dump($_POST);
+// Vérification de la validité des informations
+if (!empty($_POST)) {
+    $user_login = htmlspecialchars($_POST['user_login']);
+    $user_pass = htmlspecialchars($_POST['user_pass']);
+
+    //  Récupération de l'utilisateur et de son pass hashé
+    $req = $bdd->prepare('SELECT id, user_pass FROM users WHERE user_login = :user_login');
+    $req->execute(array(
+        'user_login' => $user_login));
+    $resultat = $req->fetch();
+
+    // Comparaison du pass envoyé via le formulaire avec la base
+    $isPasswordCorrect = password_verify($_POST['user_pass'], $resultat['user_pass']);
+
+    if (!$resultat)
+    {
+        echo 'Mauvais identifiant ou mot de passe !';
+    }
+    else
+    {
+        if ($isPasswordCorrect) {
+            session_start();
+            $_SESSION['id'] = $resultat['id'];
+            $_SESSION['user_login'] = $user_login;
+            echo 'Vous êtes connecté !';
+        }
+        else {
+            echo 'Mauvais identifiant ou mot de passe !';
+        }
+    }
+}
+
+// Redirige vers page de connexion
+// header('Location: connection_page.php');
+
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,8 +54,7 @@
 
         <section id="connection" class="row">
 
-            <form action="connection_page.php" method="post" class="form-signin mx-auto text-center">
-                <img class="mb-4" src="" alt="" width="72" height="72">
+            <form action="connection.php" method="post" class="form-signin mx-auto text-center">
                 <h1 class="h3 mb-3 font-weight-normal">Merci de vous connecter</h1>
                 <label for="user_login" class="sr-only">Login</label>
                 <input type="text" name="user_login" id="user_login" class="form-control" placeholder="Login" required autofocus="">
