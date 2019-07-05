@@ -6,6 +6,13 @@ include("connection_bdd.php");
 
 var_dump($_POST);
 // Vérification si informations dans variable POST
+
+if (empty($_SESSION)) {
+    echo "Vous devez vous connecter pour écrire un article.";
+    // Redirige vers la page de connexion
+    header('Location: connection.php');
+};
+
 if (!empty($_POST)) {
     $user_login = htmlspecialchars($_POST['user_login']);
     $user_email = htmlspecialchars($_POST['user_email']);
