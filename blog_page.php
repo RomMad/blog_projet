@@ -31,7 +31,7 @@
                     <h3>
                         <?php echo htmlspecialchars($data['post_title']); ?>
                     </h3>
-                    <em>Le <?php echo $data['post_date_creation_fr']; ?> par <a href=""> <?php echo $data['user_login']; ?> </a></em>
+                    <em>Créé le <?php echo $data['post_date_creation_fr']; ?> par <a href=""> <?php echo $data['user_login']; ?> </a></em>
                 </div>
                 <div class="card-body text-body">
                 <?php
