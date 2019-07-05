@@ -12,7 +12,7 @@
                     <a class="nav-link" href="index.php">Accueil <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="blog.php">Blog</a>
+                    <a class="nav-link" href="blog_page.php">Blog</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="connection_page.php">Connexion</a>
