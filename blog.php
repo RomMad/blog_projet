@@ -37,7 +37,7 @@
                 <div class="card-body text-body">
                 <?= nl2br(htmlspecialchars($data['post_content'])) ?>
                 <br /><br />
-                <em><a href="post.php?post=<?= $data['ID'] ?>">Voir les commentaires</a></em>
+                <em><a href="post.php?post=<?= $data['ID'] ?>">En voir plus</a></em>
                 </div>
             </div>
             <?php
