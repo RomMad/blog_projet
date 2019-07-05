@@ -44,7 +44,7 @@
             }
             ?>  
             <br />
-            <a href="new_post">Rédiger un nouvel article<a>
+            <a href="edit_post">Rédiger un nouvel article<a>
 
         </section>
 
