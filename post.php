@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php session_start(); 
+
+var_dump($_GET);
+
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -45,18 +49,19 @@
             $req->closeCursor();
 
             // Récupération des commentaires
-            $req = $bdd->prepare('SELECT u.user_login, c.comment, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %Hh%imin%ss\') AS date_comment_fr 
+            $req = $bdd->prepare('SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %Hh%imin%ss\') AS date_comment_fr 
             FROM comments c
             LEFT JOIN users u
-            ON p.post_author = u.ID
-            ORDER BY c.date_creation');
+            ON c.comment_author = u.ID
+            WHERE c.id_post=?
+            ORDER BY c.comment_date_creation');
             $req->execute(array($_GET['post']));
 
             while ($data = $req->fetch())
             {
             ?>
             <p><strong><?php echo htmlspecialchars($data['user_login']); ?></strong> le <?php echo $data['date_comment_fr']; ?></p>
-            <p><?php echo nl2br(htmlspecialchars($data['comment'])); ?></p>
+            <p><?php echo nl2br(htmlspecialchars($data['comment_content'])); ?></p>
             <?php
             } // Fin de la boucle des commentaires
             $req->closeCursor();
