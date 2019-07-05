@@ -37,6 +37,8 @@
                 // Affiche le contenu du post
                 echo nl2br(htmlspecialchars($data['post_content']));
                 ?>
+                <br /><br />
+                <em><a href="post_page.php?post=<?php echo $data['ID']; ?>">Voir les commentaires</a></em>
                 </div>
             </div>
             <?php
@@ -44,7 +46,7 @@
             $req->closeCursor();
             ?>  
             <br />
-            <a href="new_post_page">Rédiger un nouvel article.<a>
+            <a href="new_post_page">Rédiger un nouvel article<a>
 
         </section>
 
