@@ -10,7 +10,7 @@
 
     <div class="container">
 
-        <section id="inscription" class="row">
+        <section id="blog" class="">
 
         <?php include("connection_bdd.php"); ?>
 
@@ -44,6 +44,9 @@
             } // Fin de la boucle des posts
             $req->closeCursor();
             ?>  
+            <br />
+            <a href="new_post_page"> Rédiger un nouvel article <a>
+
         </section>
 
     </div>
