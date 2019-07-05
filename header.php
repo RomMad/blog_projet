@@ -15,6 +15,9 @@
                     <a class="nav-link" href="blog.php">Blog</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="edit_post.php?type=1">Nouvel article</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="connection.php">Connexion</a>
                 </li>
                 <li class="nav-item">

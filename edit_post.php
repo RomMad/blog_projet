@@ -44,7 +44,7 @@
 
             <div class="col-sm-12 col-md-10 mx-auto">
                 <form action="edit_post.php" method="post" class="">
-                    <h2>Nouvel article </h2>
+                    <h2>Edition d'article </h2>
                     <div class="form-group">
                         <label for="post-post_title">Titre</label>
                         <input type="text" name="post_title" class="form-control" id="post_title">
@@ -69,8 +69,9 @@
                 if (isset($statusPost)) {
                     echo $statusPost;
                 };
-            ?>
-
+                ?>
+                
+            </div>
         </section>
 
     </div>
