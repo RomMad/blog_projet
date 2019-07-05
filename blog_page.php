@@ -22,16 +22,15 @@
             ON p.post_author = u.ID
             ORDER BY p.post_date_creation 
             DESC LIMIT 0, 10');
-
             while ($data = $req->fetch())
             {
             ?>
             <div class="card">
                 <div class="card-header bg-dark text-light">
-                    <h3>
+                    <a href="post_page.php?post=<?php echo $data['ID']; ?>"><h3>
                         <?php echo htmlspecialchars($data['post_title']); ?>
-                    </h3>
-                    <em>Créé le <?php echo $data['post_date_creation_fr']; ?> par <a href=""> <?php echo $data['user_login']; ?> </a></em>
+                    </h3></a>
+                    <em>Créé le <?php echo $data['post_date_creation_fr']; ?> par <a href=""> <?php echo htmlspecialchars($data['user_login']); ?> </a></em>
                 </div>
                 <div class="card-body text-body">
                 <?php
@@ -45,12 +44,12 @@
             $req->closeCursor();
             ?>  
             <br />
-            <a href="new_post_page"> Rédiger un nouvel article <a>
+            <a href="new_post_page">Rédiger un nouvel article.<a>
 
         </section>
 
     </div>
-
+<
     <?php include("scripts.html"); ?>
 
 </html
