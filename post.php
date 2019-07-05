@@ -14,7 +14,7 @@ $req->execute(array($_GET['post']));
 $data = $req->fetch();
 
 // Récupération des commentaires
-$req = $bdd->prepare('SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %Hh%imin%ss\') AS date_comment_fr 
+$req = $bdd->prepare('SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %Hh%imn\') AS date_comment_fr 
 FROM comments c
 LEFT JOIN users u
 ON c.comment_author = u.ID
@@ -38,16 +38,13 @@ $req->execute(array($_GET['post']));
 
             <div class="card">
                 <div class="card-header bg-dark text-light">
-                    <a href="post_page.php?post=<?php echo $data['ID']; ?>"><h3>
-                        <?php echo htmlspecialchars($data['post_title']); ?>
+                    <a href="post_page.php?post=<?= $data['ID'] ?>"><h3>
+                        <?= htmlspecialchars($data['post_title']) ?>
                     </h3></a>
-                    <em>Créé le <?php echo $data['post_date_creation_fr']; ?> par <a href=""> <?php echo htmlspecialchars($data['user_login']); ?> </a></em>
+                    <em>Créé le <?= $data['post_date_creation_fr'] ?> par <a href=""> <?= htmlspecialchars($data['user_login']) ?> </a></em>
                 </div>
                 <div class="card-body text-body">
-                <?php
-                // Affiche le contenu du post
-                echo nl2br(htmlspecialchars($data['post_content']));
-                ?>
+                <?= nl2br(htmlspecialchars($data['post_content'])) ?>
                 </div>
             </div>
 
@@ -57,8 +54,8 @@ $req->execute(array($_GET['post']));
             while ($data = $req->fetch())
             {
             ?>
-            <p><strong><?php echo htmlspecialchars($data['user_login']); ?></strong> le <?php echo $data['date_comment_fr']; ?></p>
-            <p><?php echo nl2br(htmlspecialchars($data['comment_content'])); ?></p>
+            <p><strong><?= htmlspecialchars($data['user_login']) ?></strong>, le <?= $data['date_comment_fr'] ?></p>
+            <p><?= nl2br(htmlspecialchars($data['comment_content'])) ?></p>
             <?php
             }
             ?>
