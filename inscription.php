@@ -5,7 +5,7 @@ session_start();
 include("connection_bdd.php");
 
 var_dump($_POST);
-// Vérification de la validité des informations
+// Vérification si informations dans variable POST
 if (!empty($_POST)) {
     $user_login = htmlspecialchars($_POST['user_login']);
     $user_email = htmlspecialchars($_POST['user_email']);
