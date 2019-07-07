@@ -2,13 +2,46 @@
     session_start();
 
     include("connection_bdd.php");
-
+    // Redirige vers la page de connexion si non connecté
     if (empty($_SESSION)) {
-        echo "Vous devez vous connecter pour écrire un article.";
-        // Redirige vers la page de connexion
         header('Location: connection.php');
     };
 
+    var_dump($_POST);    
+    // Vérification si informations dans variable POST
+    if (!empty($_POST)) {
+        $post_title = htmlspecialchars($_POST['post_title']);
+        $post_content = htmlspecialchars($_POST['post_content']);
+        $post_ID = htmlspecialchars($_POST['post_ID']);
+        $post_user_ID = htmlspecialchars($_SESSION['ID']);
+        $post_author  = htmlspecialchars($_POST['post_author']);
+        $post_status = htmlspecialchars($_POST['post_status']);
+        $post_date_creation = htmlspecialchars($_POST['post_date_creation']);
+        $post_date_update = htmlspecialchars($_POST['post_date_update']);
+
+        // Met à jour l'article si article existant
+        if (!empty($_POST['post_ID'])) {
+            $req = $bdd->prepare('UPDATE posts SET post_title = :new_post_title, post_content = :new_post_content, post_date_update = NOW() WHERE ID = :post_ID');
+            $req->execute(array(
+                'new_post_title' => $post_title,
+                'new_post_content' => $post_content,
+                'post_ID' => $post_ID
+                ));     
+            $statusPost = "Article modifié.";
+        } else {
+            // Ajoute l'article si nouvel article
+            $req = $bdd->prepare('INSERT INTO posts(post_author, post_title, post_content, post_status) 
+            VALUES(:post_author, :post_title, :post_content, :post_status)');
+            $req->execute(array(
+                'post_author' => $post_user_ID,
+                'post_title' => $post_title,
+                'post_content' => $post_content,
+                'post_status' => $post_status
+                ));
+            $statusPost = "Article enregistré.";
+        };
+    };
+    // 
     var_dump($_GET);
     if (!empty($_GET['post'])) {
         $idPost = htmlspecialchars($_GET['post']);
@@ -28,28 +61,8 @@
         $post_date_creation = $data['post_date_creation_fr'];
         $post_date_update = $data['post_date_update_fr'];
         $post_status = $data['post_status'];
-
     };
 
-    var_dump($_POST);    
-    // Vérification si informations dans variable POST
-    if (!empty($_POST)) {
-        $post_author = htmlspecialchars($_SESSION['ID']);
-        $post_title = htmlspecialchars($_POST['post_title']);
-        $post_content = htmlspecialchars($_POST['post_content']);
-        $post_status = htmlspecialchars($_POST['post_status']);
-
-        // Insert les données dans la table posts
-        $req = $bdd->prepare('INSERT INTO posts(post_author, post_title, post_content, post_status) 
-        VALUES(:post_author, :post_title, :post_content, :post_status)');
-        $req->execute(array(
-            'post_author' => $post_author,
-            'post_title' => $post_title,
-            'post_content' => $post_content,
-            'post_status' => $post_status
-            ));
-        $statusPost = "Article enregistré.";
-    };
 ?>
 
 <!DOCTYPE html>
