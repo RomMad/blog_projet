@@ -5,13 +5,19 @@ include("connection_bdd.php");
 var_dump($_POST);    
 // Vérification si informations dans variable POST
 if (!empty($_POST)) {
+    if (isset($_SESSION['ID'])) {
+        $user_ID = $_SESSION['ID'];
+    } else {
+        $user_ID = 0;
+    };
+
     $comment_content = htmlspecialchars($_POST['comment_content']);
         // Ajoute le commentaire
         $req = $bdd->prepare('INSERT INTO comments(id_post, comment_author, comment_content) 
         VALUES(:id_post, :comment_author, :comment_content)');
         $req->execute(array(
             'id_post' => $_SESSION['post_ID'],
-            'comment_author' => $_SESSION['ID'],
+            'comment_author' =>  $user_ID,
             'comment_content' => $_POST['comment_content']
             ));
 };
