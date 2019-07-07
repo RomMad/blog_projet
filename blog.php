@@ -7,8 +7,9 @@
     FROM posts p
     LEFT JOIN users u
     ON p.post_author = u.ID
-    ORDER BY p.post_date_creation 
-    DESC LIMIT 0, 10');
+    ORDER BY p.post_date_creation DESC 
+    LIMIT 0, 5');
+
 ?>
 
 <!DOCTYPE html>

@@ -45,7 +45,8 @@ FROM comments c
 LEFT JOIN users u
 ON c.comment_author = u.ID
 WHERE c.id_post=?
-ORDER BY c.comment_date_creation DESC');
+ORDER BY c.comment_date_creation DESC
+LIMIT 0, 10');
 $req->execute(array($post));
 
 ?>
@@ -94,8 +95,13 @@ $req->execute(array($post));
             <?php
             while ($data = $req->fetch())
             {
+                if (!empty($data['user_login'])) {
+                    $user_login = htmlspecialchars($data['user_login']);
+                    } else {
+                    $user_login = "Anonyme";
+                    };
             ?>
-            <p><strong><?= htmlspecialchars($data['user_login']) ?></strong>, le <?= $data['comment_date_creation_fr'] ?></p>
+            <p><strong><?= $user_login ?></strong>, le <?= $data['comment_date_creation_fr'] ?></p>
             <p><?= nl2br(htmlspecialchars($data['comment_content'])) ?></p>
             <?php
             }
