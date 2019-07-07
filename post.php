@@ -64,9 +64,6 @@ $req->execute(array($post));
 
             <br />
             <a href="edit_post.php?post=<?= $post ?>">Modifier l'article<a>
-            <br />
-            <a href="edit_post.php?edit=0">Rédiger un nouvel article<a>
-
         </section>
 
     </div>
