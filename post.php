@@ -34,12 +34,12 @@ $req->execute(array($post));
 $data = $req->fetch();
 
 // Récupère les commentaires
-$req = $bdd->prepare('SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %H:%i\') AS date_comment_fr 
+$req = $bdd->prepare('SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %H:%i\') AS comment_date_creation_fr 
 FROM comments c
 LEFT JOIN users u
 ON c.comment_author = u.ID
 WHERE c.id_post=?
-ORDER BY c.comment_date_creation');
+ORDER BY c.comment_date_creation DESC');
 $req->execute(array($post));
 
 ?>
@@ -69,6 +69,7 @@ $req->execute(array($post));
             </div>
             <a href="edit_post.php?post=<?= $post ?>">Modifier l'article<a>
             <br />
+            <br />
             <!-- Formuulaire d'ajout d'un commentaire -->
             <h2 class="h3">Nouveau commentaire</h2>
             <div class="row">
@@ -88,7 +89,7 @@ $req->execute(array($post));
             while ($data = $req->fetch())
             {
             ?>
-            <p><strong><?= htmlspecialchars($data['user_login']) ?></strong>, le <?= $data['date_comment_fr'] ?></p>
+            <p><strong><?= htmlspecialchars($data['user_login']) ?></strong>, le <?= $data['comment_date_creation_fr'] ?></p>
             <p><?= nl2br(htmlspecialchars($data['comment_content'])) ?></p>
             <?php
             }
