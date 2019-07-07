@@ -4,13 +4,15 @@ include("connection_bdd.php");
 
 var_dump($_GET);
 
+$post = htmlspecialchars($_GET['post']);
+
 // Récupère les derniers posts
 $req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %Hh%imn\') AS post_date_creation_fr 
 FROM posts p
 LEFT JOIN users u
 ON p.post_author = u.ID
 WHERE p.ID=?');
-$req->execute(array($_GET['post']));
+$req->execute(array($post));
 $data = $req->fetch();
 
 // Récupération des commentaires
@@ -20,7 +22,7 @@ LEFT JOIN users u
 ON c.comment_author = u.ID
 WHERE c.id_post=?
 ORDER BY c.comment_date_creation');
-$req->execute(array($_GET['post']));
+$req->execute(array($post));
 
 ?>
 
@@ -61,7 +63,9 @@ $req->execute(array($_GET['post']));
             ?>
 
             <br />
-            <a href="new_post_page">Rédiger un nouvel article<a>
+            <a href="edit_post.php?post=<?= $post ?>">Modifier l'article<a>
+            <br />
+            <a href="edit_post.php?edit=0">Rédiger un nouvel article<a>
 
         </section>
 
