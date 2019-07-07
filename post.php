@@ -7,7 +7,7 @@ var_dump($_GET);
 $post = htmlspecialchars($_GET['post']);
 
 // Récupère le post
-$req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %Hh%imn\') AS post_date_creation_fr 
+$req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %H:%i\') AS post_date_creation_fr 
 FROM posts p
 LEFT JOIN users u
 ON p.post_author = u.ID
@@ -16,7 +16,7 @@ $req->execute(array($post));
 $data = $req->fetch();
 
 // Récupération des commentaires
-$req = $bdd->prepare('SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %Hh%imn\') AS date_comment_fr 
+$req = $bdd->prepare('SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %H:%i\') AS date_comment_fr 
 FROM comments c
 LEFT JOIN users u
 ON c.comment_author = u.ID

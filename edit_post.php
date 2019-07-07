@@ -46,7 +46,7 @@
     if (!empty($_GET['post'])) {
         $idPost = htmlspecialchars($_GET['post']);
         // Récupère le post
-        $req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %Hh%imn\') AS post_date_creation_fr, DATE_FORMAT(p.post_date_update, \'%d/%m/%Y à %Hh%imn\') AS post_date_update_fr 
+        $req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y %H:%i\') AS post_date_creation_fr, DATE_FORMAT(p.post_date_update, \'%d/%m/%Y %H:%i\') AS post_date_update_fr 
         FROM posts p
         LEFT JOIN users u
         ON p.post_author = u.ID
