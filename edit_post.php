@@ -65,7 +65,7 @@
                 <form action="edit_post.php" method="post" class="">
                     <h2>Edition d'article </h2>
                     <div class="row">
-                        <div class="col-sm-12 col-md-9">
+                        <div class="col-sm-12 col-md-8">
                             <div class="form-group">
                                 <label for="post_title">Titre</label>
                                 <input type="text" name="post_title" class="form-control" id="post_title" value="<?= isset($post_title) ? $post_title : ''?>">
@@ -75,7 +75,7 @@
                                 <textarea name="post_content" class="form-control" id="post_content" rows="10"> <?= isset($post_content) ? $post_content : ''?></textarea>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 offset-md-1 col-md-3">
                             <div class="form-group">
                                 <label for="post_author">Auteur</label>
                                 <input type="text" name="post_author" class="form-control" id="post_author" value="<?= isset($post_author) ? $post_author : ''?>">
