@@ -61,49 +61,53 @@
     <div class="container">
 
         <section id="post_form" class="row">
-
             <div class="col-sm-12 col-md-10 mx-auto">
                 <form action="edit_post.php" method="post" class="">
                     <h2>Edition d'article </h2>
-                    <div class="form-group">
-                        <label for="post_title">Titre</label>
-                        <input type="text" name="post_title" class="form-control" id="post_title" value="<?= isset($post_title) ? $post_title : ''?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="post_content">Contenu</label>
-                        <textarea name="post_content" class="form-control" id="post_content" rows="10"> <?= isset($post_content) ? $post_content : ''?></textarea>
-                    </div>
-                    <div class="form-group col-sm-4 col-md-2">
-                        <label for="post_status">Statut</label>
-                        <select name="post_status" class="form-control" id="post_status">
-                            <option>Publié</option>
-                            <option>Brouillon</option>
-                            <option value="<?= isset($post_status) ? $post_status : '' ?>" selected ><?= isset($post_status) ? $post_status : '' ?></option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="post_author">Auteur</label>
-                        <input type="text" name="post_author" class="form-control" id="post_author" value="<?= isset($post_author) ? $post_author : ''?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="post_date_creation">Date de création</label>
-                        <input type="text" name="post_date_creation" class="form-control" id="post_date_creation" value="<?= isset($post_date_creation) ? $post_date_creation : ''?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="post_date_update">Date de mise à jour</label>
-                        <input type="text" name="post_date_update" class="form-control" id="post_date_update" value="<?= isset($post_date_update) ? $post_date_update : ''?>">
-                    </div>
-                    <div class="form-group float-right">
-                        <input type="submit" value="Enregistrer" id="save" class="btn btn-primary shadow">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-9">
+                            <div class="form-group">
+                                <label for="post_title">Titre</label>
+                                <input type="text" name="post_title" class="form-control" id="post_title" value="<?= isset($post_title) ? $post_title : ''?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="post_content">Contenu</label>
+                                <textarea name="post_content" class="form-control" id="post_content" rows="10"> <?= isset($post_content) ? $post_content : ''?></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="form-group">
+                                <label for="post_author">Auteur</label>
+                                <input type="text" name="post_author" class="form-control" id="post_author" value="<?= isset($post_author) ? $post_author : ''?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="post_date_creation">Date de création</label>
+                                <input type="text" name="post_date_creation" class="form-control" id="post_date_creation" value="<?= isset($post_date_creation) ? $post_date_creation : ''?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="post_date_update">Date de mise à jour</label>
+                                <input type="text" name="post_date_update" class="form-control" id="post_date_update" value="<?= isset($post_date_update) ? $post_date_update : ''?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="post_status">Statut</label>
+                                <select name="post_status" class="form-control" id="post_status">
+                                    <option>Publié</option>
+                                    <option>Brouillon</option>
+                                    <option value="<?= isset($post_status) ? $post_status : '' ?>" selected ><?= isset($post_status) ? $post_status : '' ?></option>
+                                </select>
+                            </div>
+                            <div class="form-group float-right">
+                                <input type="submit" value="Enregistrer" id="save" class="btn btn-primary shadow">
+                            </div>
+                        </div>
                     </div>
                 </form>
-
+            
                 <?php  
                 if (isset($statusPost)) {
                     echo $statusPost;
                 };
                 ?>
-
             </div>
         </section>
 
