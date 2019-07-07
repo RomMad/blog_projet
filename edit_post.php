@@ -79,33 +79,47 @@
             <div class="col-sm-12 col-md-10 mx-auto">
                 <form action="edit_post.php" method="post" class="">
                     <h2>Edition d'article </h2>
+                    <br/>
+                    <?php  
+                    if (isset($statusPost)) {
+                    ?>
+                    <div id="info-edit-post" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= $statusPost ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <?php 
+                    };
+                    ?>
+
                     <div class="row">
                         <div class="col-sm-12 col-md-8">
                             <div class="form-group">
                                 <label for="post_title">Titre</label>
-                                <input type="text" name="post_title" class="form-control" id="post_title" value="<?= isset($post_title) ? $post_title : ''?>">
+                                <input type="text" name="post_title" class="form-control" id="post_title" value="<?= isset($post_title) ? $post_title : '' ?>">
                             </div>
                             <div class="form-group">
                                 <label for="post_content">Contenu</label>
-                                <textarea name="post_content" class="form-control" id="post_content" rows="12"> <?= isset($post_content) ? $post_content : ''?></textarea>
+                                <textarea name="post_content" class="form-control" id="post_content" rows="12"><?= isset($post_content) ? $post_content : '' ?></textarea>
                             </div>
                         </div>
                         <div class="col-sm-6 offset-md-1 col-md-3">
                         <div class="form-group">
                                 <label for="post_ID">ID</label>
-                                <input type="text" name="post_ID" class="form-control" id="post_ID" readonly value="<?= isset($post_ID) ? $post_ID : ''?>">
+                                <input type="text" name="post_ID" class="form-control" id="post_ID" readonly value="<?= isset($post_ID) ? $post_ID : '' ?>">
                         </div>
                             <div class="form-group">
                                 <label for="post_author">Auteur</label>
-                                <input type="text" name="post_author" class="form-control" id="post_author" readonly value="<?= isset($post_author) ? $post_author : ''?>">
+                                <input type="text" name="post_author" class="form-control" id="post_author" readonly value="<?= isset($post_author) ? $post_author : '' ?>">
                             </div>
                             <div class="form-group">
                                 <label for="post_date_creation">Date de création</label>
-                                <input type="text" name="post_date_creation" class="form-control" id="post_date_creation" readonly value="<?= isset($post_date_creation) ? $post_date_creation : ''?>">
+                                <input type="text" name="post_date_creation" class="form-control" id="post_date_creation" readonly value="<?= isset($post_date_creation) ? $post_date_creation : '' ?>">
                             </div>
                             <div class="form-group">
                                 <label for="post_date_update">Date de mise à jour</label>
-                                <input type="text" name="post_date_update" class="form-control" id="post_date_update" readonly value="<?= isset($post_date_update) ? $post_date_update : ''?>">
+                                <input type="text" name="post_date_update" class="form-control" id="post_date_update" readonly value="<?= isset($post_date_update) ? $post_date_update : '' ?>">
                             </div>
                             <div class="form-group">
                                 <label for="post_status">Statut</label>
@@ -121,12 +135,6 @@
                         </div>
                     </div>
                 </form>
-            
-                <?php  
-                if (isset($statusPost)) {
-                    echo $statusPost;
-                };
-                ?>
             </div>
         </section>
 
