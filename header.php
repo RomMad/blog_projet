@@ -54,7 +54,7 @@
             <?php 
             } else {
                 ?>
-                <a  class="text-info" href="connection_page.php">Se connecter</a>
+                <a  class="text-info" href="connection.php">Se connecter</a>
             <?php
             };
             ?>
