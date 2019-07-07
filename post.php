@@ -6,7 +6,7 @@ var_dump($_GET);
 
 $post = htmlspecialchars($_GET['post']);
 
-// Récupère les derniers posts
+// Récupère le post
 $req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %Hh%imn\') AS post_date_creation_fr 
 FROM posts p
 LEFT JOIN users u
