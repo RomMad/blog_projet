@@ -6,11 +6,10 @@
     if (empty($_SESSION)) {
         header('Location: connection.php');
     };
-
+    // Récupère des infos du profil
     var_dump($_GET);
         if (!empty($_GET)) {
         $req = $bdd->prepare('SELECT ID, user_login, user_name, user_surname, user_email, user_status, user_birthdate FROM users WHERE ID =?');
-
         $req->execute(array($_SESSION['ID']));
         $data = $req->fetch();
 
@@ -22,81 +21,77 @@
         $user_status = $data['user_status'];
     };
 
-    // Met à jour le profil
     var_dump($_POST);
-    // Vérification si informations dans variable POST
-    if (!empty($_POST)) {
-        // Mise à jour du mot de passe
-        if (isset($_POST['old_pass'])) {
-            $old_pass = htmlspecialchars($_POST['old_pass']);
-            $new_pass = htmlspecialchars($_POST['new_pass']);
-            $new_pass_confirm = htmlspecialchars($_POST['new_pass_confirm']);
 
-            // Récupération de l'utilisateur et de son pass hashé
-            $req = $bdd->prepare('SELECT user_pass FROM users WHERE ID = ?');
-            $req->execute(array($_SESSION['ID']));
-            $resultat = $req->fetch();
-
-            // Comparaison du pass envoyé via le formulaire avec la base
-            $isPasswordCorrect = password_verify($_POST['old_pass'], $resultat['user_pass']);
-
-            if ($new_pass==$new_pass_confirm) {
-                $req = $bdd->prepare('UPDATE users SET user_pass = :new_pass WHERE ID = :ID');                
-                $req->execute(array(
-                    'new_pass' => $new_pass,
-                    'ID' => $_SESSION['ID']
-                    )); 
-                $statusProfil = "Mot de passe mis à jour.";
-            } else {
-                $statusProfil = "Mot de passe et confirmation différents.";
-            };
-        // Mise à jour des informations du profil
+    // Met à jour le mot de passe
+    if (!empty($_POST) && isset($_POST['old_pass'])) {
+        $old_pass = htmlspecialchars($_POST['old_pass']);
+        $new_pass = htmlspecialchars($_POST['new_pass']);
+        $new_pass_confirm = htmlspecialchars($_POST['new_pass_confirm']);
+        // Récupère le password hashé de l'utilisateur
+        $req = $bdd->prepare('SELECT user_pass FROM users WHERE ID = ?');
+        $req->execute(array($_SESSION['ID']));
+        $resultat = $req->fetch();
+        // Compare le password envoyé via le formulaire avec la base
+        $isPasswordCorrect = password_verify($_POST['old_pass'], $resultat['user_pass']);
+        // Vérifie si la confirmation du mot de passe est identique
+        if ($new_pass==$new_pass_confirm) {
+            // Met à jour le mot de passe
+            $req = $bdd->prepare('UPDATE users SET user_pass = :new_pass WHERE ID = :ID');                
+            $req->execute(array(
+                'new_pass' => $new_pass,
+                'ID' => $_SESSION['ID']
+                )); 
+            $statusProfil = "Mot de passe mis à jour.";
         } else {
-            $user_login = htmlspecialchars($_POST['user_login']);
-            $user_name = htmlspecialchars($_POST['user_name']);
-            $user_surname = htmlspecialchars($_POST['user_surname']);
-            $user_email = htmlspecialchars($_POST['user_email']);
-            $user_birthdate = !empty($_POST['user_birthdate']) ? htmlspecialchars($_POST['user_birthdate']) : NULL;
-            $user_status = htmlspecialchars($_POST['user_status']);
-            $user_pass = htmlspecialchars($_POST['user_pass']);
-
-            // Récupération de l'utilisateur et de son pass hashé
-            $req = $bdd->prepare('SELECT ID, user_pass FROM users WHERE ID = ?');
-            $req->execute(array($_SESSION['ID']));
-            $resultat = $req->fetch();
-
-            // Comparaison du pass envoyé via le formulaire avec la base
-            $isPasswordCorrect = password_verify($_POST['user_pass'], $resultat['user_pass']);
-            
-            // Vérifie si Login et Password existent
-            if (!$resultat) {
-            $statusProfil = "Mot de passe incorrect.";
-            } else {
-                if ($isPasswordCorrect) {
-                    if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user_email)) {
-                        $req = $bdd->prepare('UPDATE users SET user_login = :new_user_login, user_name = :new_user_name, user_surname = :new_user_surname, user_email = :new_user_email, user_birthdate = :new_user_birthdate, user_status = :new_user_status, user_date_update = NOW() 
-                        WHERE ID = :ID');
-                        $req->execute(array(
-                            'new_user_login' => $user_login,
-                            'new_user_name' => $user_name,
-                            'new_user_surname' => $user_surname,
-                            'new_user_email' => $user_email,
-                            'new_user_birthdate' => $user_birthdate,
-                            'new_user_status' => $user_status,
-                            'ID' => $_SESSION['ID']
-                            )); 
-                        $_SESSION['user_login'] = $user_login;
-                        $statusProfil = "Profil mis à jour.";
-                    } else {
-                        $statusProfil = 'L\'adresse ' . $user_email . ' est incorrecte.';
-                    };
-                } else {
-                    $statusProfil = "Mot de passe incorrect.";
-                };
-            };
+            $statusProfil = "Mot de passe et confirmation différents.";
         };
     };
 
+    // Met à jour des informations du profil
+    if (!empty($_POST) && isset($_POST['user_login'])) {
+        $user_login = htmlspecialchars($_POST['user_login']);
+        $user_name = htmlspecialchars($_POST['user_name']);
+        $user_surname = htmlspecialchars($_POST['user_surname']);
+        $user_email = htmlspecialchars($_POST['user_email']);
+        $user_birthdate = !empty($_POST['user_birthdate']) ? htmlspecialchars($_POST['user_birthdate']) : NULL;
+        $user_status = htmlspecialchars($_POST['user_status']);
+        $user_pass = htmlspecialchars($_POST['user_pass']);
+        // Récupération de l'utilisateur et de son pass hashé
+        $req = $bdd->prepare('SELECT ID, user_pass FROM users WHERE ID = ?');
+        $req->execute(array($_SESSION['ID']));
+        $resultat = $req->fetch();
+        // Comparaison du pass envoyé via le formulaire avec la base
+        $isPasswordCorrect = password_verify($_POST['user_pass'], $resultat['user_pass']);
+                // Vérifie si Login et Password existent
+        if (!$resultat) {
+        $statusProfil = "Mot de passe incorrect.";
+        } else {
+            if ($isPasswordCorrect) {
+                // Vérifie si l'email est correct
+                if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user_email)) {
+                    // Met à jour les informations du profil
+                    $req = $bdd->prepare('UPDATE users SET user_login = :new_user_login, user_name = :new_user_name, user_surname = :new_user_surname, user_email = :new_user_email, user_birthdate = :new_user_birthdate, user_status = :new_user_status, user_date_update = NOW() 
+                    WHERE ID = :ID');
+                    $req->execute(array(
+                        'new_user_login' => $user_login,
+                        'new_user_name' => $user_name,
+                        'new_user_surname' => $user_surname,
+                        'new_user_email' => $user_email,
+                        'new_user_birthdate' => $user_birthdate,
+                        'new_user_status' => $user_status,
+                        'ID' => $_SESSION['ID']
+                        )); 
+                    $_SESSION['user_login'] = $user_login;
+                    $statusProfil = "Profil mis à jour.";
+                } else {
+                    $statusProfil = 'L\'adresse ' . $user_email . ' est incorrecte.';
+                };
+            } else {
+                $statusProfil = "Mot de passe incorrect.";
+            };
+        };
+    };
 ?>
 
 <!DOCTYPE html>
