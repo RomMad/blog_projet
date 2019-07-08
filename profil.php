@@ -107,16 +107,16 @@
 
         <section id="inscription" class="row">
 
-
             <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
 
                 <?php  
-            if (isset($statusProfil)) {
-                echo $statusProfil;
-            ?> <br /> <br />
+                    if (isset($statusProfil)) {
+                        echo $statusProfil;
+                    ?> <br /> <br />
                 <?php 
-            }; 
-        ?>
+                    }; 
+                ?>
+                
                 <form action="profil.php" method="post" class="col-md-12 card shadow">
                     <div class="form-group row">
                         <h2 class="card-header col-md-12 h2 bg-light text-dark">Profil</h2>
@@ -178,7 +178,7 @@
                                     passe</label>
                                 <div class="col-md-5">
                                     <input type="password" name="user_pass_confirm" id="user_pass_confirm
-                                        class="form-control"><br />
+                                        class=" form-control"><br />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -198,11 +198,11 @@
                         <h2 class="card-header h4 col-md-12 h2 bg-light text-dark">Mise à jour du mot de passe</h2>
                     </div>
                     <div class="row">
-                                <label for="old_pass" class="col-md-4 col-form-label">Ancien mot de passe</label>
-                                <div class="col-md-5">
-                                    <input type="password" name="old_pass" id="old_pass" class="form-control"><br />
-                                </div>
-                            </div>
+                        <label for="old_pass" class="col-md-4 col-form-label">Ancien mot de passe</label>
+                        <div class="col-md-5">
+                            <input type="password" name="old_pass" id="old_pass" class="form-control"><br />
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <div class="col-md-12">
                             <div class="row">
@@ -212,7 +212,8 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="new_pass_confirm" class="col-md-4 col-form-label">Confirmation nouveau mot de
+                                <label for="new_pass_confirm" class="col-md-4 col-form-label">Confirmation nouveau mot
+                                    de
                                     passe</label>
                                 <div class="col-md-5">
                                     <input type="password" name="new_pass_confirm" id="new_pass_confirm"
@@ -230,11 +231,8 @@
                         </div>
                     </div>
                 </form>
-
             </div>
-
         </section>
-
     </div>
 
     <?php include("scripts.html"); ?>
