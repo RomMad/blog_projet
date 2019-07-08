@@ -6,48 +6,48 @@
     var_dump($_POST);    
     // Vérification si informations dans variable POST
     if (!empty($_POST)) {
-        if (isset($_SESSION['ID'])) {
-            $user_ID = $_SESSION['ID'];
+        if (isset($_SESSION["ID"])) {
+            $user_ID = $_SESSION["ID"];
         } else {
             $user_ID = 0;
         };
 
-        $comment_content = htmlspecialchars($_POST['comment_content']);
+        $comment_content = htmlspecialchars($_POST["comment_content"]);
             // Ajoute le commentaire
-            $req = $bdd->prepare('INSERT INTO comments(id_post, comment_author, comment_content) 
-            VALUES(:id_post, :comment_author, :comment_content)');
+            $req = $bdd->prepare("INSERT INTO comments(id_post, comment_author, comment_content) 
+            VALUES(:id_post, :comment_author, :comment_content)");
             $req->execute(array(
-                'id_post' => $_SESSION['post_ID'],
-                'comment_author' =>  $user_ID,
-                'comment_content' => $_POST['comment_content']
+                "id_post" => $_SESSION["post_ID"],
+                "comment_author" =>  $user_ID,
+                "comment_content" => $_POST["comment_content"]
                 ));
     };
 
     var_dump($_GET);
     if (!empty($_GET)) {
-        $post = htmlspecialchars($_GET['post']);
-        $_SESSION['post_ID'] = $post;
+        $post = htmlspecialchars($_GET["post"]);
+        $_SESSION["post_ID"] = $post;
     } else {
-        $post = $_SESSION['post_ID'];
+        $post = $_SESSION["post_ID"];
     };
 
     // Récupère le post
-    $req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %H:%i\') AS post_date_creation_fr 
+    $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y à %H:%i\") AS post_date_creation_fr 
     FROM posts p
     LEFT JOIN users u
     ON p.post_author = u.ID
-    WHERE p.ID=?');
+    WHERE p.ID=?");
     $req->execute(array($post));
     $data = $req->fetch();
 
     // Récupère les commentaires
-    $req = $bdd->prepare('SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %H:%i\') AS comment_date_creation_fr 
+    $req = $bdd->prepare("SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \"%d/%m/%Y à %H:%i\") AS comment_date_creation_fr 
     FROM comments c
     LEFT JOIN users u
     ON c.comment_author = u.ID
     WHERE c.id_post=?
     ORDER BY c.comment_date_creation DESC
-    LIMIT 0, 10');
+    LIMIT 0, 10");
     $req->execute(array($post));
 
 ?>
@@ -66,20 +66,20 @@
 
             <div class="card">
                 <div class="card-header bg-dark text-light">
-                    <h1><?= htmlspecialchars($data['post_title']) ?></h1>
-                    <em>Créé le <?= $data['post_date_creation_fr'] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data['user_login']) ?> </a></em>
+                    <h1><?= htmlspecialchars($data["post_title"]) ?></h1>
+                    <em>Créé le <?= $data["post_date_creation_fr"] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["user_login"]) ?> </a></em>
                     <?php
-                    if (isset($_SESSION['ID']) && $_SESSION['ID']==$data['post_author']) { ?>
-                        <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data['ID'] ?>">Modifier</a>
+                    if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_author"]) { ?>
+                        <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data["ID"] ?>">Modifier</a>
                     <?php }; ?>
                 </div>
                 <div class="card-body text-body">
-                <?= nl2br(htmlspecialchars($data['post_content'])) ?>
+                <?= nl2br(htmlspecialchars($data["post_content"])) ?>
                 </div>
             </div>
             <?php 
-            if (isset($_SESSION['ID']) && $_SESSION['ID']==$data['post_author']) { ?>
-                <a class="text-info" href="edit_post.php?post=<?= $post ?>">Modifier l'article<a> <?php 
+            if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_author"]) { ?>
+                <a class="text-info" href="edit_post.php?post=<?= $post ?>">Modifier l"article<a> <?php 
             }; ?>
             <br />
             <br />
@@ -101,14 +101,14 @@
             <?php
             while ($data = $req->fetch())
             {
-                if (!empty($data['user_login'])) {
-                    $user_login = htmlspecialchars($data['user_login']);
+                if (!empty($data["user_login"])) {
+                    $user_login = htmlspecialchars($data["user_login"]);
                     } else {
                     $user_login = "Anonyme";
                     };
             ?>
-            <p><strong><?= $user_login ?></strong>, le <?= $data['comment_date_creation_fr'] ?></p>
-            <p><?= nl2br(htmlspecialchars($data['comment_content'])) ?></p>
+            <p><strong><?= $user_login ?></strong>, le <?= $data["comment_date_creation_fr"] ?></p>
+            <p><?= nl2br(htmlspecialchars($data["comment_content"])) ?></p>
             <?php
             }
             ?>

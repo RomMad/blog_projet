@@ -46,9 +46,9 @@
 
             <div class="ml-3 text-light">
             <?php 
-            if (isset($_SESSION['ID'])) {
+            if (isset($_SESSION["ID"])) {
             ?>
-            <a class="text-info" href="profil.php?id=<?= $_SESSION['ID'] ?>"><?= $_SESSION['user_login'] ?></a>
+            <a class="text-info" href="profil.php?id=<?= $_SESSION["ID"] ?>"><?= $_SESSION["user_login"] ?></a>
             <br />
             <a class="text-info" href="deconnection.php">Vous déconnecter</a>
             <?php 
