@@ -80,91 +80,135 @@
 
     <div class="container">
 
-    <section id="inscription" class="row">
+        <section id="inscription" class="row">
 
 
-        <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
+            <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
 
-        <?php  
+                <?php  
             if (isset($statusProfil)) {
                 echo $statusProfil;
-            ?> <br/> <br/>
-            <?php 
+            ?> <br /> <br />
+                <?php 
             }; 
         ?>
-            <form action="profil.php" method="post" class="col-md-12 card shadow">
-                <div class="form-group row">
-                    <h2 class="card-header col-md-12 h2 bg-light text-dark">Profil</h2>
-                </div>
+                <form action="profil.php" method="post" class="col-md-12 card shadow">
+                    <div class="form-group row">
+                        <h2 class="card-header col-md-12 h2 bg-light text-dark">Profil</h2>
+                    </div>
 
                     <div class="form-group row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <label for="user_login" class="col-md-4 col-form-label">Login</label>
-                            <div class="col-md-8">
-                                <input type="text" name="user_login" id="user_login" 
-                                    class="form-control" value="<?= isset($user_login) ? $user_login : '' ?>"><br />
+                        <div class="col-md-12">
+                            <div class="row">
+                                <label for="user_login" class="col-md-4 col-form-label">Login</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="user_login" id="user_login" class="form-control"
+                                        value="<?= isset($user_login) ? $user_login : '' ?>"><br />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <label for="user_name" class="col-md-4 col-form-label">Nom</label>
-                            <div class="col-md-8">
-                                <input type="text" name="user_name" id="user_name" class="form-control" value="<?= isset($user_name) ? $user_name : '' ?>"><br />
+                            <div class="row">
+                                <label for="user_name" class="col-md-4 col-form-label">Nom</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="user_name" id="user_name" class="form-control"
+                                        value="<?= isset($user_name) ? $user_name : '' ?>"><br />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <label for="user_surname" class="col-md-4 col-form-label">Prénom</label>
-                            <div class="col-md-8">
-                                <input type="text" name="user_surname" id="user_surname" class="form-control" value="<?= isset($user_surname) ? $user_surname : '' ?>"><br />
+                            <div class="row">
+                                <label for="user_surname" class="col-md-4 col-form-label">Prénom</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="user_surname" id="user_surname" class="form-control"
+                                        value="<?= isset($user_surname) ? $user_surname : '' ?>"><br />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <label for="user_email" class="col-md-4 col-form-label">Adresse email</label>
-                            <div class="col-md-8">
-                                <input type="text" name="user_email" id="user_email" class="form-control" value="<?= isset($user_email) ? $user_email : '' ?>"><br />
+                            <div class="row">
+                                <label for="user_email" class="col-md-4 col-form-label">Adresse email</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="user_email" id="user_email" class="form-control"
+                                        value="<?= isset($user_email) ? $user_email : '' ?>"><br />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <label for="user_status" class="col-md-4 col-form-label">Type de profil</label>
-                            <div class="col-md-8">
-                                <input type="text" name="user_status" id="user_status" class="form-control" value="<?= isset($user_status) ? $user_status : '' ?>"><br />
+                            <div class="row">
+                                <label for="user_email" class="col-md-4 col-form-label">Date de naissance</label>
+                                <div class="col-md-5">
+                                    <input type="date" name="user_birthday" id="user_birthday" class="form-control"
+                                        value="<?= isset($user_birthday) ? $user_birthday : '' ?>"><br />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <label for="user_pass" class="col-md-4 col-form-label">Mot de passe</label>
-                            <div class="col-md-8">
-                                <input type="password" name="user_pass" id="user_pass" 
-                                    class="form-control"><br />
+                            <div class="row">
+                                <label for="user_status" class="col-md-4 col-form-label">Type de profil</label>
+                                <div class="col-md-5">
+                                    <input type="text" name="user_status" id="user_status" class="form-control"
+                                        value="<?= isset($user_status) ? $user_status : '' ?>"><br />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <label for="user_pass-confirm" class="col-md-4 col-form-label">Confirmation mot de
-                                passe</label>
-                            <div class="col-md-8">
-                                <input type="password" name="user_pass-confirm" id="user_pass-confirm" 
-                                    class="form-control"><br />
+                            <br />
+                            <div class="row">
+                                <label for="user_pass" class="col-md-4 col-form-label">Mot de passe</label>
+                                <div class="col-md-5">
+                                    <input type="password" name="user_pass" id="user_pass" class="form-control"><br />
+                                </div>
                             </div>
-                        </div>
-                        <!-- Les boutons de validation et d'annulation -->
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <div class="float-right">
-                                    <input type="submit" value="Mettre à jour" id="validation"
-                                        class="btn btn-info shadow">
+                            <div class="row">
+                                <label for="user_pass-confirm" class="col-md-4 col-form-label">Confirmation mot de
+                                    passe</label>
+                                <div class="col-md-5">
+                                    <input type="password" name="user_pass-confirm" id="user_pass-confirm"
+                                        class="form-control"><br />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="float-right">
+                                        <input type="submit" value="Mettre à jour" id="validation"
+                                            class="btn btn-info shadow">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Les informations au clic sur le bouton de validation -->
-                        <div class="row">
-                            <div id="alert-control" class="col-md-12">
-                                <p id="alert-control-para" role="alert"></p>
+                    </div>
+                </form>
+
+                <form action="profil.php" method="post" class="col-md-12 card shadow">
+                    <div class="form-group row">
+                        <h2 class="card-header h4 col-md-12 h2 bg-light text-dark">Mise à jour du mot de passe</h2>
+                    </div>
+                    <div class="row">
+                                <label for="user_pass" class="col-md-4 col-form-label">Ancien mot de passe</label>
+                                <div class="col-md-5">
+                                    <input type="password" name="user_pass" id="user_pass" class="form-control"><br />
+                                </div>
+                            </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <label for="new_pass" class="col-md-4 col-form-label">Nouveau mot de passe</label>
+                                <div class="col-md-5">
+                                    <input type="password" name="new_pass" id="new_pass" class="form-control"><br />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="new_pass_confirm" class="col-md-4 col-form-label">Confirmation nouveau mot de
+                                    passe</label>
+                                <div class="col-md-5">
+                                    <input type="password" name="new_pass_confirm" id="new_pass_confirm"
+                                        class="form-control"><br />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="float-right">
+                                        <input type="submit" value="Mettre à jour" id="validation"
+                                            class="btn btn-info shadow">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-            </form>
-        </div>
+                </form>
 
-</section>
+            </div>
+
+        </section>
 
     </div>
 
