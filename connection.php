@@ -46,7 +46,8 @@
                         <input type="checkbox" value="remember-me"> Se souvenir de moi
                     </label>
                 </div>
-                <button class="btn btn-lg btn-info btn-block" type="submit">Se connecter</button>
+                <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-info btn-block shadow">
+                <a href="inscription.php" class="btn btn-lg btn-info btn-block shadow">S'inscrire</a>
                 <br />
 
             <?php include("connection_bdd.php"); ?>
@@ -54,14 +55,11 @@
         <?php 
             // Vérifie si Login et Password existent
             if (!empty($_POST)) {
-                if (!$resultat)
-                {
+                if (!$resultat) {
                     ?>
                     <p>Mauvais identifiant ou mot de passe !<p>
                     <?php
-                }
-                else
-                {
+                } else {
                     if ($isPasswordCorrect) {
                         $_SESSION['ID'] = $resultat['ID'];
                         $_SESSION['user_login'] = $user_login;
@@ -69,17 +67,14 @@
                         <p>Vous êtes connecté !<p>
                         <!-- <meta http-equiv="refresh" content="1;url=index.php"/> -->
                         <?php
-                    }
-                    else {
+                    } else {
                         ?>
                         <p>Mauvais identifiant ou mot de passe !<p>
                         <?php                    
-                    }
-                }
-            } 
-
+                    };
+                };
+            };
         ?>
-
                 <p class="mt-5 mb-3 text-muted">© 2019</p>
             </form>
        
