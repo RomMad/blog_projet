@@ -3,12 +3,14 @@
 
     include("connection_bdd.php"); 
     // Récupère les derniers posts
-    $req = $bdd->query('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %H:%i\') AS post_date_creation_fr 
+    $req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %H:%i\') AS post_date_creation_fr 
     FROM posts p
     LEFT JOIN users u
     ON p.post_author = u.ID
+    WHERE p.post_status = ? || p.post_status = ? 
     ORDER BY p.post_date_creation DESC 
     LIMIT 0, 5');
+    $req->execute(array("Publié", "Brouillon"));
 
 ?>
 
