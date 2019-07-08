@@ -74,7 +74,10 @@ $req->execute(array($post));
                 <?= nl2br(htmlspecialchars($data['post_content'])) ?>
                 </div>
             </div>
-            <a class="text-info" href="edit_post.php?post=<?= $post ?>">Modifier l'article<a>
+            <?php 
+            if (isset($_SESSION['ID']) && $_SESSION['ID']==$data['post_author']) { ?>
+                <a class="text-info" href="edit_post.php?post=<?= $post ?>">Modifier l'article<a> <?php 
+            }; ?>
             <br />
             <br />
             <!-- Formuulaire d'ajout d'un commentaire -->
