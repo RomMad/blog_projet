@@ -1,6 +1,8 @@
 <?php 
     session_start();
 
+    var_dump($_SESSION);  
+
     include("connection_bdd.php"); 
     // Récupère les derniers posts
     $req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %H:%i\') AS post_date_creation_fr 
@@ -36,6 +38,10 @@
                         <?= htmlspecialchars($data['post_title']) ?>
                     </h3></a>
                     <em>Créé le <?= $data['post_date_creation_fr'] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data['user_login']) ?> </a></em>
+                    <?php 
+                    if (isset($_SESSION['ID']) && $_SESSION['ID']==$data['post_author']) { ?>
+                        <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data['ID'] ?>">Modifier</a>
+                    <?php }; ?>
                 </div>
                 <div class="card-body text-body">
                 <?= nl2br(htmlspecialchars($data['post_content'])) ?>
@@ -52,7 +58,7 @@
         </section>
 
     </div>
-<
+
     <?php include("scripts.html"); ?>
 
 </html
