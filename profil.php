@@ -6,9 +6,10 @@
     if (empty($_SESSION)) {
         header('Location: connection.php');
     };
-    // Récupère des infos du profil
+
     var_dump($_GET);
-        if (!empty($_GET)) {
+    // Récupère des infos du profil
+    if (!empty($_GET)) {
         $req = $bdd->prepare('SELECT ID, user_login, user_name, user_surname, user_email, user_status, user_birthdate FROM users WHERE ID =?');
         $req->execute(array($_SESSION['ID']));
         $data = $req->fetch();
@@ -22,7 +23,6 @@
     };
 
     var_dump($_POST);
-
     // Met à jour le mot de passe
     if (!empty($_POST) && isset($_POST['old_pass'])) {
         $old_pass = htmlspecialchars($_POST['old_pass']);
@@ -63,7 +63,7 @@
         $resultat = $req->fetch();
         // Comparaison du pass envoyé via le formulaire avec la base
         $isPasswordCorrect = password_verify($_POST['user_pass'], $resultat['user_pass']);
-                // Vérifie si Login et Password existent
+        // Vérifie si Login et Password existent
         if (!$resultat) {
         $statusProfil = "Mot de passe incorrect.";
         } else {
