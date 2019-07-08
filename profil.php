@@ -72,20 +72,22 @@
             $statusProfil = "Mot de passe incorrect.";
             } else {
                 if ($isPasswordCorrect) {
-                    $req = $bdd->prepare('UPDATE users SET user_login = :new_user_login, user_name = :new_user_name, user_surname = :new_user_surname, user_email = :new_user_email, user_status = :new_user_status, user_date_update = NOW() 
-                    WHERE ID = :ID');
-                    $req->execute(array(
-                        'new_user_login' => $user_login,
-                        'new_user_name' => $user_name,
-                        'new_user_surname' => $user_surname,
-                        'new_user_email' => $user_email,
-                        'new_user_status' => $user_status,
-                        'ID' => $_SESSION['ID']
-                        )); 
-                    
-                    $_SESSION['user_login'] = $user_login;
-
-                    $statusProfil = "Profil mis à jour.";
+                    if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user_email)) {
+                        $req = $bdd->prepare('UPDATE users SET user_login = :new_user_login, user_name = :new_user_name, user_surname = :new_user_surname, user_email = :new_user_email, user_status = :new_user_status, user_date_update = NOW() 
+                        WHERE ID = :ID');
+                        $req->execute(array(
+                            'new_user_login' => $user_login,
+                            'new_user_name' => $user_name,
+                            'new_user_surname' => $user_surname,
+                            'new_user_email' => $user_email,
+                            'new_user_status' => $user_status,
+                            'ID' => $_SESSION['ID']
+                            )); 
+                        $_SESSION['user_login'] = $user_login;
+                        $statusProfil = "Profil mis à jour.";
+                    } else {
+                        $statusProfil = 'L\'adresse ' . $user_email . ' n\'est pas valide, recommencez !';
+                    };
                 } else {
                     $statusProfil = "Mot de passe incorrect.";
                 };
@@ -174,13 +176,12 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_pass_confirm" class="col-md-4 col-form-label">Confirmation mot de
-                                    passe</label>
+                                <label for="user_pass_confirm" class="col-md-4 col-form-label">Confirmation mot de passe</label>
                                 <div class="col-md-5">
-                                    <input type="password" name="user_pass_confirm" id="user_pass_confirm
-                                        class=" form-control"><br />
+                                    <input type="password" name="user_pass_confirm" id="user_pass_confirm" class="form-control">
                                 </div>
                             </div>
+                            <br />
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <div class="float-right">
