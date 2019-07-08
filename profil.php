@@ -7,7 +7,22 @@
         header('Location: connection.php');
     };
 
+    var_dump($_GET);
+        if (!empty($_GET)) {
+        $req = $bdd->prepare('SELECT ID, user_login, user_name, user_surname, user_email, user_status, DATE_FORMAT(user_birthday, \'%d/%m/%Y %H:%i\') AS user_birthday_fr 
+        FROM users
+        WHERE ID =?');
+        
+        $req->execute(array($_SESSION['ID']));
+        $data = $req->fetch();
 
+        $user_login = $data['user_login'];
+        $user_name = $data['user_name'];
+        $user_surname = $data['user_surname'];
+        $user_birthday = $data['user_birthday_fr'];
+        $user_email = $data['user_email'];
+        $user_status = $data['user_status'];
+    };
 ?>
 
 <!DOCTYPE html>
@@ -33,26 +48,26 @@
                             <label for="user_login" class="col-md-4 col-form-label">Login</label>
                             <div class="col-md-8">
                                 <input type="text" name="user_login" id="user_login" 
-                                    class="form-control"><br />
+                                    class="form-control" value="<?= isset($user_login) ? $user_login : '' ?>"><br />
                             </div>
                         </div>
                         <div class="row">
                             <label for="user_email" class="col-md-4 col-form-label">Email</label>
                             <div class="col-md-8">
                                 <input type="text" name="user_email" id="user_email" 
-                                    class="form-control"><br />
+                                    class="form-control" value="<?= isset($user_email) ? $user_email : '' ?>"><br />
                             </div>
                         </div>
                         <div class="row">
                             <label for="nom" class="col-md-4 col-form-label">Nom</label>
                             <div class="col-md-8">
-                                <input type="text" name="nom" id="nom" class="form-control"><br />
+                                <input type="text" name="nom" id="nom" class="form-control" value="<?= isset($user_name) ? $user_name : '' ?>"><br />
                             </div>
                         </div>
                         <div class="row">
                             <label for="prenom" class="col-md-4 col-form-label">Prénom</label>
                             <div class="col-md-8">
-                                <input type="text" name="prenom" id="prenom" class="form-control"><br />
+                                <input type="text" name="prenom" id="prenom" class="form-control" value="<?= isset($user_surname) ? $user_surname : '' ?>"><br />
                             </div>
                         </div>
                         <div class="row">
