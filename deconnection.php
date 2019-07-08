@@ -1,8 +1,8 @@
 <?php 
-session_start();
-session_destroy();
+    session_start();
+    session_destroy();
 
-// Redirige vers page d'accueil
-header('Location: index.php');
+    // Redirige vers page d'accueil
+    header('Location: index.php');
 
 ?>

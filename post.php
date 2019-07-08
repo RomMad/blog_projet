@@ -1,55 +1,54 @@
 <?php 
+    session_start(); 
 
-session_start(); 
+    include("connection_bdd.php");
 
-include("connection_bdd.php");
+    var_dump($_POST);    
+    // Vérification si informations dans variable POST
+    if (!empty($_POST)) {
+        if (isset($_SESSION['ID'])) {
+            $user_ID = $_SESSION['ID'];
+        } else {
+            $user_ID = 0;
+        };
 
-var_dump($_POST);    
-// Vérification si informations dans variable POST
-if (!empty($_POST)) {
-    if (isset($_SESSION['ID'])) {
-        $user_ID = $_SESSION['ID'];
-    } else {
-        $user_ID = 0;
+        $comment_content = htmlspecialchars($_POST['comment_content']);
+            // Ajoute le commentaire
+            $req = $bdd->prepare('INSERT INTO comments(id_post, comment_author, comment_content) 
+            VALUES(:id_post, :comment_author, :comment_content)');
+            $req->execute(array(
+                'id_post' => $_SESSION['post_ID'],
+                'comment_author' =>  $user_ID,
+                'comment_content' => $_POST['comment_content']
+                ));
     };
 
-    $comment_content = htmlspecialchars($_POST['comment_content']);
-        // Ajoute le commentaire
-        $req = $bdd->prepare('INSERT INTO comments(id_post, comment_author, comment_content) 
-        VALUES(:id_post, :comment_author, :comment_content)');
-        $req->execute(array(
-            'id_post' => $_SESSION['post_ID'],
-            'comment_author' =>  $user_ID,
-            'comment_content' => $_POST['comment_content']
-            ));
-};
+    var_dump($_GET);
+    if (!empty($_GET)) {
+        $post = htmlspecialchars($_GET['post']);
+        $_SESSION['post_ID'] = $post;
+    } else {
+        $post = $_SESSION['post_ID'];
+    };
 
-var_dump($_GET);
-if (!empty($_GET)) {
-    $post = htmlspecialchars($_GET['post']);
-    $_SESSION['post_ID'] = $post;
-} else {
-    $post = $_SESSION['post_ID'];
-};
+    // Récupère le post
+    $req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %H:%i\') AS post_date_creation_fr 
+    FROM posts p
+    LEFT JOIN users u
+    ON p.post_author = u.ID
+    WHERE p.ID=?');
+    $req->execute(array($post));
+    $data = $req->fetch();
 
-// Récupère le post
-$req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y à %H:%i\') AS post_date_creation_fr 
-FROM posts p
-LEFT JOIN users u
-ON p.post_author = u.ID
-WHERE p.ID=?');
-$req->execute(array($post));
-$data = $req->fetch();
-
-// Récupère les commentaires
-$req = $bdd->prepare('SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %H:%i\') AS comment_date_creation_fr 
-FROM comments c
-LEFT JOIN users u
-ON c.comment_author = u.ID
-WHERE c.id_post=?
-ORDER BY c.comment_date_creation DESC
-LIMIT 0, 10');
-$req->execute(array($post));
+    // Récupère les commentaires
+    $req = $bdd->prepare('SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \'%d/%m/%Y à %H:%i\') AS comment_date_creation_fr 
+    FROM comments c
+    LEFT JOIN users u
+    ON c.comment_author = u.ID
+    WHERE c.id_post=?
+    ORDER BY c.comment_date_creation DESC
+    LIMIT 0, 10');
+    $req->execute(array($post));
 
 ?>
 

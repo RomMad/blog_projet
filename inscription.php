@@ -1,27 +1,26 @@
 <?php 
+    session_start();
 
-session_start();
+    include("connection_bdd.php");
 
-include("connection_bdd.php");
+    var_dump($_POST);
+    // Vérification si informations dans variable POST
+    if (!empty($_POST)) {
+        $user_login = htmlspecialchars($_POST['user_login']);
+        $user_email = htmlspecialchars($_POST['user_email']);
+        $user_pass_hash = password_hash(htmlspecialchars($_POST['user_pass']), PASSWORD_DEFAULT); // Hachage du mot de passe
+        // Insert les données dans la table users
+        $req = $bdd->prepare('INSERT INTO users(user_login, user_email, user_pass) VALUES(:user_login, :user_email, :user_pass)');
+        $req->execute(array(
+            'user_login' => $user_login,
+            'user_email' => $user_email,
+            'user_pass' => $user_pass_hash,
+            ));
 
-var_dump($_POST);
-// Vérification si informations dans variable POST
-if (!empty($_POST)) {
-    $user_login = htmlspecialchars($_POST['user_login']);
-    $user_email = htmlspecialchars($_POST['user_email']);
-    $user_pass_hash = password_hash(htmlspecialchars($_POST['user_pass']), PASSWORD_DEFAULT); // Hachage du mot de passe
-    // Insert les données dans la table users
-    $req = $bdd->prepare('INSERT INTO users(user_login, user_email, user_pass) VALUES(:user_login, :user_email, :user_pass)');
-    $req->execute(array(
-        'user_login' => $user_login,
-        'user_email' => $user_email,
-        'user_pass' => $user_pass_hash,
-        ));
-
-        $statusInscription = "Inscription réussie.";
-    // Redirige vers page d'inscription
-    // header('Location: inscription.php');
-}
+            $statusInscription = "Inscription réussie.";
+        // Redirige vers page d'inscription
+        // header('Location: inscription.php');
+    };
 
 ?>
 

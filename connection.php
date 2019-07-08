@@ -1,24 +1,23 @@
 <?php 
+    session_start();
 
-session_start();
+    include("connection_bdd.php");
 
-include("connection_bdd.php");
+    var_dump($_POST);
+    // Vérification si informations dans variable POST
+    if (!empty($_POST)) {
+        $user_login = htmlspecialchars($_POST['user_login']);
+        $user_pass = htmlspecialchars($_POST['user_pass']);
 
-var_dump($_POST);
-// Vérification si informations dans variable POST
-if (!empty($_POST)) {
-    $user_login = htmlspecialchars($_POST['user_login']);
-    $user_pass = htmlspecialchars($_POST['user_pass']);
+        //  Récupération de l'utilisateur et de son pass hashé
+        $req = $bdd->prepare('SELECT ID, user_pass FROM users WHERE user_login = :user_login');
+        $req->execute(array(
+            'user_login' => $user_login));
+        $resultat = $req->fetch();
 
-    //  Récupération de l'utilisateur et de son pass hashé
-    $req = $bdd->prepare('SELECT ID, user_pass FROM users WHERE user_login = :user_login');
-    $req->execute(array(
-        'user_login' => $user_login));
-    $resultat = $req->fetch();
-
-    // Comparaison du pass envoyé via le formulaire avec la base
-    $isPasswordCorrect = password_verify($_POST['user_pass'], $resultat['user_pass']);
-}
+        // Comparaison du pass envoyé via le formulaire avec la base
+        $isPasswordCorrect = password_verify($_POST['user_pass'], $resultat['user_pass']);
+    };
 
 ?>
 
