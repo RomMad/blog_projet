@@ -8,12 +8,12 @@
     };
 
     var_dump($_GET);
-    // Récupère des infos du profil
+    // Récupère les nfos du profil
     if (!empty($_GET)) {
         $req = $bdd->prepare('SELECT ID, user_login, user_name, user_surname, user_email, user_status, user_birthdate FROM users WHERE ID =?');
         $req->execute(array($_SESSION['ID']));
         $data = $req->fetch();
-
+        
         $user_login = $data['user_login'];
         $user_name = $data['user_name'];
         $user_surname = $data['user_surname'];
@@ -31,8 +31,8 @@
         // Récupère le password hashé de l'utilisateur
         $req = $bdd->prepare('SELECT user_pass FROM users WHERE ID = ?');
         $req->execute(array($_SESSION['ID']));
-        $resultat = $req->fetch();
-        $isPasswordCorrect = password_verify($_POST['old_pass'], $resultat['user_pass']); // Compare le password envoyé via le formulaire avec la base
+        $data = $req->fetch();
+        $isPasswordCorrect = password_verify($old_pass, $data['user_pass']); // Compare le password envoyé via le formulaire avec la base
         // Vérifie si la confirmation du mot de passe est identique
         if ($new_pass==$new_pass_confirm) {
             $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
@@ -57,14 +57,14 @@
         $user_birthdate = !empty($_POST['user_birthdate']) ? htmlspecialchars($_POST['user_birthdate']) : NULL;
         $user_status = htmlspecialchars($_POST['user_status']);
         $user_pass = htmlspecialchars($_POST['user_pass']);
-        // Récupération de l'utilisateur et de son pass hashé
+        // Récupère d'ID de l'utilisateur et de son pass haché
         $req = $bdd->prepare('SELECT ID, user_pass FROM users WHERE ID = ?');
         $req->execute(array($_SESSION['ID']));
-        $resultat = $req->fetch();
-        // Comparaison du pass envoyé via le formulaire avec la base
-        $isPasswordCorrect = password_verify($_POST['user_pass'], $resultat['user_pass']);
+        $data = $req->fetch();
+        // Compare le pass envoyé via le formulaire avec la base
+        $isPasswordCorrect = password_verify($_POST['user_pass'], $data['user_pass']);
         // Vérifie si Login et Password existent
-        if (!$resultat) {
+        if (!$data) {
         $statusProfil = "Mot de passe incorrect.";
         } else {
             if ($isPasswordCorrect) {
