@@ -21,10 +21,11 @@
 
         // Met à jour l'article si article existant
         if (!empty($_POST['post_ID'])) {
-            $req = $bdd->prepare('UPDATE posts SET post_title = :new_post_title, post_content = :new_post_content, post_date_update = NOW() WHERE ID = :post_ID');
+            $req = $bdd->prepare('UPDATE posts SET post_title = :new_post_title, post_content = :new_post_content, post_status = :new_post_status, post_date_update = NOW() WHERE ID = :post_ID');
             $req->execute(array(
                 'new_post_title' => $post_title,
                 'new_post_content' => $post_content,
+                'new_post_status' => $post_status,
                 'post_ID' => $post_ID
                 ));     
             $statusPost = "Article modifié.";
@@ -39,6 +40,24 @@
                 'post_status' => $post_status
                 ));
             $statusPost = "Article enregistré.";
+            // Récupère le post
+            $req = $bdd->prepare('SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \'%d/%m/%Y %H:%i\') AS post_date_creation_fr, DATE_FORMAT(p.post_date_update, \'%d/%m/%Y %H:%i\') AS post_date_update_fr 
+            FROM posts p
+            LEFT JOIN users u
+            ON p.post_author = u.ID
+            WHERE p.post_author =?  
+            ORDER BY p.ID DESC 
+            LIMIT 0, 1');
+            $req->execute(array($post_user_ID));
+            $data = $req->fetch();
+    
+            $post_title = $data['post_title'];
+            $post_content = $data['post_content'];
+            $post_ID = $data['ID'];
+            $post_author  = $data['user_login'];
+            $post_date_creation = $data['post_date_creation_fr'];
+            $post_date_update = $data['post_date_update_fr'];
+            $post_status = $data['post_status'];
         };
     };
     // 
@@ -124,9 +143,8 @@
                             <div class="form-group">
                                 <label for="post_status">Statut</label>
                                 <select name="post_status" class="form-control" id="post_status">
-                                    <option>Publié</option>
-                                    <option>Brouillon</option>
-                                    <option value="<?= isset($post_status) ? $post_status : '' ?>" selected ><?= isset($post_status) ? $post_status : '' ?></option>
+                                    <option <?php if (isset($post_status) && $post_status=="Publié") { ?> selected <?php } ?> >Publié</option>
+                                    <option <?php if (isset($post_status) && $post_status=="Brouillon") { ?> selected <?php } ?> >Brouillon</option>
                                 </select>
                             </div>
                             <div class="form-group float-right">
