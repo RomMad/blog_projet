@@ -65,9 +65,7 @@ $req->execute(array($post));
 
             <div class="card">
                 <div class="card-header bg-dark text-light">
-                    <a class="text-info" href="post_page.php?post=<?= $data['ID'] ?>"><h3>
-                        <?= htmlspecialchars($data['post_title']) ?>
-                    </h3></a>
+                    <h1><?= htmlspecialchars($data['post_title']) ?></h1>
                     <em>Créé le <?= $data['post_date_creation_fr'] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data['user_login']) ?> </a></em>
                 </div>
                 <div class="card-body text-body">
