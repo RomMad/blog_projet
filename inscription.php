@@ -4,7 +4,7 @@
     include("connection_bdd.php");
 
     var_dump($_POST);
-    // Vérification si informations dans variable POST
+    // Vérifie si informations dans variable POST
     if (!empty($_POST)) {
         $user_login = htmlspecialchars($_POST['user_login']);
         $user_email = htmlspecialchars($_POST['user_email']);
@@ -16,10 +16,17 @@
             'user_email' => $user_email,
             'user_pass' => $user_pass_hash,
             ));
-
+            // Récupère l'ID de l'utilisateur
+            $req = $bdd->prepare('SELECT ID FROM users WHERE user_login = ?');
+            $req->execute(array($user_login));
+            $data = $req->fetch();
+            // Ajoute les infos de l'utilisateurs dans la Session
+            $_SESSION['ID'] = $data['ID'];
+            $_SESSION['user_login'] = $user_login;
             $statusInscription = "Inscription réussie.";
-        // Redirige vers page d'inscription
-        // header('Location: inscription.php');
+            ?> 
+            <meta http-equiv="refresh" content="2;url=index.php"/>
+            <?php 
     };
 
 ?>
@@ -37,6 +44,9 @@
         <section id="inscription" class="row">
 
             <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
+
+            <?= isset($statusInscription) ? $statusInscription : '' ?>
+                <br /> <br />
                 <form action="inscription.php" method="post" class="col-md-12 card shadow">
                     <div class="form-group row">
                         <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Inscription</h3>
@@ -84,43 +94,16 @@
                                         class="form-control"><br />
                                 </div>
                             </div>
-                            <!-- <div class="row">
-                    <label class="col-md-4 col-form-label"><span class=" fas fa-pen-nib"></span>
-                        Signature</label>
-                    <div id="signature" class="col-md-8">
-                        <canvas id="canvas" width="100" height="10">
-                            <p>Désolé, votre navigateur ne supporte pas Canvas. Mettez votre
-                                navigateur internet à jour.</p>
-                        </canvas>
-                        <button type="button" id="clear-sign"><span class="fas fa-eraser"></span></button>
-                    </div>
-                </div> -->
-
-                            <!-- Les boutons de validation et d'annulation -->
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <div class="float-right">
-                                        <input type="submit" value="Valider" id="validation"
-                                            class="btn btn-info shadow">
-                                        <button id="buttonCancel" class="btn btn-secondary shadow">Annuler</button>
+                                        <input type="submit" value="Valider" id="validation" class="btn btn-info shadow">
                                     </div>
-                                </div>
-                            </div>
-                            <!-- Les informations au clic sur le bouton de validation -->
-                            <div class="row">
-                                <div id="alert-control" class="col-md-12">
-                                    <p id="alert-control-para" role="alert"></p>
                                 </div>
                             </div>
                         </div>
                 </form>
             </div>
-
-            <?php  
-                if (isset($statusInscription)) {
-                    echo $statusInscription;
-                };
-            ?>
 
         </section>
 
