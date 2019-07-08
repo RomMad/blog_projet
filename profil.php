@@ -9,7 +9,7 @@
 
     var_dump($_GET);
         if (!empty($_GET)) {
-        $req = $bdd->prepare('SELECT ID, user_login, user_name, user_surname, user_email, user_status, DATE_FORMAT(user_birthday, \'%d/%m/%Y %H:%i\') AS user_birthday_fr FROM users WHERE ID =?');
+        $req = $bdd->prepare('SELECT ID, user_login, user_name, user_surname, user_email, user_status, user_birthdate FROM users WHERE ID =?');
 
         $req->execute(array($_SESSION['ID']));
         $data = $req->fetch();
@@ -17,7 +17,7 @@
         $user_login = $data['user_login'];
         $user_name = $data['user_name'];
         $user_surname = $data['user_surname'];
-        $user_birthday = $data['user_birthday_fr'];
+        $user_birthdate = $data['user_birthdate'];
         $user_email = $data['user_email'];
         $user_status = $data['user_status'];
     };
@@ -56,6 +56,7 @@
             $user_name = htmlspecialchars($_POST['user_name']);
             $user_surname = htmlspecialchars($_POST['user_surname']);
             $user_email = htmlspecialchars($_POST['user_email']);
+            $user_birthdate = !empty($_POST['user_birthdate']) ? htmlspecialchars($_POST['user_birthdate']) : NULL;
             $user_status = htmlspecialchars($_POST['user_status']);
             $user_pass = htmlspecialchars($_POST['user_pass']);
 
@@ -73,20 +74,21 @@
             } else {
                 if ($isPasswordCorrect) {
                     if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user_email)) {
-                        $req = $bdd->prepare('UPDATE users SET user_login = :new_user_login, user_name = :new_user_name, user_surname = :new_user_surname, user_email = :new_user_email, user_status = :new_user_status, user_date_update = NOW() 
+                        $req = $bdd->prepare('UPDATE users SET user_login = :new_user_login, user_name = :new_user_name, user_surname = :new_user_surname, user_email = :new_user_email, user_birthdate = :new_user_birthdate, user_status = :new_user_status, user_date_update = NOW() 
                         WHERE ID = :ID');
                         $req->execute(array(
                             'new_user_login' => $user_login,
                             'new_user_name' => $user_name,
                             'new_user_surname' => $user_surname,
                             'new_user_email' => $user_email,
+                            'new_user_birthdate' => $user_birthdate,
                             'new_user_status' => $user_status,
                             'ID' => $_SESSION['ID']
                             )); 
                         $_SESSION['user_login'] = $user_login;
                         $statusProfil = "Profil mis à jour.";
                     } else {
-                        $statusProfil = 'L\'adresse ' . $user_email . ' n\'est pas valide, recommencez !';
+                        $statusProfil = 'L\'adresse ' . $user_email . ' est incorrecte.';
                     };
                 } else {
                     $statusProfil = "Mot de passe incorrect.";
@@ -129,42 +131,42 @@
                             <div class="row">
                                 <label for="user_login" class="col-md-4 col-form-label">Login</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_login" id="user_login" class="form-control"
+                                    <input type="text" name="user_login" id="user_login" class="form-control" required
                                         value="<?= isset($user_login) ? $user_login : '' ?>"><br />
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="user_name" class="col-md-4 col-form-label">Nom</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_name" id="user_name" class="form-control"
+                                    <input type="text" name="user_name" id="user_name" class="form-control" required
                                         value="<?= isset($user_name) ? $user_name : '' ?>"><br />
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="user_surname" class="col-md-4 col-form-label">Prénom</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_surname" id="user_surname" class="form-control"
+                                    <input type="text" name="user_surname" id="user_surname" class="form-control" required
                                         value="<?= isset($user_surname) ? $user_surname : '' ?>"><br />
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="user_email" class="col-md-4 col-form-label">Adresse email</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_email" id="user_email" class="form-control"
+                                    <input type="text" name="user_email" id="user_email" class="form-control" required
                                         value="<?= isset($user_email) ? $user_email : '' ?>"><br />
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_email" class="col-md-4 col-form-label">Date de naissance</label>
+                                <label for="user_birthdate" class="col-md-4 col-form-label">Date de naissance</label>
                                 <div class="col-md-5">
-                                    <input type="date" name="user_birthday" id="user_birthday" class="form-control"
-                                        value="<?= isset($user_birthday) ? $user_birthday : '' ?>"><br />
+                                    <input type="date" name="user_birthdate" id="user_birthdate" class="form-control"
+                                        value="<?= isset($user_birthdate) ? $user_birthdate : '' ?>"><br />
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="user_status" class="col-md-4 col-form-label">Type de profil</label>
                                 <div class="col-md-5">
-                                    <input type="text" name="user_status" id="user_status" class="form-control"
+                                    <input type="text" name="user_status" id="user_status" class="form-control" required
                                         value="<?= isset($user_status) ? $user_status : '' ?>"><br />
                                 </div>
                             </div>
@@ -172,13 +174,13 @@
                             <div class="row">
                                 <label for="user_pass" class="col-md-4 col-form-label">Mot de passe</label>
                                 <div class="col-md-5">
-                                    <input type="password" name="user_pass" id="user_pass" class="form-control"><br />
+                                    <input type="password" name="user_pass" id="user_pass" class="form-control" required><br />
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="user_pass_confirm" class="col-md-4 col-form-label">Confirmation mot de passe</label>
                                 <div class="col-md-5">
-                                    <input type="password" name="user_pass_confirm" id="user_pass_confirm" class="form-control">
+                                    <input type="password" name="user_pass_confirm" id="user_pass_confirm" class="form-control" required>
                                 </div>
                             </div>
                             <br />
