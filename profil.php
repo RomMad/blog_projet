@@ -75,7 +75,7 @@
                             <div class="col-md-12">
                                 <div class="float-right">
                                     <input type="submit" value="Valider" id="validation"
-                                        class="btn btn-primary shadow">
+                                        class="btn btn-info shadow">
                                     <button id="buttonCancel" class="btn btn-secondary shadow">Annuler</button>
                                 </div>
                             </div>
