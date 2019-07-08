@@ -26,23 +26,48 @@
     var_dump($_POST);
     // Vérification si informations dans variable POST
     if (!empty($_POST)) {
-        $user_login = htmlspecialchars($_POST['user_login']);
-        $user_name = htmlspecialchars($_POST['user_name']);
-        $user_surname = htmlspecialchars($_POST['user_surname']);
-        $user_email = htmlspecialchars($_POST['user_email']);
-        $user_status = htmlspecialchars($_POST['user_status']);
-        $user_pass = htmlspecialchars($_POST['user_pass']);
+        // Mise à jour du mot de passe
+        if (isset($_POST['old_pass'])) {
+            $old_pass = htmlspecialchars($_POST['old_pass']);
+            $new_pass = htmlspecialchars($_POST['new_pass']);
+            $new_pass_confirm = htmlspecialchars($_POST['new_pass_confirm']);
 
-        // Récupération de l'utilisateur et de son pass hashé
-        $req = $bdd->prepare('SELECT ID, user_pass FROM users WHERE ID = ?');
-        $req->execute(array($_SESSION['ID']));
-        $resultat = $req->fetch();
+            // Récupération de l'utilisateur et de son pass hashé
+            $req = $bdd->prepare('SELECT user_pass FROM users WHERE ID = ?');
+            $req->execute(array($_SESSION['ID']));
+            $resultat = $req->fetch();
 
-        // Comparaison du pass envoyé via le formulaire avec la base
-        $isPasswordCorrect = password_verify($_POST['user_pass'], $resultat['user_pass']);
-        
-        // Vérifie si Login et Password existent
-        if (!empty($_POST)) {
+            // Comparaison du pass envoyé via le formulaire avec la base
+            $isPasswordCorrect = password_verify($_POST['old_pass'], $resultat['user_pass']);
+
+            if ($new_pass==$new_pass_confirm) {
+                $req = $bdd->prepare('UPDATE users SET user_pass = :new_pass WHERE ID = :ID');                
+                $req->execute(array(
+                    'new_pass' => $new_pass,
+                    'ID' => $_SESSION['ID']
+                    )); 
+                $statusProfil = "Mot de passe mis à jour.";
+            } else {
+                $statusProfil = "Mot de passe et confirmation différents.";
+            };
+        // Mise à jour des informations du profil
+        } else {
+            $user_login = htmlspecialchars($_POST['user_login']);
+            $user_name = htmlspecialchars($_POST['user_name']);
+            $user_surname = htmlspecialchars($_POST['user_surname']);
+            $user_email = htmlspecialchars($_POST['user_email']);
+            $user_status = htmlspecialchars($_POST['user_status']);
+            $user_pass = htmlspecialchars($_POST['user_pass']);
+
+            // Récupération de l'utilisateur et de son pass hashé
+            $req = $bdd->prepare('SELECT ID, user_pass FROM users WHERE ID = ?');
+            $req->execute(array($_SESSION['ID']));
+            $resultat = $req->fetch();
+
+            // Comparaison du pass envoyé via le formulaire avec la base
+            $isPasswordCorrect = password_verify($_POST['user_pass'], $resultat['user_pass']);
+            
+            // Vérifie si Login et Password existent
             if (!$resultat) {
             $statusProfil = "Mot de passe incorrect.";
             } else {
@@ -149,10 +174,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_pass-confirm" class="col-md-4 col-form-label">Confirmation mot de
+                                <label for="user_pass_confirm" class="col-md-4 col-form-label">Confirmation mot de
                                     passe</label>
                                 <div class="col-md-5">
-                                    <input type="password" name="user_pass-confirm" id="user_pass-confirm"
+                                    <input type="password" name="user_pass_confirm" id="user_pass_confirm
                                         class="form-control"><br />
                                 </div>
                             </div>
@@ -173,9 +198,9 @@
                         <h2 class="card-header h4 col-md-12 h2 bg-light text-dark">Mise à jour du mot de passe</h2>
                     </div>
                     <div class="row">
-                                <label for="user_pass" class="col-md-4 col-form-label">Ancien mot de passe</label>
+                                <label for="old_pass" class="col-md-4 col-form-label">Ancien mot de passe</label>
                                 <div class="col-md-5">
-                                    <input type="password" name="user_pass" id="user_pass" class="form-control"><br />
+                                    <input type="password" name="old_pass" id="old_pass" class="form-control"><br />
                                 </div>
                             </div>
                     <div class="form-group row">
