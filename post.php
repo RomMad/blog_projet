@@ -67,6 +67,10 @@ $req->execute(array($post));
                 <div class="card-header bg-dark text-light">
                     <h1><?= htmlspecialchars($data['post_title']) ?></h1>
                     <em>Créé le <?= $data['post_date_creation_fr'] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data['user_login']) ?> </a></em>
+                    <?php
+                    if (isset($_SESSION['ID']) && $_SESSION['ID']==$data['post_author']) { ?>
+                        <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data['ID'] ?>">Modifier</a>
+                    <?php }; ?>
                 </div>
                 <div class="card-body text-body">
                 <?= nl2br(htmlspecialchars($data['post_content'])) ?>
