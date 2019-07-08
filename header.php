@@ -48,13 +48,13 @@
             <?php 
             if (isset($_SESSION['ID'])) {
             ?>
-            <a href="profil.php?id=<?= $_SESSION['ID'] ?>"><?= $_SESSION['user_login'] ?></a>
+            <a class="text-info" href="profil.php?id=<?= $_SESSION['ID'] ?>"><?= $_SESSION['user_login'] ?></a>
             <br />
-            <a  class="text-info" href="deconnection.php">Vous déconnecter</a>
+            <a class="text-info" href="deconnection.php">Vous déconnecter</a>
             <?php 
             } else {
                 ?>
-                <a  class="text-info" href="connection.php">Se connecter</a>
+                <a class="text-info" href="connection.php">Se connecter</a>
             <?php
             };
             ?>

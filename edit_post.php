@@ -130,7 +130,7 @@
                                 </select>
                             </div>
                             <div class="form-group float-right">
-                                <input type="submit" value="Enregistrer" id="save" class="btn btn-primary shadow">
+                                <input type="submit" value="Enregistrer" id="save" class="btn btn-info shadow">
                             </div>
                         </div>
                     </div>

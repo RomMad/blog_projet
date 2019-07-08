@@ -65,16 +65,16 @@ $req->execute(array($post));
 
             <div class="card">
                 <div class="card-header bg-dark text-light">
-                    <a href="post_page.php?post=<?= $data['ID'] ?>"><h3>
+                    <a class="text-info" href="post_page.php?post=<?= $data['ID'] ?>"><h3>
                         <?= htmlspecialchars($data['post_title']) ?>
                     </h3></a>
-                    <em>Créé le <?= $data['post_date_creation_fr'] ?> par <a href=""> <?= htmlspecialchars($data['user_login']) ?> </a></em>
+                    <em>Créé le <?= $data['post_date_creation_fr'] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data['user_login']) ?> </a></em>
                 </div>
                 <div class="card-body text-body">
                 <?= nl2br(htmlspecialchars($data['post_content'])) ?>
                 </div>
             </div>
-            <a href="edit_post.php?post=<?= $post ?>">Modifier l'article<a>
+            <a class="text-info" href="edit_post.php?post=<?= $post ?>">Modifier l'article<a>
             <br />
             <br />
             <!-- Formuulaire d'ajout d'un commentaire -->
@@ -86,7 +86,7 @@ $req->execute(array($post));
                         <textarea name="comment_content" class="form-control" id="comment_content" rows="4"></textarea>
                     </div>
                     <div class="form-group float-right">
-                        <input type="submit" value="Enregistrer" id="save" class="btn btn-primary shadow">
+                        <input type="submit" value="Enregistrer" id="save" class="btn btn-info shadow">
                     </div>
                 </form>
             </div>

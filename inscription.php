@@ -20,7 +20,7 @@ if (!empty($_POST)) {
 
         $statusInscription = "Inscription réussie.";
     // Redirige vers page d'inscription
-    // header('Location: inscription_page.php');
+    // header('Location: inscription.php');
 }
 
 ?>
@@ -102,7 +102,7 @@ if (!empty($_POST)) {
                                 <div class="col-md-12">
                                     <div class="float-right">
                                         <input type="submit" value="Valider" id="validation"
-                                            class="btn btn-primary shadow">
+                                            class="btn btn-info shadow">
                                         <button id="buttonCancel" class="btn btn-secondary shadow">Annuler</button>
                                     </div>
                                 </div>

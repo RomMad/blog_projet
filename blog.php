@@ -30,22 +30,22 @@
             ?>
             <div class="card">
                 <div class="card-header bg-dark text-light">
-                    <a href="post.php?post=<?= $data['ID'] ?>"><h3>
+                    <a class="text-info" href="post.php?post=<?= $data['ID'] ?>"><h3>
                         <?= htmlspecialchars($data['post_title']) ?>
                     </h3></a>
-                    <em>Créé le <?= $data['post_date_creation_fr'] ?> par <a href=""> <?= htmlspecialchars($data['user_login']) ?> </a></em>
+                    <em>Créé le <?= $data['post_date_creation_fr'] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data['user_login']) ?> </a></em>
                 </div>
                 <div class="card-body text-body">
                 <?= nl2br(htmlspecialchars($data['post_content'])) ?>
                 <br /><br />
-                <em><a href="post.php?post=<?= $data['ID'] ?>">En voir plus</a></em>
+                <em><a class="text-info" href="post.php?post=<?= $data['ID'] ?>">En voir plus</a></em>
                 </div>
             </div>
             <?php
             }
             ?>  
             <br />
-            <a href="edit_post.php?type=1">Rédiger un nouvel article<a>
+            <a class="text-info href="edit_post.php?type=1">Rédiger un nouvel article<a>
 
         </section>
 

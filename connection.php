@@ -47,7 +47,7 @@ if (!empty($_POST)) {
                         <input type="checkbox" value="remember-me"> Se souvenir de moi
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
+                <button class="btn btn-lg btn-info btn-block" type="submit">Se connecter</button>
                 <br />
 
             <?php include("connection_bdd.php"); ?>
