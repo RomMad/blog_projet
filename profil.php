@@ -131,6 +131,13 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <label for="user_email" class="col-md-4 col-form-label">Adresse email</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="user_email" id="user_email" class="form-control" required
+                                        value="<?= isset($user_email) ? $user_email : '' ?>"><br />
+                                </div>
+                            </div>
+                            <div class="row">
                                 <label for="user_name" class="col-md-4 col-form-label">Nom</label>
                                 <div class="col-md-8">
                                     <input type="text" name="user_name" id="user_name" class="form-control" required
@@ -142,13 +149,6 @@
                                 <div class="col-md-8">
                                     <input type="text" name="user_surname" id="user_surname" class="form-control" required
                                         value="<?= isset($user_surname) ? $user_surname : '' ?>"><br />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label for="user_email" class="col-md-4 col-form-label">Adresse email</label>
-                                <div class="col-md-8">
-                                    <input type="text" name="user_email" id="user_email" class="form-control" required
-                                        value="<?= isset($user_email) ? $user_email : '' ?>"><br />
                                 </div>
                             </div>
                             <div class="row">

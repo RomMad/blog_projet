@@ -6,14 +6,20 @@
     var_dump($_POST);
     // Vérifie si informations dans variable POST
     if (!empty($_POST)) {
-        $user_login = htmlspecialchars($_POST['user_login']);
-        $user_email = htmlspecialchars($_POST['user_email']);
-        $user_pass_hash = password_hash(htmlspecialchars($_POST['user_pass']), PASSWORD_DEFAULT); // Hachage du mot de passe
+        $user_login = htmlspecialchars($_POST['login']);
+        $user_name = htmlspecialchars($_POST['name']);
+        $user_surname = htmlspecialchars($_POST['surname']);
+        $user_email = htmlspecialchars($_POST['email']);
+        $user_birthdate = !empty($_POST['birthdate']) ? htmlspecialchars($_POST['birthdate']) : NULL;
+        $user_pass_hash = password_hash(htmlspecialchars($_POST['pass']), PASSWORD_DEFAULT); // Hachage du mot de passe
         // Insert les données dans la table users
-        $req = $bdd->prepare('INSERT INTO users(user_login, user_email, user_pass) VALUES(:user_login, :user_email, :user_pass)');
+        $req = $bdd->prepare('INSERT INTO users(user_login, user_email, user_name, user_surname, user_birthdate, user_pass) VALUES(:user_login, :user_email, :user_name, :user_surname, :user_birthdate, :user_pass)');
         $req->execute(array(
             'user_login' => $user_login,
             'user_email' => $user_email,
+            'user_name' => $user_name,
+            'user_surname' => $user_surname,
+            'user_birthdate' => $user_birthdate,
             'user_pass' => $user_pass_hash,
             ));
             // Récupère l'ID de l'utilisateur
@@ -28,7 +34,6 @@
             <meta http-equiv="refresh" content="2;url=index.php"/>
             <?php 
     };
-
 ?>
 
 <!DOCTYPE html>
@@ -54,43 +59,49 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <div class="row">
-                                <label for="user_login" class="col-md-4 col-form-label">Login</label>
+                                <label for="login" class="col-md-4 col-form-label">Login</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_login" id="user_login" 
+                                    <input type="text" name="login" id="login" 
                                         class="form-control"><br />
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_email" class="col-md-4 col-form-label">Email</label>
+                                <label for="email" class="col-md-4 col-form-label">Adresse email</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_email" id="user_email" 
+                                    <input type="email" name="email" id="email" 
                                         class="form-control"><br />
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="nom" class="col-md-4 col-form-label">Nom</label>
+                                <label for="name" class="col-md-4 col-form-label">Nom</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="nom" id="nom" class="form-control"><br />
+                                    <input type="text" name="name" id="name" class="form-control"><br />
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="prenom" class="col-md-4 col-form-label">Prénom</label>
+                                <label for="surname" class="col-md-4 col-form-label">Prénom</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="prenom" id="prenom" class="form-control"><br />
+                                    <input type="text" name="surname" id="surname" class="form-control"><br />
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_pass" class="col-md-4 col-form-label">Mot de passe</label>
+                                <label for="birthdate" class="col-md-4 col-form-label">Date de naissance</label>
+                                <div class="col-md-5">
+                                    <input type="date" name="birthdate" id="birthdate" class="form-control"><br />
+                                </div>
+                            </div>                            
+                            <div class="row">
+                                <label for="pass" class="col-md-4 col-form-label">Mot de passe</label>
                                 <div class="col-md-8">
-                                    <input type="password" name="user_pass" id="user_pass" 
+                                    <input type="password" name="pass" id="pass" 
                                         class="form-control"><br />
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_pass-confirm" class="col-md-4 col-form-label">Confirmation mot de
+                                <label for="pass-confirm" class="col-md-4 col-form-label">Confirmation mot de
                                     passe</label>
                                 <div class="col-md-8">
-                                    <input type="password" name="user_pass-confirm" id="user_pass-confirm" 
+                                    <input type="password" name="pass-confirm" id="pass-confirm" 
                                         class="form-control"><br />
                                 </div>
                             </div>
