@@ -32,14 +32,14 @@
         $req = $bdd->prepare('SELECT user_pass FROM users WHERE ID = ?');
         $req->execute(array($_SESSION['ID']));
         $resultat = $req->fetch();
-        // Compare le password envoyé via le formulaire avec la base
-        $isPasswordCorrect = password_verify($_POST['old_pass'], $resultat['user_pass']);
+        $isPasswordCorrect = password_verify($_POST['old_pass'], $resultat['user_pass']); // Compare le password envoyé via le formulaire avec la base
         // Vérifie si la confirmation du mot de passe est identique
         if ($new_pass==$new_pass_confirm) {
+            $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
             // Met à jour le mot de passe
             $req = $bdd->prepare('UPDATE users SET user_pass = :new_pass WHERE ID = :ID');                
             $req->execute(array(
-                'new_pass' => $new_pass,
+                'new_pass' => $new_pass_hash,
                 'ID' => $_SESSION['ID']
                 )); 
             $statusProfil = "Mot de passe mis à jour.";
