@@ -61,9 +61,7 @@
     <?php include("header.php"); ?>
 
     <div class="container">
-
-        <section id="blog" class="">
-
+        <section id="post">
             <div class="card">
                 <div class="card-header bg-dark text-light">
                     <h1><?= htmlspecialchars($data["post_title"]) ?></h1>

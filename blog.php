@@ -29,24 +29,29 @@
         <section id="blog">
 
             <?php
-            while ($data = $req->fetch())
-            {
+            while ($data = $req->fetch()) {
+                $post_ID = htmlspecialchars($data["ID"]);
+                $post_title = htmlspecialchars($data["post_title"]);
+                $post_user_ID = htmlspecialchars($data["post_user_ID"]);
+                $user_login = htmlspecialchars($data["user_login"]);
+                $post_content = nl2br(htmlspecialchars($data["post_content"]));
+                $post_date_creation_fr = htmlspecialchars($data["post_date_creation_fr"]);
             ?>
             <div class="card">
                 <div class="card-header bg-dark text-light">
-                    <a class="text-info" href="post.php?post=<?= $data["ID"] ?>"><h3>
-                        <?= htmlspecialchars($data["post_title"]) ?>
+                    <a class="text-info" href="post.php?post=<?= $post_ID ?>"><h3>
+                        <?= $post_title ?>
                     </h3></a>
-                    <em>Créé le <?= $data["post_date_creation_fr"] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["user_login"]) ?> </a></em>
+                    <em>Créé le <?= $post_date_creation_fr ?> par <a class="text-info" href=""> <?= $user_login ?> </a></em>
                     <?php 
-                    if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_user_ID"]) { ?>
-                        <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data["ID"] ?>"><span class="far fa-edit"></span> Modifier</a>
+                    if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$post_user_ID) { ?>
+                        <a class="text-info a-edit-post" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier</a>
                     <?php }; ?>
                 </div>
                 <div class="card-body text-body">
-                    <?= nl2br(htmlspecialchars($data["post_content"])) ?>
+                    <?= $post_content ?>
                     <div class="mt-4">
-                        <em><a class="text-info mt-4" href="post.php?post=<?= $data["ID"] ?>"><span class="fas fa-ellipsis-h"></span> En voir plus</a></em>
+                        <em><a class="text-info mt-4" href="post.php?post=<?= $post_ID ?>"><span class="fas fa-ellipsis-h"></span> En voir plus</a></em>
                     </div>
                 </div>
             </div>
