@@ -8,58 +8,9 @@
     };
 
     var_dump($_POST);
-    // Récupère les infos du profil
-    if (empty($_POST) && isset($_SESSION["ID"])) {
-        $req = $bdd->prepare("SELECT ID, user_login, user_name, user_surname, user_email, user_status, user_birthdate FROM users WHERE ID =?");
-        $req->execute(array($_SESSION["ID"]));
-        $data = $req->fetch();
-        
-        $user_login = $data["user_login"];
-        $user_name = $data["user_name"];
-        $user_surname = $data["user_surname"];
-        $user_birthdate = $data["user_birthdate"];
-        $user_email = $data["user_email"];
-        $user_status = $data["user_status"];
-    };
-
-
-    // Mise à jour du mot de passe
-    if (!empty($_POST) && isset($_POST["old_pass"])) {
-        $old_pass = htmlspecialchars($_POST["old_pass"]);
-        $new_pass = htmlspecialchars($_POST["new_pass"]);
-        $new_pass_confirm = htmlspecialchars($_POST["new_pass_confirm"]);
-        // Récupère le mot de passe haché de l'utilisateur
-        $req = $bdd->prepare("SELECT user_pass FROM users WHERE ID = ?");
-        $req->execute(array($_SESSION["ID"]));
-        $data = $req->fetch();
-        $isPasswordCorrect = password_verify($old_pass, $data["user_pass"]); // Compare le mot de passe envoyé via le formulaire avec la base
-        // 1) Vérifie si l'ancien mot de passe est correct
-        if (!$isPasswordCorrect) {
-            $infoProfil = "L'ancien mot de passe est incorrect.";
-        } else {
-            // 2) Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
-            if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $old_pass)) {
-                $infoInscription = "Le nouveau mot de passe n'est pas valide.";
-            } else {
-                // 3) Vérifie si la confirmation du mot de passe est identique
-                if ($new_pass!=$new_pass_confirm) {
-                    $infoProfil = "Le mot de passe et la confirmation sont différents.";
-                } else {
-                    $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
-                    // Met à jour le mot de passe
-                    $req = $bdd->prepare("UPDATE users SET user_pass = :new_pass WHERE ID = :ID");                
-                    $req->execute(array(
-                        "new_pass" => $new_pass_hash,
-                        "ID" => $_SESSION["ID"]
-                        )); 
-                    $infoProfil = "Mot de passe mis à jour.";
-                };
-            };
-        };
-    };
 
     // Met à jour des informations du profil
-    if (!empty($_POST) && isset($_POST["user_login"])) {
+    if (isset($_POST["user_login"])) {
         $user_login = htmlspecialchars($_POST["user_login"]);
         $user_name = htmlspecialchars($_POST["user_name"]);
         $user_surname = htmlspecialchars($_POST["user_surname"]);
@@ -67,40 +18,95 @@
         $user_birthdate = !empty($_POST["user_birthdate"]) ? htmlspecialchars($_POST["user_birthdate"]) : NULL;
         $user_status = htmlspecialchars($_POST["user_status"]);
         $user_pass = htmlspecialchars($_POST["user_pass"]);
-        // Récupère d'ID de l'utilisateur et de son pass haché
-        $req = $bdd->prepare("SELECT ID, user_pass FROM users WHERE ID = ?");
-        $req->execute(array($_SESSION["ID"]));
-        $data = $req->fetch();
-        // Compare le pass envoyé via le formulaire avec la base
-        $isPasswordCorrect = password_verify($_POST["user_pass"], $data["user_pass"]);
-        // Vérifie si Login et Password existent
-        if (!$data) {
-            $infoProfil = "Le mot de passe est incorrect.";
+        $user_pass_confirm = htmlspecialchars($_POST["user_pass_confirm"]);
+        // 1) Vérifie si la confirmation du mot de passe est identique
+        if ($user_pass!=$user_pass_confirm) {
+            $infoProfil = "Le mot de passe et la confirmation sont différents.";
         } else {
-            if (!$isPasswordCorrect) {
+            // 2) Récupère l'ID de l'utilisateur et de son pass haché
+            $req = $bdd->prepare("SELECT ID, user_pass FROM users WHERE ID = ?");
+            $req->execute(array($_SESSION["ID"]));
+            $data = $req->fetch();
+            // 3) Vérifie si le login et le mot de passe existent
+            if (!$data) {
                 $infoProfil = "Le mot de passe est incorrect.";
             } else {
-                // Vérifie si l'email est correct
-                if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user_email)) {
-                    // Met à jour les informations du profil
-                    $req = $bdd->prepare("UPDATE users SET user_login = :new_user_login, user_name = :new_user_name, user_surname = :new_user_surname, user_email = :new_user_email, user_birthdate = :new_user_birthdate, user_status = :new_user_status, user_date_update = NOW() 
-                    WHERE ID = :ID");
-                    $req->execute(array(
-                        "new_user_login" => $user_login,
-                        "new_user_name" => $user_name,
-                        "new_user_surname" => $user_surname,
-                        "new_user_email" => $user_email,
-                        "new_user_birthdate" => $user_birthdate,
-                        "new_user_status" => $user_status,
-                        "ID" => $_SESSION["ID"]
-                        )); 
-                    $_SESSION["user_login"] = $user_login;
-                    $infoProfil = "Profil mis à jour.";
+                $isPasswordCorrect = password_verify($user_pass, htmlspecialchars($data["user_pass"])); // Compare le pass envoyé via le formulaire avec la base
+                // 4) Vérifie si le mot de passe est correct
+                if (!$isPasswordCorrect) {
+                    $infoProfil = "Le mot de passe est incorrect.";
                 } else {
-                    $infoProfil = "L'adresse \"" . $user_email . "\" est incorrecte.";
+                    // 5) Vérifie si l'email est correct
+                    if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user_email)) {
+                        $infoProfil = "L'adresse \"" . $user_email . "\" est incorrecte.";
+                    } else {
+                        // 6) Met à jour les informations du profil
+                        $req = $bdd->prepare("UPDATE users SET user_login = :new_user_login, user_name = :new_user_name, user_surname = :new_user_surname, user_email = :new_user_email, user_birthdate = :new_user_birthdate, user_status = :new_user_status, user_date_update = NOW() 
+                        WHERE ID = :ID");
+                        $req->execute(array(
+                            "new_user_login" => $user_login,
+                            "new_user_name" => $user_name,
+                            "new_user_surname" => $user_surname,
+                            "new_user_email" => $user_email,
+                            "new_user_birthdate" => $user_birthdate,
+                            "new_user_status" => $user_status,
+                            "ID" => $_SESSION["ID"]
+                            )); 
+                        $_SESSION["user_login"] = $user_login;
+                        $infoProfil = "Le profil est mis à jour.";
+                    };
                 };
             };
         };
+    };
+
+    // Mise à jour du mot de passe
+    if (isset($_POST["old_pass"])) {
+        $old_pass = htmlspecialchars($_POST["old_pass"]);
+        $new_pass = htmlspecialchars($_POST["new_pass"]);
+        $new_pass_confirm = htmlspecialchars($_POST["new_pass_confirm"]);
+        // 1) Récupère le mot de passe haché de l'utilisateur
+        $req = $bdd->prepare("SELECT user_pass FROM users WHERE ID = ?");
+        $req->execute(array($_SESSION["ID"]));
+        $data = $req->fetch();
+        $isPasswordCorrect = password_verify($old_pass, $data["user_pass"]); // Compare le mot de passe envoyé via le formulaire avec la base
+        // 2) Vérifie si l'ancien mot de passe est correct
+        if (!$isPasswordCorrect) {
+            $infoProfil = "L'ancien mot de passe est incorrect.";
+        } else {
+            // 3) Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
+            if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $new_pass)) {
+                $infoProfil = "Le nouveau mot de passe n'est pas valide.";
+            } else {
+                // 4) Vérifie si la confirmation du mot de passe est identique
+                if ($new_pass!=$new_pass_confirm) {
+                    $infoProfil = "Le mot de passe et la confirmation sont différents.";
+                } else {
+                    $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
+                    // 5) Met à jour le mot de passe
+                    $req = $bdd->prepare("UPDATE users SET user_pass = :new_pass WHERE ID = :ID");                
+                    $req->execute(array(
+                        "new_pass" => $new_pass_hash,
+                        "ID" => $_SESSION["ID"]
+                        )); 
+                    $infoProfil = "Le mot de passe est mis à jour.";
+                };
+            };
+        };
+    };
+
+    // Récupère les informations du profil
+    if ((empty($_POST) && isset($_SESSION["ID"])) || isset($_POST["old_pass"])) {
+        $req = $bdd->prepare("SELECT ID, user_login, user_name, user_surname, user_email, user_status, user_birthdate FROM users WHERE ID =?");
+        $req->execute(array($_SESSION["ID"]));
+        $data = $req->fetch();
+        
+        $user_login = htmlspecialchars($data["user_login"]);
+        $user_name =  htmlspecialchars($data["user_name"]);
+        $user_surname = htmlspecialchars($data["user_surname"]);
+        $user_birthdate = htmlspecialchars($data["user_birthdate"]);
+        $user_email =  htmlspecialchars($data["user_email"]);
+        $user_status =  htmlspecialchars($data["user_status"]);
     };
 ?>
 
@@ -114,7 +120,7 @@
 
     <div class="container">
 
-        <section id="inscription" class="row">
+        <section id="profil" class="row">
 
             <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
 
@@ -150,14 +156,14 @@
                             <div class="row">
                                 <label for="user_name" class="col-md-4 col-form-label">Nom</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_name" id="user_name" class="form-control mb-4" required
+                                    <input type="text" name="user_name" id="user_name" class="form-control mb-4"
                                         value="<?= isset($user_name) ? $user_name : "" ?>">
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="user_surname" class="col-md-4 col-form-label">Prénom</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_surname" id="user_surname" class="form-control mb-4" required
+                                    <input type="text" name="user_surname" id="user_surname" class="form-control mb-4"
                                         value="<?= isset($user_surname) ? $user_surname : "" ?>">
                                 </div>
                             </div>
@@ -171,7 +177,7 @@
                             <div class="row">
                                 <label for="user_status" class="col-md-4 col-form-label">Type de profil</label>
                                 <div class="col-md-5">
-                                    <input type="text" name="user_status" id="user_status" class="form-control mb-4" required
+                                    <input type="text" name="user_status" id="user_status" class="form-control mb-4"
                                         value="<?= isset($user_status) ? $user_status : "" ?>">
                                 </div>
                             </div>
