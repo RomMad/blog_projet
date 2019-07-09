@@ -147,15 +147,13 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <b>Format du mot de passe :</b>
+                                Le mot de passe doit contenir au minimum :
                                     <ul>
-                                        <li>Une longueur de 6 caractères au minimum</li>
-                                        <li>Au moins 1 lettre minuscule</li>
-                                        <li>Au moins 1 lettre majuscule</li>
-                                        <li>Au moins 1 chiffre</li>
+                                        <li>6 caractères</li>
+                                        <li>1 lettre minuscule</li>
+                                        <li>1 lettre majuscule</li>
+                                        <li>1 chiffre</li>
                                     </ul>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </form>
