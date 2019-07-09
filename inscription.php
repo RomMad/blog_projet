@@ -20,8 +20,8 @@
             if ($data["nbID"]>0) {
                 $infoInscription = "Ce login est déjà utilisé. Veuillez en utiliser un autre.";
             } else {
-                // Vérifie si l'email est correct
-                if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
+                // Vérifie si le mot de passe est correct
+                if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $pass)) {
                     $infoInscription = "L'adresse \"" . $email . "\" est incorrecte.";
                 } else {
                     // Vérifie si l'adresse email est déjà utilisée
@@ -31,13 +31,8 @@
                         $infoInscription = "Cette adresse email est déjà utilisée.";
                     } else {
                     // Vérifie si le mot de passe est correct
-                        if (!preg_match("#[a-zA-Z1-9]+#", $pass)) {
-                            $infoInscription = "Le mot de passe n'est pas valide. Format du mot de passe :
-                            - sa longueur est de 8 caractères au minimum, 
-                            - il doit contenir au moins 1 chiffre, 
-                            - il doit contenir au moins 1 lettre minuscule, 
-                            - il doit contenir au moins 1 lettre majuscule, 
-                            - il doit contenir au moins 1 caractère spécial, parmi . : ; , _ ! - { } [ ] ( ) | @";
+                        if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $pass)) {
+                            $infoInscription = "Le mot de passe n'est pas valide.";
                         } else {
                             // Vérifie si la confirmation du mot de passe est identique
                             if ($pass!=$pass_confirm) {
@@ -146,7 +141,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <b>Format du mot de passe :</b>
+                                    <ul>
+                                        <li>Une longueur de 6 caractères au minimum</li>
+                                        <li>Au moins 1 lettre minuscule</li>
+                                        <li>Au moins 1 lettre majuscule</li>
+                                        <li>Au moins 1 chiffre</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
+                    </div>
                 </form>
             </div>
 
