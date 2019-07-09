@@ -15,37 +15,49 @@
         $pass_confirm = htmlspecialchars($_POST["pass_confirm"]);
         if ($name) {
             // Vérifie si le login est déjà utilisé
-            $req = $bdd->query("SELECT COUNT(*) as NbID FROM users WHERE user_login='$login'");
+            $req = $bdd->query("SELECT COUNT(*) as nbID FROM users WHERE user_login='$login'");
             $data = $req->fetch();
-            if ($data["NbID"]>0) {
+            if ($data["nbID"]>0) {
                 $infoInscription = "Ce login est déjà utilisé. Veuillez en utiliser un autre.";
             } else {
-                // Vérifie si la confirmation du mot de passe est identique
-                if ($pass==$pass_confirm) {
-                    $pass_hash = password_hash($pass, PASSWORD_DEFAULT); // Hachage du mot de passe
-                // Insert les données dans la table users
-                $req = $bdd->prepare("INSERT INTO users(user_login, user_email, user_name, user_surname, user_birthdate, user_pass) VALUES(:user_login, :user_email, :user_name, :user_surname, :user_birthdate, :user_pass)");
-                $req->execute(array(
-                    "user_login" => $login,
-                    "user_email" => $email,
-                    "user_name" => $name,
-                    "user_surname" => $surname,
-                    "user_birthdate" => $birthdate,
-                    "user_pass" => $pass_hash,
-                    ));
-                    // Récupère l'ID de l'utilisateur
-                    $req = $bdd->query("SELECT ID FROM users WHERE user_login ='$login'");
-                    $data = $req->fetch();
-                    // Ajoute les infos de l"utilisateurs dans la Session
-                    $_SESSION["ID"] = $data["ID"];
-                    $_SESSION["user_login"] = $login;
-                    $infoInscription = "Inscription réussie.";
-                    ?> 
-                    <meta http-equiv="refresh" content="2;url=index.php"/>
-                    <?php             
+                // Vérifie si l'email est correct
+                if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
+                    $infoInscription = "L'adresse \"" . $email . "\" est incorrecte.";
                 } else {
-                    $infoInscription = "Mot de passe et confirmation différents.";
-                };
+                    // Vérifie si l'adresse email est déjà utilisée
+                    $req = $bdd->query("SELECT COUNT(*) as nbID FROM users WHERE user_email='$email'");
+                    $data = $req->fetch();
+                    if ($data["nbID"]>0) {
+                        $infoInscription = "Cette adresse email est déjà utilisé.";
+                    } else {
+                    // Vérifie si la confirmation du mot de passe est identique
+                        if ($pass==$pass_confirm) {
+                            $pass_hash = password_hash($pass, PASSWORD_DEFAULT); // Hachage du mot de passe
+                        // Insert les données dans la table users
+                        $req = $bdd->prepare("INSERT INTO users(user_login, user_email, user_name, user_surname, user_birthdate, user_pass) VALUES(:user_login, :user_email, :user_name, :user_surname, :user_birthdate, :user_pass)");
+                        $req->execute(array(
+                            "user_login" => $login,
+                            "user_email" => $email,
+                            "user_name" => $name,
+                            "user_surname" => $surname,
+                            "user_birthdate" => $birthdate,
+                            "user_pass" => $pass_hash,
+                            ));
+                            // Récupère l'ID de l'utilisateur
+                            $req = $bdd->query("SELECT ID FROM users WHERE user_login ='$login'");
+                            $data = $req->fetch();
+                            // Ajoute les infos de l"utilisateurs dans la Session
+                            $_SESSION["ID"] = $data["ID"];
+                            $_SESSION["user_login"] = $login;
+                            $infoInscription = "Inscription réussie.";
+                            ?> 
+                            <meta http-equiv="refresh" content="2;url=index.php"/>
+                            <?php             
+                        } else {
+                            $infoInscription = "Mot de passe et confirmation différents.";
+                        };
+                    };
+                };            
             };            
         } else {
             $infoInscription = "Veuillez saisir un Login.";
