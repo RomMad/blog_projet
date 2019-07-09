@@ -20,8 +20,8 @@
             if ($data["nbID"]>0) {
                 $infoInscription = "Ce login est déjà utilisé. Veuillez en utiliser un autre.";
             } else {
-                // Vérifie si le mot de passe est correct
-                if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $pass)) {
+                // Vérifie si l'adresse email est correcte
+                if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
                     $infoInscription = "L'adresse \"" . $email . "\" est incorrecte.";
                 } else {
                     // Vérifie si l'adresse email est déjà utilisée
