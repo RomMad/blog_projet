@@ -14,28 +14,29 @@
         $post_content = htmlspecialchars($_POST["post_content"]);
         $post_ID = htmlspecialchars($_POST["post_ID"]);
         $post_user_ID = htmlspecialchars($_SESSION["ID"]);
-        $post_author  = htmlspecialchars($_POST["post_author"]);
+        $post_user_login  = htmlspecialchars($_SESSION["user_login"]);
         $post_status = htmlspecialchars($_POST["post_status"]);
         $post_date_creation = htmlspecialchars($_POST["post_date_creation"]);
         $post_date_update = htmlspecialchars($_POST["post_date_update"]);
 
         // Ajoute l'article si nouvel article
         if (isset($_POST["save"]) && empty($_POST["post_ID"])) {
-            $req = $bdd->prepare("INSERT INTO posts(post_author, post_title, post_content, post_status) 
-            VALUES(:post_author, :post_title, :post_content, :post_status)");
+            $req = $bdd->prepare("INSERT INTO posts(post_user_ID, post_user_login, post_title, post_content, post_status) 
+            VALUES(:post_user_ID, :post_user_login, :post_title, :post_content, :post_status)");
             $req->execute(array(
-                "post_author" => $post_user_ID,
+                "post_user_ID" => $post_user_ID,
+                "post_user_login" => $post_user_login,
                 "post_title" => $post_title,
                 "post_content" => $post_content,
                 "post_status" => $post_status
                 ));
             $infoPost = "Article enregistré.";
             // Récupère l'article
-            $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y %H:%i\") AS post_date_creation_fr, DATE_FORMAT(p.post_date_update, \"%d/%m/%Y %H:%i\") AS post_date_update_fr 
+            $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y %H:%i\") AS post_date_creation_fr, DATE_FORMAT(p.post_date_update, \"%d/%m/%Y %H:%i\") AS post_date_update_fr 
             FROM posts p
             LEFT JOIN users u
-            ON p.post_author = u.ID
-            WHERE p.post_author =?  
+            ON p.post_user_ID = u.ID
+            WHERE p.post_user_ID =?  
             ORDER BY p.ID DESC 
             LIMIT 0, 1");
             $req->execute(array($post_user_ID));
@@ -44,7 +45,7 @@
             $post_title = $data["post_title"];
             $post_content = $data["post_content"];
             $post_ID = $data["ID"];
-            $post_author  = $data["user_login"];
+            $post_user_ID  = $data["user_login"];
             $post_date_creation = $data["post_date_creation_fr"];
             $post_date_update = $data["post_date_update_fr"];
             $post_status = $data["post_status"];
@@ -77,10 +78,10 @@
     if (!empty($_GET["post"])) {
         $idPost = htmlspecialchars($_GET["post"]);
         // Récupère l'article
-        $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y %H:%i\") AS post_date_creation_fr, DATE_FORMAT(p.post_date_update, \"%d/%m/%Y %H:%i\") AS post_date_update_fr 
+        $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y %H:%i\") AS post_date_creation_fr, DATE_FORMAT(p.post_date_update, \"%d/%m/%Y %H:%i\") AS post_date_update_fr 
         FROM posts p
         LEFT JOIN users u
-        ON p.post_author = u.ID
+        ON p.post_user_ID = u.ID
         WHERE p.ID=?");
         $req->execute(array($idPost));
         $data = $req->fetch();
@@ -88,7 +89,7 @@
         $post_title = $data["post_title"];
         $post_content = $data["post_content"];
         $post_ID = $data["ID"];
-        $post_author  = $data["user_login"];
+        $post_user_ID  = $data["user_login"];
         $post_date_creation = $data["post_date_creation_fr"];
         $post_date_update = $data["post_date_update_fr"];
         $post_status = $data["post_status"];
@@ -140,8 +141,8 @@
                                 <input type="text" name="post_ID" class="form-control" id="post_ID" readonly value="<?= isset($post_ID) ? $post_ID : "" ?>">
                         </div>
                             <div class="form-group">
-                                <label for="post_author">Auteur</label>
-                                <input type="text" name="post_author" class="form-control" id="post_author" readonly value="<?= isset($post_author) ? $post_author : "" ?>">
+                                <label for="post_user_ID">Auteur</label>
+                                <input type="text" name="post_user_ID" class="form-control" id="post_user_ID" readonly value="<?= isset($post_user_ID) ? $post_user_ID : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="post_date_creation">Date de création</label>

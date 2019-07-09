@@ -5,10 +5,10 @@
 
     include("connection_bdd.php"); 
     // Récupère les derniers posts
-    $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y à %H:%i\") AS post_date_creation_fr 
+    $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y à %H:%i\") AS post_date_creation_fr 
     FROM posts p
     LEFT JOIN users u
-    ON p.post_author = u.ID
+    ON p.post_user_ID = u.ID
     WHERE p.post_status = ? || p.post_status = ? 
     ORDER BY p.post_date_creation DESC 
     LIMIT 0, 5");
@@ -39,7 +39,7 @@
                     </h3></a>
                     <em>Créé le <?= $data["post_date_creation_fr"] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["user_login"]) ?> </a></em>
                     <?php 
-                    if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_author"]) { ?>
+                    if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_user_ID"]) { ?>
                         <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data["ID"] ?>"><span class="far fa-edit"></span> Modifier</a>
                     <?php }; ?>
                 </div>

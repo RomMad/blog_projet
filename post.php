@@ -32,10 +32,10 @@
     };
 
     // Récupère le post
-    $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_author, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y à %H:%i\") AS post_date_creation_fr 
+    $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y à %H:%i\") AS post_date_creation_fr 
     FROM posts p
     LEFT JOIN users u
-    ON p.post_author = u.ID
+    ON p.post_user_ID = u.ID
     WHERE p.ID=?");
     $req->execute(array($post));
     $data = $req->fetch();
@@ -69,7 +69,7 @@
                     <h1><?= htmlspecialchars($data["post_title"]) ?></h1>
                     <em>Créé le <?= $data["post_date_creation_fr"] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["user_login"]) ?> </a></em>
                     <?php
-                    if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_author"]) { ?>
+                    if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_user_ID"]) { ?>
                         <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data["ID"] ?>"><span class="far fa-edit"> Modifier</a>
                     <?php }; ?>
                 </div>
@@ -78,7 +78,7 @@
                 </div>
             </div>
             <?php 
-            if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_author"]) { ?>
+            if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_user_ID"]) { ?>
                 <a class="text-info" href="edit_post.php?post=<?= $post ?>"><span class="far fa-edit"> Modifier l'article<a> <?php 
             }; ?>
             <!-- Formuulaire d'ajout d'un commentaire -->
