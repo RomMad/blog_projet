@@ -97,7 +97,7 @@
         <section id="post_form" class="row">
             <div class="col-sm-12 col-md-10 mx-auto">
                 <form action="edit_post.php" method="post" class="">
-                    <h2>Edition d"article </h2>
+                    <h2>Edition d'article </h2>
                     <br/>
                     <?php  
                     if (isset($statusPost)) {
