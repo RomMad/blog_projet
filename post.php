@@ -25,10 +25,10 @@
 
     var_dump($_GET);
     if (!empty($_GET)) {
-        $post = htmlspecialchars($_GET["post"]);
-        $_SESSION["post_ID"] = $post;
+        $post_ID = htmlspecialchars($_GET["post"]);
+        $_SESSION["post_ID"] = $post_ID;
     } else {
-        $post = $_SESSION["post_ID"];
+        $post_ID = $_SESSION["post_ID"];
     };
 
     if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]="erase") {
@@ -42,18 +42,21 @@
     LEFT JOIN users u
     ON p.post_user_ID = u.ID
     WHERE p.ID=?");
-    $req->execute(array($post));
+    $req->execute(array($post_ID));
     $data = $req->fetch();
 
     // Récupère les commentaires
-    $req = $bdd->prepare("SELECT c.ID, c.comment_user_ID, u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \"%d/%m/%Y à %H:%i\") AS comment_date_creation_fr 
+    $req = $bdd->prepare("SELECT c.ID, c.comment_user_ID, u.user_login, c.comment_content, c.comment_status, DATE_FORMAT(c.comment_date_creation, \"%d/%m/%Y à %H:%i\") AS comment_date_creation_fr 
     FROM comments c
     LEFT JOIN users u
     ON c.comment_user_ID = u.ID
-    WHERE c.id_post=?
+    WHERE c.id_post = :post_ID AND c.comment_status < :comment_status 
     ORDER BY c.comment_date_creation DESC
     LIMIT 0, 10");
-    $req->execute(array($post));
+    $req->execute(array(
+        "post_ID" => $post_ID,
+        "comment_status" => 2
+    ));
 
 ?>
 
@@ -82,7 +85,7 @@
             </div>
             <?php 
             if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_user_ID"]) { ?>
-                <a class="text-info" href="edit_post.php?post=<?= $post ?>"><span class="far fa-edit"> Modifier l'article<a> <?php 
+                <a class="text-info" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"> Modifier l'article<a> <?php 
             }; ?>
             <!-- Formuulaire d'ajout d'un commentaire -->
             <div class="row">
@@ -118,7 +121,7 @@
                                     <?php                        
                                         if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["comment_user_ID"]) { ?>
                                             <div>
-                                                <a href="post.php?post=<?= isset($post) ? $post : "" ?>&comment=<?= $data["ID"] ?>&action=erase" onclick="if(window.confirm('Voulez-vous vraiment supprimer le commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?= $data["ID"] ?>&action=erase" onclick="if(window.confirm('Voulez-vous vraiment supprimer le commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
                                             </div>
                                         <?php
                                         };
