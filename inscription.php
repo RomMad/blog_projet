@@ -31,6 +31,10 @@
                         $infoInscription = "Cette adresse email est déjà utilisée.";
                     } else {
                     // Vérifie si le mot de passe est correct
+                        // (?=.*[a-z])  : teste la présence d'une lettre minuscule
+                        // (?=.*[A-Z])  : teste la présence d'une lettre majuscule
+                        // (?=.*[0-9])  : teste la présence d'un chiffre de 0 à 9
+                        // .{6,}$       : teste si au moins 6 caractères
                         if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $pass)) {
                             $infoInscription = "Le mot de passe n'est pas valide.";
                         } else {
