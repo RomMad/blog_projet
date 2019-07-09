@@ -42,9 +42,9 @@
                 "new_pass" => $new_pass_hash,
                 "ID" => $_SESSION["ID"]
                 )); 
-            $statusProfil = "Mot de passe mis à jour.";
+            $infoProfil = "Mot de passe mis à jour.";
         } else {
-            $statusProfil = "Mot de passe et confirmation différents.";
+            $infoProfil = "Mot de passe et confirmation différents.";
         };
     };
 
@@ -65,7 +65,7 @@
         $isPasswordCorrect = password_verify($_POST["user_pass"], $data["user_pass"]);
         // Vérifie si Login et Password existent
         if (!$data) {
-        $statusProfil = "Mot de passe incorrect.";
+        $infoProfil = "Mot de passe incorrect.";
         } else {
             if ($isPasswordCorrect) {
                 // Vérifie si l'email est correct
@@ -83,12 +83,12 @@
                         "ID" => $_SESSION["ID"]
                         )); 
                     $_SESSION["user_login"] = $user_login;
-                    $statusProfil = "Profil mis à jour.";
+                    $infoProfil = "Profil mis à jour.";
                 } else {
-                    $statusProfil = "L'adresse \"" . $user_email . "\" est incorrecte.";
+                    $infoProfil = "L'adresse \"" . $user_email . "\" est incorrecte.";
                 };
             } else {
-                $statusProfil = "Mot de passe incorrect.";
+                $infoProfil = "Mot de passe incorrect.";
             };
         };
     };
@@ -109,8 +109,8 @@
             <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
 
                 <?php  
-                    if (isset($statusProfil)) {
-                        echo $statusProfil;
+                    if (isset($infoProfil)) {
+                        echo $infoProfil;
                     ?>
                 <?php 
                     }; 
