@@ -7,9 +7,9 @@
         header("Location: connection.php");
     };
 
-    var_dump($_GET);
-    // Récupère les nfos du profil
-    if (!empty($_GET)) {
+    var_dump($_POST);
+    // Récupère les infos du profil
+    if (empty($_POST) && isset($_SESSION["ID"])) {
         $req = $bdd->prepare("SELECT ID, user_login, user_name, user_surname, user_email, user_status, user_birthdate FROM users WHERE ID =?");
         $req->execute(array($_SESSION["ID"]));
         $data = $req->fetch();
@@ -22,7 +22,7 @@
         $user_status = $data["user_status"];
     };
 
-    var_dump($_POST);
+
     // Met à jour le mot de passe
     if (!empty($_POST) && isset($_POST["old_pass"])) {
         $old_pass = htmlspecialchars($_POST["old_pass"]);

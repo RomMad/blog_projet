@@ -48,7 +48,7 @@
             <?php 
             if (isset($_SESSION["ID"])) {
             ?>
-            <a class="text-info font-weight-bold" href="profil.php?id=<?= $_SESSION["ID"] ?>"><span class="fas fa-user"></span> <?= $_SESSION["user_login"] ?></a>
+            <a class="text-info font-weight-bold" href="profil.php"><span class="fas fa-user"></span> <?= $_SESSION["user_login"] ?></a>
             <br />
             <a class="text-info" href="deconnection.php">Vous déconnecter</a>
             <?php 
