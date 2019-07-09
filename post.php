@@ -14,11 +14,11 @@
 
         $comment_content = htmlspecialchars($_POST["comment_content"]);
             // Ajoute le commentaire
-            $req = $bdd->prepare("INSERT INTO comments(id_post, comment_author, comment_content) 
-            VALUES(:id_post, :comment_author, :comment_content)");
+            $req = $bdd->prepare("INSERT INTO comments(id_post, comment_user_ID, comment_content) 
+            VALUES(:id_post, :comment_user_ID, :comment_content)");
             $req->execute(array(
                 "id_post" => $_SESSION["post_ID"],
-                "comment_author" =>  $user_ID,
+                "comment_user_ID" =>  $user_ID,
                 "comment_content" => $_POST["comment_content"]
                 ));
     };
@@ -31,6 +31,11 @@
         $post = $_SESSION["post_ID"];
     };
 
+    if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]="erase") {
+        $comment_ID = htmlspecialchars($_GET["comment"]);
+        $req = $bdd->query("DELETE FROM comments WHERE ID ='$comment_ID'");
+    };
+
     // Récupère le post
     $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y à %H:%i\") AS post_date_creation_fr 
     FROM posts p
@@ -41,10 +46,10 @@
     $data = $req->fetch();
 
     // Récupère les commentaires
-    $req = $bdd->prepare("SELECT u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \"%d/%m/%Y à %H:%i\") AS comment_date_creation_fr 
+    $req = $bdd->prepare("SELECT c.ID, c.comment_user_ID, u.user_login, c.comment_content, DATE_FORMAT(c.comment_date_creation, \"%d/%m/%Y à %H:%i\") AS comment_date_creation_fr 
     FROM comments c
     LEFT JOIN users u
-    ON c.comment_author = u.ID
+    ON c.comment_user_ID = u.ID
     WHERE c.id_post=?
     ORDER BY c.comment_date_creation DESC
     LIMIT 0, 10");
@@ -95,20 +100,33 @@
             <!-- Affiche les commentaires -->
             <div class="row">
                 <div class="col-sm-12 col-md-6 mt-2">
-                    <h2 class="h3">Commentaires</h2>
-                    <?php
-                    while ($data = $req->fetch())
-                    {
-                        if (!empty($data["user_login"])) {
-                            $user_login = htmlspecialchars($data["user_login"]);
-                            } else {
-                            $user_login = "Anonyme";
-                            };
-                    ?>
-                    <p><strong><?= $user_login ?></strong>, le <?= $data["comment_date_creation_fr"] ?></p>
-                    <p><?= nl2br(htmlspecialchars($data["comment_content"])) ?></p>
-                    <?php
-                    }
+                    <h2 class="h3 mb-4">Commentaires</h2>
+                    <?php 
+                        while ($data = $req->fetch()) {
+                        ?>
+                            <div class="card">
+                                <div class="card-body">
+                                    <?php 
+                                        if (!empty($data["user_login"])) {
+                                            $user_login = htmlspecialchars($data["user_login"]);
+                                            } else {
+                                            $user_login = "Anonyme";
+                                            };
+                                    ?>
+                                    <p><strong><?= $user_login ?></strong>, le <?= $data["comment_date_creation_fr"] ?></p>
+                                    <p><?= nl2br(htmlspecialchars($data["comment_content"])) ?></p>
+                                    <?php                        
+                                        if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["comment_user_ID"]) { ?>
+                                            <div>
+                                                <a href="post.php?post=<?= isset($post) ? $post : "" ?>&comment=<?= $data["ID"] ?>&action=erase" onclick="if(window.confirm('Voulez-vous vraiment supprimer le commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
+                                            </div>
+                                        <?php
+                                        };
+                                        ?>
+                                </div>
+                            </div>
+                        <?php
+                        }
                     ?>
                 </div>
             </div>
