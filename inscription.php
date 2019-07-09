@@ -13,7 +13,7 @@
         $birthdate = !empty($_POST["birthdate"]) ? htmlspecialchars($_POST["birthdate"]) : NULL;
         $pass = htmlspecialchars($_POST["pass"]);
         $pass_confirm = htmlspecialchars($_POST["pass_confirm"]);
-        if ($name) {
+        if ($login) {
             // Vérifie si le login est déjà utilisé
             $req = $bdd->query("SELECT COUNT(*) as nbID FROM users WHERE user_login='$login'");
             $data = $req->fetch();
@@ -28,33 +28,44 @@
                     $req = $bdd->query("SELECT COUNT(*) as nbID FROM users WHERE user_email='$email'");
                     $data = $req->fetch();
                     if ($data["nbID"]>0) {
-                        $infoInscription = "Cette adresse email est déjà utilisé.";
+                        $infoInscription = "Cette adresse email est déjà utilisée.";
                     } else {
-                    // Vérifie si la confirmation du mot de passe est identique
-                        if ($pass==$pass_confirm) {
-                            $pass_hash = password_hash($pass, PASSWORD_DEFAULT); // Hachage du mot de passe
-                        // Insert les données dans la table users
-                        $req = $bdd->prepare("INSERT INTO users(user_login, user_email, user_name, user_surname, user_birthdate, user_pass) VALUES(:user_login, :user_email, :user_name, :user_surname, :user_birthdate, :user_pass)");
-                        $req->execute(array(
-                            "user_login" => $login,
-                            "user_email" => $email,
-                            "user_name" => $name,
-                            "user_surname" => $surname,
-                            "user_birthdate" => $birthdate,
-                            "user_pass" => $pass_hash,
-                            ));
-                            // Récupère l'ID de l'utilisateur
-                            $req = $bdd->query("SELECT ID FROM users WHERE user_login ='$login'");
-                            $data = $req->fetch();
-                            // Ajoute les infos de l"utilisateurs dans la Session
-                            $_SESSION["ID"] = $data["ID"];
-                            $_SESSION["user_login"] = $login;
-                            $infoInscription = "Inscription réussie.";
-                            ?> 
-                            <meta http-equiv="refresh" content="2;url=index.php"/>
-                            <?php             
+                    // Vérifie si le mot de passe est correct
+                        if (!preg_match("#[a-zA-Z1-9]+#", $pass)) {
+                            $infoInscription = "Le mot de passe n'est pas valide. Format du mot de passe :
+                            - sa longueur est de 8 caractères au minimum, 
+                            - il doit contenir au moins 1 chiffre, 
+                            - il doit contenir au moins 1 lettre minuscule, 
+                            - il doit contenir au moins 1 lettre majuscule, 
+                            - il doit contenir au moins 1 caractère spécial, parmi . : ; , _ ! - { } [ ] ( ) | @";
                         } else {
-                            $infoInscription = "Mot de passe et confirmation différents.";
+                            // Vérifie si la confirmation du mot de passe est identique
+                            if ($pass!=$pass_confirm) {
+                                $infoInscription = "Mot de passe et confirmation différents.";
+                            } else {
+                                $pass_hash = password_hash($pass, PASSWORD_DEFAULT); // Hachage du mot de passe
+                                // Insert les données dans la table users
+                                $req = $bdd->prepare("INSERT INTO users(user_login, user_email, user_name, user_surname, user_birthdate, user_pass) 
+                                                        VALUES(:user_login, :user_email, :user_name, :user_surname, :user_birthdate, :user_pass)");
+                                $req->execute(array(
+                                    "user_login" => $login,
+                                    "user_email" => $email,
+                                    "user_name" => $name,
+                                    "user_surname" => $surname,
+                                    "user_birthdate" => $birthdate,
+                                    "user_pass" => $pass_hash,
+                                    ));
+                                    // Récupère l'ID de l'utilisateur
+                                    $req = $bdd->query("SELECT ID FROM users WHERE user_login ='$login'");
+                                    $data = $req->fetch();
+                                    // Ajoute les infos de l"utilisateurs dans la Session
+                                    $_SESSION["ID"] = $data["ID"];
+                                    $_SESSION["user_login"] = $login;
+                                    $infoInscription = "Inscription réussie.";
+                                    ?> 
+                                    <meta http-equiv="refresh" content="2;url=index.php"/>
+                                    <?php    
+                            };     
                         };
                     };
                 };            
