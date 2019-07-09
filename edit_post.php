@@ -29,6 +29,8 @@
                 "post_ID" => $post_ID
                 ));     
             $infoPost = "Article modifié.";
+            date_default_timezone_set('Europe/Paris');
+            $post_date_update = date("d/m/Y H:i");
         } else {
             // Ajoute l'article si nouvel article
             $req = $bdd->prepare("INSERT INTO posts(post_author, post_title, post_content, post_status) 
