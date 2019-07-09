@@ -23,28 +23,38 @@
     };
 
 
-    // Met à jour le mot de passe
+    // Mise à jour du mot de passe
     if (!empty($_POST) && isset($_POST["old_pass"])) {
         $old_pass = htmlspecialchars($_POST["old_pass"]);
         $new_pass = htmlspecialchars($_POST["new_pass"]);
         $new_pass_confirm = htmlspecialchars($_POST["new_pass_confirm"]);
-        // Récupère le password hashé de l'utilisateur
+        // Récupère le mot de passe haché de l'utilisateur
         $req = $bdd->prepare("SELECT user_pass FROM users WHERE ID = ?");
         $req->execute(array($_SESSION["ID"]));
         $data = $req->fetch();
-        $isPasswordCorrect = password_verify($old_pass, $data["user_pass"]); // Compare le password envoyé via le formulaire avec la base
-        // Vérifie si la confirmation du mot de passe est identique
-        if ($new_pass==$new_pass_confirm) {
-            $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
-            // Met à jour le mot de passe
-            $req = $bdd->prepare("UPDATE users SET user_pass = :new_pass WHERE ID = :ID");                
-            $req->execute(array(
-                "new_pass" => $new_pass_hash,
-                "ID" => $_SESSION["ID"]
-                )); 
-            $infoProfil = "Mot de passe mis à jour.";
+        $isPasswordCorrect = password_verify($old_pass, $data["user_pass"]); // Compare le mot de passe envoyé via le formulaire avec la base
+        // 1) Vérifie si l'ancien mot de passe est correct
+        if (!$isPasswordCorrect) {
+            $infoProfil = "L'ancien mot de passe est incorrect.";
         } else {
-            $infoProfil = "Mot de passe et confirmation différents.";
+            // 2) Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
+            if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $old_pass)) {
+                $infoInscription = "Le nouveau mot de passe n'est pas valide.";
+            } else {
+                // 3) Vérifie si la confirmation du mot de passe est identique
+                if ($new_pass!=$new_pass_confirm) {
+                    $infoProfil = "Le mot de passe et la confirmation sont différents.";
+                } else {
+                    $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
+                    // Met à jour le mot de passe
+                    $req = $bdd->prepare("UPDATE users SET user_pass = :new_pass WHERE ID = :ID");                
+                    $req->execute(array(
+                        "new_pass" => $new_pass_hash,
+                        "ID" => $_SESSION["ID"]
+                        )); 
+                    $infoProfil = "Mot de passe mis à jour.";
+                };
+            };
         };
     };
 
@@ -65,9 +75,11 @@
         $isPasswordCorrect = password_verify($_POST["user_pass"], $data["user_pass"]);
         // Vérifie si Login et Password existent
         if (!$data) {
-        $infoProfil = "Mot de passe incorrect.";
+            $infoProfil = "Le mot de passe est incorrect.";
         } else {
-            if ($isPasswordCorrect) {
+            if (!$isPasswordCorrect) {
+                $infoProfil = "Le mot de passe est incorrect.";
+            } else {
                 // Vérifie si l'email est correct
                 if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user_email)) {
                     // Met à jour les informations du profil
@@ -87,8 +99,6 @@
                 } else {
                     $infoProfil = "L'adresse \"" . $user_email . "\" est incorrecte.";
                 };
-            } else {
-                $infoProfil = "Mot de passe incorrect.";
             };
         };
     };
