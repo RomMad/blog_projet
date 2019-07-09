@@ -44,17 +44,18 @@
                     <?php }; ?>
                 </div>
                 <div class="card-body text-body">
-                <?= nl2br(htmlspecialchars($data["post_content"])) ?>
-                <br /><br />
-                <em><a class="text-info" href="post.php?post=<?= $data["ID"] ?>"><span class="fas fa-ellipsis-h"></span> En voir plus</a></em>
+                    <?= nl2br(htmlspecialchars($data["post_content"])) ?>
+                    <div class="mt-4">
+                        <em><a class="text-info mt-4" href="post.php?post=<?= $data["ID"] ?>"><span class="fas fa-ellipsis-h"></span> En voir plus</a></em>
+                    </div>
                 </div>
             </div>
             <?php
             }
             ?>  
-            <br />
-            <a class="text-info href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article<a>
-
+            <div class="mt-4">
+                <a class="text-info" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article<a>
+            </div>
         </section>
 
     </div>
