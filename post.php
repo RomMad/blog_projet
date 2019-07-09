@@ -45,19 +45,25 @@
     $req->execute(array($post_ID));
     $data = $req->fetch();
 
-    // Récupère les commentaires
-    $req = $bdd->prepare("SELECT c.ID, c.comment_user_ID, u.user_login, c.comment_content, c.comment_status, DATE_FORMAT(c.comment_date_creation, \"%d/%m/%Y à %H:%i\") AS comment_date_creation_fr 
-    FROM comments c
-    LEFT JOIN users u
-    ON c.comment_user_ID = u.ID
-    WHERE c.id_post = :post_ID AND c.comment_status < :comment_status 
-    ORDER BY c.comment_date_creation DESC
-    LIMIT 0, 10");
-    $req->execute(array(
-        "post_ID" => $post_ID,
-        "comment_status" => 2
-    ));
-
+    // Compte le nombre commentaires
+    $req = $bdd->query("SELECT COUNT(*) as nbID FROM comments WHERE id_post ='$post_ID' AND comment_status <2");
+    $count = $req->fetch();
+    if ($count["nbID"]==0) {
+        $infoComments = "Aucun commentaire.";
+    } else  {
+        // Récupère les commentaires
+        $req = $bdd->prepare("SELECT c.ID, c.comment_user_ID, u.user_login, c.comment_content, c.comment_status, DATE_FORMAT(c.comment_date_creation, \"%d/%m/%Y à %H:%i\") AS comment_date_creation_fr 
+        FROM comments c
+        LEFT JOIN users u
+        ON c.comment_user_ID = u.ID
+        WHERE c.id_post = :post_ID AND c.comment_status < :comment_status 
+        ORDER BY c.comment_date_creation DESC
+        LIMIT 0, 10");
+        $req->execute(array(
+            "post_ID" => $post_ID,
+            "comment_status" => 2
+        ));
+    };
 ?>
 
 <!DOCTYPE html>
@@ -104,9 +110,10 @@
             <div class="row">
                 <div class="col-sm-12 col-md-6 mt-2">
                     <h2 class="h3 mb-4">Commentaires</h2>
+                    <p> <?= isset($infoComments) ? $infoComments : "" ?> </p>
                     <?php 
                         while ($data = $req->fetch()) {
-                        ?>
+                            ?>
                             <div class="card">
                                 <div class="card-body">
                                     <?php 
