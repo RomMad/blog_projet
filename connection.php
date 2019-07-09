@@ -18,7 +18,7 @@
         if ($data && $isPasswordCorrect) {
             $_SESSION["ID"] = $data["ID"];
             $_SESSION["user_login"] = $user_login;
-            $infoConnection = "Vous ête connecté.";
+            $infoConnection = "Vous êtes connecté.";
             ?> 
             <meta http-equiv="refresh" content="1;url=index.php"/>
             <?php
@@ -61,7 +61,7 @@
             </form>
                </section>
     </div>
-    
+
     <?php include("footer.php"); ?>
 
     <?php include("scripts.html"); ?>
