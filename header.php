@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="index.php">Accueil <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="index.php"><span class="fas fa-home"></span> Accueil <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="blog.php">Blog</a>
@@ -41,14 +41,14 @@
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Search">
-                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Rechercher</button>
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit"><span class="fas fa-search"></span></button>
             </form>
 
             <div class="ml-3 text-light">
             <?php 
             if (isset($_SESSION["ID"])) {
             ?>
-            <a class="text-info" href="profil.php?id=<?= $_SESSION["ID"] ?>"><?= $_SESSION["user_login"] ?></a>
+            <a class="text-info" href="profil.php?id=<?= $_SESSION["ID"] ?>"><span class="fas fa-user"></span> <?= $_SESSION["user_login"] ?></a>
             <br />
             <a class="text-info" href="deconnection.php">Vous déconnecter</a>
             <?php 

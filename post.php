@@ -70,7 +70,7 @@
                     <em>Créé le <?= $data["post_date_creation_fr"] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["user_login"]) ?> </a></em>
                     <?php
                     if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_author"]) { ?>
-                        <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data["ID"] ?>">Modifier</a>
+                        <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data["ID"] ?>"><span class="far fa-edit"> Modifier</a>
                     <?php }; ?>
                 </div>
                 <div class="card-body text-body">
@@ -79,7 +79,7 @@
             </div>
             <?php 
             if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_author"]) { ?>
-                <a class="text-info" href="edit_post.php?post=<?= $post ?>">Modifier l"article<a> <?php 
+                <a class="text-info" href="edit_post.php?post=<?= $post ?>"><span class="far fa-edit"> Modifier l'article<a> <?php 
             }; ?>
             <br />
             <br />
@@ -92,7 +92,7 @@
                         <textarea name="comment_content" class="form-control" id="comment_content" rows="4"></textarea>
                     </div>
                     <div class="form-group float-right">
-                        <input type="submit" value="Enregistrer" id="save" class="btn btn-info shadow">
+                        <input type="submit" value="Envoyer" id="save" class="btn btn-info shadow">
                     </div>
                 </form>
             </div>

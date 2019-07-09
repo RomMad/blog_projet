@@ -40,20 +40,20 @@
                     <em>Créé le <?= $data["post_date_creation_fr"] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["user_login"]) ?> </a></em>
                     <?php 
                     if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_author"]) { ?>
-                        <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data["ID"] ?>">Modifier</a>
+                        <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data["ID"] ?>"><span class="far fa-edit"></span> Modifier</a>
                     <?php }; ?>
                 </div>
                 <div class="card-body text-body">
                 <?= nl2br(htmlspecialchars($data["post_content"])) ?>
                 <br /><br />
-                <em><a class="text-info" href="post.php?post=<?= $data["ID"] ?>">En voir plus</a></em>
+                <em><a class="text-info" href="post.php?post=<?= $data["ID"] ?>"><span class="fas fa-ellipsis-h"></span> En voir plus</a></em>
                 </div>
             </div>
             <?php
             }
             ?>  
             <br />
-            <a class="text-info href="edit_post.php?type=1">Rédiger un nouvel article<a>
+            <a class="text-info href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article<a>
 
         </section>
 

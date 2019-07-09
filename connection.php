@@ -43,7 +43,10 @@
                 <label for="user_login" class="sr-only">Login</label>
                 <input type="text" name="user_login" id="user_login" class="form-control mb-2" placeholder="Login" required autofocus="">
                 <label for="user_pass" class="sr-only">Mot de passe</label>
-                <input type="password" name="user_pass" id="user_pass" class="form-control mb-4" placeholder="Mot de passe" required>
+                <div id="div-user-pass">
+                    <input type="password" name="user_pass" id="user_pass" class="form-control mb-4" placeholder="Mot de passe" required>
+                    <span class="fas fa-eye"></span>
+                </div>
                 <div class="checkbox mb-3">
                     <label>
                         <input type="checkbox" value="remember-me"> Se souvenir de moi

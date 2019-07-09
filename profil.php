@@ -170,15 +170,18 @@
                                 <label for="user_pass" class="col-md-4 col-form-label">Mot de passe</label>
                                 <div class="col-md-5">
                                     <input type="password" name="user_pass" id="user_pass" class="form-control" required><br />
+                                    <span class="fas fa-eye"></span>
                                 </div>
+                            <br />
                             </div>
                             <div class="row">
                                 <label for="user_pass_confirm" class="col-md-4 col-form-label">Confirmation mot de passe</label>
                                 <div class="col-md-5">
                                     <input type="password" name="user_pass_confirm" id="user_pass_confirm" class="form-control" required>
+                                    <span class="fas fa-eye"></span>
                                 </div>
                             </div>
-                            <br />
+                            
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <div class="float-right">
