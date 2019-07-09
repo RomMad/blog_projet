@@ -52,8 +52,8 @@
                         <input type="checkbox" value="remember-me"> Se souvenir de moi
                     </label>
                 </div>
-                <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-info btn-block shadow">
-                <a href="inscription.php" class="btn btn-lg btn-info btn-block shadow mb-4">S'inscrire</a>
+                <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-info btn-block mb-4 shadow">
+                <a href="inscription.php" class="btn btn-lg btn-info btn-block mb-4 shadow">S'inscrire</a>
 
             <?= isset($infoConnection) ? $infoConnection : "" ?>
 

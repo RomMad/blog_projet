@@ -37,7 +37,9 @@
     };
 
     // Récupère le post
-    $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, u.user_login, p.post_content, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y à %H:%i\") AS post_date_creation_fr 
+    $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, u.user_login, p.post_content, 
+    DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y à %H:%i\") AS post_date_creation_fr, 
+    DATE_FORMAT(p.post_date_update, \"%d/%m/%Y à %H:%i\") AS post_date_update_fr 
     FROM posts p
     LEFT JOIN users u
     ON p.post_user_ID = u.ID
@@ -52,7 +54,8 @@
         $infoComments = "Aucun commentaire.";
     } else  {
         // Récupère les commentaires
-        $req = $bdd->prepare("SELECT c.ID, c.comment_user_ID, u.user_login, c.comment_content, c.comment_status, DATE_FORMAT(c.comment_date_creation, \"%d/%m/%Y à %H:%i\") AS comment_date_creation_fr 
+        $req = $bdd->prepare("SELECT c.ID, c.comment_user_ID, u.user_login, c.comment_content, c.comment_status, 
+        DATE_FORMAT(c.comment_date_creation, \"%d/%m/%Y à %H:%i\") AS comment_date_creation_fr 
         FROM comments c
         LEFT JOIN users u
         ON c.comment_user_ID = u.ID
@@ -79,7 +82,7 @@
             <div class="card">
                 <div class="card-header bg-dark text-light">
                     <h1><?= htmlspecialchars($data["post_title"]) ?></h1>
-                    <em>Créé le <?= $data["post_date_creation_fr"] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["user_login"]) ?> </a></em>
+                    <em>Créé le <?= $data["post_date_creation_fr"] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["user_login"]) ?> </a> et modifié le <?= $data["post_date_update_fr"] ?></em>
                     <?php
                     if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_user_ID"]) { ?>
                         <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data["ID"] ?>"><span class="far fa-edit"> Modifier</a>
