@@ -55,6 +55,8 @@
             } else {
                 ?>
                 <a class="text-info" href="connection.php">Se connecter</a>
+                <br />
+                <a class="text-info" href="inscription.php">S'inscrire</a>
             <?php
             };
             ?>
