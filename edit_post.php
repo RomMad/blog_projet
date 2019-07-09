@@ -19,20 +19,8 @@
         $post_date_creation = htmlspecialchars($_POST["post_date_creation"]);
         $post_date_update = htmlspecialchars($_POST["post_date_update"]);
 
-        // Met à jour l'article si article existant
-        if (!empty($_POST["post_ID"])) {
-            $req = $bdd->prepare("UPDATE posts SET post_title = :new_post_title, post_content = :new_post_content, post_status = :new_post_status, post_date_update = NOW() WHERE ID = :post_ID");
-            $req->execute(array(
-                "new_post_title" => $post_title,
-                "new_post_content" => $post_content,
-                "new_post_status" => $post_status,
-                "post_ID" => $post_ID
-                ));     
-            $infoPost = "Article modifié.";
-            date_default_timezone_set('Europe/Paris');
-            $post_date_update = date("d/m/Y H:i");
-        } else {
-            // Ajoute l'article si nouvel article
+        // Ajoute l'article si nouvel article
+        if (isset($_POST["save"]) && empty($_POST["post_ID"])) {
             $req = $bdd->prepare("INSERT INTO posts(post_author, post_title, post_content, post_status) 
             VALUES(:post_author, :post_title, :post_content, :post_status)");
             $req->execute(array(
@@ -61,7 +49,29 @@
             $post_date_update = $data["post_date_update_fr"];
             $post_status = $data["post_status"];
         };
+
+        // Met à jour l'article si article existant
+        if (isset($_POST["save"]) && !empty($_POST["post_ID"])) {
+            $req = $bdd->prepare("UPDATE posts SET post_title = :new_post_title, post_content = :new_post_content, post_status = :new_post_status, post_date_update = NOW() WHERE ID = :post_ID");
+            $req->execute(array(
+                "new_post_title" => $post_title,
+                "new_post_content" => $post_content,
+                "new_post_status" => $post_status,
+                "post_ID" => $post_ID
+                ));     
+            $infoPost = "Article modifié.";
+            date_default_timezone_set('Europe/Paris');
+            $post_date_update = date("d/m/Y H:i");
+        };
+
+        // Supprime l'article
+        if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) {
+            $req = $bdd->query("DELETE FROM posts WHERE ID ='$post_ID'");
+            $infoPost = "Article supprimé.";
+            ?> <meta http-equiv="refresh" content="1;url=blog.php"/> <?php        
+        };
     };
+
     // 
     var_dump($_GET);
     if (!empty($_GET["post"])) {
@@ -149,7 +159,15 @@
                                 </select>
                             </div>
                             <div class="form-group float-right">
-                                <input type="submit" value="Enregistrer" id="save" class="btn btn-info shadow">
+                                <input type="submit" id="save"  name="save" value="Enregistrer" class="btn btn-info mb-2 shadow">
+                                <?php 
+                                    if (isset($post_ID)) { 
+                                ?>
+                                <input type="submit" id="erase"  name="erase" alt="Supprimer l'article" class="btn btn-danger mb-2 shadow" 
+                                value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;}else{return false;}">
+                                <?php 
+                                    }; 
+                                ?>
                             </div>
                         </div>
                     </div>
