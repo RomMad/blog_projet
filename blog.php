@@ -5,7 +5,7 @@
 
     include("connection_bdd.php"); 
     // Récupère les derniers posts
-    $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y à %H:%i\") AS post_date_creation_fr 
+    $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, p.post_user_login, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y à %H:%i\") AS post_date_creation_fr 
     FROM posts p
     LEFT JOIN users u
     ON p.post_user_ID = u.ID
@@ -29,20 +29,22 @@
         <section id="blog">
 
             <?php
-            while ($data = $req->fetch()) {
-                $post_ID = htmlspecialchars($data["ID"]);
-                $post_title = htmlspecialchars($data["post_title"]);
-                $post_user_ID = htmlspecialchars($data["post_user_ID"]);
-                $user_login = htmlspecialchars($data["user_login"]);
-                $post_content = nl2br(htmlspecialchars($data["post_content"]));
-                $post_date_creation_fr = htmlspecialchars($data["post_date_creation_fr"]);
+                while ($data = $req->fetch()) {
+                    $post_ID = htmlspecialchars($data["ID"]);
+                    $post_title = htmlspecialchars($data["post_title"]);
+                    $post_user_ID = htmlspecialchars($data["post_user_ID"]);
+                    $post_user_login = htmlspecialchars($data["post_user_login"]);
+                    $user_login = htmlspecialchars($data["user_login"]);
+                    $post_content = nl2br(htmlspecialchars($data["post_content"]));
+                    $post_date_creation_fr = htmlspecialchars($data["post_date_creation_fr"]);
             ?>
+            
             <div class="card">
                 <div class="card-header bg-dark text-light">
                     <a class="text-info" href="post.php?post=<?= $post_ID ?>"><h3>
                         <?= $post_title ?>
                     </h3></a>
-                    <em>Créé le <?= $post_date_creation_fr ?> par <a class="text-info" href=""> <?= $user_login ?> </a></em>
+                    <em>Créé le <?= $post_date_creation_fr ?> par <a class="text-info" href=""> <?= !empty($user_login) ? $user_login : $post_user_login ?> </a></em>
                     <?php 
                     if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$post_user_ID) { ?>
                         <a class="text-info a-edit-post" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier</a>
