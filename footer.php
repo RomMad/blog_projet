@@ -1,7 +1,4 @@
-<footer class="row bg-secondary text-white">
-    <div class="col-md-12">
-        <p>Ce site web est un blog de démonstrationréalisée dans le cadre d'une formation de développeur Web. <br />
-            © Romain MADELAINE | <a href="https://romain-mad.fr" target="_blank"
-                class="text-light">romain-mad.fr</a></p>
-    </div>
+<footer class="bg-dark mt-5 py-4 px-4 text-white">
+        <p>Ce site web est un blog réalisé dans le cadre d'une formation de développeur Web.</p>
+        <p>© Romain MADELAINE | <a href="https://romain-mad.fr" target="_blank" class="text-light">romain-mad.fr</a></p>
 </footer>
