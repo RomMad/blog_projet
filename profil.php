@@ -213,7 +213,7 @@
                     <div class="row">
                         <label for="old_pass" class="col-md-4 col-form-label">Ancien mot de passe</label>
                         <div class="col-md-5">
-                            <input type="password" name="old_pass" id="old_pass" class="form-control mb-4">
+                            <input type="password" name="old_pass" id="old_pass" class="form-control mb-4" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -221,16 +221,13 @@
                             <div class="row">
                                 <label for="new_pass" class="col-md-4 col-form-label">Nouveau mot de passe</label>
                                 <div class="col-md-5">
-                                    <input type="password" name="new_pass" id="new_pass" class="form-control mb-4">
+                                    <input type="password" name="new_pass" id="new_pass" class="form-control mb-4" required>
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="new_pass_confirm" class="col-md-4 col-form-label">Confirmation nouveau mot
-                                    de
-                                    passe</label>
+                                <label for="new_pass_confirm" class="col-md-4 col-form-label">Confirmation nouveau mot de passe</label>
                                 <div class="col-md-5">
-                                    <input type="password" name="new_pass_confirm" id="new_pass_confirm"
-                                        class="form-control mb-4">
+                                    <input type="password" name="new_pass_confirm" id="new_pass_confirm" class="form-control mb-4" required>
                                 </div>
                             </div>
                             <div class="form-group row">
