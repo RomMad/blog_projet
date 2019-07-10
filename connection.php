@@ -19,9 +19,7 @@
             $_SESSION["user_ID"] = $data["ID"];
             $_SESSION["user_login"] = $login;
             $infoConnection = "Vous êtes connecté.";
-            ?> 
-            <meta http-equiv="refresh" content="1;url=index.php"/>
-            <?php
+            header("Refresh: 2; url=index.php");
         } else {
             $infoConnection = "Login ou mot de passe incorrect.";
         };

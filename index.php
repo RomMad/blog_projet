@@ -1,7 +1,6 @@
 <?php 
     session_start();
     header('Location: blog.php');
-
 ?>
 
 <!DOCTYPE html>

@@ -69,7 +69,7 @@
         if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) {
             $req = $bdd->query("DELETE FROM posts WHERE ID ='$post_ID'");
             $infoPost = "Article supprimé.";
-            ?> <meta http-equiv="refresh" content="1;url=blog.php"/> <?php        
+            header("Refresh: 2; url=blog.php");
         };
     };
 
