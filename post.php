@@ -13,14 +13,17 @@
         };
 
         $content = htmlspecialchars($_POST["content"]);
-            // Ajoute le commentaire
-            $req = $bdd->prepare("INSERT INTO comments(id_post, user_ID, content) 
-            VALUES(:id_post, :user_ID, :content)");
-            $req->execute(array(
-                "id_post" => $_SESSION["post_ID"],
-                "user_ID" =>  $user_ID,
-                "content" => $_POST["content"]
-                ));
+        $name = htmlspecialchars($_POST["name"]);
+
+        // Ajoute le commentaire
+        $req = $bdd->prepare("INSERT INTO comments(id_post, user_ID, user_name, content) 
+        VALUES(:id_post, :user_ID, :user_name, :content)");
+        $req->execute(array(
+            "id_post" => $_SESSION["post_ID"],
+            "user_ID" =>  $user_ID,
+            "user_name" => $name,
+            "content" => $_POST["content"]
+            ));
     };
 
     var_dump($_GET);
@@ -48,19 +51,16 @@
     $req->execute(array($post_ID));
     $data = $req->fetch();
 
-    // Compte le nombre commentaires
+    // Vérifie s'il y a des commentaires
     $req = $bdd->prepare("SELECT ID FROM comments WHERE id_post = ? AND status < ? ");
-    $req->execute([
-        $post_ID,
-        2
-    ]);
+    $req->execute([$post_ID,2]);
     $commentsExist = $req->fetch();
 
     if (!$commentsExist) {
         $infoComments = "Aucun commentaire.";
     } else  {
         // Récupère les commentaires
-        $req = $bdd->prepare("SELECT c.ID, c.user_ID, u.login, c.content, c.status, 
+        $req = $bdd->prepare("SELECT c.ID, c.user_ID, u.login, c.user_name, c.content, c.status, 
         DATE_FORMAT(c.date_creation, \"%d/%m/%Y à %H:%i\") AS date_creation_fr 
         FROM comments c
         LEFT JOIN users u
@@ -102,11 +102,17 @@
             if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
                 <a class="text-info" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"> Modifier l'article<a> <?php 
             }; ?>
-            <!-- Formuulaire d'ajout d'un commentaire -->
+            <!-- Formulaire d'ajout d'un commentaire -->
             <div class="row">
                 <form action="post.php" method="post" class="col-sm-12 col-md-6 mt-4">
-                    <h2 class="h3">Nouveau commentaire</h2>
+                    <h2 class="h3 mb-4">Nouveau commentaire</h2>
                     <div class="form-group">
+                        <div class="row">
+                            <label for="name" class="col-md-4 col-form-label">Nom</label>
+                            <div class="col-md-8">
+                                <input type="text" name="name" id="name" class="form-control mb-4" value="<?= isset($_SESSION["user_login"]) ? $_SESSION["user_login"] : "" ?>">
+                            </div>
+                        </div>
                         <label for="content"></label>
                         <textarea name="content" class="form-control" id="content" rows="4"></textarea>
                     </div>
@@ -129,7 +135,11 @@
                                         if (!empty($data["login"])) {
                                             $user_login = htmlspecialchars($data["login"]);
                                             } else {
-                                            $user_login = "Anonyme";
+                                                if (!empty($data["user_name"])) {
+                                                    $user_login = htmlspecialchars($data["user_name"]);
+                                                } else {
+                                                    $user_login = "Anonyme";
+                                                };
                                             };
                                     ?>
                                     <p><strong><?= $user_login ?></strong>, le <?= $data["date_creation_fr"] ?></p>
