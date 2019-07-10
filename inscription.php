@@ -14,6 +14,7 @@
         $pass = htmlspecialchars($_POST["pass"]);
         $pass_confirm = htmlspecialchars($_POST["pass_confirm"]);
         $validation = true;
+        $msgInscription = "<Attention :";
         $typeAlert = "danger";
 
         // Vérifie si le login est déjà utilisé
@@ -27,22 +28,22 @@
 
         // Vérifie si le champ login est vide
         if (empty($login)) {
-            $msgInscription = "Veuillez saisir un Login.";
+            $msgInscription = $msgInscription . "<li>Veuillez saisir un Login.</li>";
             $validation = false;
         };
         // Vérifie si le login est déjà utilisé
         if ($loginExist) {
-            $msgInscription = "Ce login est déjà utilisé. Veuillez en utiliser un autre.";
+            $msgInscription = $msgInscription . "<li>Ce login est déjà utilisé. Veuillez en utiliser un autre.</li>";
             $validation = false;
         };
         // Vérifie si l'adresse email est correcte
         if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
-            $msgInscription = "L'adresse \"" . $email . "\" est incorrecte.";
+            $msgInscription = $msgInscription . "<li>L'adresse \"" . $email . "\" est incorrecte.</li>";
             $validation = false;
         };
         // Vérifie si l'adresse email est déjà utilisée
         if ($emailExist) {
-            $msgInscription = "Cette adresse email est déjà utilisée.";
+            $msgInscription = $msgInscription . "<li>L'adresse email est déjà utilisée.</li>";
             $validation = false;
         };
         // Vérifie si le mot de passe est correct
@@ -51,12 +52,12 @@
         // (?=.*[0-9])  : teste la présence d'un chiffre de 0 à 9
         // .{6,}$       : teste si au moins 6 caractères
         if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $pass)) {
-            $msgInscription = "Le mot de passe n'est pas valide.";
+            $msgInscription = $msgInscription . "<li>Le mot de passe n'est pas valide.</li>";
             $validation = false;
         };
         // Vérifie si la confirmation du mot de passe est identique
         if ($pass!=$pass_confirm) {
-            $msgInscription = "Mot de passe et confirmation différents.";
+            $msgInscription =  $msgInscription . "<li>Le mot de passe et la confirmation sont différents.</li>";
             $validation = false;
         };
         // Si validation est vrai, valide l'inscription de l'utilisateur
@@ -81,10 +82,10 @@
                 $_SESSION["ID"] = $idUser["ID"];
                 $_SESSION["user_login"] = $login;
                 $typeAlert = "success";
-                $msgInscription = "Inscription réussie.";
+                $msgInscription = "L'inscription est réussie.";
 
-                // header("Location:index.php");
-        };
+                header("Refresh: 2; url=index.php");
+            };
 
         $_SESSION["flash"] = array(
             "msg" => $msgInscription,
