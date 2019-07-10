@@ -132,7 +132,7 @@
                     }; 
                 ?>
                 
-                <form action="profil.php" method="post" class="col-md-12 card shadow mt-4">
+                <form action="profil.php" method="post" class="col-md-12 card shadow mt-4 was-validated">
                     <div class="form-group row">
                         <h2 class="card-header col-md-12 h2 bg-light text-dark">Profil</h2>
                     </div>
@@ -206,7 +206,7 @@
                     </div>
                 </form>
 
-                <form action="profil.php" method="post" class="col-md-12 card shadow">
+                <form action="profil.php" method="post" class="col-md-12 card shadow was-validated">
                     <div class="form-group row">
                         <h2 class="card-header h4 col-md-12 h2 bg-light text-dark">Mise à jour du mot de passe</h2>
                     </div>
