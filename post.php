@@ -6,20 +6,20 @@
     var_dump($_POST);    
     // Vérification si informations dans variable POST
     if (!empty($_POST)) {
-        if (isset($_SESSION["ID"])) {
-            $user_ID = $_SESSION["ID"];
+        if (isset($_SESSION["user_ID"])) {
+            $user_ID = $_SESSION["user_ID"];
         } else {
             $user_ID = 0;
         };
 
-        $comment_content = htmlspecialchars($_POST["comment_content"]);
+        $content = htmlspecialchars($_POST["content"]);
             // Ajoute le commentaire
-            $req = $bdd->prepare("INSERT INTO comments(id_post, comment_user_ID, comment_content) 
-            VALUES(:id_post, :comment_user_ID, :comment_content)");
+            $req = $bdd->prepare("INSERT INTO comments(id_post, user_ID, content) 
+            VALUES(:id_post, :user_ID, :content)");
             $req->execute(array(
                 "id_post" => $_SESSION["post_ID"],
-                "comment_user_ID" =>  $user_ID,
-                "comment_content" => $_POST["comment_content"]
+                "user_ID" =>  $user_ID,
+                "content" => $_POST["content"]
                 ));
     };
 
@@ -32,39 +32,39 @@
     };
 
     if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]="erase") {
-        $comment_ID = htmlspecialchars($_GET["comment"]);
-        $req = $bdd->query("DELETE FROM comments WHERE ID ='$comment_ID'");
+        $ID = htmlspecialchars($_GET["comment"]);
+        $req = $bdd->query("DELETE FROM comments WHERE ID ='$ID'");
     };
 
     // Récupère le post
-    $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, u.user_login, p.post_content, 
-    DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y à %H:%i\") AS post_date_creation_fr, 
-    DATE_FORMAT(p.post_date_update, \"%d/%m/%Y à %H:%i\") AS post_date_update_fr 
+    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, 
+    DATE_FORMAT(p.date_creation, \"%d/%m/%Y à %H:%i\") AS date_creation_fr, 
+    DATE_FORMAT(p.date_update, \"%d/%m/%Y à %H:%i\") AS date_update_fr 
     FROM posts p
     LEFT JOIN users u
-    ON p.post_user_ID = u.ID
+    ON p.user_ID = u.ID
     WHERE p.ID=?");
     $req->execute(array($post_ID));
     $data = $req->fetch();
 
     // Compte le nombre commentaires
-    $req = $bdd->query("SELECT COUNT(*) as nbID FROM comments WHERE id_post ='$post_ID' AND comment_status <2");
+    $req = $bdd->query("SELECT COUNT(*) as nbID FROM comments WHERE id_post ='$post_ID' AND status <2");
     $count = $req->fetch();
     if ($count["nbID"]==0) {
         $infoComments = "Aucun commentaire.";
     } else  {
         // Récupère les commentaires
-        $req = $bdd->prepare("SELECT c.ID, c.comment_user_ID, u.user_login, c.comment_content, c.comment_status, 
-        DATE_FORMAT(c.comment_date_creation, \"%d/%m/%Y à %H:%i\") AS comment_date_creation_fr 
+        $req = $bdd->prepare("SELECT c.ID, c.user_ID, u.login, c.content, c.status, 
+        DATE_FORMAT(c.date_creation, \"%d/%m/%Y à %H:%i\") AS date_creation_fr 
         FROM comments c
         LEFT JOIN users u
-        ON c.comment_user_ID = u.ID
-        WHERE c.id_post = :post_ID AND c.comment_status < :comment_status 
-        ORDER BY c.comment_date_creation DESC
+        ON c.user_ID = u.ID
+        WHERE c.id_post = :post_ID AND c.status < :status 
+        ORDER BY c.date_creation DESC
         LIMIT 0, 10");
         $req->execute(array(
             "post_ID" => $post_ID,
-            "comment_status" => 2
+            "status" => 2
         ));
     };
 ?>
@@ -81,19 +81,19 @@
         <section id="post">
             <div class="card">
                 <div class="card-header bg-dark text-light">
-                    <h1><?= htmlspecialchars($data["post_title"]) ?></h1>
-                    <em>Créé le <?= $data["post_date_creation_fr"] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["user_login"]) ?> </a> et modifié le <?= $data["post_date_update_fr"] ?></em>
+                    <h1><?= htmlspecialchars($data["title"]) ?></h1>
+                    <em>Créé le <?= $data["date_creation_fr"] ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["login"]) ?> </a> et modifié le <?= $data["date_update_fr"] ?></em>
                     <?php
-                    if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_user_ID"]) { ?>
+                    if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
                         <a class="text-info a-edit-post" href="edit_post.php?post=<?= $data["ID"] ?>"><span class="far fa-edit"> Modifier</a>
                     <?php }; ?>
                 </div>
                 <div class="card-body text-body">
-                <?= nl2br(htmlspecialchars($data["post_content"])) ?>
+                <?= nl2br(htmlspecialchars($data["content"])) ?>
                 </div>
             </div>
             <?php 
-            if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["post_user_ID"]) { ?>
+            if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
                 <a class="text-info" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"> Modifier l'article<a> <?php 
             }; ?>
             <!-- Formuulaire d'ajout d'un commentaire -->
@@ -101,8 +101,8 @@
                 <form action="post.php" method="post" class="col-sm-12 col-md-6 mt-4">
                     <h2 class="h3">Nouveau commentaire</h2>
                     <div class="form-group">
-                        <label for="comment_content"></label>
-                        <textarea name="comment_content" class="form-control" id="comment_content" rows="4"></textarea>
+                        <label for="content"></label>
+                        <textarea name="content" class="form-control" id="content" rows="4"></textarea>
                     </div>
                     <div class="form-group float-right">
                         <input type="submit" value="Envoyer" id="save" class="btn btn-info shadow">
@@ -120,16 +120,16 @@
                             <div class="card">
                                 <div class="card-body">
                                     <?php 
-                                        if (!empty($data["user_login"])) {
-                                            $user_login = htmlspecialchars($data["user_login"]);
+                                        if (!empty($data["login"])) {
+                                            $user_login = htmlspecialchars($data["login"]);
                                             } else {
                                             $user_login = "Anonyme";
                                             };
                                     ?>
-                                    <p><strong><?= $user_login ?></strong>, le <?= $data["comment_date_creation_fr"] ?></p>
-                                    <p><?= nl2br(htmlspecialchars($data["comment_content"])) ?></p>
+                                    <p><strong><?= $user_login ?></strong>, le <?= $data["date_creation_fr"] ?></p>
+                                    <p><?= nl2br(htmlspecialchars($data["content"])) ?></p>
                                     <?php                        
-                                        if (isset($_SESSION["ID"]) && $_SESSION["ID"]==$data["comment_user_ID"]) { ?>
+                                        if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
                                             <div>
                                                 <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?= $data["ID"] ?>&action=erase" onclick="if(window.confirm('Voulez-vous vraiment supprimer le commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
                                             </div>

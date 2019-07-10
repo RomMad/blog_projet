@@ -10,59 +10,59 @@
     var_dump($_POST);    
     // Vérification si informations dans variable POST
     if (!empty($_POST)) {
-        $post_title = htmlspecialchars($_POST["post_title"]);
-        $post_content = htmlspecialchars($_POST["post_content"]);
+        $title = htmlspecialchars($_POST["title"]);
+        $content = htmlspecialchars($_POST["content"]);
         $post_ID = htmlspecialchars($_POST["post_ID"]);
-        $post_user_ID = htmlspecialchars($_SESSION["ID"]);
+        $post_user_ID = htmlspecialchars($_SESSION["user_ID"]);
         $post_user_login  = htmlspecialchars($_SESSION["user_login"]);
-        $post_status = htmlspecialchars($_POST["post_status"]);
-        $post_date_creation = htmlspecialchars($_POST["post_date_creation"]);
-        $post_date_update = htmlspecialchars($_POST["post_date_update"]);
+        $status = htmlspecialchars($_POST["status"]);
+        $date_creation = htmlspecialchars($_POST["date_creation"]);
+        $date_update = htmlspecialchars($_POST["date_update"]);
 
         // Ajoute l'article si nouvel article
         if (isset($_POST["save"]) && empty($_POST["post_ID"])) {
-            $req = $bdd->prepare("INSERT INTO posts(post_user_ID, post_user_login, post_title, post_content, post_status) 
-            VALUES(:post_user_ID, :post_user_login, :post_title, :post_content, :post_status)");
+            $req = $bdd->prepare("INSERT INTO posts(post_user_ID, post_user_login, title, content, status) 
+            VALUES(:post_user_ID, :post_user_login, :title, :content, :status)");
             $req->execute(array(
                 "post_user_ID" => $post_user_ID,
                 "post_user_login" => $post_user_login,
-                "post_title" => $post_title,
-                "post_content" => $post_content,
-                "post_status" => $post_status
+                "title" => $title,
+                "content" => $content,
+                "status" => $status
                 ));
             $infoPost = "Article enregistré.";
             // Récupère l'article
-            $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y %H:%i\") AS post_date_creation_fr, DATE_FORMAT(p.post_date_update, \"%d/%m/%Y %H:%i\") AS post_date_update_fr 
+            $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, DATE_FORMAT(p.date_creation, \"%d/%m/%Y %H:%i\") AS date_creation_fr, DATE_FORMAT(p.date_update, \"%d/%m/%Y %H:%i\") AS date_update_fr 
             FROM posts p
             LEFT JOIN users u
-            ON p.post_user_ID = u.ID
-            WHERE p.post_user_ID =?  
+            ON p.user_ID = u.ID
+            WHERE p.user_ID =?  
             ORDER BY p.ID DESC 
             LIMIT 0, 1");
             $req->execute(array($post_user_ID));
             $data = $req->fetch();
     
-            $post_title = $data["post_title"];
-            $post_content = $data["post_content"];
+            $title = $data["title"];
+            $content = $data["content"];
             $post_ID = $data["ID"];
-            $post_user_ID  = $data["user_login"];
-            $post_date_creation = $data["post_date_creation_fr"];
-            $post_date_update = $data["post_date_update_fr"];
-            $post_status = $data["post_status"];
+            $post_user_ID  = $data["login"];
+            $date_creation = $data["date_creation_fr"];
+            $date_update = $data["date_update_fr"];
+            $status = $data["status"];
         };
 
         // Met à jour l'article si article existant
         if (isset($_POST["save"]) && !empty($_POST["post_ID"])) {
-            $req = $bdd->prepare("UPDATE posts SET post_title = :new_post_title, post_content = :new_post_content, post_status = :new_post_status, post_date_update = NOW() WHERE ID = :post_ID");
+            $req = $bdd->prepare("UPDATE posts SET title = :new_title, content = :new_content, status = :new_status, date_update = NOW() WHERE ID = :post_ID");
             $req->execute(array(
-                "new_post_title" => $post_title,
-                "new_post_content" => $post_content,
-                "new_post_status" => $post_status,
+                "new_title" => $title,
+                "new_content" => $content,
+                "new_status" => $status,
                 "post_ID" => $post_ID
                 ));     
             $infoPost = "Article modifié.";
             date_default_timezone_set('Europe/Paris');
-            $post_date_update = date("d/m/Y H:i");
+            $date_update = date("d/m/Y H:i");
         };
 
         // Supprime l'article
@@ -78,21 +78,21 @@
     if (!empty($_GET["post"])) {
         $idPost = htmlspecialchars($_GET["post"]);
         // Récupère l'article
-        $req = $bdd->prepare("SELECT p.ID, p.post_title, p.post_user_ID, u.user_login, p.post_content, p.post_status, DATE_FORMAT(p.post_date_creation, \"%d/%m/%Y %H:%i\") AS post_date_creation_fr, DATE_FORMAT(p.post_date_update, \"%d/%m/%Y %H:%i\") AS post_date_update_fr 
+        $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, DATE_FORMAT(p.date_creation, \"%d/%m/%Y %H:%i\") AS date_creation_fr, DATE_FORMAT(p.date_update, \"%d/%m/%Y %H:%i\") AS date_update_fr 
         FROM posts p
         LEFT JOIN users u
-        ON p.post_user_ID = u.ID
+        ON p.user_ID = u.ID
         WHERE p.ID=?");
         $req->execute(array($idPost));
         $data = $req->fetch();
 
-        $post_title = $data["post_title"];
-        $post_content = $data["post_content"];
+        $title = $data["title"];
+        $content = $data["content"];
         $post_ID = $data["ID"];
-        $post_user_ID  = $data["user_login"];
-        $post_date_creation = $data["post_date_creation_fr"];
-        $post_date_update = $data["post_date_update_fr"];
-        $post_status = $data["post_status"];
+        $post_user_ID  = $data["login"];
+        $date_creation = $data["date_creation_fr"];
+        $date_update = $data["date_update_fr"];
+        $status = $data["status"];
     };
 
 ?>
@@ -127,12 +127,12 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-8">
                             <div class="form-group">
-                                <label for="post_title">Titre</label>
-                                <input type="text" name="post_title" class="form-control" id="post_title" value="<?= isset($post_title) ? $post_title : "" ?>">
+                                <label for="title">Titre</label>
+                                <input type="text" name="title" class="form-control" id="title" value="<?= isset($title) ? $title : "" ?>">
                             </div>
                             <div class="form-group">
-                                <label for="post_content">Contenu</label>
-                                <textarea name="post_content" class="form-control" id="post_content" rows="12"><?= isset($post_content) ? $post_content : "" ?></textarea>
+                                <label for="content">Contenu</label>
+                                <textarea name="content" class="form-control" id="content" rows="12"><?= isset($content) ? $content : "" ?></textarea>
                             </div>
                         </div>
                         <div class="col-sm-6 offset-md-1 col-md-3">
@@ -145,18 +145,18 @@
                                 <input type="text" name="post_user_ID" class="form-control" id="post_user_ID" readonly value="<?= isset($post_user_ID) ? $post_user_ID : "" ?>">
                             </div>
                             <div class="form-group">
-                                <label for="post_date_creation">Date de création</label>
-                                <input type="text" name="post_date_creation" class="form-control" id="post_date_creation" readonly value="<?= isset($post_date_creation) ? $post_date_creation : "" ?>">
+                                <label for="date_creation">Date de création</label>
+                                <input type="text" name="date_creation" class="form-control" id="date_creation" readonly value="<?= isset($date_creation) ? $date_creation : "" ?>">
                             </div>
                             <div class="form-group">
-                                <label for="post_date_update">Date de mise à jour</label>
-                                <input type="text" name="post_date_update" class="form-control" id="post_date_update" readonly value="<?= isset($post_date_update) ? $post_date_update : "" ?>">
+                                <label for="date_update">Date de mise à jour</label>
+                                <input type="text" name="date_update" class="form-control" id="date_update" readonly value="<?= isset($date_update) ? $date_update : "" ?>">
                             </div>
                             <div class="form-group">
-                                <label for="post_status">Statut</label>
-                                <select name="post_status" class="form-control" id="post_status">
-                                    <option <?php if (isset($post_status) && $post_status=="Publié") { ?> selected <?php } ?> >Publié</option>
-                                    <option <?php if (isset($post_status) && $post_status=="Brouillon") { ?> selected <?php } ?> >Brouillon</option>
+                                <label for="status">Statut</label>
+                                <select name="status" class="form-control" id="status">
+                                    <option <?php if (isset($status) && $status=="Publié") { ?> selected <?php } ?> >Publié</option>
+                                    <option <?php if (isset($status) && $status=="Brouillon") { ?> selected <?php } ?> >Brouillon</option>
                                 </select>
                             </div>
                             <div class="form-group float-right">

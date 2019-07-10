@@ -46,7 +46,7 @@
 
             <div class="ml-3 text-light">
             <?php 
-            if (isset($_SESSION["ID"])) {
+            if (isset($_SESSION["user_ID"])) {
             ?>
             <a class="text-info font-weight-bold" href="profil.php"><span class="fas fa-user"></span> <?= $_SESSION["user_login"] ?></a>
             <br />

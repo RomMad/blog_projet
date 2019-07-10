@@ -6,18 +6,18 @@
     var_dump($_POST);
     // Vérifie si informations dans variable POST
     if (!empty($_POST)) {
-        $user_login = htmlspecialchars($_POST["user_login"]);
-        $user_pass = htmlspecialchars($_POST["user_pass"]);
+        $login = htmlspecialchars($_POST["login"]);
+        $pass = htmlspecialchars($_POST["pass"]);
         // Récupère l'ID de l'utilisateur et son password haché
-        $req = $bdd->prepare("SELECT ID, user_pass FROM users WHERE user_login = ?");
-        $req->execute(array($user_login));
+        $req = $bdd->prepare("SELECT ID, pass FROM users WHERE login = ?");
+        $req->execute(array($login));
         $data = $req->fetch();
         // Compare le password envoyé via le formulaire avec la base
-        $isPasswordCorrect = password_verify($user_pass, $data["user_pass"]);
+        $isPasswordCorrect = password_verify($pass, $data["pass"]);
         // Vérifie si login et password existent
         if ($data && $isPasswordCorrect) {
-            $_SESSION["ID"] = $data["ID"];
-            $_SESSION["user_login"] = $user_login;
+            $_SESSION["user_ID"] = $data["ID"];
+            $_SESSION["user_login"] = $login;
             $infoConnection = "Vous êtes connecté.";
             ?> 
             <meta http-equiv="refresh" content="1;url=index.php"/>
@@ -40,11 +40,11 @@
         <section id="connection" class="row">
             <form action="connection.php" method="post" class="form-signin mx-auto text-center">
                 <h1 class="h3 mb-4 font-weight-normal">Merci de vous connecter</h1>
-                <label for="user_login" class="sr-only">Login</label>
-                <input type="text" name="user_login" id="user_login" class="form-control mb-2" placeholder="Login" required autofocus="">
-                <label for="user_pass" class="sr-only">Mot de passe</label>
+                <label for="login" class="sr-only">Login</label>
+                <input type="text" name="login" id="login" class="form-control mb-2" placeholder="Login" autofocus="">
+                <label for="pass" class="sr-only">Mot de passe</label>
                 <div id="div-user-pass">
-                    <input type="password" name="user_pass" id="user_pass" class="form-control mb-4" placeholder="Mot de passe" required>
+                    <input type="password" name="pass" id="pass" class="form-control mb-4" placeholder="Mot de passe">
                     <span class="fas fa-eye"></span>
                 </div>
                 <div class="checkbox mb-3">

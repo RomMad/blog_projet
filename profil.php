@@ -10,49 +10,49 @@
     var_dump($_POST);
 
     // Met à jour des informations du profil
-    if (isset($_POST["user_login"])) {
-        $user_login = htmlspecialchars($_POST["user_login"]);
-        $user_name = htmlspecialchars($_POST["user_name"]);
-        $user_surname = htmlspecialchars($_POST["user_surname"]);
-        $user_email = htmlspecialchars($_POST["user_email"]);
-        $user_birthdate = !empty($_POST["user_birthdate"]) ? htmlspecialchars($_POST["user_birthdate"]) : NULL;
-        $user_status = htmlspecialchars($_POST["user_status"]);
-        $user_pass = htmlspecialchars($_POST["user_pass"]);
-        $user_pass_confirm = htmlspecialchars($_POST["user_pass_confirm"]);
+    if (isset($_POST["login"])) {
+        $login = htmlspecialchars($_POST["login"]);
+        $name = htmlspecialchars($_POST["name"]);
+        $surname = htmlspecialchars($_POST["surname"]);
+        $email = htmlspecialchars($_POST["email"]);
+        $birthdate = !empty($_POST["birthdate"]) ? htmlspecialchars($_POST["birthdate"]) : NULL;
+        $status = htmlspecialchars($_POST["status"]);
+        $pass = htmlspecialchars($_POST["pass"]);
+        $pass_confirm = htmlspecialchars($_POST["pass_confirm"]);
         // 1) Vérifie si la confirmation du mot de passe est identique
-        if ($user_pass!=$user_pass_confirm) {
+        if ($pass!=$pass_confirm) {
             $infoProfil = "Le mot de passe et la confirmation sont différents.";
         } else {
             // 2) Récupère l'ID de l'utilisateur et de son pass haché
-            $req = $bdd->prepare("SELECT ID, user_pass FROM users WHERE ID = ?");
-            $req->execute(array($_SESSION["ID"]));
+            $req = $bdd->prepare("SELECT ID, pass FROM users WHERE ID = ?");
+            $req->execute(array($_SESSION["user_ID"]));
             $data = $req->fetch();
             // 3) Vérifie si le login et le mot de passe existent
             if (!$data) {
                 $infoProfil = "Le mot de passe est incorrect.";
             } else {
-                $isPasswordCorrect = password_verify($user_pass, htmlspecialchars($data["user_pass"])); // Compare le pass envoyé via le formulaire avec la base
+                $isPasswordCorrect = password_verify($pass, htmlspecialchars($data["pass"])); // Compare le pass envoyé via le formulaire avec la base
                 // 4) Vérifie si le mot de passe est correct
                 if (!$isPasswordCorrect) {
                     $infoProfil = "Le mot de passe est incorrect.";
                 } else {
                     // 5) Vérifie si l'email est correct
-                    if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user_email)) {
-                        $infoProfil = "L'adresse \"" . $user_email . "\" est incorrecte.";
+                    if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
+                        $infoProfil = "L'adresse \"" . $email . "\" est incorrecte.";
                     } else {
                         // 6) Met à jour les informations du profil
-                        $req = $bdd->prepare("UPDATE users SET user_login = :new_user_login, user_name = :new_user_name, user_surname = :new_user_surname, user_email = :new_user_email, user_birthdate = :new_user_birthdate, user_status = :new_user_status, user_date_update = NOW() 
+                        $req = $bdd->prepare("UPDATE users SET login = :new_login, name = :new_name, surname = :new_surname, email = :new_email, birthdate = :new_birthdate, status = :new_status, date_update = NOW() 
                         WHERE ID = :ID");
                         $req->execute(array(
-                            "new_user_login" => $user_login,
-                            "new_user_name" => $user_name,
-                            "new_user_surname" => $user_surname,
-                            "new_user_email" => $user_email,
-                            "new_user_birthdate" => $user_birthdate,
-                            "new_user_status" => $user_status,
-                            "ID" => $_SESSION["ID"]
+                            "new_login" => $login,
+                            "new_name" => $name,
+                            "new_surname" => $surname,
+                            "new_email" => $email,
+                            "new_birthdate" => $birthdate,
+                            "new_status" => $status,
+                            "ID" => $_SESSION["user_ID"]
                             )); 
-                        $_SESSION["user_login"] = $user_login;
+                        $_SESSION["user_login"] = $login;
                         $infoProfil = "Le profil est mis à jour.";
                     };
                 };
@@ -66,10 +66,10 @@
         $new_pass = htmlspecialchars($_POST["new_pass"]);
         $new_pass_confirm = htmlspecialchars($_POST["new_pass_confirm"]);
         // 1) Récupère le mot de passe haché de l'utilisateur
-        $req = $bdd->prepare("SELECT user_pass FROM users WHERE ID = ?");
-        $req->execute(array($_SESSION["ID"]));
+        $req = $bdd->prepare("SELECT pass FROM users WHERE ID = ?");
+        $req->execute(array($_SESSION["user_ID"]));
         $data = $req->fetch();
-        $isPasswordCorrect = password_verify($old_pass, $data["user_pass"]); // Compare le mot de passe envoyé via le formulaire avec la base
+        $isPasswordCorrect = password_verify($old_pass, $data["pass"]); // Compare le mot de passe envoyé via le formulaire avec la base
         // 2) Vérifie si l'ancien mot de passe est correct
         if (!$isPasswordCorrect) {
             $infoProfil = "L'ancien mot de passe est incorrect.";
@@ -84,10 +84,10 @@
                 } else {
                     $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
                     // 5) Met à jour le mot de passe
-                    $req = $bdd->prepare("UPDATE users SET user_pass = :new_pass WHERE ID = :ID");                
+                    $req = $bdd->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
                     $req->execute(array(
                         "new_pass" => $new_pass_hash,
-                        "ID" => $_SESSION["ID"]
+                        "ID" => $_SESSION["user_ID"]
                         )); 
                     $infoProfil = "Le mot de passe est mis à jour.";
                 };
@@ -96,17 +96,17 @@
     };
 
     // Récupère les informations du profil
-    if ((empty($_POST) && isset($_SESSION["ID"])) || isset($_POST["old_pass"])) {
-        $req = $bdd->prepare("SELECT ID, user_login, user_name, user_surname, user_email, user_status, user_birthdate FROM users WHERE ID =?");
-        $req->execute(array($_SESSION["ID"]));
+    if ((empty($_POST) && isset($_SESSION["user_ID"])) || isset($_POST["old_pass"])) {
+        $req = $bdd->prepare("SELECT ID, login, name, surname, email, status, birthdate FROM users WHERE ID =?");
+        $req->execute(array($_SESSION["user_ID"]));
         $data = $req->fetch();
         
-        $user_login = htmlspecialchars($data["user_login"]);
-        $user_name =  htmlspecialchars($data["user_name"]);
-        $user_surname = htmlspecialchars($data["user_surname"]);
-        $user_birthdate = htmlspecialchars($data["user_birthdate"]);
-        $user_email =  htmlspecialchars($data["user_email"]);
-        $user_status =  htmlspecialchars($data["user_status"]);
+        $login = htmlspecialchars($data["login"]);
+        $name =  htmlspecialchars($data["name"]);
+        $surname = htmlspecialchars($data["surname"]);
+        $birthdate = htmlspecialchars($data["birthdate"]);
+        $email =  htmlspecialchars($data["email"]);
+        $status =  htmlspecialchars($data["status"]);
     };
 ?>
 
@@ -140,58 +140,58 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <div class="row">
-                                <label for="user_login" class="col-md-4 col-form-label">Login</label>
+                                <label for="login" class="col-md-4 col-form-label">Login</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_login" id="user_login" class="form-control mb-4" required
-                                        value="<?= isset($user_login) ? $user_login : "" ?>">
+                                    <input type="text" name="login" id="login" class="form-control mb-4" required
+                                        value="<?= isset($login) ? $login : "" ?>">
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_email" class="col-md-4 col-form-label">Adresse email</label>
+                                <label for="email" class="col-md-4 col-form-label">Adresse email</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_email" id="user_email" class="form-control mb-4" required
-                                        value="<?= isset($user_email) ? $user_email : "" ?>">
+                                    <input type="text" name="email" id="email" class="form-control mb-4" required
+                                        value="<?= isset($email) ? $email : "" ?>">
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_name" class="col-md-4 col-form-label">Nom</label>
+                                <label for="name" class="col-md-4 col-form-label">Nom</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_name" id="user_name" class="form-control mb-4"
-                                        value="<?= isset($user_name) ? $user_name : "" ?>">
+                                    <input type="text" name="name" id="name" class="form-control mb-4"
+                                        value="<?= isset($name) ? $name : "" ?>">
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_surname" class="col-md-4 col-form-label">Prénom</label>
+                                <label for="surname" class="col-md-4 col-form-label">Prénom</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="user_surname" id="user_surname" class="form-control mb-4"
-                                        value="<?= isset($user_surname) ? $user_surname : "" ?>">
+                                    <input type="text" name="surname" id="surname" class="form-control mb-4"
+                                        value="<?= isset($surname) ? $surname : "" ?>">
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_birthdate" class="col-md-4 col-form-label">Date de naissance</label>
+                                <label for="birthdate" class="col-md-4 col-form-label">Date de naissance</label>
                                 <div class="col-md-5">
-                                    <input type="date" name="user_birthdate" id="user_birthdate" class="form-control mb-4"
-                                        value="<?= isset($user_birthdate) ? $user_birthdate : "" ?>">
+                                    <input type="date" name="birthdate" id="birthdate" class="form-control mb-4"
+                                        value="<?= isset($birthdate) ? $birthdate : "" ?>">
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_status" class="col-md-4 col-form-label">Type de profil</label>
+                                <label for="status" class="col-md-4 col-form-label">Type de profil</label>
                                 <div class="col-md-5">
-                                    <input type="text" name="user_status" id="user_status" class="form-control mb-4"
-                                        value="<?= isset($user_status) ? $user_status : "" ?>">
+                                    <input type="text" name="status" id="status" class="form-control mb-4"
+                                        value="<?= isset($status) ? $status : "" ?>">
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_pass" class="col-md-4 col-form-label mt-4">Mot de passe</label>
+                                <label for="pass" class="col-md-4 col-form-label mt-4">Mot de passe</label>
                                 <div class="col-md-5">
-                                    <input type="password" name="user_pass" id="user_pass" class="form-control mt-4 mb-4" required>
+                                    <input type="password" name="pass" id="pass" class="form-control mt-4 mb-4" required>
                                     <span class="fas fa-eye"></span>
                                 </div>
                             </div>
                             <div class="row">
-                                <label for="user_pass_confirm" class="col-md-4 col-form-label">Confirmation mot de passe</label>
+                                <label for="pass_confirm" class="col-md-4 col-form-label">Confirmation mot de passe</label>
                                 <div class="col-md-5">
-                                    <input type="password" name="user_pass_confirm" id="user_pass_confirm" class="form-control mb-4" required>
+                                    <input type="password" name="pass_confirm" id="pass_confirm" class="form-control mb-4" required>
                                     <span class="fas fa-eye"></span>
                                 </div>
                             </div>

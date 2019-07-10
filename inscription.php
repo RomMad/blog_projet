@@ -14,15 +14,15 @@
         $pass = htmlspecialchars($_POST["pass"]);
         $pass_confirm = htmlspecialchars($_POST["pass_confirm"]);
         $validation = true;
-        $msgInscription = "<Attention :";
+        $msgInscription = "Attention :";
         $typeAlert = "danger";
 
         // Vérifie si le login est déjà utilisé
-        $req = $bdd->prepare("SELECT * FROM users WHERE user_login = ? ");
+        $req = $bdd->prepare("SELECT * FROM users WHERE login = ? ");
         $req->execute([$login]);
         $loginExist = $req->fetch();
         // Vérifie si l'adresse email est déjà utilisée
-        $req = $bdd->prepare("SELECT * FROM users WHERE user_email = ? ");
+        $req = $bdd->prepare("SELECT * FROM users WHERE email = ? ");
         $req->execute([$email]);
         $emailExist = $req->fetch();
 
@@ -64,22 +64,22 @@
         if ($validation) {
             $pass_hash = password_hash($pass, PASSWORD_DEFAULT); // Hachage du mot de passe
             // Insert les données dans la table users
-            $req = $bdd->prepare("INSERT INTO users(user_login, user_email, user_name, user_surname, user_birthdate, user_pass) 
-                                    VALUES(:user_login, :user_email, :user_name, :user_surname, :user_birthdate, :user_pass)");
+            $req = $bdd->prepare("INSERT INTO users(login, email, name, surname, birthdate, pass) 
+                                    VALUES(:login, :email, :name, :surname, :birthdate, :pass)");
             $req->execute(array(
-                "user_login" => $login,
-                "user_email" => $email,
-                "user_name" => $name,
-                "user_surname" => $surname,
-                "user_birthdate" => $birthdate,
-                "user_pass" => $pass_hash,
+                "login" => $login,
+                "email" => $email,
+                "name" => $name,
+                "surname" => $surname,
+                "birthdate" => $birthdate,
+                "pass" => $pass_hash,
                 ));
                 // Récupère l'ID de l'utilisateur
-                $req = $bdd->prepare("SELECT ID FROM users WHERE user_login = ? ");
+                $req = $bdd->prepare("SELECT ID FROM users WHERE login = ? ");
                 $req->execute([$login]);
                 $idUser = $req->fetch();
                 // Ajoute les infos de l"utilisateurs dans la Session
-                $_SESSION["ID"] = $idUser["ID"];
+                $_SESSION["user_ID"] = $idUser["ID"];
                 $_SESSION["user_login"] = $login;
                 $typeAlert = "success";
                 $msgInscription = "L'inscription est réussie.";
