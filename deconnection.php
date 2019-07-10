@@ -4,5 +4,4 @@
 
     // Redirige vers page d'accueil
     header("Location: index.php");
-
 ?>
