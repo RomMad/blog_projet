@@ -1,7 +1,7 @@
 <?php 
     session_start(); 
 
-    include("connection_bdd.php");
+    require("connection_bdd.php");
 
     var_dump($_POST);    
     // Vérification si informations dans variable POST
@@ -76,11 +76,11 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php include("head.html"); ?>
+<?php require("head.html"); ?>
 
 <body>
 
-    <?php include("header.php"); ?>
+    <?php require("header.php"); ?>
 
     <div class="container">
         <section id="post">

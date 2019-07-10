@@ -99,11 +99,11 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php include("head.html"); ?>
+<?php require("head.html"); ?>
 
 <body>
 
-    <?php include("header.php"); ?>
+    <?php require("header.php"); ?>
 
     <div class="container">
 

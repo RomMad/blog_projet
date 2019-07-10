@@ -3,7 +3,7 @@
 
     var_dump($_SESSION);  
 
-    include("connection_bdd.php"); 
+    require("connection_bdd.php"); 
     // Récupère les derniers posts
     $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.content, p.status, DATE_FORMAT(p.date_creation, \"%d/%m/%Y à %H:%i\") AS date_creation_fr 
     FROM posts p
@@ -18,11 +18,11 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php include("head.html"); ?>
+<?php require("head.html"); ?>
 
 <body>
 
-    <?php include("header.php"); ?>
+    <?php require("header.php"); ?>
 
     <div class="container">
 
