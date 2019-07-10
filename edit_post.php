@@ -13,19 +13,19 @@
         $title = htmlspecialchars($_POST["title"]);
         $content = htmlspecialchars($_POST["content"]);
         $post_ID = htmlspecialchars($_POST["post_ID"]);
-        $post_user_ID = htmlspecialchars($_SESSION["user_ID"]);
-        $post_user_login  = htmlspecialchars($_SESSION["user_login"]);
+        $user_ID = htmlspecialchars($_SESSION["user_ID"]);
+        $user_login  = htmlspecialchars($_SESSION["user_login"]);
         $status = htmlspecialchars($_POST["status"]);
         $date_creation = htmlspecialchars($_POST["date_creation"]);
         $date_update = htmlspecialchars($_POST["date_update"]);
 
         // Ajoute l'article si nouvel article
         if (isset($_POST["save"]) && empty($_POST["post_ID"])) {
-            $req = $bdd->prepare("INSERT INTO posts(post_user_ID, post_user_login, title, content, status) 
-            VALUES(:post_user_ID, :post_user_login, :title, :content, :status)");
+            $req = $bdd->prepare("INSERT INTO posts(user_ID, user_login, title, content, status) 
+            VALUES(:user_ID, :user_login, :title, :content, :status)");
             $req->execute(array(
-                "post_user_ID" => $post_user_ID,
-                "post_user_login" => $post_user_login,
+                "user_ID" => $user_ID,
+                "user_login" => $user_login,
                 "title" => $title,
                 "content" => $content,
                 "status" => $status
@@ -39,7 +39,7 @@
             WHERE p.user_ID =?  
             ORDER BY p.ID DESC 
             LIMIT 0, 1");
-            $req->execute(array($post_user_ID));
+            $req->execute(array($user_ID));
             $data = $req->fetch();
     
             $title = $data["title"];
@@ -67,7 +67,8 @@
 
         // Supprime l'article
         if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) {
-            $req = $bdd->query("DELETE FROM posts WHERE ID ='$post_ID'");
+            $req = $bdd->prepare("DELETE FROM posts WHERE ID = ? ");
+            $req->execute(array($post_ID));
             $infoPost = "Article supprimé.";
             header("Refresh: 2; url=blog.php");
         };

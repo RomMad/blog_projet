@@ -33,7 +33,8 @@
 
     if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]="erase") {
         $ID = htmlspecialchars($_GET["comment"]);
-        $req = $bdd->query("DELETE FROM comments WHERE ID ='$ID'");
+        $req = $bdd->prepare("DELETE FROM comments WHERE ID = ?");
+        $req->execute(array($ID));
     };
 
     // Récupère le post
