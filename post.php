@@ -48,9 +48,14 @@
     $data = $req->fetch();
 
     // Compte le nombre commentaires
-    $req = $bdd->query("SELECT COUNT(*) as nbID FROM comments WHERE id_post ='$post_ID' AND status <2");
-    $count = $req->fetch();
-    if ($count["nbID"]==0) {
+    $req = $bdd->prepare("SELECT ID FROM comments WHERE id_post = ? AND status < ? ");
+    $req->execute([
+        $post_ID,
+        2
+    ]);
+    $commentsExist = $req->fetch();
+
+    if (!$commentsExist) {
         $infoComments = "Aucun commentaire.";
     } else  {
         // Récupère les commentaires
