@@ -11,7 +11,7 @@
     // Vérification si informations dans variable POST
     if (!empty($_POST)) {
         $title = htmlspecialchars($_POST["title"]);
-        $content = htmlspecialchars($_POST["content"]);
+        $content = htmlspecialchars($_POST["post_content"]);
         $post_ID = htmlspecialchars($_POST["post_ID"]);
         $user_ID = htmlspecialchars($_SESSION["user_ID"]);
         $user_login  = htmlspecialchars($_SESSION["user_login"]);
@@ -124,7 +124,7 @@
     <div class="container">
 
         <section id="post_form" class="row">
-            <div class="col-sm-12 col-md-10 mx-auto">
+            <div class="col-sm-12 col-md-12 mx-auto">
 
                 <form action="edit_post.php" method="post" class="">
 
@@ -145,17 +145,17 @@
                     ?>
 
                     <div class="row">
-                        <div class="col-sm-12 col-md-8">
+                        <div class="col-md-10">
                             <div class="form-group">
                                 <label for="title">Titre</label>
                                 <input type="text" name="title" class="form-control" id="title" value="<?= isset($title) ? $title : "" ?>">
                             </div>
                             <div class="form-group">
-                                <label for="content">Contenu</label>
-                                <textarea name="content" class="form-control" id="content" rows="12"><?= isset($content) ? $content : "" ?></textarea>
+                                <label for="post_content" class="d-none">Contenu</label>
+                                <textarea name="post_content" class="form-control" id="post_content" rows="12"><?= isset($content) ? $content : "" ?></textarea>
                             </div>
                         </div>
-                        <div class="col-sm-6 offset-md-1 col-md-3">
+                        <div class="col-sm-6 col-md-2">
                         <div class="form-group">
                                 <label for="post_ID">ID</label>
                                 <input type="text" name="post_ID" class="form-control" id="post_ID" readonly value="<?= isset($post_ID) ? $post_ID : "" ?>">
