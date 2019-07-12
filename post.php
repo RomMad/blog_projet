@@ -44,27 +44,37 @@
             "content" => $_POST["content"]
             ));
         };
-
-        $_SESSION["flash"] = array(
-            "msg" => $msgComment,
-            "type" =>  $typeAlert
-        );
-
     };
 
-    if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]="erase") {
+    if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]=="erase") {
         $ID = htmlspecialchars($_GET["comment"]);
         $req = $bdd->prepare("DELETE FROM comments WHERE ID = ?");
         $req->execute(array($ID));
 
         $msgComment = "Le commentaire a été supprimé.";
         $typeAlert = "warning";
+    };
 
+    if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]=="report") {
+        $ID = htmlspecialchars($_GET["comment"]);
+        $req = $bdd->prepare("UPDATE comments SET status = :new_status, nb_report = nb_report + 1, date_report = NOW() WHERE ID = :ID");
+        $req->execute(array(
+            "new_status" => 2,
+            "ID" => $ID
+        ));
+
+        $msgComment = "Le commentaire a été signalé.";
+        $typeAlert = "warning";
+    };
+
+    if (isset($msgComment)) {
         $_SESSION["flash"] = array(
             "msg" => $msgComment,
             "type" =>  $typeAlert
         );
     };
+
+
 
     // Récupère le post
     $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, 
@@ -174,12 +184,12 @@
         FROM comments c
         LEFT JOIN users u
         ON c.user_ID = u.ID
-        WHERE c.id_post = :post_ID AND c.status < :status 
+        WHERE c.id_post = :post_ID AND c.status > :status 
         ORDER BY c.date_creation DESC
         LIMIT  $minComment,  $maxComment");
         $req->execute(array(
             "post_ID" => $post_ID,
-            "status" => 2
+            "status" => 0
         ));
     };
 ?>
@@ -264,9 +274,9 @@
                     <p> <?= isset($infoComments) ? $infoComments : "" ?> </p>
                     <?php 
                         while ($data = $req->fetch()) {
-                            ?>
+                    ?>
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body position relative">
                                     <?php 
                                         if (!empty($data["login"])) {
                                             $user_login = htmlspecialchars($data["login"]);
@@ -281,17 +291,30 @@
                                     <p><strong><?= $user_login ?></strong>, le <?= $data["date_creation_fr"] ?></p>
                                     <p><?= nl2br(htmlspecialchars($data["content"])) ?></p>
                                     <?php                        
-                                        if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
+                                        if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { 
+                                    ?>
                                             <div>
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($data["ID"]) ?>&action=erase#form-comment" onclick="if(window.confirm('Voulez-vous vraiment supprimer le commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($data["ID"]) ?>&action=erase#form-comment" 
+                                                    onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
+                                                    <span class="fas fa-times text-danger"></span>
+                                                </a>
+                                            </div>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <div class="report-comment">
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($data["ID"]) ?>&action=report#form-comment" 
+                                                    onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
+                                                    <span class="far fa-flag text-info"> Signaler</span>
+                                                </a>
                                             </div>
                                         <?php
                                         };
-                                    ?>
+                                        ?>
                                 </div>
                             </div>
-                        <?php
-                        }
+                    <?php
+                        };
                     ?>
 
                     <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
