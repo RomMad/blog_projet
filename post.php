@@ -232,7 +232,7 @@
                 };
             ?>
             <div class="row">
-                <form action="post.php?post=<?= $post_ID ?>" method="post" class="col-sm-12 col-md-6 mt-4">
+                <form action="post.php?post=<?= $post_ID ?>#form-comment" method="post" class="col-sm-12 col-md-6 mt-4">
                     <h2 class="h3 mb-4">Nouveau commentaire</h2>
                     <div class="form-group">
                         <div class="row">
