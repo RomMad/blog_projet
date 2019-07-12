@@ -9,22 +9,32 @@
     $req->execute(array("Publié", "Brouillon"));
     $nbPosts = $req->fetch();
 
+    var_dump($_POST);
+    // Vérification si informations dans variable POST
+    if (!empty($_POST)) {
+        $_SESSION["nbDisplayedPosts"] = htmlspecialchars($_POST["nbDisplayedPosts"]);
+    };
+    if (!isset($_SESSION["nbDisplayedPosts"])) {
+        $_SESSION["nbDisplayedPosts"] = 5;
+    };
+    $nbDisplayedPosts = $_SESSION["nbDisplayedPosts"];
+
     var_dump($_GET);  
     // Vérification si informations dans variable GET
     if (!empty($_GET["page"])) {
         $page = htmlspecialchars($_GET["page"]);
         // Calcul le nombre de pages par rapport aux nombre d'articles
-        $maxPost =  $page*5;
-        $minPost = $maxPost-5;
+        $maxPost =  $page*$nbDisplayedPosts;
+        $minPost = $maxPost-$nbDisplayedPosts;
     } else  {
         $page = 1;
         $minPost = 0;
-        $maxPost = 5;
+        $maxPost = $nbDisplayedPosts;
     };
 
     $link= "blog.php";
     $ancre= "";
-    $nbPages = ceil($nbPosts["nb_Posts"] / 5);
+    $nbPages = ceil($nbPosts["nb_Posts"] / $nbDisplayedPosts);
     $pageLink_1 = $page-1;
     $pageLink_2 = $page;
     $pageLink_3 = $page+1;
@@ -32,21 +42,7 @@
     $activepageLink_2 = "active";
     $activepageLink_3 = "";
 
-    if ($page>1) {
-        $prevPage = $page-1;
-        $prevPageLink = "";
-        $prevPageColorLink = "text-info";
-    } else {
-        $prevPage = 1;
-        $prevPageLink = "disabled";
-        $prevPageColorLink = "";
-        $pageLink_1 = $page;
-        $pageLink_2 = $page+1;
-        $pageLink_3 = $page+2;    
-        $activepageLink_1 = "active";
-        $activepageLink_2 = "";
-        $activepageLink_3 = ""; 
-    };
+
     if ($page<$nbPages) {
         $nextPage = $page+1;
         $nextPageLink = "";
@@ -60,8 +56,48 @@
         $pageLink_3 = $page;
         $activepageLink_1 = "";
         $activepageLink_2 = "";
-        $activepageLink_3 = "active";
+        $activepageLink_3 = "active disabled";
     };
+    if ($page==1) {
+     $prevPage = 1;
+     $prevPageLink = "disabled";
+     $prevPageColorLink = "";
+     $pageLink_1 = $page;
+     $pageLink_2 = $page+1;
+     $pageLink_3 = $page+2;    
+     $activepageLink_1 = "active disabled";
+     $activepageLink_2 = "";
+     $activepageLink_3 = ""; 
+     };
+    if ($page>1) {
+        $pageLink_1 = $page-1;
+        $pageLink_2 = $page;
+        $pageLink_3 = $page+1;
+        $prevPage = $page-1;
+        $prevPageLink = "";
+        $prevPageColorLink = "text-info";
+    };
+  
+    if ($nbPages==2 && $page==2) {
+         $nextPage = $page;
+         $nextPageLink = "disabled";
+         $nextPageColorLink = "";
+         $pageLink_1 = $page-1;
+         $pageLink_2 = $page;
+         $activepageLink_1 = "";
+         $activepageLink_2 = "active disabled";
+    };
+    if ($page==$nbPages && $page!=2) {
+         $nextPage = $page;
+         $nextPageLink = "disabled";
+         $nextPageColorLink = "";
+         $pageLink_1 = $page-2;
+         $pageLink_2 = $page-1;
+         $pageLink_3 = $page;
+         $activepageLink_1 = "";
+         $activepageLink_2 = "";
+         $activepageLink_3 = "active disabled";
+    };  
 
     // Récupère les derniers articles
     $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.content, p.status, DATE_FORMAT(p.date_creation, \"%d/%m/%Y à %H:%i\") AS date_creation_fr 
@@ -90,7 +126,23 @@
 
         <section id="blog">
 
-        <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="blog.php" method="post" class="form-inline">
+                        <label class="mr-2" for="nbDisplayedPosts">Nb d'articles affichés</label>
+                        <select name="nbDisplayedPosts" id="nbDisplayedPosts" class="custom-select mr-sm-2" >
+                            <option value="5" <?= $nbDisplayedPosts==5 ? "selected" : "" ?> >5</option>
+                            <option value="10" <?= $nbDisplayedPosts==10 ? "selected" : "" ?> >10</option>
+                            <option value="15" <?= $nbDisplayedPosts==15 ? "selected" : "" ?> >15</option>
+                            <option value="20" <?= $nbDisplayedPosts==20 ? "selected" : "" ?> >20</option>
+                        </select>
+                        <button type="submit" class="btn btn-info">OK</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+                </div>
+            </div>
 
             <?php
                 while ($data = $req->fetch()) {

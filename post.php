@@ -13,7 +13,7 @@
 
     var_dump($_POST);    
     // Vérification si informations dans variable POST
-    if (!empty($_POST)) {
+    if (!empty($_POST["content"])) {
         if (isset($_SESSION["user_ID"])) {
             $user_ID = $_SESSION["user_ID"];
         } else {
@@ -87,26 +87,35 @@
     $req->execute(array($post_ID));
     $dataPost = $req->fetch();
 
-  // Compte le nombre de commentaires
-  $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments WHERE id_post = ? AND status >= ? ");
-  $req->execute([$post_ID,0]);
-  $nbComments = $req->fetch();
-  echo $nbComments["nb_comments"];
+    // Compte le nombre de commentaires
+    $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments WHERE id_post = ? AND status >= ? ");
+    $req->execute([$post_ID,0]);
+    $nbComments = $req->fetch();
+    echo $nbComments["nb_comments"];
+
+    if (!empty($_POST["nbDisplayedComments"])) {
+        $_SESSION["nbDisplayedComments"] = htmlspecialchars($_POST["nbDisplayedComments"]);
+    };
+    if (!isset($_SESSION["nbDisplayedComments"])) {
+        $_SESSION["nbDisplayedComments"] = 5;
+    };
+    $nbDisplayedComments = $_SESSION["nbDisplayedComments"];
+
 
   if (!empty($_GET["page"])) {
       $page = htmlspecialchars($_GET["page"]);
       // Calcul le nombre de pages par rapport aux nombre d'articles
-      $maxComment =  $page*5;
-      $minComment = $maxComment-5;
+      $maxComment =  $page*$nbDisplayedComments;
+      $minComment = $maxComment-$nbDisplayedComments;
   } else  {
       $page = 1;
       $minComment = 0;
-      $maxComment = 5;
+      $maxComment = $nbDisplayedComments;
   };
   
   $link= "post.php";
   $ancre= "#comments";
-  $nbPages = ceil($nbComments["nb_comments"] / 5);
+  $nbPages = ceil($nbComments["nb_comments"] / $nbDisplayedComments);
   $pageLink_1 = $page;
   $pageLink_2 = $page+1;
   $pageLink_3 = $page+2;
@@ -268,8 +277,24 @@
             <div class="row">
                 <div class="col-sm-12 col-md-6 mt-2">
 
-                    <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
-
+                <div class="row">
+                    <div class="col-md-6">
+                        <form action="post.php?post=<?= $post_ID ?>" method="post" class="form-inline">
+                            <label class="mr-2" for="nbDisplayedComments">Afficher</label>
+                            <select name="nbDisplayedComments" id="nbDisplayedComments" class="custom-select mr-sm-2" >
+                                <option value="5" <?= $nbDisplayedComments==5 ? "selected" : "" ?> >5</option>
+                                <option value="10" <?= $nbDisplayedComments==10 ? "selected" : "" ?> >10</option>
+                                <option value="15" <?= $nbDisplayedComments==15 ? "selected" : "" ?> >15</option>
+                                <option value="20" <?= $nbDisplayedComments==20 ? "selected" : "" ?> >20</option>
+                            </select>
+                            <button type="submit" class="btn btn-info">OK</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+                    </div>
+                </div>
+            
                     <h2 class="h3 mb-4">Commentaires</h2>
                     <p> <?= isset($infoComments) ? $infoComments : "" ?> </p>
                     <?php 
