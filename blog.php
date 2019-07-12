@@ -35,7 +35,7 @@
                     $user_ID = htmlspecialchars($data["user_ID"]);
                     $user_login = htmlspecialchars($data["user_login"]);
                     $login = htmlspecialchars($data["login"]);
-                    $content = $data["content"];
+                    $content = html_entity_decode($data["content"]);
                     $date_creation_fr = htmlspecialchars($data["date_creation_fr"]);
             ?>
             

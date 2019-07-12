@@ -129,7 +129,7 @@
                     <?php }; ?>
                 </div>
                 <div class="card-body text-body">
-                <?= nl2br(htmlspecialchars($data["content"])) ?>
+                <?= html_entity_decode($data["content"]) ?>
                 </div>
             </div>
             <?php 
