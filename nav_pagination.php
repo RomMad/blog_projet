@@ -6,7 +6,7 @@
         <?php 
             if ($page>2) {
         ?>
-                <li class="page-item"><a class="page-link text-info" href="blog.php?page=1">1 ...</a></li>
+                <li class="page-item"><a class="page-link text-info" href="blog.php?page=1">1...</a></li>
         <?php 
             };
         ?>
@@ -16,7 +16,7 @@
         <?php 
             if ($page<$nbPages-1) {
         ?>
-                <li class="page-item"><a class="page-link text-info" href="blog.php?page=<?= $nbPages ?>">... <?= $nbPages ?></a></li>
+                <li class="page-item"><a class="page-link text-info" href="blog.php?page=<?= $nbPages ?>">...<?= $nbPages ?></a></li>
         <?php 
             };
         ?>

@@ -8,7 +8,6 @@
     $req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts WHERE status = ? || status = ? ");
     $req->execute(array("Publié", "Brouillon"));
     $nbPosts = $req->fetch();
-    echo $nbPosts["nb_Posts"];
 
     var_dump($_GET);  
     // Vérification si informations dans variable GET
@@ -22,7 +21,7 @@
         $minPost = 0;
         $maxPost = 5;
     };
-    
+
     $nbPages = ceil($nbPosts["nb_Posts"] / 5);
     $pageLink_1 = $page-1;
     $pageLink_2 = $page;

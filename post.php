@@ -3,6 +3,14 @@
 
     require("connection_bdd.php");
 
+    var_dump($_GET);
+    if (!empty($_GET["post"])) {
+        $post_ID = htmlspecialchars($_GET["post"]);
+        $_SESSION["post_ID"] = $post_ID;
+    } else {
+        $post_ID = $_SESSION["post_ID"];
+    };
+
     var_dump($_POST);    
     // Vérification si informations dans variable POST
     if (!empty($_POST)) {
@@ -44,14 +52,6 @@
 
     };
 
-    var_dump($_GET);
-    if (!empty($_GET)) {
-        $post_ID = htmlspecialchars($_GET["post"]);
-        $_SESSION["post_ID"] = $post_ID;
-    } else {
-        $post_ID = $_SESSION["post_ID"];
-    };
-
     if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]="erase") {
         $ID = htmlspecialchars($_GET["comment"]);
         $req = $bdd->prepare("DELETE FROM comments WHERE ID = ?");
@@ -68,6 +68,68 @@
     WHERE p.ID=?");
     $req->execute(array($post_ID));
     $data = $req->fetch();
+
+
+    // Compte le nombre de commentaires
+    $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments WHERE id_post = ? AND status < ? ");
+    $req->execute([$post_ID,2]);
+    $nb_comments = $req->fetch();
+    echo $nb_comments["nb_comments"];
+
+    if (!empty($_GET["page"])) {
+        $page = htmlspecialchars($_GET["page"]);
+        // Calcul le nombre de pages par rapport aux nombre d'articles
+        $maxComment =  $page*5;
+        $minComment = $maxComment-5;
+    } else  {
+        $page = 1;
+        $minComment = 0;
+        $maxComment = 5;
+    };
+    
+    $nbPages = ceil($nb_comments["nb_comments"] / 5);
+    $pageLink_1 = $page;
+    $pageLink_2 = $page+1;
+    $pageLink_3 = $page+2;
+    $activepageLink_1 = "";
+    $activepageLink_2 = "active";
+    $activepageLink_3 = "";
+
+    if ($page<$nbPages) {
+        $nextPage = $page+1;
+        $nextPageLink = "";
+        $nextPageColorLink = "text-info";
+    } else {
+        $nextPage = $page;
+        $nextPageLink = "disabled";
+        $nextPageColorLink = "";
+        $pageLink_1 = $page-2;
+        $pageLink_2 = $page-1;
+        $pageLink_3 = $page;
+        $activepageLink_1 = "";
+        $activepageLink_2 = "";
+        $activepageLink_3 = "active";
+    };
+    if ($page>1) {
+        $pageLink_1 = $page-1;
+        $pageLink_2 = $page;
+        $pageLink_3 = $page+1;
+        $prevPage = $page-1;
+        $prevPageLink = "";
+        $prevPageColorLink = "text-info";
+    } else {
+        $prevPage = 1;
+        $prevPageLink = "disabled";
+        $prevPageColorLink = "";
+        $pageLink_1 = $page;
+        $pageLink_2 = $page+1;
+        $pageLink_3 = $page+2;    
+        $activepageLink_1 = "active";
+        $activepageLink_2 = "";
+        $activepageLink_3 = ""; 
+    };
+
+
 
     // Vérifie s'il y a des commentaires
     $req = $bdd->prepare("SELECT ID FROM comments WHERE id_post = ? AND status < ? ");
@@ -105,40 +167,43 @@
 
         <section id="post">
 
-        <?php 
-            if (isset($_SESSION["flash"])) {
+                <?php 
+                    if (isset($_SESSION["flash"])) {
+                        ?>
+                        <div id="msg-profil" class="alert alert-<?= $_SESSION["flash"]["type"] ?> alert-dismissible fade show" role="alert">                     
+                            <?= $_SESSION["flash"]["msg"] ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button> 
+                        </div>
+                        <?php
+                        unset($_SESSION["flash"]);
+                    };
                 ?>
-                <div id="msg-profil" class="alert alert-<?= $_SESSION["flash"]["type"] ?> alert-dismissible fade show" role="alert">                     
-                    <?= $_SESSION["flash"]["msg"] ?>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button> 
-                </div>
-                <?php
-                unset($_SESSION["flash"]);
-            };
-        ?>
 
-            <div class="card">
-                <div class="card-header bg-dark text-light">
-                    <h1><?= htmlspecialchars($data["title"]) ?></h1>
-                    <em>Créé le <?=  htmlspecialchars($data["date_creation_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["login"]) ?> </a> et modifié le <?=  htmlspecialchars($data["date_update_fr"]) ?></em>
-                    <?php
-                    if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
-                        <a class="text-info a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($data["ID"]) ?>"><span class="far fa-edit"> Modifier</a>
-                    <?php }; ?>
+                <div class="card">
+                    <div class="card-header bg-dark text-light">
+                        <h1><?= htmlspecialchars($data["title"]) ?></h1>
+                        <em>Créé le <?=  htmlspecialchars($data["date_creation_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["login"]) ?> </a> et modifié le <?=  htmlspecialchars($data["date_update_fr"]) ?></em>
+                        <?php
+                        if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
+                            <a class="text-info a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($data["ID"]) ?>"><span class="far fa-edit"> Modifier</a>
+                        <?php }; ?>
+                    </div>
+                    <div class="card-body text-body">
+                    <?= html_entity_decode($data["content"]) ?>
+                    </div>
                 </div>
-                <div class="card-body text-body">
-                <?= html_entity_decode($data["content"]) ?>
-                </div>
-            </div>
-            <?php 
-            if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
-                <a class="text-info" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"> Modifier l'article<a> <?php 
-            }; ?>
-            <!-- Formulaire d'ajout d'un commentaire -->
+                <?php 
+                if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
+                    <a class="text-info" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"> Modifier l'article<a> <?php 
+                }; ?>
+        </section>
+
+        <!-- Formulaire d'ajout d'un commentaire -->
+        <section id="form-comment">
             <div class="row">
-                <form action="post.php" method="post" class="col-sm-12 col-md-6 mt-4">
+                <form action="post.php?post=<?= $post_ID ?>" method="post" class="col-sm-12 col-md-6 mt-4">
                     <h2 class="h3 mb-4">Nouveau commentaire</h2>
                     <div class="form-group">
                         <div class="row">
@@ -155,9 +220,15 @@
                     </div>
                 </form>
             </div>
-            <!-- Affiche les commentaires -->
+        </section>
+
+        <!-- Affiche les commentaires -->
+        <section id="comments">
             <div class="row">
                 <div class="col-sm-12 col-md-6 mt-2">
+
+                    <?php include("nav_pagination_post.php"); ?> <!-- Ajoute la barre de pagination -->
+
                     <h2 class="h3 mb-4">Commentaires</h2>
                     <p> <?= isset($infoComments) ? $infoComments : "" ?> </p>
                     <?php 
@@ -185,12 +256,15 @@
                                             </div>
                                         <?php
                                         };
-                                        ?>
+                                    ?>
                                 </div>
                             </div>
                         <?php
                         }
                     ?>
+
+                    <?php include("nav_pagination_post.php"); ?> <!-- Ajoute la barre de pagination -->
+
                 </div>
             </div>
         </section>
