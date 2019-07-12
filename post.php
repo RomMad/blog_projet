@@ -88,8 +88,8 @@
     $data = $req->fetch();
 
   // Compte le nombre de commentaires
-  $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments WHERE id_post = ? AND status < ? ");
-  $req->execute([$post_ID,2]);
+  $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments WHERE id_post = ? AND status > ? ");
+  $req->execute([$post_ID,0]);
   $nbComments = $req->fetch();
   echo $nbComments["nb_comments"];
 
@@ -171,8 +171,8 @@
   };
 
     // Vérifie s'il y a des commentaires
-    $req = $bdd->prepare("SELECT ID FROM comments WHERE id_post = ? AND status < ? ");
-    $req->execute([$post_ID,2]);
+    $req = $bdd->prepare("SELECT ID FROM comments WHERE id_post = ? AND status > ? ");
+    $req->execute([$post_ID,0]);
     $commentsExist = $req->fetch();
 
     if (!$commentsExist) {
