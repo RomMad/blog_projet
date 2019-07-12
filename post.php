@@ -11,89 +11,6 @@
         $post_ID = $_SESSION["post_ID"];
     };
 
-   // Compte le nombre de commentaires
-   $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments WHERE id_post = ? AND status < ? ");
-   $req->execute([$post_ID,2]);
-   $nbComments = $req->fetch();
-   echo $nbComments["nb_comments"];
-
-   if (!empty($_GET["page"])) {
-       $page = htmlspecialchars($_GET["page"]);
-       // Calcul le nombre de pages par rapport aux nombre d'articles
-       $maxComment =  $page*5;
-       $minComment = $maxComment-5;
-   } else  {
-       $page = 1;
-       $minComment = 0;
-       $maxComment = 5;
-   };
-   
-   $link= "post.php";
-   $ancre= "#comments";
-   $nbPages = ceil($nbComments["nb_comments"] / 5);
-   $pageLink_1 = $page;
-   $pageLink_2 = $page+1;
-   $pageLink_3 = $page+2;
-   $activepageLink_1 = "";
-   $activepageLink_2 = "active disabled";
-   $activepageLink_3 = "";
-
-   if ($page<$nbPages) {
-       $nextPage = $page+1;
-       $nextPageLink = "";
-       $nextPageColorLink = "text-info";
-   } else {
-       $nextPage = $page;
-       $nextPageLink = "disabled";
-       $nextPageColorLink = "";
-       $pageLink_1 = $page-2;
-       $pageLink_2 = $page-1;
-       $pageLink_3 = $page;
-       $activepageLink_1 = "";
-       $activepageLink_2 = "";
-       $activepageLink_3 = "active disabled";
-   };
-   if ($page==1) {
-    $prevPage = 1;
-    $prevPageLink = "disabled";
-    $prevPageColorLink = "";
-    $pageLink_1 = $page;
-    $pageLink_2 = $page+1;
-    $pageLink_3 = $page+2;    
-    $activepageLink_1 = "active disabled";
-    $activepageLink_2 = "";
-    $activepageLink_3 = ""; 
-    };
-   if ($page>1) {
-       $pageLink_1 = $page-1;
-       $pageLink_2 = $page;
-       $pageLink_3 = $page+1;
-       $prevPage = $page-1;
-       $prevPageLink = "";
-       $prevPageColorLink = "text-info";
-   };
-
-   if ($nbPages==2 && $page==2) {
-        $nextPage = $page;
-        $nextPageLink = "disabled";
-        $nextPageColorLink = "";
-        $pageLink_1 = $page-1;
-        $pageLink_2 = $page;
-        $activepageLink_1 = "";
-        $activepageLink_2 = "active disabled";
-   };
-   if ($page==$nbPages) {
-        $nextPage = $page;
-        $nextPageLink = "disabled";
-        $nextPageColorLink = "";
-        $pageLink_1 = $page-2;
-        $pageLink_2 = $page-1;
-        $pageLink_3 = $page;
-        $activepageLink_1 = "";
-        $activepageLink_2 = "";
-        $activepageLink_3 = "active disabled";
-   };
-
     var_dump($_POST);    
     // Vérification si informations dans variable POST
     if (!empty($_POST)) {
@@ -159,6 +76,89 @@
     WHERE p.ID=?");
     $req->execute(array($post_ID));
     $data = $req->fetch();
+
+  // Compte le nombre de commentaires
+  $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments WHERE id_post = ? AND status < ? ");
+  $req->execute([$post_ID,2]);
+  $nbComments = $req->fetch();
+  echo $nbComments["nb_comments"];
+
+  if (!empty($_GET["page"])) {
+      $page = htmlspecialchars($_GET["page"]);
+      // Calcul le nombre de pages par rapport aux nombre d'articles
+      $maxComment =  $page*5;
+      $minComment = $maxComment-5;
+  } else  {
+      $page = 1;
+      $minComment = 0;
+      $maxComment = 5;
+  };
+  
+  $link= "post.php";
+  $ancre= "#comments";
+  $nbPages = ceil($nbComments["nb_comments"] / 5);
+  $pageLink_1 = $page;
+  $pageLink_2 = $page+1;
+  $pageLink_3 = $page+2;
+  $activepageLink_1 = "";
+  $activepageLink_2 = "active disabled";
+  $activepageLink_3 = "";
+
+  if ($page<$nbPages) {
+      $nextPage = $page+1;
+      $nextPageLink = "";
+      $nextPageColorLink = "text-info";
+  } else {
+      $nextPage = $page;
+      $nextPageLink = "disabled";
+      $nextPageColorLink = "";
+      $pageLink_1 = $page-2;
+      $pageLink_2 = $page-1;
+      $pageLink_3 = $page;
+      $activepageLink_1 = "";
+      $activepageLink_2 = "";
+      $activepageLink_3 = "active disabled";
+  };
+  if ($page==1) {
+   $prevPage = 1;
+   $prevPageLink = "disabled";
+   $prevPageColorLink = "";
+   $pageLink_1 = $page;
+   $pageLink_2 = $page+1;
+   $pageLink_3 = $page+2;    
+   $activepageLink_1 = "active disabled";
+   $activepageLink_2 = "";
+   $activepageLink_3 = ""; 
+   };
+  if ($page>1) {
+      $pageLink_1 = $page-1;
+      $pageLink_2 = $page;
+      $pageLink_3 = $page+1;
+      $prevPage = $page-1;
+      $prevPageLink = "";
+      $prevPageColorLink = "text-info";
+  };
+
+  if ($nbPages==2 && $page==2) {
+       $nextPage = $page;
+       $nextPageLink = "disabled";
+       $nextPageColorLink = "";
+       $pageLink_1 = $page-1;
+       $pageLink_2 = $page;
+       $activepageLink_1 = "";
+       $activepageLink_2 = "active disabled";
+  };
+  if ($page==$nbPages && $page!=2) {
+       $nextPage = $page;
+       $nextPageLink = "disabled";
+       $nextPageColorLink = "";
+       $pageLink_1 = $page-2;
+       $pageLink_2 = $page-1;
+       $pageLink_3 = $page;
+       $activepageLink_1 = "";
+       $activepageLink_2 = "";
+       $activepageLink_3 = "active disabled";
+  };
 
     // Vérifie s'il y a des commentaires
     $req = $bdd->prepare("SELECT ID FROM comments WHERE id_post = ? AND status < ? ");
