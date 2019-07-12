@@ -4,15 +4,61 @@
     var_dump($_SESSION);  
 
     require("connection_bdd.php"); 
-    // Récupère les derniers posts
+    // Compte le nombre d'articles
+    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts WHERE status = ? || status = ? ");
+    $req->execute(array("Publié", "Brouillon"));
+    $nbPosts = $req->fetch();
+    echo $nbPosts["nb_Posts"];
+
+    var_dump($_GET);  
+    // Vérification si informations dans variable GET
+    if (!empty($_GET["page"])) {
+        $page = htmlspecialchars($_GET["page"]);
+        // Calcul le nombre de pages par rapport aux nombre d'articles
+        $nbPages = $nbPosts["nb_Posts"] / $page;
+        $maxPost =  $page*5;
+        $minPost = $maxPost-5;
+
+    } else  {
+        $nbPages = $nbPosts["nb_Posts"] / 5;
+        $page = 1;
+        $minPost = 0;
+        $maxPost = 5;
+    };
+
+    if ($page>1) {
+        $prevPage = $page-1;
+        $prevPageLink = "";
+        $prevPageColorLink = "text-info";
+    } else {
+        $prevPage = 1;
+        $prevPageLink = "disabled";
+        $prevPageColorLink = "";
+    };
+    if ($page<$nbPages) {
+        $nextPage = $page+1;
+        $nextPageLink = "";
+        $nextPageColorLink = "text-info";
+    } else {
+        $nextPage = $page;
+        $nextPageLink = "disabled";
+        $nextPageColorLink = "";
+    };
+
+
+
+    // Récupère les derniers articles
     $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.content, p.status, DATE_FORMAT(p.date_creation, \"%d/%m/%Y à %H:%i\") AS date_creation_fr 
     FROM posts p
     LEFT JOIN users u
     ON p.user_ID = u.ID
-    WHERE p.status = ? || p.status = ? 
+    WHERE p.status = :status1 || p.status = :status2 
     ORDER BY p.date_creation DESC 
-    LIMIT 0, 5");
-    $req->execute(array("Publié", "Brouillon"));
+    LIMIT  $minPost, $maxPost");
+        $req->execute(array(
+            "status1" => "Publié", 
+            "status2" => "Brouillon"
+        ));
 
 ?>
 
@@ -27,6 +73,20 @@
     <div class="container">
 
         <section id="blog">
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item <?= $prevPageLink ?>">
+                    <a class="page-link <?= $prevPageColorLink ?>"href="blog.php?page=<?= $prevPage ?>" tabindex="-1" aria-disabled="true">Précédent</a>
+                    </li>
+                    <li class="page-item"><a class="page-link text-info" href="blog.php?page=<?= $page ?>"><?= $page ?></a></li>
+                    <li class="page-item"><a class="page-link text-info" href="blog.php?page=<?= $page+1 ?>"><?= $page+1 ?></a></li>
+                    <li class="page-item"><a class="page-link text-info" href="blog.php?page=<?= $page+2 ?>"><?= $page+2 ?></a></li>
+                    <li class="page-item <?= $nextPageLink ?>">
+                    <a class="page-link <?= $nextPageColorLink ?>"" href="blog.php?page=<?= $nextPage ?>">Suivant</a>
+                    </li>
+                </ul>
+            </nav>
 
             <?php
                 while ($data = $req->fetch()) {
@@ -65,6 +125,21 @@
             <div class="mt-4">
                 <a class="text-info" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article<a>
             </div>
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center ">
+                    <li class="page-item disabled">
+                    <a class="page-link text-info" href="#" tabindex="-1" aria-disabled="true">Précédent</a>
+                    </li>
+                    <li class="page-item"><a class="page-link text-info" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link text-info" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link text-info" href="#">3</a></li>
+                    <li class="page-item text-info">
+                    <a class="page-link text-info" href="#">Suivant</a>
+                    </li>
+                </ul>
+            </nav>
+            
         </section>
 
     </div>
