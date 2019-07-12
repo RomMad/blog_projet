@@ -202,7 +202,7 @@
                         <em>Créé le <?=  htmlspecialchars($data["date_creation_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($data["login"]) ?> </a> et modifié le <?=  htmlspecialchars($data["date_update_fr"]) ?></em>
                         <?php
                         if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
-                            <a class="text-info a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($data["ID"]) ?>"><span class="far fa-edit"> Modifier</a>
+                            <a class="text-info a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($data["ID"]) ?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php }; ?>
                     </div>
                     <div class="card-body text-body">
@@ -210,8 +210,10 @@
                     </div>
                 </div>
                 <?php 
-                if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
-                    <a class="text-info" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"> Modifier l'article<a> <?php 
+                    if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { 
+                ?>
+                        <a class="text-info" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
+                <?php 
                 }; 
                 ?>
         </section>
