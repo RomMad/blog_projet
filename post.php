@@ -53,6 +53,17 @@
        $activepageLink_2 = "";
        $activepageLink_3 = "active disabled";
    };
+   if ($page==1) {
+    $prevPage = 1;
+    $prevPageLink = "disabled";
+    $prevPageColorLink = "";
+    $pageLink_1 = $page;
+    $pageLink_2 = $page+1;
+    $pageLink_3 = $page+2;    
+    $activepageLink_1 = "active disabled";
+    $activepageLink_2 = "";
+    $activepageLink_3 = ""; 
+    };
    if ($page>1) {
        $pageLink_1 = $page-1;
        $pageLink_2 = $page;
@@ -60,36 +71,27 @@
        $prevPage = $page-1;
        $prevPageLink = "";
        $prevPageColorLink = "text-info";
-   } else {
-       $prevPage = 1;
-       $prevPageLink = "disabled";
-       $prevPageColorLink = "";
-       $pageLink_1 = $page;
-       $pageLink_2 = $page+1;
-       $pageLink_3 = $page+2;    
-       $activepageLink_1 = "active disabled";
-       $activepageLink_2 = "";
-       $activepageLink_3 = ""; 
    };
+
    if ($nbPages==2 && $page==2) {
-    $nextPage = $page;
-    $nextPageLink = "disabled";
-    $nextPageColorLink = "";
-    $pageLink_1 = $page-1;
-    $pageLink_2 = $page;
-    $activepageLink_1 = "";
-    $activepageLink_2 = "active disabled";
+        $nextPage = $page;
+        $nextPageLink = "disabled";
+        $nextPageColorLink = "";
+        $pageLink_1 = $page-1;
+        $pageLink_2 = $page;
+        $activepageLink_1 = "";
+        $activepageLink_2 = "active disabled";
    };
-   if ($nbPages==3 && $page==3) {
-    $nextPage = $page;
-    $nextPageLink = "disabled";
-    $nextPageColorLink = "";
-    $pageLink_1 = $page-2;
-    $pageLink_2 = $page-1;
-    $pageLink_3 = $page;
-    $activepageLink_1 = "";
-    $activepageLink_2 = "";
-    $activepageLink_3 = "active disabled";
+   if ($page==$nbPages) {
+        $nextPage = $page;
+        $nextPageLink = "disabled";
+        $nextPageColorLink = "";
+        $pageLink_1 = $page-2;
+        $pageLink_2 = $page-1;
+        $pageLink_3 = $page;
+        $activepageLink_1 = "";
+        $activepageLink_2 = "";
+        $activepageLink_3 = "active disabled";
    };
 
     var_dump($_POST);    
