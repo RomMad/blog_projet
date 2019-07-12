@@ -18,13 +18,19 @@
         $nbPages = $nbPosts["nb_Posts"] / $page;
         $maxPost =  $page*5;
         $minPost = $maxPost-5;
-
     } else  {
         $nbPages = $nbPosts["nb_Posts"] / 5;
         $page = 1;
         $minPost = 0;
         $maxPost = 5;
     };
+
+    $pageLink_1 = $page-1;
+    $pageLink_2 = $page;
+    $pageLink_3 = $page+1;
+    $activepageLink_1 = "";
+    $activepageLink_2 = "active";
+    $activepageLink_3 = "";
 
     if ($page>1) {
         $prevPage = $page-1;
@@ -34,6 +40,12 @@
         $prevPage = 1;
         $prevPageLink = "disabled";
         $prevPageColorLink = "";
+        $pageLink_1 = $page;
+        $pageLink_2 = $page+1;
+        $pageLink_3 = $page+2;    
+        $activepageLink_1 = "active";
+        $activepageLink_2 = "";
+        $activepageLink_3 = ""; 
     };
     if ($page<$nbPages) {
         $nextPage = $page+1;
@@ -43,9 +55,13 @@
         $nextPage = $page;
         $nextPageLink = "disabled";
         $nextPageColorLink = "";
+        $pageLink_1 = $page-2;
+        $pageLink_2 = $page-1;
+        $pageLink_3 = $page;
+        $activepageLink_1 = "";
+        $activepageLink_2 = "";
+        $activepageLink_3 = "active";
     };
-
-
 
     // Récupère les derniers articles
     $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.content, p.status, DATE_FORMAT(p.date_creation, \"%d/%m/%Y à %H:%i\") AS date_creation_fr 
@@ -79,9 +95,9 @@
                     <li class="page-item <?= $prevPageLink ?>">
                     <a class="page-link <?= $prevPageColorLink ?>"href="blog.php?page=<?= $prevPage ?>" tabindex="-1" aria-disabled="true">Précédent</a>
                     </li>
-                    <li class="page-item"><a class="page-link text-info" href="blog.php?page=<?= $page ?>"><?= $page ?></a></li>
-                    <li class="page-item"><a class="page-link text-info" href="blog.php?page=<?= $page+1 ?>"><?= $page+1 ?></a></li>
-                    <li class="page-item"><a class="page-link text-info" href="blog.php?page=<?= $page+2 ?>"><?= $page+2 ?></a></li>
+                    <li class="page-item <?= $activepageLink_1 ?>"><a class="page-link text-info" href="blog.php?page=<?= $pageLink_1 ?>"><?= $pageLink_1 ?></a></li>
+                    <li class="page-item <?= $activepageLink_2 ?>"><a class="page-link text-info" href="blog.php?page=<?= $pageLink_2 ?>"><?= $pageLink_2 ?></a></li>
+                    <li class="page-item <?= $activepageLink_3 ?>"><a class="page-link text-info" href="blog.php?page=<?= $pageLink_3 ?>"><?= $pageLink_3 ?></a></li>
                     <li class="page-item <?= $nextPageLink ?>">
                     <a class="page-link <?= $nextPageColorLink ?>"" href="blog.php?page=<?= $nextPage ?>">Suivant</a>
                     </li>
