@@ -174,6 +174,7 @@
 
     <div class="container">
 
+        <!-- Affichage de l'article -->
         <section id="post">
 
                 <?php 
@@ -206,7 +207,8 @@
                 <?php 
                 if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
                     <a class="text-info" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"> Modifier l'article<a> <?php 
-                }; ?>
+                }; 
+                ?>
         </section>
 
         <!-- Formulaire d'ajout d'un commentaire -->
