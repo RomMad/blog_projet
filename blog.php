@@ -51,9 +51,11 @@
                     <?php }; ?>
                 </div>
                 <div class="card-body text-body">
-                    <?= $content ?>
+                    <div class="post_content">
+                        <?= $content ?>
+                    </div>
                     <div class="mt-4">
-                        <em><a class="text-info mt-4" href="post.php?post=<?= $post_ID ?>"><span class="fas fa-ellipsis-h"></span> En voir plus</a></em>
+                        <a href="post.php?post=<?= $post_ID ?>" class="btn btn-outline-info">Continuer la lecture <i class="fas fa-angle-right"></i></span></a>
                     </div>
                 </div>
             </div>
