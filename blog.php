@@ -15,16 +15,15 @@
     if (!empty($_GET["page"])) {
         $page = htmlspecialchars($_GET["page"]);
         // Calcul le nombre de pages par rapport aux nombre d'articles
-        $nbPages = $nbPosts["nb_Posts"] / $page;
         $maxPost =  $page*5;
         $minPost = $maxPost-5;
     } else  {
-        $nbPages = $nbPosts["nb_Posts"] / 5;
         $page = 1;
         $minPost = 0;
         $maxPost = 5;
     };
-
+    
+    $nbPages = ceil($nbPosts["nb_Posts"] / 5);
     $pageLink_1 = $page-1;
     $pageLink_2 = $page;
     $pageLink_3 = $page+1;
