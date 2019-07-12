@@ -176,7 +176,7 @@
         ON c.user_ID = u.ID
         WHERE c.id_post = :post_ID AND c.status < :status 
         ORDER BY c.date_creation DESC
-        LIMIT 0, 5");
+        LIMIT  $minComment,  $maxComment");
         $req->execute(array(
             "post_ID" => $post_ID,
             "status" => 2
