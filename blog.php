@@ -22,6 +22,7 @@
         $maxPost = 5;
     };
 
+    $link= "blog.php";
     $nbPages = ceil($nbPosts["nb_Posts"] / 5);
     $pageLink_1 = $page-1;
     $pageLink_2 = $page;

@@ -167,20 +167,6 @@
 
         <section id="post">
 
-                <?php 
-                    if (isset($_SESSION["flash"])) {
-                        ?>
-                        <div id="msg-profil" class="alert alert-<?= $_SESSION["flash"]["type"] ?> alert-dismissible fade show" role="alert">                     
-                            <?= $_SESSION["flash"]["msg"] ?>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button> 
-                        </div>
-                        <?php
-                        unset($_SESSION["flash"]);
-                    };
-                ?>
-
                 <div class="card">
                     <div class="card-header bg-dark text-light">
                         <h1><?= htmlspecialchars($data["title"]) ?></h1>
@@ -202,8 +188,24 @@
 
         <!-- Formulaire d'ajout d'un commentaire -->
         <section id="form-comment">
+
+        <?php 
+                    if (isset($_SESSION["flash"])) {
+                        ?>
+                        <div id="msg-profil" class="alert alert-<?= $_SESSION["flash"]["type"] ?> alert-dismissible fade show" role="alert">                     
+                            <?= $_SESSION["flash"]["msg"] ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button> 
+                        </div>
+                        <?php
+                        unset($_SESSION["flash"]);
+                    };
+                ?>
+
             <div class="row">
-                <form action="post.php?post=<?= $post_ID ?>" method="post" class="col-sm-12 col-md-6 mt-4">
+                
+                <form action="post.php?post=<?= $post_ID ?>#form-comment" method="post" class="col-sm-12 col-md-6 mt-4">
                     <h2 class="h3 mb-4">Nouveau commentaire</h2>
                     <div class="form-group">
                         <div class="row">
@@ -252,7 +254,7 @@
                                     <?php                        
                                         if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
                                             <div>
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($data["ID"]) ?>&action=erase" onclick="if(window.confirm('Voulez-vous vraiment supprimer le commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($data["ID"]) ?>&action=erase#comments" onclick="if(window.confirm('Voulez-vous vraiment supprimer le commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
                                             </div>
                                         <?php
                                         };
