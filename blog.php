@@ -12,29 +12,30 @@
     var_dump($_POST);
     // Vérification si informations dans variable POST
     if (!empty($_POST)) {
-        $_SESSION["nbDisplayedPosts"] = htmlspecialchars($_POST["nbDisplayedPosts"]);
+        $_SESSION["nbDisplayedPosts"] = htmlspecialchars($_POST["nbDisplayed"]);
     };
     if (!isset($_SESSION["nbDisplayedPosts"])) {
         $_SESSION["nbDisplayedPosts"] = 5;
     };
-    $nbDisplayedPosts = $_SESSION["nbDisplayedPosts"];
+    $nbDisplayed = $_SESSION["nbDisplayedPosts"];
 
     var_dump($_GET);  
     // Vérification si informations dans variable GET
     if (!empty($_GET["page"])) {
         $page = htmlspecialchars($_GET["page"]);
         // Calcul le nombre de pages par rapport aux nombre d'articles
-        $maxPost =  $page*$nbDisplayedPosts;
-        $minPost = $maxPost-$nbDisplayedPosts;
+        $maxPost =  $page*$nbDisplayed;
+        $minPost = $maxPost-$nbDisplayed;
     } else  {
         $page = 1;
         $minPost = 0;
-        $maxPost = $nbDisplayedPosts;
+        $maxPost = $nbDisplayed;
     };
 
-    $link= "blog.php";
-    $ancre= "";
-    $nbPages = ceil($nbPosts["nb_Posts"] / $nbDisplayedPosts);
+    $linkNbDisplayed= "blog.php#blog";
+    $linkPagination= "blog.php";
+    $ancrePagination= "#blog";
+    $nbPages = ceil($nbPosts["nb_Posts"] / $nbDisplayed);
     $pageLink_1 = $page-1;
     $pageLink_2 = $page;
     $pageLink_3 = $page+1;
@@ -126,23 +127,11 @@
 
         <section id="blog">
 
-            <div class="row">
-                <div class="col-md-6">
-                    <form action="blog.php" method="post" class="form-inline">
-                        <label class="mr-2" for="nbDisplayedPosts">Nb d'articles affichés</label>
-                        <select name="nbDisplayedPosts" id="nbDisplayedPosts" class="custom-select mr-sm-2" >
-                            <option value="5" <?= $nbDisplayedPosts==5 ? "selected" : "" ?> >5</option>
-                            <option value="10" <?= $nbDisplayedPosts==10 ? "selected" : "" ?> >10</option>
-                            <option value="15" <?= $nbDisplayedPosts==15 ? "selected" : "" ?> >15</option>
-                            <option value="20" <?= $nbDisplayedPosts==20 ? "selected" : "" ?> >20</option>
-                        </select>
-                        <button type="submit" class="btn btn-info">OK</button>
-                    </form>
-                </div>
-                <div class="col-md-6">
-                    <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
-                </div>
-            </div>
+        <div class="mt-4 mb-4">
+            <a class="text-info" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+         </div>
+
+            <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
             <?php
                 while ($data = $req->fetch()) {
@@ -178,11 +167,12 @@
             <?php
             }
             ?>  
-            <div class="mt-4">
-                <a class="text-info" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article<a>
-            </div>
 
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+
+            <div class="mt-4 mb-4">
+                <a class="text-info" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+            </div>
 
             </section>
 

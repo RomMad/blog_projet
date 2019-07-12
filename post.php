@@ -93,29 +93,30 @@
     $nbComments = $req->fetch();
     echo $nbComments["nb_comments"];
 
-    if (!empty($_POST["nbDisplayedComments"])) {
-        $_SESSION["nbDisplayedComments"] = htmlspecialchars($_POST["nbDisplayedComments"]);
+    if (!empty($_POST["nbDisplayed"])) {
+        $_SESSION["nbDisplayedComments"] = htmlspecialchars($_POST["nbDisplayed"]);
     };
     if (!isset($_SESSION["nbDisplayedComments"])) {
         $_SESSION["nbDisplayedComments"] = 5;
     };
-    $nbDisplayedComments = $_SESSION["nbDisplayedComments"];
+    $nbDisplayed = $_SESSION["nbDisplayedComments"];
 
 
   if (!empty($_GET["page"])) {
       $page = htmlspecialchars($_GET["page"]);
       // Calcul le nombre de pages par rapport aux nombre d'articles
-      $maxComment =  $page*$nbDisplayedComments;
-      $minComment = $maxComment-$nbDisplayedComments;
+      $maxComment =  $page*$nbDisplayed;
+      $minComment = $maxComment-$nbDisplayed;
   } else  {
       $page = 1;
       $minComment = 0;
-      $maxComment = $nbDisplayedComments;
+      $maxComment = $nbDisplayed;
   };
   
-  $link= "post.php";
-  $ancre= "#comments";
-  $nbPages = ceil($nbComments["nb_comments"] / $nbDisplayedComments);
+  $linkNbDisplayed= "post.php?" . $post_ID . "#form-comment";
+  $linkPagination= "post.php";
+  $ancrePagination= "#comments";
+  $nbPages = ceil($nbComments["nb_comments"] / $nbDisplayed);
   $pageLink_1 = $page;
   $pageLink_2 = $page+1;
   $pageLink_3 = $page+2;
@@ -277,23 +278,7 @@
             <div class="row">
                 <div class="col-sm-12 col-md-6 mt-2">
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <form action="post.php?post=<?= $post_ID ?>#comments" method="post" class="form-inline">
-                            <label class="mr-2" for="nbDisplayedComments">Afficher</label>
-                            <select name="nbDisplayedComments" id="nbDisplayedComments" class="custom-select mr-sm-2" >
-                                <option value="5" <?= $nbDisplayedComments==5 ? "selected" : "" ?> >5</option>
-                                <option value="10" <?= $nbDisplayedComments==10 ? "selected" : "" ?> >10</option>
-                                <option value="15" <?= $nbDisplayedComments==15 ? "selected" : "" ?> >15</option>
-                                <option value="20" <?= $nbDisplayedComments==20 ? "selected" : "" ?> >20</option>
-                            </select>
-                            <button type="submit" class="btn btn-info">OK</button>
-                        </form>
-                    </div>
-                    <div class="col-md-6">
-                        <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
-                    </div>
-                </div>
+                <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
             
                     <h2 class="h3 mb-4">Commentaires</h2>
                     <p> <?= isset($infoComments) ? $infoComments : "" ?> </p>
