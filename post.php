@@ -80,7 +80,17 @@
     $activepageLink_1 = "";
     $activepageLink_2 = "active disabled";
    };
-
+   if ($nbPages==3 && $page==3) {
+    $nextPage = $page;
+    $nextPageLink = "disabled";
+    $nextPageColorLink = "";
+    $pageLink_1 = $page-2;
+    $pageLink_2 = $page-1;
+    $pageLink_3 = $page;
+    $activepageLink_1 = "";
+    $activepageLink_2 = "";
+    $activepageLink_3 = "active disabled";
+   };
 
     var_dump($_POST);    
     // Vérification si informations dans variable POST
