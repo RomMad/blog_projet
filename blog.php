@@ -170,8 +170,8 @@
                     <div class="post_content">
                         <?= $content ?>
                     </div>
-                    <div class="mt-4">
-                        <a href="post.php?post=<?= $post_ID ?>" class="btn btn-outline-info">Continuer la lecture <i class="fas fa-angle-right"></i></span></a>
+                    <div class="">
+                        <a href="post.php?post=<?= $post_ID ?>" class="btn btn-outline-info">Continuer la lecture <span class="fas fa-angle-right"></span></a>
                     </div>
                 </div>
             </div>
