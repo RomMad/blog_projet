@@ -20,22 +20,22 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-end">
                     <li class="page-item <?= $prevPageLink ?>">
-                    <a class="page-link <?= $prevPageColorLink ?> font-weight-bold"href="<?= $linkPagination ?>?page=<?= $prevPage ?><?= $ancrePagination ?>" tabindex="-1" aria-disabled="true"><</a>
+                    <a class="page-link <?= $prevPageColorLink ?> font-weight-bold"href="<?= $linkPagination ?>?page=<?= $prevPage . $anchorPagination ?>" tabindex="-1" aria-disabled="true"><</a>
                     </li>
                     <?php 
                         if ($page>2 && $nbPages>3) {
                     ?>
-                            <li class="page-item"><a class="page-link text-info" href="<?= $linkPagination ?>?page=1"<?= $ancrePagination ?>>1...</a></li>
-                    <?php 
+                            <li class="page-item"><a class="page-link text-info" href="<?= $linkPagination ?>?page=1<?= $anchorPagination ?>">1...</a></li>
+                    <?php                                                               
                         };
                     ?>
-                    <li class="page-item <?= $activepageLink_1 ?>"><a class="page-link text-info" href="<?= $linkPagination ?>?page=<?= $pageLink_1 ?><?= $ancrePagination ?>"><?= $pageLink_1 ?></a></li>
-                    <li class="page-item <?= $activepageLink_2 ?>"><a class="page-link text-info" href="<?= $linkPagination ?>?page=<?= $pageLink_2 ?><?= $ancrePagination ?>"><?= $pageLink_2 ?></a></li>
+                    <li class="page-item <?= $activepageLink_1 ?>"><a class="page-link text-info" href="<?= $linkPagination ?>?page=<?= $pageLink_1 . $anchorPagination ?>"><?= $pageLink_1 ?></a></li>
+                    <li class="page-item <?= $activepageLink_2 ?>"><a class="page-link text-info" href="<?= $linkPagination ?>?page=<?= $pageLink_2 . $anchorPagination ?>"><?= $pageLink_2 ?></a></li>
 
                     <?php 
                         if ($nbPages>2) {
                     ?>
-                            <li class="page-item <?= $activepageLink_3 ?>"><a class="page-link text-info" href="<?= $linkPagination ?>?page=<?= $pageLink_3 ?><?= $ancrePagination ?>"><?= $pageLink_3 ?></a></li>
+                            <li class="page-item <?= $activepageLink_3 ?>"><a class="page-link text-info" href="<?= $linkPagination ?>?page=<?= $pageLink_3 . $anchorPagination ?>"><?= $pageLink_3 ?></a></li>
                     <?php 
                         };
                     ?>
@@ -43,12 +43,12 @@
                     <?php 
                         if ($page<$nbPages-1 && $nbPages>3) {
                     ?>
-                            <li class="page-item"><a class="page-link text-info" href="<?= $linkPagination ?>?page=<?= $nbPages ?><?= $ancrePagination ?>">...<?= $nbPages ?></a></li>
+                            <li class="page-item"><a class="page-link text-info" href="<?= $linkPagination ?>?page=<?= $nbPages . $anchorPagination ?>">...<?= $nbPages ?></a></li>
                     <?php 
                         };
                     ?>
                         <li class="page-item <?= $nextPageLink ?>">
-                    <a class="page-link <?= $nextPageColorLink ?> font-weight-bold"" href="<?= $linkPagination ?>?page=<?= $nextPage ?><?= $ancrePagination ?>">></a>
+                    <a class="page-link <?= $nextPageColorLink ?> font-weight-bold"" href="<?= $linkPagination ?>?page=<?= $nextPage . $anchorPagination ?>">></a>
                     </li>
                 </ul>
             </nav>
