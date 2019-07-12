@@ -139,6 +139,14 @@
         $ID = htmlspecialchars($_GET["comment"]);
         $req = $bdd->prepare("DELETE FROM comments WHERE ID = ?");
         $req->execute(array($ID));
+
+        $msgComment = "Le commentaire a été supprimé.";
+        $typeAlert = "warning";
+
+        $_SESSION["flash"] = array(
+            "msg" => $msgComment,
+            "type" =>  $typeAlert
+        );
     };
 
     // Récupère le post
@@ -273,7 +281,7 @@
                                     <?php                        
                                         if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$data["user_ID"]) { ?>
                                             <div>
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($data["ID"]) ?>&action=erase" onclick="if(window.confirm('Voulez-vous vraiment supprimer le commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($data["ID"]) ?>&action=erase#form-comment" onclick="if(window.confirm('Voulez-vous vraiment supprimer le commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
                                             </div>
                                         <?php
                                         };
