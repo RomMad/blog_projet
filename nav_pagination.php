@@ -4,7 +4,7 @@
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-end">
                 <li class="page-item <?= $prevPageLink ?>">
-                <a class="page-link <?= $prevPageColorLink ?>"href="<?= $link ?>?page=<?= $prevPage ?><?= $ancre ?>" tabindex="-1" aria-disabled="true"><</a>
+                <a class="page-link <?= $prevPageColorLink ?> font-weight-bold"href="<?= $link ?>?page=<?= $prevPage ?><?= $ancre ?>" tabindex="-1" aria-disabled="true"><</a>
                 </li>
                 <?php 
                     if ($page>2 && $nbPages>3) {
@@ -32,7 +32,7 @@
                     };
                 ?>
                     <li class="page-item <?= $nextPageLink ?>">
-                <a class="page-link <?= $nextPageColorLink ?>"" href="<?= $link ?>?page=<?= $nextPage ?><?= $ancre ?>">></a>
+                <a class="page-link <?= $nextPageColorLink ?> font-weight-bold"" href="<?= $link ?>?page=<?= $nextPage ?><?= $ancre ?>">></a>
                 </li>
             </ul>
         </nav>

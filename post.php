@@ -218,7 +218,7 @@
                 <div class="card">
                     <div class="card-header bg-dark text-light">
                         <h1><?= htmlspecialchars($dataPost["title"]) ?></h1>
-                        <em>Créé le <?=  htmlspecialchars($dataPost["date_creation_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($dataPost["login"]) ?> </a> et modifié le <?=  htmlspecialchars($dataPost["date_update_fr"]) ?></em>
+                        <em>Créé le <?= htmlspecialchars($dataPost["date_creation_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($dataPost["login"]) ?> </a> et modifié le <?=  htmlspecialchars($dataPost["date_update_fr"]) ?></em>
                         <?php
                         if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$dataPost["user_ID"]) { ?>
                             <a class="text-info a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($dataPost["ID"]) ?>"><span class="far fa-edit"></span> Modifier</a>
@@ -279,7 +279,7 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <form action="post.php?post=<?= $post_ID ?>" method="post" class="form-inline">
+                        <form action="post.php?post=<?= $post_ID ?>#comments" method="post" class="form-inline">
                             <label class="mr-2" for="nbDisplayedComments">Afficher</label>
                             <select name="nbDisplayedComments" id="nbDisplayedComments" class="custom-select mr-sm-2" >
                                 <option value="5" <?= $nbDisplayedComments==5 ? "selected" : "" ?> >5</option>
