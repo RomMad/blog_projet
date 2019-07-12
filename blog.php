@@ -90,19 +90,7 @@
 
         <section id="blog">
 
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item <?= $prevPageLink ?>">
-                    <a class="page-link <?= $prevPageColorLink ?>"href="blog.php?page=<?= $prevPage ?>" tabindex="-1" aria-disabled="true">Précédent</a>
-                    </li>
-                    <li class="page-item <?= $activepageLink_1 ?>"><a class="page-link text-info" href="blog.php?page=<?= $pageLink_1 ?>"><?= $pageLink_1 ?></a></li>
-                    <li class="page-item <?= $activepageLink_2 ?>"><a class="page-link text-info" href="blog.php?page=<?= $pageLink_2 ?>"><?= $pageLink_2 ?></a></li>
-                    <li class="page-item <?= $activepageLink_3 ?>"><a class="page-link text-info" href="blog.php?page=<?= $pageLink_3 ?>"><?= $pageLink_3 ?></a></li>
-                    <li class="page-item <?= $nextPageLink ?>">
-                    <a class="page-link <?= $nextPageColorLink ?>"" href="blog.php?page=<?= $nextPage ?>">Suivant</a>
-                    </li>
-                </ul>
-            </nav>
+        <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
             <?php
                 while ($data = $req->fetch()) {
@@ -142,21 +130,9 @@
                 <a class="text-info" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article<a>
             </div>
 
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center ">
-                    <li class="page-item disabled">
-                    <a class="page-link text-info" href="#" tabindex="-1" aria-disabled="true">Précédent</a>
-                    </li>
-                    <li class="page-item"><a class="page-link text-info" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link text-info" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link text-info" href="#">3</a></li>
-                    <li class="page-item text-info">
-                    <a class="page-link text-info" href="#">Suivant</a>
-                    </li>
-                </ul>
-            </nav>
-            
-        </section>
+            <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+
+            </section>
 
     </div>
 
