@@ -23,6 +23,7 @@
     };
 
     $link= "blog.php";
+    $ancre= "";
     $nbPages = ceil($nbPosts["nb_Posts"] / 5);
     $pageLink_1 = $page-1;
     $pageLink_2 = $page;

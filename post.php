@@ -87,6 +87,8 @@
         $maxComment = 5;
     };
     
+    $link= "post.php";
+    $ancre= "#comments";
     $nbPages = ceil($nb_comments["nb_comments"] / 5);
     $pageLink_1 = $page;
     $pageLink_2 = $page+1;
@@ -229,7 +231,7 @@
             <div class="row">
                 <div class="col-sm-12 col-md-6 mt-2">
 
-                    <?php include("nav_pagination_post.php"); ?> <!-- Ajoute la barre de pagination -->
+                    <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
                     <h2 class="h3 mb-4">Commentaires</h2>
                     <p> <?= isset($infoComments) ? $infoComments : "" ?> </p>
@@ -265,7 +267,7 @@
                         }
                     ?>
 
-                    <?php include("nav_pagination_post.php"); ?> <!-- Ajoute la barre de pagination -->
+                    <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
                 </div>
             </div>
