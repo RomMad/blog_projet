@@ -294,21 +294,21 @@
                                         if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$dataComment["user_ID"]) { 
                                     ?>
                                             <div>
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($dataComment["ID"]) ?>&action=erase#form-comment" 
-                                                    onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
-                                                    <span class="fas fa-times text-danger"></span>
-                                                </a>
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($dataComment["ID"]) ?>&action=erase#form-comment" onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
                                             </div>
                                         <?php
                                         } else {
+                                            if($dataComment["status"]==2) {
+                                        ?>
+                                                <div class="report-comment"><span class="fas fa-flag text-danger"></span></div>
+                                        <?php                                       
+                                            } else {
                                         ?>
                                             <div class="report-comment">
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($dataComment["ID"]) ?>&action=report#form-comment" 
-                                                    onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
-                                                    <span class="far fa-flag text-info"> Signaler</span>
-                                                </a>
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($dataComment["ID"]) ?>&action=report#form-comment" onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="far fa-flag text-info"> Signaler</span></a>
                                             </div>
                                         <?php
+                                            };
                                         };
                                         ?>
                                 </div>
