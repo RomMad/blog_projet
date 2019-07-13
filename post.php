@@ -269,4 +269,6 @@
 
     <?php include("scripts.html"); ?>
 
+</body>
+
 </html
