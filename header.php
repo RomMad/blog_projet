@@ -23,19 +23,28 @@
                 <li class="nav-item">
                     <a class="nav-link" href="inscription.php">Inscription</a>
                 </li>
-                <!-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Page 2
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Page 2 a</a>
-                        <a class="dropdown-item" href="#">Page 2 b</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Page 2 c</a>
-                    </div>
-                </li>
-                <li class="nav-item">
+
+        <?php 
+            if (isset($_SESSION["user_status"]) && $_SESSION["user_status"]==0) {
+        ?> 
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="admin.php" id="navbarDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="admin-posts.php">Administration générale</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="admin-posts.php">Gestion des articles</a>
+                    <a class="dropdown-item" href="admin-comments.php">Gestion des commentaires</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="admin-users.php">Gestion des utilisateurs</a>
+                </div>
+            </li>
+        <?php 
+            };
+        ?>
+                <!-- <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Page 3</a>
                 </li> -->
             </ul>

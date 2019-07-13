@@ -10,15 +10,16 @@
         $pass = htmlspecialchars($_POST["pass"]);
 
         // Récupère l'ID de l'utilisateur et son password haché
-        $req = $bdd->prepare("SELECT ID, pass FROM users WHERE login = ?");
+        $req = $bdd->prepare("SELECT ID, pass, status FROM users WHERE login = ?");
         $req->execute(array($login));
         $dataUser = $req->fetch();
 
         // Vérifie si login et password existent   
         $isPasswordCorrect = password_verify($pass, $dataUser["pass"]);// Compare le password envoyé via le formulaire avec la base  
         if ($dataUser && $isPasswordCorrect) {
-            $_SESSION["user_ID"] = $dataUser["ID"];
+            $_SESSION["user_ID"] = htmlspecialchars($dataUser["ID"]);
             $_SESSION["user_login"] = $login;
+            $_SESSION["user_status"] = htmlspecialchars($dataUser["status"]);
             $message = "Vous êtes connecté.";
             $typeAlert = "success";
             header("Refresh: 2; url=index.php");
