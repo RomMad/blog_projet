@@ -7,9 +7,12 @@
         header("Location: index.php");
     } else {
         // Récupère les informations de l'utilisateur
-        $req = $bdd->prepare("SELECT * FROM users WHERE ID =?");
+        $req = $bdd->prepare("SELECT status FROM users WHERE ID =?");
         $req->execute(array($_SESSION["user_ID"]));
-        $dataUser = $req->fetch();
+        $statusUser = $req->fetch();
+        if ($statusUser["status"]!=0) {
+            header("Location: index.php");
+        };
     };
 
 ?>

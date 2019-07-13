@@ -3,7 +3,7 @@
 
     require("connection_bdd.php");
     // Redirige vers la page d'accueil si
-    if (empty($_SESSION["user_ID"]) ) {
+    if (empty($_SESSION["user_ID"])) {
         header("Location: index.php");
     } else {
         // Récupère les informations de l'utilisateur
@@ -13,7 +13,7 @@
         if ($statusUser["status"]!=0) {
             header("Location: index.php");
         };
-    ;;
+    };
 ?>
 
 <!DOCTYPE html>
