@@ -80,7 +80,7 @@
 
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
-                <table class="table table-striped table-hover">
+                <table class="table table-bordered table-striped table-hover">
                     <thead class="thead-dark">
                         <tr>
                         <th scope="col" class="align-middle">ID</th>
