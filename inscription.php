@@ -108,19 +108,7 @@
         <section id="inscription" class="row">
             <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
 
-            <?php 
-                if (isset($_SESSION["flash"])) {
-                    ?>
-                    <div id="msg-inscription" class="alert alert-<?= $_SESSION["flash"]["type"] ?> alert-dismissible fade show" role="alert">                     
-                        <?= $_SESSION["flash"]["msg"] ?>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button> 
-                    </div>
-                    <?php
-                    unset($_SESSION["flash"]);
-                };
-                ?>
+            <?php include("msg_session_flash.php") ?>
 
                 <form action="inscription.php" method="post" class="col-md-12 card shadow mt-4">
                     <div class="form-group row">

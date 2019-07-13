@@ -14,6 +14,7 @@
     var_dump($_POST);    
     // Vérification si informations dans variable POST
     if (!empty($_POST["content"])) {
+        
         if (isset($_SESSION["user_ID"])) {
             $user_ID = $_SESSION["user_ID"];
         } else {
@@ -180,19 +181,9 @@
 
         <!-- Formulaire d'ajout d'un commentaire -->
         <section id="form-comment">
-            <?php 
-                if (isset($_SESSION["flash"])) {
-                    ?>
-                    <div id="msg-profil" class="alert alert-<?= $_SESSION["flash"]["type"] ?> alert-dismissible fade show" role="alert">                     
-                        <?= $_SESSION["flash"]["msg"] ?>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button> 
-                    </div>
-                    <?php
-                    unset($_SESSION["flash"]);
-                };
-            ?>
+
+        <?php include("msg_session_flash.php") ?>
+
             <div class="row">
                 <form action="post.php?post=<?= $post_ID ?>#form-comment" method="post" class="col-sm-12 col-md-6 mt-4">
                     <h2 class="h3 mb-4">Nouveau commentaire</h2>
