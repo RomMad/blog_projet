@@ -37,8 +37,8 @@
 
                 <div  class="list-group">
                     <a href="admin-posts.php" class="list-group-item list-group-item-action text-info">Gestion des articles</a>
-                    <a href="admin-posts.php" class="list-group-item list-group-item-action text-info">Gestion des commentaires</a>
-                    <a href="admin-posts.php" class="list-group-item list-group-item-action text-info">Gestion des articles</a>
+                    <a href="admin-comments.php" class="list-group-item list-group-item-action text-info">Gestion des commentaires</a>
+                    <a href="admin-users.php" class="list-group-item list-group-item-action text-info">Gestion des articles</a>
                 </div>
 
             </div>
