@@ -92,7 +92,6 @@
     $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments WHERE id_post = ? AND status >= ? ");
     $req->execute([$post_ID,0]);
     $nbComments = $req->fetch();
-    echo $nbComments["nb_comments"];
 
     if (!empty($_POST["nbDisplayed"])) {
         $_SESSION["nbDisplayedComments"] = htmlspecialchars($_POST["nbDisplayed"]);
@@ -159,12 +158,13 @@
         <section id="post">
                 <div class="card">
                     <div class="card-header bg-dark text-light">
-                        <h1><?= htmlspecialchars($dataPost["title"]) ?></h1>
+                        <h1 class="h2"><?= htmlspecialchars($dataPost["title"]) ?></h1>
                         <em>Créé le <?= htmlspecialchars($dataPost["date_creation_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($dataPost["login"]) ?> </a> et modifié le <?=  htmlspecialchars($dataPost["date_update_fr"]) ?></em>
                         <?php
                         if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$dataPost["user_ID"]) { ?>
                             <a class="text-info a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($dataPost["ID"]) ?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php }; ?>
+                        <a href="#comments" class="badge badge-info ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_comments"] ?> </span></a>
                     </div>
                     <div class="card-body text-body">
                     <?= html_entity_decode($dataPost["content"]) ?>
