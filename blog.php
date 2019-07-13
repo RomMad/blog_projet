@@ -73,14 +73,14 @@
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
             <?php
-                while ($data = $req->fetch()) {
-                    $post_ID = htmlspecialchars($data["ID"]);
-                    $title = htmlspecialchars($data["title"]);
-                    $user_ID = htmlspecialchars($data["user_ID"]);
-                    $user_login = htmlspecialchars($data["user_login"]);
-                    $login = htmlspecialchars($data["login"]);
-                    $content = html_entity_decode($data["content"]);
-                    $date_creation_fr = htmlspecialchars($data["date_creation_fr"]);
+                while ($dataPosts = $req->fetch()) {
+                    $post_ID = htmlspecialchars($dataPosts["ID"]);
+                    $title = htmlspecialchars($dataPosts["title"]);
+                    $user_ID = htmlspecialchars($dataPosts["user_ID"]);
+                    $user_login = htmlspecialchars($dataPosts["user_login"]);
+                    $login = htmlspecialchars($dataPosts["login"]);
+                    $content = html_entity_decode($dataPosts["content"]);
+                    $date_creation_fr = htmlspecialchars($dataPosts["date_creation_fr"]);
             ?>
             
             <div class="card">
