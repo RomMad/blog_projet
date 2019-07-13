@@ -158,7 +158,7 @@
         <section id="post">
                 <div class="card">
                     <div class="card-header bg-dark text-light">
-                        <h1 class="h2"><?= htmlspecialchars($dataPost["title"]) ?></h1>
+                        <h1 class="h2 mt-2 mb-3"><?= htmlspecialchars($dataPost["title"]) ?></h1>
                         <em>Créé le <?= htmlspecialchars($dataPost["date_creation_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($dataPost["login"]) ?> </a> et modifié le <?=  htmlspecialchars($dataPost["date_update_fr"]) ?></em>
                         <?php
                         if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$dataPost["user_ID"]) { ?>
