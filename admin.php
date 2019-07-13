@@ -33,17 +33,17 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12 mx-auto mt-4">  
-                
-                <ul>
-                
-                </ul>
+            <div class="col-md-6 mt-4">
+
+                <div  class="list-group">
+                    <a href="admin-posts.php" class="list-group-item list-group-item-action text-info">Gestion des articles</a>
+                    <a href="admin-posts.php" class="list-group-item list-group-item-action text-info">Gestion des commentaires</a>
+                    <a href="admin-posts.php" class="list-group-item list-group-item-action text-info">Gestion des articles</a>
+                </div>
 
             </div>
         </div>
 
-            </div>
-        </div>
     </div>
 
     <?php include("footer.php"); ?>
