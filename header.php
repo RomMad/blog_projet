@@ -33,7 +33,7 @@
                     Admin
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="admin-posts.php">Administration générale</a>
+                    <a class="dropdown-item" href="admin.php">Administration générale</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="admin-posts.php">Gestion des articles</a>
                     <a class="dropdown-item" href="admin-comments.php">Gestion des commentaires</a>
