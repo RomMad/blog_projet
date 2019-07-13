@@ -8,6 +8,7 @@
                 <option value="10" <?= $nbDisplayed==10 ? "selected" : "" ?> >10</option>
                 <option value="15" <?= $nbDisplayed==15 ? "selected" : "" ?> >15</option>
                 <option value="20" <?= $nbDisplayed==20 ? "selected" : "" ?> >20</option>
+                <option value="50" <?= $nbDisplayed==50 ? "selected" : "" ?> >50</option>
             </select>
             <button type="submit" class="btn btn-info form-control-sm">OK</button>
         </form>
