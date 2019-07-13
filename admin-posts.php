@@ -51,7 +51,7 @@
     require("pagination.php");
 
     // Récupère les derniers articles
-    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.content, p.status, 
+    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_login, u.login, p.status, 
     DATE_FORMAT(p.date_creation, \"%d/%m/%Y %H:%i\") AS date_creation_fr, 
     DATE_FORMAT(p.date_update, \"%d/%m/%Y %H:%i\") AS date_update_fr 
     FROM posts p
