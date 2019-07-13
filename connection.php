@@ -8,21 +8,40 @@
     if (!empty($_POST)) {
         $login = htmlspecialchars($_POST["login"]);
         $pass = htmlspecialchars($_POST["pass"]);
+
         // Récupère l'ID de l'utilisateur et son password haché
         $req = $bdd->prepare("SELECT ID, pass FROM users WHERE login = ?");
         $req->execute(array($login));
-        $data = $req->fetch();
-        // Compare le password envoyé via le formulaire avec la base
-        $isPasswordCorrect = password_verify($pass, $data["pass"]);
-        // Vérifie si login et password existent
-        if ($data && $isPasswordCorrect) {
-            $_SESSION["user_ID"] = $data["ID"];
+        $dataUser = $req->fetch();
+
+        // Vérifie si login et password existent   
+        $isPasswordCorrect = password_verify($pass, $dataUser["pass"]);// Compare le password envoyé via le formulaire avec la base  
+        if ($dataUser && $isPasswordCorrect) {
+            $_SESSION["user_ID"] = $dataUser["ID"];
             $_SESSION["user_login"] = $login;
-            $infoConnection = "Vous êtes connecté.";
+            $message = "Vous êtes connecté.";
+            $typeAlert = "success";
             header("Refresh: 2; url=index.php");
         } else {
-            $infoConnection = "Login ou mot de passe incorrect.";
+            $message = "Login ou mot de passe incorrect.";
+            $typeAlert = "danger";
         };
+
+        // Vérifie si le champ login est vide
+        if (empty($login)) {
+            $message = "Veuillez saisir un Login.";
+        };
+
+        // Vérifie si l'utilisateur est déjà connecté
+        if ($login==$_SESSION["user_login"]) {
+            $message = "Vous êtes déjà connecté.";
+            $typeAlert = "warning";
+        };
+
+        $_SESSION["flash"] = array(
+            "msg" => $message,
+            "type" =>  $typeAlert
+        );
     };
 ?>
 
@@ -53,7 +72,7 @@
                 <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-info btn-block mb-4 shadow">
                 <a href="inscription.php" class="btn btn-lg btn-info btn-block mb-4 shadow">S'inscrire</a>
 
-            <?= isset($infoConnection) ? $infoConnection : "" ?>
+                <?php include("msg_session_flash.php") ?>
 
             <p class="mt-4 text-muted">© 2019</p>
             </form>
