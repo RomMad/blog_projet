@@ -14,6 +14,12 @@
         $req->execute(array($login));
         $dataUser = $req->fetch();
 
+        // Vérifie si l'utilisateur est déjà connecté
+        // if ($login==$_SESSION["user_login"]) {
+        //     $message = "Vous êtes déjà connecté.";
+        //     $typeAlert = "warning";
+        // };
+
         // Vérifie si login et password existent   
         $isPasswordCorrect = password_verify($pass, $dataUser["pass"]);// Compare le password envoyé via le formulaire avec la base  
         if ($dataUser && $isPasswordCorrect) {
@@ -31,12 +37,6 @@
         // Vérifie si le champ login est vide
         if (empty($login)) {
             $message = "Veuillez saisir un Login.";
-        };
-
-        // Vérifie si l'utilisateur est déjà connecté
-        if ($login==$_SESSION["user_login"]) {
-            $message = "Vous êtes déjà connecté.";
-            $typeAlert = "warning";
         };
 
         $_SESSION["flash"] = array(
