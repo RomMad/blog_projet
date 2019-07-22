@@ -111,6 +111,9 @@
                         ?>
                     </tbody>
                 </table>
+                
+                <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+                
             </section>
         </div>
     </div>
