@@ -73,6 +73,8 @@
                 <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-info btn-block mb-4 shadow">
                 <a href="inscription.php" class="btn btn-lg btn-info btn-block mb-4 shadow">S'inscrire</a>
 
+                <a href="forgotpassword.php" class="text-info">Login ou mot de passe oublié ?</a>
+
                 <?php include("msg_session_flash.php") ?>
 
             <p class="mt-4 text-muted">© 2019</p>
