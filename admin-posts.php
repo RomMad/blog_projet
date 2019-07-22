@@ -83,6 +83,7 @@
                 <table class="table table-bordered table-striped table-hover">
                     <thead class="thead-dark">
                         <tr>
+                        <th scope="col" class="align-middle"><input type="checkbox" name="all-checkbox" id="all-checkbox" /><label for="all-checkbox"></label></th>
                         <th scope="col" class="align-middle">ID</th>
                         <th scope="col" class="align-middle">Titre</th>
                         <th scope="col" class="align-middle">Auteur</th>
@@ -96,7 +97,8 @@
                             while ($dataPosts=$req->fetch()) {
                         ?>
                                 <tr>
-                                    <th scope="row"><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-info"><?= $dataPosts["ID"] ?></a></th>
+                                <th scope="row"><input type="checkbox" name="<?= $dataPosts["ID"] ?>" id="<?= $dataPosts["ID"] ?>" class=""/><label for="<?= $dataPosts["ID"] ?>"></label></th>
+                                    <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-info"><?= $dataPosts["ID"] ?></a></td>
                                     <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-info font-weight-bold"><?= $dataPosts["title"] ?></a></td>
                                     <td><?= $dataPosts["user_login"] ?></td>
                                     <td><?= $dataPosts["status"] ?></td>
