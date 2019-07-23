@@ -34,7 +34,7 @@
 
     // Initialisation des variables pour la pagination
     $linkNbDisplayed= "blog.php#blog";
-    $linkPagination= "blog.php";
+    $linkPagination= "blog.php?";
     $anchorPagination= "#blog";
     $nbPages = ceil($nbPosts["nb_Posts"] / $nbDisplayed);
     require("pagination.php");

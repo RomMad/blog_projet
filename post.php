@@ -115,7 +115,7 @@
   
     // Initialisation des variables pour la pagination
     $linkNbDisplayed= "post.php?" . $post_ID . "#form-comment";
-    $linkPagination= "post.php";
+    $linkPagination= "post.php?";
     $anchorPagination= "#comments";
     $nbPages = ceil($nbComments["nb_comments"] / $nbDisplayed);
     require("pagination.php");
