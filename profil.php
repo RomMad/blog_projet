@@ -240,7 +240,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <div class="float-right">
-                                            <input type="submit" value="Mettre à jour" id="validation" class="btn btn-info shadow">
+                                            <input type="submit" value="Mettre à jour" id="updateInfo" class="btn btn-info shadow">
                                         </div>
                                     </div>
                                 </div>
@@ -281,7 +281,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <div class="float-right">
-                                            <input type="submit" value="Mettre à jour" id="validation"
+                                            <input type="submit" value="Mettre à jour" id="updatePassword"
                                                 class="btn btn-info shadow">
                                         </div>
                                     </div>
@@ -309,6 +309,8 @@
     <?php include("footer.php"); ?>
 
     <?php include("scripts.html"); ?>
+    <script src="js/show_password.js"></script>
+    <script src="js/show_confirm_password.js"></script>
 
 </body>
 

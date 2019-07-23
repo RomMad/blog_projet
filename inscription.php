@@ -195,7 +195,9 @@
     <?php include("footer.php"); ?>
 
     <?php include("scripts.html"); ?>
-
+    <script src="js/show_password.js"></script>
+    <script src="js/show_confirm_password.js"></script>
+    
 </body>
 
 </html
