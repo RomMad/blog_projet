@@ -1,6 +1,6 @@
 <header id="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark my-3 py-3 shadow">
-        <a class="navbar-brand text-info" href="#">Blog</a>
+        <a class="navbar-brand text-info" href="index.php">Blog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -11,39 +11,35 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="index.php"><span class="fas fa-home"></span> Accueil <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="blog.php">Blog</a>
-                </li>
+                <?php 
+                
+                if (isset($_SESSION["userStatus"]) && $_SESSION["userStatus"]==0) {
+                ?> 
                 <li class="nav-item">
                     <a class="nav-link" href="edit_post.php?type=1">Nouvel article</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="connection.php">Connexion</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="inscription.php">Inscription</a>
-                </li>
+                <?php 
+                };
 
-        <?php 
-            if (isset($_SESSION["userStatus"]) && $_SESSION["userStatus"]==0) {
-        ?> 
+                if (isset($_SESSION["userStatus"]) && $_SESSION["userStatus"]==0) {
+                ?> 
                 <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="admin.php" id="navbarDropdown" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Admin
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="admin.php">Administration générale</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="admin-posts.php">Gestion des articles</a>
-                    <a class="dropdown-item" href="admin-comments.php">Gestion des commentaires</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="admin-users.php">Gestion des utilisateurs</a>
-                </div>
-            </li>
-        <?php 
-            };
-        ?>
+                    <a class="nav-link dropdown-toggle" href="admin.php" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admin
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="admin.php">Administration générale</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="admin-posts.php">Gestion des articles</a>
+                        <a class="dropdown-item" href="admin-comments.php">Gestion des commentaires</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="admin-users.php">Gestion des utilisateurs</a>
+                    </div>
+                </li>
+                <?php 
+                };
+                ?>
                 <!-- <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Page 3</a>
                 </li> -->

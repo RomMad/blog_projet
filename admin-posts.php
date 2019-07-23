@@ -45,7 +45,7 @@
     // Vérification si informations dans variable POST
     if (!empty($_POST["nbDisplayed"])) {
         $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-        $_SESSION["nbDisplayedPostsAdmin"] = $nbDisplayed;
+        $_SESSION["adminNbDisplayedPosts"] = $nbDisplayed;
     } else if (!empty($_SESSION["adminNbDisplayedPosts"])) {
         $nbDisplayed =  $_SESSION["adminNbDisplayedPosts"];
     } else {
