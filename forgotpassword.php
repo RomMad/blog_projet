@@ -34,14 +34,12 @@
                     <title>Mot de passe oublié</title>
                 </head>
                 <body>
-                <p>Bonjour, </p>
-                <p>Vous avez oublié votre mot de passe. 
-                <br />Veuillez cliquer sur le lien ci-dessous pour réinitiliaser votre mot de passe : 
-                </p>
-                <a href=" . $link . ">" . $link . "</a>
-                <p>Si vous n'êtes pas à l'origine de cette demande, merci d'ignorer ce message. </p>
-                <p>--<br />
-                Ceci est un message automatique, merci de ne pas répondre à ce message. </p>
+                    <p>Bonjour, </p>
+                    <p>Vous avez fait une demande de réinitialisation de votre mot de passe. <br />
+                    Veuillez cliquer sur le lien ci-dessous pour réinitiliaser votre mot de passe : </p>
+                    <a href=" . $link . ">" . $link . "</a>
+                    <p>Si vous n'êtes pas à l'origine de cette demande, merci d'ignorer ce message. </p>
+                    <p>--<br />Ceci est un message automatique, merci de ne pas y répondre. </p>
                 </body>
             </html>";
         
