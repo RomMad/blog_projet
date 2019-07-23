@@ -5,78 +5,76 @@ session_start();
 require("connection_bdd.php");
 
 var_dump($_GET);
-if (isset($_GET["token"])) {
+var_dump($_POST);
+
+// Vérifie si informations dans variables POST et GET
+if (!empty($_POST) && isset($_GET["token"])) {
     $token = htmlspecialchars($_GET["token"]);
+    $email = htmlspecialchars($_POST["email"]);
+    $new_pass = htmlspecialchars($_POST["new_pass"]);
+    $new_pass_confirm = htmlspecialchars($_POST["new_pass_confirm"]);
+
     $validation = true;
-    $msgProfil = "";
+    $msgReset = "";
     $typeAlert = "danger";
 
-    // Vérifie si le token est correct
-    $req = $bdd->prepare("SELECT ID, reset_date FROM reset_passwords WHERE token = ?");
-    $req->execute(array($token));
+    // Vérifie si le token est existe
+    $req = $bdd->prepare("SELECT r.user_ID, r.reset_date, u.email
+    FROM reset_passwords r
+    LEFT JOIN users u
+    ON r.user_ID = u.ID
+    WHERE token = ? AND email = ?
+    ");
+    $req->execute(array(
+        $token,
+        $email
+    ));
     $dataResetPassword = $req->fetch();
+    
+    // Calcule l'intervalle entre le moment de demande de réinitialisation et maintenant
+    $dateNow = new DateTime("now", timezone_open("Europe/Paris"));
+    $dateResetPassword = new DateTime($dataResetPassword["reset_date"], timezone_open("Europe/Paris"));
+    $interval = date_timestamp_get($dateNow)-date_timestamp_get($dateResetPassword);
+    $delay = 15*60; // 15 minutes x 60 secondes = 900 secondes
 
+    // Vérifie si le token et l'adresse email sont corrects
     if (!$dataResetPassword) {
-        $msgProfil = $msgProfil . "<li>Le lien de réinitialisation est incorrect.</li>";
+        $msgReset = $msgReset . "<li>Le lien de réinitialisation ou l'adresse email sont incorrects.</li>";
         $validation = false;
     };
-
-    $dateNow = new DateTime("now");
-    $dataResetPassword =  new DateTime($dataResetPassword["reset_date"]);
-    var_dump($dateNow);
-    var_dump($dataResetPassword);
-    // $interval = date_diff($dateNow, $dataResetPassword);
-    // echo $interval->format('%R%m minutes');
-    $interval = (date_timestamp_get($dateNow)+(60*60*2)-date_timestamp_get($dataResetPassword))/60;
-    echo $interval;
-
-    if ($interval>15) {
-        $msgProfil = $msgProfil . "<li>Le lien de réinitialisation est périmé.</li>";
+    //  Vérifie si la demande de réinitialisation est inférieure à 15 minutes
+    if ($interval>$delay) {
+        $msgReset = $msgReset . "<li>Le lien de réinitialisation est périmé.</li>";
         $validation = false;
     };
+    // Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
+    if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $new_pass)) {
+        $msgReset = $msgReset . "<li>Le nouveau mot de passe n'est pas valide.</li>";
+        $validation = false;
+    };
+    // Vérifie si la confirmation du mot de passe est identique
+    if ($new_pass!=$new_pass_confirm) {
+        $msgReset = $msgReset . "<li>Le mot de passe et la confirmation sont différents.</li>";
+        $validation = false;
+    };
+    // Met à jour le mot de passe si validation est vraie
+    if ($validation) {        
+    $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
+    $req = $bdd->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
+    $req->execute(array(
+        "new_pass" => $new_pass_hash,
+        "ID" => $_SESSION["user_ID"]
+        )); 
 
-    var_dump($_POST);
-    // Vérifie si information dans variable POST
-    if (!empty($_POST)) {
-    
-        if (isset($_GET["token"])) {
-            $token = htmlspecialchars($_GET["token"]);
-            $new_pass = htmlspecialchars($_POST["new_pass"]);
-            $new_pass_confirm = htmlspecialchars($_POST["new_pass_confirm"]);
-           
-            // Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
-            if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $new_pass)) {
-                $msgProfil = $msgProfil . "<li>Le nouveau mot de passe n'est pas valide.</li>";
-                $validation = false;
-            };
-            // Vérifie si la confirmation du mot de passe est identique
-            if ($new_pass!=$new_pass_confirm) {
-                $msgProfil = $msgProfil . "<li>Le mot de passe et la confirmation sont différents.</li>";
-                $validation = false;
-            };
-            // Met à jour le mot de passe si validation est vraie
-            if ($validation) {        
-            $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
-            $req = $bdd->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
-            $req->execute(array(
-                "new_pass" => $new_pass_hash,
-                "ID" => $_SESSION["user_ID"]
-                )); 
-    
-            $msgProfil = "Le mot de passe est mis à jour.";
-            $typeAlert = "success";
-            };
-        };
-    
-        $_SESSION["flash"] = array(
-            "msg" => $msgProfil,
-            "type" =>  $typeAlert
-        );
-
+    $msgReset = "Le mot de passe a été modifié.";
+    $typeAlert = "success";
     };
 
-} else {
-    header("Location: connection.php");
+    $_SESSION["flash"] = array(
+        "msg" => $msgReset,
+        "type" =>  $typeAlert
+    );
+
 };
 
 ?>
@@ -91,8 +89,8 @@ if (isset($_GET["token"])) {
 
     <div class="container">
         <section id="reset-password" class="row">
-                <form action="reset_password.php?token=<?= isset($token) ? $token : "" ?>" method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 mx-auto text-center mt-4 mb-4">
-                    <h1 class="h3 mb-4 font-weight-normal">Réinitialisation du mot de passe</h1>
+                <form action="reset_password.php?token=<?= isset($_GET["token"]) ? htmlspecialchars($_GET["token"]) : "" ?>" method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 mx-auto mt-4 mb-4">
+                    <h1 class="h3 mb-4 font-weight-normal text-center">Réinitialisation du mot de passe</h1>
                     <label for="email" class="sr-only">Email</label>
                     <input type="text" name="email" id="email" class="form-control mb-4" placeholder="Email">
                     <label for="new_pass" class="sr-only">Mot de passe</label>
