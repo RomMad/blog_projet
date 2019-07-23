@@ -32,7 +32,7 @@
 
     var_dump($_GET);  
 
-    
+    // Vérifie l'ordre de tri par type
     if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "date_creation" || $_GET["orderBy"] == "date_update_fr")) {
         $orderBy = htmlspecialchars($_GET["orderBy"]);
     } else if (!empty($_SESSION["adminPostsOrderBy"])) {
@@ -40,7 +40,7 @@
     } else {
         $orderBy = "date_creation_fr";
     };
-
+    // Vérifie l'ordre de tri si ascendant ou descendant
     if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
         $order = htmlspecialchars($_GET["order"]);
     } else if (!empty($_SESSION["adminPostsOrder"])) {
@@ -48,11 +48,11 @@
     } else {
         $order = "desc";
     };
-
+    // Si le tri par type vient de changer, alors le tri est toujours ascendant
     if ($orderBy != $_SESSION["adminPostsOrderBy"]) {
         $order = "asc";
     };
-
+    // Enregistre les tris en SESSION
     $_SESSION["adminPostsOrderBy"] = $orderBy;
     $_SESSION["adminPostsOrder"] = $order;
 
