@@ -222,15 +222,19 @@
                                 <div class="row">
                                     <label for="pass" class="col-md-4 col-form-label mt-4">Mot de passe</label>
                                     <div class="col-md-5">
-                                        <input type="password" name="pass" id="pass" class="form-control mt-4 mb-4" >
-                                        <span class="fas fa-eye"></span>
+                                        <div class="div-user-pass">
+                                            <input type="password" name="pass" id="pass" class="form-control mt-4 mb-4" >
+                                            <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <label for="pass_confirm" class="col-md-4 col-form-label">Confirmation mot de passe</label>
                                     <div class="col-md-5">
-                                        <input type="password" name="pass_confirm" id="pass_confirm" class="form-control mb-4" >
-                                        <span class="fas fa-eye"></span>
+                                        <div class="div-user-pass">
+                                            <input type="password" name="pass_confirm" id="pass_confirm" class="form-control mb-4" >
+                                            <div id="showConfirmPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -259,13 +263,19 @@
                                 <div class="row">
                                     <label for="new_pass" class="col-md-6 col-form-label">Nouveau mot de passe</label>
                                     <div class="col-md-6">
-                                        <input type="password" name="new_pass" id="new_pass" class="form-control mb-4" >
+                                        <div class="div-user-pass">
+                                            <input type="password" name="new_pass" id="new_pass" class="form-control mb-4">
+                                            <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                                        </div>    
                                     </div>
                                 </div>
                                 <div class="row">
                                     <label for="new_pass_confirm" class="col-md-6 col-form-label">Confirmation nouveau mot de passe</label>
                                     <div class="col-md-6">
-                                        <input type="password" name="new_pass_confirm" id="new_pass_confirm" class="form-control mb-4" >
+                                        <div class="div-user-pass">
+                                            <input type="password" name="new_pass_confirm" id="new_pass_confirm" class="form-control mb-4">
+                                            <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
