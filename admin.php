@@ -10,7 +10,7 @@
         $req = $bdd->prepare("SELECT role FROM users WHERE ID =?");
         $req->execute(array($_SESSION["userID"]));
         $userRole = $req->fetch();
-        if ($userRole["status"]!=0) {
+        if ($userRole["role"]!=0) {
             header("Location: index.php");
         };
     };
