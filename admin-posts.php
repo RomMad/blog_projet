@@ -32,14 +32,20 @@
 
     var_dump($_GET);  
 
-    if (!empty($_GET["orderBy"])) {
+    if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "date_creation" || $_GET["orderBy"] == "date_update_fr")) {
         $orderBy = htmlspecialchars($_GET["orderBy"]);
+        $_SESSION["adminPostsOrderBy"] = $orderBy;
+    } elseif (!empty($_SESSION["adminPostsOrderBy"])) {
+        $orderBy = $_SESSION["adminPostsOrderBy"];
     } else {
         $orderBy = "date_creation_fr";
     };
 
     if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
         $order = htmlspecialchars($_GET["order"]);
+        $_SESSION["adminPostsOrder"] = $order;
+    } elseif (!empty($_SESSION["adminPostsOrder"])) {
+        $order = $_SESSION["adminPostsOrder"];
     } else {
         $order = "desc";
     };
@@ -98,25 +104,60 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col" class="align-middle"><input type="checkbox" name="all-checkbox" id="all-checkbox" /><label for="all-checkbox"></label></th>
-                            <th scope="col" class="align-middle">Titre
-                                <a href="admin-posts?orderBy=title&order=<?= isset($order) && $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator">
-                                <span class="fas fa-chevron-<?= isset($orderBy) && $orderBy == "title" && $order == "desc" ? "up" : "down" ?> text-info"></span></a>
+                            <th scope="col" class="align-middle">
+                                <a href="admin-posts?orderBy=title&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-info">Titre
+                                <?php 
+                                if ($orderBy == "title") {
+                                ?>
+                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                <?php   
+                                }
+                                ?>
+                                </a>
                             </th>
-                            <th scope="col" class="align-middle">Auteur
-                                <a href="admin-posts?orderBy=author&order=<?= isset($order) && $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator">
-                                <span class="fas fa-chevron-<?= isset($orderBy) && $orderBy == "author" && $order == "desc" ? "up" : "down" ?> text-info"></span></a>
+                            <th scope="col" class="align-middle">
+                                <a href="admin-posts?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-info">Auteur
+                                <?php 
+                                if ($orderBy == "author") {
+                                ?>
+                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                <?php   
+                                }
+                                ?>
+                                </a>
                             </th>
-                            <th scope="col" class="align-middle">Statut
-                                <a href="admin-posts?orderBy=status&order=<?= isset($order) && $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator">
-                                <span class="fas fa-chevron-<?= isset($orderBy) && $orderBy == "status" && $order == "desc" ? "up" : "down" ?> text-info"></span></a>
+                            <th scope="col" class="align-middle">
+                                <a href="admin-posts?orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-info">Statut
+                                <?php 
+                                if ($orderBy == "status") {
+                                ?>
+                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                <?php   
+                                }
+                                ?>
+                                </a>
                             </th>
-                            <th scope="col" class="align-middle">Date de création
-                                <a href="admin-posts?orderBy=date_creation&order=<?= isset($order) && $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator">
-                                <span class="fas fa-chevron-<?= isset($orderBy) && $orderBy == "date_creation" && $order == "desc" ? "up" : "down" ?> text-info"></span></a>
+                            <th scope="col" class="align-middle">
+                                <a href="admin-posts?orderBy=date_creation&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-info">Date de création
+                                <?php 
+                                if ($orderBy == "date_creation") {
+                                ?>
+                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                <?php   
+                                }
+                                ?>
+                                </a>
                             </th>
-                            <th scope="col" class="align-middle">Date de mise à jour
-                                <a href="admin-posts?orderBy=date_update_fr&order=<?= isset($order) && $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator">
-                                <span class="fas fa-chevron-<?= isset($orderBy) && $orderBy == "date_update_fr" && $order == "desc" ? "up" : "down" ?> text-info"></span></a>
+                            <th scope="col" class="align-middle">
+                                <a href="admin-posts?orderBy=date_update_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-info">Date de mise à jour
+                                <?php 
+                                if ($orderBy == "date_update_fr") {
+                                ?>
+                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                <?php   
+                                }
+                                ?>
+                                </a>
                             </th>
                         </tr>
                     </thead>
