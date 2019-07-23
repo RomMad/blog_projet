@@ -13,8 +13,8 @@
         $title = htmlspecialchars($_POST["title"]);
         $content = htmlspecialchars($_POST["post_content"]);
         $post_ID = htmlspecialchars($_POST["post_ID"]);
-        $user_ID = htmlspecialchars($_SESSION["user_ID"]);
-        $user_login  = htmlspecialchars($_SESSION["user_login"]);
+        $user_ID = htmlspecialchars($_SESSION["userID"]);
+        $user_login  = htmlspecialchars($_SESSION["userLogin"]);
         $status = htmlspecialchars($_POST["status"]);
         $date_creation = htmlspecialchars($_POST["date_creation"]);
         $date_update = htmlspecialchars($_POST["date_update"]);

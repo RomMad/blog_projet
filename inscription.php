@@ -79,8 +79,8 @@
                 $req->execute([$login]);
                 $idUser = $req->fetch();
                 // Ajoute les infos de l"utilisateurs dans la Session
-                $_SESSION["user_ID"] = $idUser["ID"];
-                $_SESSION["user_login"] = $login;
+                $_SESSION["userID"] = $idUser["ID"];
+                $_SESSION["userLogin"] = $login;
                 $typeAlert = "success";
                 $msgInscription = "L'inscription est réussie.";
 

@@ -3,12 +3,12 @@
 
     require("connection_bdd.php");
     // Redirige vers la page de connexion si non connecté
-    if (empty($_SESSION["user_ID"])) {
+    if (empty($_SESSION["userID"])) {
         header("Location: connection.php");
     } else {
         // Récupère les informations de l'utilisateur
         $req = $bdd->prepare("SELECT * FROM users WHERE ID =?");
-        $req->execute(array($_SESSION["user_ID"]));
+        $req->execute(array($_SESSION["userID"]));
         $dataUser = $req->fetch();
     };
     // Récupère les informations du profil sauf en cas de mise à jour des informations
@@ -44,14 +44,14 @@
             $req = $bdd->prepare("SELECT ID FROM users WHERE login = ? AND ID != ? ");
             $req->execute([
                 $login,
-                $_SESSION["user_ID"]
+                $_SESSION["userID"]
             ]);
             $loginExist = $req->fetch();
             // Vérifie si l'email est déjà pris par un autre utilisateur
             $req = $bdd->prepare("SELECT ID FROM users WHERE email = ? AND ID != ? ");
             $req->execute([
                 $email,
-                $_SESSION["user_ID"]
+                $_SESSION["userID"]
             ]);
             $emailExist = $req->fetch();
 
@@ -101,10 +101,10 @@
                     "new_surname" => $surname,
                     "new_birthdate" => $birthdate,
                     "new_status" => $status,
-                    "ID" => $_SESSION["user_ID"]
+                    "ID" => $_SESSION["userID"]
                     ));
 
-                $_SESSION["user_login"] = $login;
+                $_SESSION["userLogin"] = $login;
                 $msgProfil = "Le profil est mis à jour.";
                 $typeAlert = "success";
             };
@@ -137,7 +137,7 @@
             $req = $bdd->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
             $req->execute(array(
                 "new_pass" => $new_pass_hash,
-                "ID" => $_SESSION["user_ID"]
+                "ID" => $_SESSION["userID"]
                 )); 
 
             $msgProfil = "Le mot de passe est mis à jour.";

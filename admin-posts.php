@@ -3,12 +3,12 @@
 
     require("connection_bdd.php");
     // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
-    if (empty($_SESSION["user_ID"])) {
+    if (empty($_SESSION["userID"])) {
         header("Location: index.php");
     } else {
         // Récupère les informations de l'utilisateur
         $req = $bdd->prepare("SELECT status FROM users WHERE ID =?");
-        $req->execute(array($_SESSION["user_ID"]));
+        $req->execute(array($_SESSION["userID"]));
         $statusUser = $req->fetch();
         if ($statusUser["status"]!=0) {
             header("Location: index.php");
@@ -46,8 +46,8 @@
     if (!empty($_POST["nbDisplayed"])) {
         $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
         $_SESSION["nbDisplayedPostsAdmin"] = $nbDisplayed;
-    } else if (!empty($_SESSION["nbDisplayedPostsAdmin"])) {
-        $nbDisplayed =  $_SESSION["nbDisplayedPostsAdmin"];
+    } else if (!empty($_SESSION["adminNbDisplayedPosts"])) {
+        $nbDisplayed =  $_SESSION["adminNbDisplayedPosts"];
     } else {
         $nbDisplayed = 20;
     };

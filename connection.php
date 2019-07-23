@@ -15,7 +15,7 @@
         $dataUser = $req->fetch();
 
         // Vérifie si l'utilisateur est déjà connecté
-        // if ($login==$_SESSION["user_login"]) {
+        // if ($login==$_SESSION["userLogin"]) {
         //     $message = "Vous êtes déjà connecté.";
         //     $typeAlert = "warning";
         // };
@@ -23,9 +23,9 @@
         // Vérifie si login et password existent   
         $isPasswordCorrect = password_verify($pass, $dataUser["pass"]);// Compare le password envoyé via le formulaire avec la base  
         if ($dataUser && $isPasswordCorrect) {
-            $_SESSION["user_ID"] = htmlspecialchars($dataUser["ID"]);
-            $_SESSION["user_login"] = $login;
-            $_SESSION["user_status"] = htmlspecialchars($dataUser["status"]);
+            $_SESSION["userID"] = htmlspecialchars($dataUser["ID"]);
+            $_SESSION["userLogin"] = $login;
+            $_SESSION["userStatus"] = htmlspecialchars($dataUser["status"]);
             $message = "Vous êtes connecté.";
             $typeAlert = "success";
             header("Refresh: 2; url=index.php");

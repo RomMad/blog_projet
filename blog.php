@@ -90,7 +90,7 @@
                     </a>
                     <em>Créé le <?= $date_creation_fr ?> par <a class="text-info" href=""> <?= !empty($user_login) ? $user_login : $user_login ?> </a></em>
                     <?php 
-                    if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$user_ID) { ?>
+                    if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$user_ID) { ?>
                         <a class="text-info a-edit-post" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier</a>
                     <?php }; ?>
                 </div>

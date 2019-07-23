@@ -6,17 +6,17 @@
     var_dump($_GET);
     if (!empty($_GET["post"])) {
         $post_ID = htmlspecialchars($_GET["post"]);
-        $_SESSION["post_ID"] = $post_ID;
+        $_SESSION["postID"] = $post_ID;
     } else {
-        $post_ID = $_SESSION["post_ID"];
+        $post_ID = $_SESSION["postID"];
     };
 
     var_dump($_POST);    
     // Vérification si informations dans variable POST
     if (!empty($_POST["content"])) {
         
-        if (isset($_SESSION["user_ID"])) {
-            $user_ID = $_SESSION["user_ID"];
+        if (isset($_SESSION["userID"])) {
+            $user_ID = $_SESSION["userID"];
         } else {
             $user_ID = NULL;
         };
@@ -39,7 +39,7 @@
         $req = $bdd->prepare("INSERT INTO comments(id_post, user_ID, user_name, content) 
         VALUES(:id_post, :user_ID, :user_name, :content)");
         $req->execute(array(
-            "id_post" => $_SESSION["post_ID"],
+            "id_post" => $_SESSION["postID"],
             "user_ID" =>  $user_ID,
             "user_name" => $name,
             "content" => $_POST["content"]
@@ -161,7 +161,7 @@
                         <h1 class="h2 mt-2 mb-3"><?= htmlspecialchars($dataPost["title"]) ?></h1>
                         <em>Créé le <?= htmlspecialchars($dataPost["date_creation_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($dataPost["login"]) ?> </a> et modifié le <?=  htmlspecialchars($dataPost["date_update_fr"]) ?></em>
                         <?php
-                        if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$dataPost["user_ID"]) { ?>
+                        if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { ?>
                             <a class="text-info a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($dataPost["ID"]) ?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php }; ?>
                         <a href="#comments" class="badge badge-info ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_comments"] ?> </span></a>
@@ -171,7 +171,7 @@
                     </div>
                 </div>
                 <?php 
-                    if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$dataPost["user_ID"]) { 
+                    if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { 
                 ?>
                         <a class="text-info" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
                 <?php 
@@ -191,7 +191,7 @@
                         <div class="row">
                             <label for="name" class="col-md-4 col-form-label">Nom</label>
                             <div class="col-md-8">
-                                <input type="text" name="name" id="name" class="form-control mb-4 shadow-sm" value="<?= isset($_SESSION["user_login"]) ? $_SESSION["user_login"] : "" ?>">
+                                <input type="text" name="name" id="name" class="form-control mb-4 shadow-sm" value="<?= isset($_SESSION["userLogin"]) ? $_SESSION["userLogin"] : "" ?>">
                             </div>
                         </div>
                         <label for="content"></label>
@@ -232,7 +232,7 @@
                                     <p><strong><?= $user_login ?></strong>, le <?= $dataComment["date_creation_fr"] ?></p>
                                     <p><?= nl2br(htmlspecialchars($dataComment["content"])) ?></p>
                                     <?php                        
-                                        if (isset($_SESSION["user_ID"]) && $_SESSION["user_ID"]==$dataComment["user_ID"]) { 
+                                        if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataComment["user_ID"]) { 
                                     ?>
                                             <div>
                                                 <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($dataComment["ID"]) ?>&action=erase#form-comment" onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>

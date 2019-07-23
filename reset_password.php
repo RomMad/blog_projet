@@ -63,7 +63,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
     $req = $bdd->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
     $req->execute(array(
         "new_pass" => $new_pass_hash,
-        "ID" => $_SESSION["user_ID"]
+        "ID" => $_SESSION["userID"]
         )); 
 
     $msgReset = "Le mot de passe a été modifié.";
