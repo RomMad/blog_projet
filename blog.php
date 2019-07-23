@@ -40,12 +40,12 @@
     require("pagination.php");
 
     // Récupère les derniers articles
-    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.content, p.status, DATE_FORMAT(p.date_creation, \"%d/%m/%Y à %H:%i\") AS date_creation_fr 
+    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.content, p.status, DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr 
     FROM posts p
     LEFT JOIN users u
     ON p.user_ID = u.ID
     WHERE p.status = :status1 || p.status = :status2 
-    ORDER BY p.date_creation DESC 
+    ORDER BY p.creation_date DESC 
     LIMIT  $minPost, $maxPost");
         $req->execute(array(
             "status1" => "Publié", 
@@ -80,7 +80,7 @@
                     $user_login = htmlspecialchars($dataPosts["user_login"]);
                     $login = htmlspecialchars($dataPosts["login"]);
                     $content = html_entity_decode($dataPosts["content"]);
-                    $date_creation_fr = htmlspecialchars($dataPosts["date_creation_fr"]);
+                    $creation_date_fr = htmlspecialchars($dataPosts["creation_date_fr"]);
             ?>
             
             <div class="card shadow">
@@ -88,7 +88,7 @@
                     <a class="text-info" href="post.php?post=<?= $post_ID ?>">
                         <h3 class="mt-1"><?= $title ?></h3>
                     </a>
-                    <em>Créé le <?= $date_creation_fr ?> par <a class="text-info" href=""> <?= !empty($user_login) ? $user_login : $user_login ?> </a></em>
+                    <em>Créé le <?= $creation_date_fr ?> par <a class="text-info" href=""> <?= !empty($user_login) ? $user_login : $user_login ?> </a></em>
                     <?php 
                     if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$user_ID) { ?>
                         <a class="text-info a-edit-post" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier</a>

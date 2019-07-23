@@ -53,12 +53,12 @@
     };
     var_dump($_GET);  
     // Vérifie l'ordre de tri par type
-    if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "date_creation" || $_GET["orderBy"] == "date_update_fr")) {
+    if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
         $orderBy = htmlspecialchars($_GET["orderBy"]);
     } else if (!empty($_SESSION["adminPostsOrderBy"])) {
         $orderBy = $_SESSION["adminPostsOrderBy"];
     } else {
-        $orderBy = "date_creation_fr";
+        $orderBy = "creation_date_fr";
     };
     // Vérifie l'ordre de tri si ascendant ou descendant
     if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
@@ -97,8 +97,8 @@
 
     // Récupère les articles
     $req = $bdd->prepare("SELECT p.ID, p.title, p.user_login AS author, u.login, p.status, 
-    DATE_FORMAT(p.date_creation, \"%d/%m/%Y %H:%i\") AS date_creation_fr, 
-    DATE_FORMAT(p.date_update, \"%d/%m/%Y %H:%i\") AS date_update_fr 
+    DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
+    DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
     FROM posts p
     LEFT JOIN users u
     ON p.user_ID = u.ID
@@ -180,9 +180,9 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin-posts?orderBy=date_creation&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
+                                <a href="admin-posts?orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
                                 <?php 
-                                if ($orderBy == "date_creation") {
+                                if ($orderBy == "creation_date") {
                                 ?>
                                     <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                 <?php   
@@ -191,9 +191,9 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin-posts?orderBy=date_update_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise à jour
+                                <a href="admin-posts?orderBy=update_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise à jour
                                 <?php 
-                                if ($orderBy == "date_update_fr") {
+                                if ($orderBy == "update_date_fr") {
                                 ?>
                                     <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                 <?php   
@@ -213,8 +213,8 @@
                                     <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-info font-weight-bold"><?= $dataPosts["title"] ?></a></td>
                                     <td><?= $dataPosts["author"] ?></td>
                                     <td><?= $dataPosts["status"] ?></td>
-                                    <td><?= $dataPosts["date_creation_fr"] ?></td>
-                                    <td><?= $dataPosts["date_update_fr"] ?></td>
+                                    <td><?= $dataPosts["creation_date_fr"] ?></td>
+                                    <td><?= $dataPosts["update_date_fr"] ?></td>
                                 </tr>
                         <?php
                             };

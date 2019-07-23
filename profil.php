@@ -92,7 +92,7 @@
             };
             // Met à jour les informations du profil si validation est vraie
             if ($validation) {
-                $req = $bdd->prepare("UPDATE users SET login = :new_login, email = :new_email, name = :new_name, surname = :new_surname, birthdate = :new_birthdate, role = :new_role, date_update = NOW() 
+                $req = $bdd->prepare("UPDATE users SET login = :new_login, email = :new_email, name = :new_name, surname = :new_surname, birthdate = :new_birthdate, role = :new_role, update_date = NOW() 
                 WHERE ID = :ID");
                 $req->execute(array(
                     "new_login" => $login,

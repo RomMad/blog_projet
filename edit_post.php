@@ -16,8 +16,8 @@
         $user_ID = htmlspecialchars($_SESSION["userID"]);
         $user_login  = htmlspecialchars($_SESSION["userLogin"]);
         $status = htmlspecialchars($_POST["status"]);
-        $date_creation = htmlspecialchars($_POST["date_creation"]);
-        $date_update = htmlspecialchars($_POST["date_update"]);
+        $creation_date = htmlspecialchars($_POST["creation_date"]);
+        $update_date = htmlspecialchars($_POST["update_date"]);
         $typeAlert = "info";
         $validation = true;
 
@@ -46,7 +46,7 @@
 
             // Met à jour l'article si article existant
             if (isset($_POST["save"]) && !empty($_POST["post_ID"])) {
-                $req = $bdd->prepare("UPDATE posts SET title = :new_title, content = :new_content, status = :new_status, date_update = NOW() WHERE ID = :post_ID");
+                $req = $bdd->prepare("UPDATE posts SET title = :new_title, content = :new_content, status = :new_status, update_date = NOW() WHERE ID = :post_ID");
                 $req->execute(array(
                     "new_title" => $title,
                     "new_content" => $content,
@@ -57,7 +57,7 @@
             };
 
             // Récupère l'article
-            $req = $bdd->prepare("SELECT p.ID, p.user_ID, u.login, DATE_FORMAT(p.date_creation, \"%d/%m/%Y %H:%i\") AS date_creation_fr, DATE_FORMAT(p.date_update, \"%d/%m/%Y %H:%i\") AS date_update_fr 
+            $req = $bdd->prepare("SELECT p.ID, p.user_ID, u.login, DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
             FROM posts p
             LEFT JOIN users u
             ON p.user_ID = u.ID
@@ -69,8 +69,8 @@
     
             $post_ID = htmlspecialchars($dataPost["ID"]);
             $post_user_ID  = htmlspecialchars($dataPost["login"]);
-            $date_creation = htmlspecialchars($dataPost["date_creation_fr"]);
-            $date_update = htmlspecialchars($dataPost["date_update_fr"]);
+            $creation_date = htmlspecialchars($dataPost["creation_date_fr"]);
+            $update_date = htmlspecialchars($dataPost["update_date_fr"]);
         };
 
         // Supprime l'article
@@ -94,7 +94,7 @@
     if (!empty($_GET["post"])) {
         $idPost = htmlspecialchars($_GET["post"]);
         // Récupère l'article
-        $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, DATE_FORMAT(p.date_creation, \"%d/%m/%Y %H:%i\") AS date_creation_fr, DATE_FORMAT(p.date_update, \"%d/%m/%Y %H:%i\") AS date_update_fr 
+        $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
         FROM posts p
         LEFT JOIN users u
         ON p.user_ID = u.ID
@@ -106,8 +106,8 @@
         $content = $dataPost["content"];
         $post_ID = $dataPost["ID"];
         $post_user_ID  = $dataPost["login"];
-        $date_creation = $dataPost["date_creation_fr"];
-        $date_update = $dataPost["date_update_fr"];
+        $creation_date = $dataPost["creation_date_fr"];
+        $update_date = $dataPost["update_date_fr"];
         $status = $dataPost["status"];
     };
 
@@ -153,12 +153,12 @@
                                 <input type="text" name="post_user_ID" class="form-control shadow-sm" id="post_user_ID" readonly value="<?= isset($post_user_ID) ? $post_user_ID : "" ?>">
                             </div>
                             <div class="form-group">
-                                <label for="date_creation">Date de création</label>
-                                <input type="text" name="date_creation" class="form-control shadow-sm" id="date_creation" readonly value="<?= isset($date_creation) ? $date_creation : "" ?>">
+                                <label for="creation_date">Date de création</label>
+                                <input type="text" name="creation_date" class="form-control shadow-sm" id="creation_date" readonly value="<?= isset($creation_date) ? $creation_date : "" ?>">
                             </div>
                             <div class="form-group">
-                                <label for="date_update">Date de mise à jour</label>
-                                <input type="text" name="date_update" class="form-control shadow-sm" id="date_update" readonly value="<?= isset($date_update) ? $date_update : "" ?>">
+                                <label for="update_date">Date de mise à jour</label>
+                                <input type="text" name="update_date" class="form-control shadow-sm" id="update_date" readonly value="<?= isset($update_date) ? $update_date : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="status">Statut</label>

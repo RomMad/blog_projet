@@ -79,8 +79,8 @@
 
     // Récupère le post
     $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, 
-    DATE_FORMAT(p.date_creation, \"%d/%m/%Y à %H:%i\") AS date_creation_fr, 
-    DATE_FORMAT(p.date_update, \"%d/%m/%Y à %H:%i\") AS date_update_fr 
+    DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr, 
+    DATE_FORMAT(p.update_date, \"%d/%m/%Y à %H:%i\") AS update_date_fr 
     FROM posts p
     LEFT JOIN users u
     ON p.user_ID = u.ID
@@ -130,12 +130,12 @@
     } else  {
         // Récupère les commentaires
         $req = $bdd->prepare("SELECT c.ID, c.user_ID, u.login, c.user_name, c.content, c.status, 
-        DATE_FORMAT(c.date_creation, \"%d/%m/%Y à %H:%i\") AS date_creation_fr 
+        DATE_FORMAT(c.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr 
         FROM comments c
         LEFT JOIN users u
         ON c.user_ID = u.ID
         WHERE c.id_post = :post_ID AND c.status >= :status 
-        ORDER BY c.date_creation DESC
+        ORDER BY c.creation_date DESC
         LIMIT  $minComment,  $maxComment");
         $req->execute(array(
             "post_ID" => $post_ID,
@@ -159,7 +159,7 @@
                 <div class="card shadow">
                     <div class="card-header bg-dark text-light">
                         <h1 class="h2 mt-2 mb-3"><?= htmlspecialchars($dataPost["title"]) ?></h1>
-                        <em>Créé le <?= htmlspecialchars($dataPost["date_creation_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($dataPost["login"]) ?> </a> et modifié le <?=  htmlspecialchars($dataPost["date_update_fr"]) ?></em>
+                        <em>Créé le <?= htmlspecialchars($dataPost["creation_date_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($dataPost["login"]) ?> </a> et modifié le <?=  htmlspecialchars($dataPost["update_date_fr"]) ?></em>
                         <?php
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { ?>
                             <a class="text-info a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($dataPost["ID"]) ?>"><span class="far fa-edit"></span> Modifier</a>
@@ -229,7 +229,7 @@
                                                 };
                                             };
                                     ?>
-                                    <p><strong><?= $user_login ?></strong>, le <?= $dataComment["date_creation_fr"] ?></p>
+                                    <p><strong><?= $user_login ?></strong>, le <?= $dataComment["creation_date_fr"] ?></p>
                                     <p><?= nl2br(htmlspecialchars($dataComment["content"])) ?></p>
                                     <?php                        
                                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataComment["user_ID"]) { 
