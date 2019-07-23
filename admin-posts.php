@@ -132,6 +132,15 @@
                 <form action="<?= $linkNbDisplayed ?>" method="post">
                     <input type="submit" id="action_admin"  name="action" alt="Supprimer" class="btn btn-danger mb-2 shadow" 
                         value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;}else{return false;}">
+                    
+                    <form action="<?= $linkNbDisplayed ?>" method="post" class="form-inline">
+                        <label class="sr-only mr-2 col-form-label-sm" for="action">Filtrer</label>
+                        <select name="action" id="action" class="custom-select mr-sm-2 form-control-sm" value="Par auteur" >
+                            <option value="edit">Modifier</option>
+                            <option value="erase">Supprimer</option>
+                        </select>
+                        <input type="submit" id="action_admin" class="btn btn-info form-control-sm pt-1" value="Filtrer">
+                    </form>
 
                 <table class="table table-bordered table-striped table-hover shadow">
                     <thead class="thead-dark">
