@@ -14,18 +14,17 @@
         $req->execute(array($login));
         $dataUser = $req->fetch();
 
-        // Vérifie si l'utilisateur est déjà connecté
-        // if ($login==$_SESSION["userLogin"]) {
-        //     $message = "Vous êtes déjà connecté.";
-        //     $typeAlert = "warning";
-        // };
-
         // Vérifie si login et password existent   
         $isPasswordCorrect = password_verify($pass, $dataUser["pass"]);// Compare le password envoyé via le formulaire avec la base  
         if ($dataUser && $isPasswordCorrect) {
             $_SESSION["userID"] = htmlspecialchars($dataUser["ID"]);
             $_SESSION["userLogin"] = $login;
             $_SESSION["userRole"] = htmlspecialchars($dataUser["role"]);
+
+            // Ajoute la date de connexion de l'utilisateur dans la table dédiée
+            $req = $bdd->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
+            $req->execute(array("user_ID" => htmlspecialchars($dataUser["ID"])));
+
             $message = "Vous êtes connecté.";
             $typeAlert = "success";
             header("Refresh: 2; url=index.php");
