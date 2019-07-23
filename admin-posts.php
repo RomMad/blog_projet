@@ -31,6 +31,18 @@
     $nbDisplayed = $_SESSION["nbDisplayedPostsAdmin"];
 
     var_dump($_GET);  
+
+    if (!empty($_GET["orderBy"])) {
+        $orderBy = htmlspecialchars($_GET["orderBy"]);
+    } else {
+        $orderBy = "date_creation_fr";
+    };
+
+    if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
+        $order = htmlspecialchars($_GET["order"]);
+    } else {
+        $order = "desc";
+    };
     // Vérification si informations dans variable GET
     if (!empty($_GET["page"])) {
         $page = htmlspecialchars($_GET["page"]);
@@ -42,22 +54,24 @@
         $minPost = 0;
         $maxPost = $nbDisplayed;
     };
-
+    
     // Initialisation des variables pour la pagination
-    $linkNbDisplayed= "admin-posts.php";
-    $linkPagination= "admin-posts.php";
-    $anchorPagination= "#table-admin-posts";
+    $linkNbDisplayed = "admin-posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+    $linkPagination = "admin-posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+    $anchorPagination = "#table-admin-posts";
     $nbPages = ceil($nbPosts["nb_Posts"] / $nbDisplayed);
     require("pagination.php");
 
+    echo $orderBy . " " . $order;
+
     // Récupère les derniers articles
-    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_login, u.login, p.status, 
+    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_login AS author, u.login, p.status, 
     DATE_FORMAT(p.date_creation, \"%d/%m/%Y %H:%i\") AS date_creation_fr, 
     DATE_FORMAT(p.date_update, \"%d/%m/%Y %H:%i\") AS date_update_fr 
     FROM posts p
     LEFT JOIN users u
     ON p.user_ID = u.ID
-    ORDER BY p.date_creation DESC
+    ORDER BY $orderBy $order
     LIMIT  $minPost, $maxPost");
     $req->execute(array());
 
@@ -83,13 +97,27 @@
                 <table class="table table-bordered table-striped table-hover">
                     <thead class="thead-dark">
                         <tr>
-                        <th scope="col" class="align-middle"><input type="checkbox" name="all-checkbox" id="all-checkbox" /><label for="all-checkbox"></label></th>
-                        <th scope="col" class="align-middle">ID</th>
-                        <th scope="col" class="align-middle">Titre</th>
-                        <th scope="col" class="align-middle">Auteur</th>
-                        <th scope="col" class="align-middle">Statut</th>
-                        <th scope="col" class="align-middle">Date de création</th>
-                        <th scope="col" class="align-middle">Date de mise à jour</th>
+                            <th scope="col" class="align-middle"><input type="checkbox" name="all-checkbox" id="all-checkbox" /><label for="all-checkbox"></label></th>
+                            <th scope="col" class="align-middle">Titre
+                                <a href="admin-posts?orderBy=title&order=<?= isset($order) && $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator">
+                                <span class="fas fa-chevron-<?= isset($orderBy) && $orderBy == "title" && $order == "desc" ? "up" : "down" ?> text-info"></span></a>
+                            </th>
+                            <th scope="col" class="align-middle">Auteur
+                                <a href="admin-posts?orderBy=author&order=<?= isset($order) && $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator">
+                                <span class="fas fa-chevron-<?= isset($orderBy) && $orderBy == "author" && $order == "desc" ? "up" : "down" ?> text-info"></span></a>
+                            </th>
+                            <th scope="col" class="align-middle">Statut
+                                <a href="admin-posts?orderBy=status&order=<?= isset($order) && $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator">
+                                <span class="fas fa-chevron-<?= isset($orderBy) && $orderBy == "status" && $order == "desc" ? "up" : "down" ?> text-info"></span></a>
+                            </th>
+                            <th scope="col" class="align-middle">Date de création
+                                <a href="admin-posts?orderBy=date_creation&order=<?= isset($order) && $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator">
+                                <span class="fas fa-chevron-<?= isset($orderBy) && $orderBy == "date_creation" && $order == "desc" ? "up" : "down" ?> text-info"></span></a>
+                            </th>
+                            <th scope="col" class="align-middle">Date de mise à jour
+                                <a href="admin-posts?orderBy=date_update_fr&order=<?= isset($order) && $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator">
+                                <span class="fas fa-chevron-<?= isset($orderBy) && $orderBy == "date_update_fr" && $order == "desc" ? "up" : "down" ?> text-info"></span></a>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,14 +125,12 @@
                             while ($dataPosts=$req->fetch()) {
                         ?>
                                 <tr>
-                                <th scope="row"><input type="checkbox" name="<?= $dataPosts["ID"] ?>" id="<?= $dataPosts["ID"] ?>" class=""/><label for="<?= $dataPosts["ID"] ?>"></label></th>
-                                    <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-info"><?= $dataPosts["ID"] ?></a></td>
+                                    <th scope="row"><input type="checkbox" name="<?= $dataPosts["ID"] ?>" id="<?= $dataPosts["ID"] ?>" class=""/><label for="<?= $dataPosts["ID"] ?>"></label></th>
                                     <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-info font-weight-bold"><?= $dataPosts["title"] ?></a></td>
-                                    <td><?= $dataPosts["user_login"] ?></td>
+                                    <td><?= $dataPosts["author"] ?></td>
                                     <td><?= $dataPosts["status"] ?></td>
                                     <td><?= $dataPosts["date_creation_fr"] ?></td>
                                     <td><?= $dataPosts["date_update_fr"] ?></td>
-                                    </a>
                                 </tr>
                         <?php
                             };
