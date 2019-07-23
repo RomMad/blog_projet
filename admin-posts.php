@@ -15,23 +15,43 @@
         };
     };
 
+    var_dump($_POST);
+    // Supprime les articles sélectionnés via une boucle
+    if (isset($_POST["selectedPosts"])) {
+        foreach ($_POST["selectedPosts"] as $selectedpost) {
+            // $req = $bdd->prepare("DELETE FROM posts WHERE ID = ? ");
+            // $req->execute(array($selectedpost));
+        };
+        // Compte le nombre d'articles supprimés pour adaptés l'affichage du message
+        $nbSelectedPosts = count($_POST["selectedPosts"]);
+        if ($nbSelectedPosts>1) {
+            $msgAdmin = $nbSelectedPosts . " articles ont été supprimés.";
+        } else {
+            $msgAdmin = "L'article a été supprimé.";
+        };
+        $typeAlert = "warning"; 
+
+        $_SESSION["flash"] = array(
+            "msg" => $msgAdmin,
+            "type" =>  $typeAlert
+        );
+    };
+
     // Compte le nombre d'articles
     $req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts");
     $req->execute(array());
     $nbPosts = $req->fetch();
 
-    var_dump($_POST);
     // Vérification si informations dans variable POST
-    if (!empty($_POST)) {
-        $_SESSION["nbDisplayedPostsAdmin"] = htmlspecialchars($_POST["nbDisplayed"]);
+    if (!empty($_POST["nbDisplayed"])) {
+        $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
+        $_SESSION["nbDisplayedPostsAdmin"] = $nbDisplayed;
+    } else if (!empty($_SESSION["nbDisplayedPostsAdmin"])) {
+        $nbDisplayed =  $_SESSION["nbDisplayedPostsAdmin"];
+    } else {
+        $nbDisplayed = 20;
     };
-    if (!isset($_SESSION["nbDisplayedPostsAdmin"])) {
-        $_SESSION["nbDisplayedPostsAdmin"] = 20;
-    };
-    $nbDisplayed = $_SESSION["nbDisplayedPostsAdmin"];
-
     var_dump($_GET);  
-
     // Vérifie l'ordre de tri par type
     if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "date_creation" || $_GET["orderBy"] == "date_update_fr")) {
         $orderBy = htmlspecialchars($_GET["orderBy"]);
@@ -75,7 +95,7 @@
     $nbPages = ceil($nbPosts["nb_Posts"] / $nbDisplayed);
     require("pagination.php");
 
-    // Récupère les derniers articles
+    // Récupère les articles
     $req = $bdd->prepare("SELECT p.ID, p.title, p.user_login AS author, u.login, p.status, 
     DATE_FORMAT(p.date_creation, \"%d/%m/%Y %H:%i\") AS date_creation_fr, 
     DATE_FORMAT(p.date_update, \"%d/%m/%Y %H:%i\") AS date_update_fr 
@@ -105,13 +125,18 @@
                     <span class="badge badge-secondary font-weight-normal"><?= $nbPosts["nb_Posts"] ?> </span>
                 </h2>
                 
+                <?php include("msg_session_flash.php") ?>
 
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+
+                <form action="<?= $linkNbDisplayed ?>" method="post">
+                    <input type="submit" id="action_admin"  name="action" alt="Supprimer" class="btn btn-danger mb-2 shadow" 
+                        value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;}else{return false;}">
 
                 <table class="table table-bordered table-striped table-hover shadow">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col" class="align-middle"><input type="checkbox" name="all-checkbox" id="all-checkbox" /><label for="all-checkbox"></label></th>
+                            <th scope="col" class="align-middle"><input type="checkbox" name="allSelectedPosts" id="all-checkbox" /><label for="allSelectedPosts"></label></th>
                             <th scope="col" class="align-middle">
                                 <a href="admin-posts?orderBy=title&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Titre
                                 <?php 
@@ -170,11 +195,12 @@
                         </tr>
                     </thead>
                     <tbody>
+
                         <?php
                             while ($dataPosts=$req->fetch()) {
                         ?>
                                 <tr>
-                                    <th scope="row"><input type="checkbox" name="<?= $dataPosts["ID"] ?>" id="<?= $dataPosts["ID"] ?>" class=""/><label for="<?= $dataPosts["ID"] ?>"></label></th>
+                                    <th scope="row"><input type="checkbox" name="selectedPosts[]" id="post<?= $dataPosts["ID"] ?>" value="<?= $dataPosts["ID"] ?>" class=""/><label for="selectedPosts[]"></label></th>
                                     <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-info font-weight-bold"><?= $dataPosts["title"] ?></a></td>
                                     <td><?= $dataPosts["author"] ?></td>
                                     <td><?= $dataPosts["status"] ?></td>
@@ -186,7 +212,8 @@
                         ?>
                     </tbody>
                 </table>
-                
+                </form>
+
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
                 
             </section>

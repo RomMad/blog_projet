@@ -10,7 +10,7 @@
                 <option value="20" <?= $nbDisplayed==20 ? "selected" : "" ?> >20</option>
                 <option value="50" <?= $nbDisplayed==50 ? "selected" : "" ?> >50</option>
             </select>
-            <button type="submit" class="btn btn-info form-control-sm shadow-sm">OK</button>
+            <input type="submit" id="pagination" class="btn btn-info form-control-sm pt-1 shadow-sm" value="OK">
         </form>
     </div>
 
