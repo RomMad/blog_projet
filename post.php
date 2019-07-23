@@ -58,7 +58,7 @@
 
     if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]=="report") {
         $ID = htmlspecialchars($_GET["comment"]);
-        $req = $bdd->prepare("UPDATE comments SET status = :new_status, nb_report = nb_report + 1, date_report = NOW() WHERE ID = :ID");
+        $req = $bdd->prepare("UPDATE comments SET status = :new_status, nb_report = nb_report + 1, report_date = NOW() WHERE ID = :ID");
         $req->execute(array(
             "new_status" => 2,
             "ID" => $ID
