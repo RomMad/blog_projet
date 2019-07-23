@@ -49,7 +49,7 @@
         $order = "desc";
     };
     // Si le tri par type vient de changer, alors le tri est toujours ascendant
-    if ($orderBy != $_SESSION["adminPostsOrderBy"]) {
+    if (!empty($_SESSION["adminPostsOrder"]) && $orderBy != $_SESSION["adminPostsOrderBy"]) {
         $order = "asc";
     };
     // Enregistre les tris en SESSION
@@ -74,8 +74,6 @@
     $anchorPagination = "#table-admin-posts";
     $nbPages = ceil($nbPosts["nb_Posts"] / $nbDisplayed);
     require("pagination.php");
-
-    echo $orderBy . " " . $order;
 
     // Récupère les derniers articles
     $req = $bdd->prepare("SELECT p.ID, p.title, p.user_login AS author, u.login, p.status, 
