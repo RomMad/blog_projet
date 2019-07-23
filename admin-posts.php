@@ -32,10 +32,10 @@
 
     var_dump($_GET);  
 
+    
     if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "date_creation" || $_GET["orderBy"] == "date_update_fr")) {
         $orderBy = htmlspecialchars($_GET["orderBy"]);
-        $_SESSION["adminPostsOrderBy"] = $orderBy;
-    } elseif (!empty($_SESSION["adminPostsOrderBy"])) {
+    } else if (!empty($_SESSION["adminPostsOrderBy"])) {
         $orderBy = $_SESSION["adminPostsOrderBy"];
     } else {
         $orderBy = "date_creation_fr";
@@ -43,12 +43,19 @@
 
     if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
         $order = htmlspecialchars($_GET["order"]);
-        $_SESSION["adminPostsOrder"] = $order;
-    } elseif (!empty($_SESSION["adminPostsOrder"])) {
+    } else if (!empty($_SESSION["adminPostsOrder"])) {
         $order = $_SESSION["adminPostsOrder"];
     } else {
         $order = "desc";
     };
+
+    if ($orderBy != $_SESSION["adminPostsOrderBy"]) {
+        $order = "asc";
+    };
+
+    $_SESSION["adminPostsOrderBy"] = $orderBy;
+    $_SESSION["adminPostsOrder"] = $order;
+
     // Vérification si informations dans variable GET
     if (!empty($_GET["page"])) {
         $page = htmlspecialchars($_GET["page"]);
@@ -105,7 +112,7 @@
                         <tr>
                             <th scope="col" class="align-middle"><input type="checkbox" name="all-checkbox" id="all-checkbox" /><label for="all-checkbox"></label></th>
                             <th scope="col" class="align-middle">
-                                <a href="admin-posts?orderBy=title&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-info">Titre
+                                <a href="admin-posts?orderBy=title&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Titre
                                 <?php 
                                 if ($orderBy == "title") {
                                 ?>
@@ -116,7 +123,7 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin-posts?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-info">Auteur
+                                <a href="admin-posts?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
                                 <?php 
                                 if ($orderBy == "author") {
                                 ?>
@@ -127,7 +134,7 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin-posts?orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-info">Statut
+                                <a href="admin-posts?orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Statut
                                 <?php 
                                 if ($orderBy == "status") {
                                 ?>
@@ -138,7 +145,7 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin-posts?orderBy=date_creation&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-info">Date de création
+                                <a href="admin-posts?orderBy=date_creation&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
                                 <?php 
                                 if ($orderBy == "date_creation") {
                                 ?>
@@ -149,7 +156,7 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin-posts?orderBy=date_update_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-info">Date de mise à jour
+                                <a href="admin-posts?orderBy=date_update_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise à jour
                                 <?php 
                                 if ($orderBy == "date_update_fr") {
                                 ?>
