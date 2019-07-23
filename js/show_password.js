@@ -1,3 +1,5 @@
+// Script pour afficher le mot de passe
+
 passElt = document.getElementById("pass");
 showPasswordElt = document.getElementById("showPassword");
 // Affiche du mot de passe au clic sur l'oeil
