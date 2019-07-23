@@ -99,9 +99,12 @@
     <div class="container">
 
         <div class="row">
-            <section id="table-admin-posts" class="col-md-12 mx-auto mt-4">
+            <section id="table-admin-posts" class="col-md-12 mx-auto mt-4 table-admin">
 
-                <h2 class="mb-4">Gestion des articles</h2>
+                <h2 class="mb-4">Gestion des articles
+                    <span class="badge badge-secondary font-weight-normal"><?= $nbPosts["nb_Posts"] ?> </span>
+                </h2>
+                
 
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
