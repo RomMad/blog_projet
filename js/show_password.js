@@ -1,5 +1,5 @@
 passElt = document.getElementById("pass");
-confirmPassElt = document.getElementById("pass_confirm");
+showPasswordElt = document.getElementById("showPassword");
 // Affiche du mot de passe au clic sur l'oeil
 showPasswordElt.addEventListener("mousedown", function () {
     passElt.type = "text";

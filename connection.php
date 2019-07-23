@@ -85,6 +85,7 @@
     <?php include("footer.php"); ?>
 
     <?php include("scripts.html"); ?>
+    <script src="js/show_password.js"></script>
 
 </body>
 
