@@ -10,7 +10,7 @@
         $pass = htmlspecialchars($_POST["pass"]);
 
         // Récupère l'ID de l'utilisateur et son password haché
-        $req = $bdd->prepare("SELECT ID, pass, status FROM users WHERE login = ?");
+        $req = $bdd->prepare("SELECT ID, pass, role FROM users WHERE login = ?");
         $req->execute(array($login));
         $dataUser = $req->fetch();
 
@@ -25,7 +25,7 @@
         if ($dataUser && $isPasswordCorrect) {
             $_SESSION["userID"] = htmlspecialchars($dataUser["ID"]);
             $_SESSION["userLogin"] = $login;
-            $_SESSION["userStatus"] = htmlspecialchars($dataUser["status"]);
+            $_SESSION["userRole"] = htmlspecialchars($dataUser["role"]);
             $message = "Vous êtes connecté.";
             $typeAlert = "success";
             header("Refresh: 2; url=index.php");

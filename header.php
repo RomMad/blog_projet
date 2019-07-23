@@ -13,7 +13,7 @@
                 </li>
                 <?php 
                 
-                if (isset($_SESSION["userStatus"]) && $_SESSION["userStatus"]==0) {
+                if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]==0) {
                 ?> 
                 <li class="nav-item">
                     <a class="nav-link" href="edit_post.php?type=1">Nouvel article</a>
@@ -21,7 +21,7 @@
                 <?php 
                 };
 
-                if (isset($_SESSION["userStatus"]) && $_SESSION["userStatus"]==0) {
+                if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]==0) {
                 ?> 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="admin.php" id="navbarDropdown" role="button"

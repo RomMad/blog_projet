@@ -18,7 +18,7 @@
         $name =  htmlspecialchars($dataUser["name"]);
         $surname = htmlspecialchars($dataUser["surname"]);
         $birthdate = htmlspecialchars($dataUser["birthdate"]);
-        $status =  htmlspecialchars($dataUser["status"]);
+        $role =  htmlspecialchars($dataUser["role"]);
     };
 
     var_dump($_POST);
@@ -35,7 +35,7 @@
             $surname = htmlspecialchars($_POST["surname"]);
             $email = htmlspecialchars($_POST["email"]);
             $birthdate = !empty($_POST["birthdate"]) ? htmlspecialchars($_POST["birthdate"]) : NULL;
-            $status = htmlspecialchars($_POST["status"]);
+            $role = htmlspecialchars($_POST["role"]);
             $pass = htmlspecialchars($_POST["pass"]);
             $pass_confirm = htmlspecialchars($_POST["pass_confirm"]);
             $isPasswordCorrect = password_verify($pass, htmlspecialchars($dataUser["pass"])); // Compare le pass envoyé via le formulaire avec la base
@@ -92,7 +92,7 @@
             };
             // Met à jour les informations du profil si validation est vraie
             if ($validation) {
-                $req = $bdd->prepare("UPDATE users SET login = :new_login, email = :new_email, name = :new_name, surname = :new_surname, birthdate = :new_birthdate, status = :new_status, date_update = NOW() 
+                $req = $bdd->prepare("UPDATE users SET login = :new_login, email = :new_email, name = :new_name, surname = :new_surname, birthdate = :new_birthdate, role = :new_role, date_update = NOW() 
                 WHERE ID = :ID");
                 $req->execute(array(
                     "new_login" => $login,
@@ -100,7 +100,7 @@
                     "new_name" => $name,
                     "new_surname" => $surname,
                     "new_birthdate" => $birthdate,
-                    "new_status" => $status,
+                    "new_role" => $role,
                     "ID" => $_SESSION["userID"]
                     ));
 
@@ -213,10 +213,10 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <label for="status" class="col-md-4 col-form-label">Type de profil</label>
+                                    <label for="role" class="col-md-4 col-form-label">Type de profil</label>
                                     <div class="col-md-5">
-                                        <input type="text" name="status" id="status" class="form-control mb-4"
-                                            value="<?= isset($status) ? $status : "" ?>">
+                                        <input type="text" name="role" id="role" class="form-control mb-4"
+                                            value="<?= isset($role) ? $role : "" ?>">
                                     </div>
                                 </div>
                                 <div class="row">
