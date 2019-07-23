@@ -83,7 +83,7 @@
                     $date_creation_fr = htmlspecialchars($dataPosts["date_creation_fr"]);
             ?>
             
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header bg-dark text-light">
                     <a class="text-info" href="post.php?post=<?= $post_ID ?>">
                         <h3 class="mt-1"><?= $title ?></h3>

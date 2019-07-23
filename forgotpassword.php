@@ -90,7 +90,7 @@
                     <p>Saisissez votre adresse e-mail afin de recevoir un e-mail pour réinitialiser votre mot de
                         passe.</p>
                     <label for="email" class="sr-only">Email</label>
-                    <input type="text" name="email" id="email" class="form-control mb-2" placeholder="Email"
+                    <input type="text" name="email" id="email" class="form-control mb-4 shadow-sm" placeholder="Email"
                         autofocus="">
                     <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-info btn-block mb-4 shadow">
 

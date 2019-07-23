@@ -119,25 +119,25 @@
                             <div class="row">
                                 <label for="login" class="col-md-4 col-form-label">Login</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="login" id="login" class="form-control mb-4">
+                                    <input type="text" name="login" id="login" class="form-control mb-4 shadow-sm">
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="email" class="col-md-4 col-form-label">Adresse email</label>
                                 <div class="col-md-8">
-                                    <input type="email" name="email" id="email" class="form-control mb-4">
+                                    <input type="email" name="email" id="email" class="form-control mb-4 shadow-sm">
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="name" class="col-md-4 col-form-label">Nom</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="name" id="name" class="form-control mb-4">
+                                    <input type="text" name="name" id="name" class="form-control mb-4 shadow-sm">
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="surname" class="col-md-4 col-form-label">Prénom</label>
                                 <div class="col-md-8">
-                                    <input type="text" name="surname" id="surname" class="form-control mb-4">
+                                    <input type="text" name="surname" id="surname" class="form-control mb-4 shadow-sm">
                                 </div>
                             </div>
                             <!-- <div class="row">
@@ -150,7 +150,7 @@
                                 <label for="pass" class="col-md-4 col-form-label">Mot de passe</label>
                                 <div class="col-md-5">
                                     <div class="div-user-pass">
-                                        <input type="password" name="pass" id="pass" class="form-control mb-4">
+                                        <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm">
                                         <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@
                                 <label for="pass_confirm" class="col-md-4 col-form-label">Confirmation mot de passe</label>
                                 <div class="col-md-5">
                                     <div class="div-user-pass">
-                                        <input type="password" name="pass_confirm" id="pass_confirm" class="form-control mb-4">
+                                        <input type="password" name="pass_confirm" id="pass_confirm" class="form-control mb-4 shadow-sm">
                                         <div id="showConfirmPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
                                     </div>
                                 </div>

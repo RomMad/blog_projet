@@ -136,33 +136,33 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 <label for="title">Titre</label>
-                                <input type="text" name="title" class="form-control" id="title" value="<?= isset($title) ? $title : "" ?>">
+                                <input type="text" name="title" class="form-control shadow-sm" id="title" value="<?= isset($title) ? $title : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="post_content" class="d-none">Contenu</label>
-                                <textarea name="post_content" class="form-control" id="post_content" rows="12"><?= isset($content) ? $content : "" ?></textarea>
+                                <textarea name="post_content" class="form-control shadow-sm" id="post_content" rows="12"><?= isset($content) ? $content : "" ?></textarea>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-2">
                         <div class="form-group">
                                 <label for="post_ID">ID</label>
-                                <input type="text" name="post_ID" class="form-control" id="post_ID" readonly value="<?= isset($post_ID) ? $post_ID : "" ?>">
+                                <input type="text" name="post_ID" class="form-control shadow-sm" id="post_ID" readonly value="<?= isset($post_ID) ? $post_ID : "" ?>">
                         </div>
                             <div class="form-group">
                                 <label for="post_user_ID">Auteur</label>
-                                <input type="text" name="post_user_ID" class="form-control" id="post_user_ID" readonly value="<?= isset($post_user_ID) ? $post_user_ID : "" ?>">
+                                <input type="text" name="post_user_ID" class="form-control shadow-sm" id="post_user_ID" readonly value="<?= isset($post_user_ID) ? $post_user_ID : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="date_creation">Date de création</label>
-                                <input type="text" name="date_creation" class="form-control" id="date_creation" readonly value="<?= isset($date_creation) ? $date_creation : "" ?>">
+                                <input type="text" name="date_creation" class="form-control shadow-sm" id="date_creation" readonly value="<?= isset($date_creation) ? $date_creation : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="date_update">Date de mise à jour</label>
-                                <input type="text" name="date_update" class="form-control" id="date_update" readonly value="<?= isset($date_update) ? $date_update : "" ?>">
+                                <input type="text" name="date_update" class="form-control shadow-sm" id="date_update" readonly value="<?= isset($date_update) ? $date_update : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="status">Statut</label>
-                                <select name="status" class="form-control" id="status">
+                                <select name="status" class="form-control shadow-sm" id="status">
                                     <option <?php if (isset($status) && $status=="Publié") { ?> selected <?php } ?> >Publié</option>
                                     <option <?php if (isset($status) && $status=="Brouillon") { ?> selected <?php } ?> >Brouillon</option>
                                 </select>

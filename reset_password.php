@@ -94,7 +94,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
                     <input type="text" name="email" id="email" class="form-control mb-4" placeholder="Email">
                     <label for="new_pass" class="sr-only">Mot de passe</label>
                         <div class="div-user-pass">
-                            <input type="password" name="new_pass" id="new_pass" class="form-control mb-2" placeholder="Nouveau mot de passe">
+                            <input type="password" name="new_pass" id="new_pass" class="form-control mb-2 shadow-sm" placeholder="Nouveau mot de passe">
                             <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
                         </div>   
                         <div class="div-user-pass">

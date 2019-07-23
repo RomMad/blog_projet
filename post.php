@@ -156,7 +156,7 @@
 
         <!-- Affichage de l'article -->
         <section id="post">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-header bg-dark text-light">
                         <h1 class="h2 mt-2 mb-3"><?= htmlspecialchars($dataPost["title"]) ?></h1>
                         <em>Créé le <?= htmlspecialchars($dataPost["date_creation_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($dataPost["login"]) ?> </a> et modifié le <?=  htmlspecialchars($dataPost["date_update_fr"]) ?></em>
@@ -191,11 +191,11 @@
                         <div class="row">
                             <label for="name" class="col-md-4 col-form-label">Nom</label>
                             <div class="col-md-8">
-                                <input type="text" name="name" id="name" class="form-control mb-4" value="<?= isset($_SESSION["user_login"]) ? $_SESSION["user_login"] : "" ?>">
+                                <input type="text" name="name" id="name" class="form-control mb-4 shadow-sm" value="<?= isset($_SESSION["user_login"]) ? $_SESSION["user_login"] : "" ?>">
                             </div>
                         </div>
                         <label for="content"></label>
-                        <textarea name="content" class="form-control" id="content" rows="4"></textarea>
+                        <textarea name="content" class="form-control shadow-sm" id="content" rows="4"></textarea>
                     </div>
                     <div class="form-group float-right">
                         <input type="submit" value="Envoyer" id="save" class="btn btn-info shadow">
@@ -216,7 +216,7 @@
                     <?php 
                         while ($dataComment = $req->fetch()) {
                     ?>
-                            <div class="card">
+                            <div class="card shadow">
                                 <div class="card-body position relative">
                                     <?php 
                                         if (!empty($dataComment["login"])) {
