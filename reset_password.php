@@ -93,14 +93,14 @@ if (!empty($_POST) && isset($_GET["token"])) {
                     <label for="email" class="sr-only">Email</label>
                     <input type="text" name="email" id="email" class="form-control mb-4" placeholder="Email">
                     <label for="new_pass" class="sr-only">Mot de passe</label>
-                    <div>
-                        <input type="password" name="new_pass" id="new_pass" class="form-control mb-2" placeholder="Nouveau mot de passe">
-                        <span class="fas fa-eye"></span>
-                    </div>
-                    <div>
-                        <input type="password" name="new_pass_confirm" id="new_pass_confirm" class="form-control mb-4" placeholder="Confirmation du mot de passe">
-                        <span class="fas fa-eye"></span>
-                    </div>
+                        <div class="div-user-pass">
+                            <input type="password" name="new_pass" id="new_pass" class="form-control mb-2" placeholder="Nouveau mot de passe">
+                            <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                        </div>   
+                        <div class="div-user-pass">
+                            <input type="password" name="new_pass_confirm" id="new_pass_confirm" class="form-control mb-4" placeholder="Confirmation du mot de passe">
+                            <div id="showConfirmPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                        </div>
                     <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-info btn-block mb-4 shadow">
 
                     <?php include("msg_session_flash.php") ?>
@@ -112,6 +112,8 @@ if (!empty($_POST) && isset($_GET["token"])) {
     <?php include("footer.php"); ?>
 
     <?php include("scripts.html"); ?>
+    <script src="js/show_password.js"></script>
+    <script src="js/show_confirm_password.js"></script>
 
 </body>
 
