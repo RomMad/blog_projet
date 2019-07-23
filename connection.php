@@ -61,9 +61,9 @@
                 <label for="login" class="sr-only">Login</label>
                 <input type="text" name="login" id="login" class="form-control mb-2" placeholder="Login" autofocus="">
                 <label for="pass" class="sr-only">Mot de passe</label>
-                <div id="div-user-pass">
+                <div class="div-user-pass">
                     <input type="password" name="pass" id="pass" class="form-control mb-4" placeholder="Mot de passe">
-                    <span class="fas fa-eye"></span>
+                    <div id="icon-eye" class="icon-eye"><span class="fas fa-eye"></span></div>
                 </div>
                 <div class="checkbox mb-3">
                     <label>

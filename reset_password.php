@@ -37,7 +37,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
     $interval = date_timestamp_get($dateNow)-date_timestamp_get($dateResetPassword);
     $delay = 15*60; // 15 minutes x 60 secondes = 900 secondes
 
-    // Vérifie si le token et l'adresse email sont corrects
+    // Vérifie si le token ou l'adresse email sont corrects
     if (!$dataResetPassword) {
         $msgReset = $msgReset . "<li>Le lien de réinitialisation ou l'adresse email sont incorrects.</li>";
         $validation = false;
@@ -74,8 +74,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
         "msg" => $msgReset,
         "type" =>  $typeAlert
     );
-
-};
+}
 
 ?>
 
