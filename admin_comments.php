@@ -97,7 +97,8 @@
     require("pagination.php");
 
     // Récupère les commentaires
-    $req = $bdd->prepare("SELECT c.ID, c.content, c.user_ID, u.login AS author, c.status, c.id_post, 
+    $req = $bdd->prepare("SELECT c.ID, c.id_post, c.content, c.user_ID, u.login AS author, c.status, c.nb_report, 
+    DATE_FORMAT(c.report_date, \"%d/%m/%Y %H:%i\") AS report_date, 
     DATE_FORMAT(c.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
     DATE_FORMAT(c.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
     FROM comments c
@@ -137,9 +138,12 @@
                 <table class="table table-bordered table-striped table-hover shadow">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col" class="align-middle"><input type="checkbox" name="allselectedComments" id="all-checkbox" /><label for="allselectedComments"></label></th>
                             <th scope="col" class="align-middle">
-                                <a href="admin_comments?orderBy=content&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Contenu
+                                <input type="checkbox" name="allselectedComments" id="all-checkbox" />
+                                <label for="allselectedComments" class="sr-only">Tout sélectionner</label>
+                            </th>
+                            <th scope="col" class="align-middle">
+                                <a href="admin_comments?orderBy=content&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Contenu du commentaire
                                 <?php 
                                 if ($orderBy == "content") {
                                 ?>
@@ -172,9 +176,9 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin_comments?orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
+                                <a href="admin_comments?orderBy=report_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de signalement
                                 <?php 
-                                if ($orderBy == "creation_date") {
+                                if ($orderBy == "report_date") {
                                 ?>
                                     <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                 <?php   
@@ -183,9 +187,20 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin_comments?orderBy=update_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise à jour
+                                <a href="admin_comments?orderBy=nb_report&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Nb de signalements
                                 <?php 
-                                if ($orderBy == "update_date_fr") {
+                                if ($orderBy == "nb_report") {
+                                ?>
+                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                <?php   
+                                }
+                                ?>
+                                </a>
+                            </th>
+                            <th scope="col" class="align-middle">
+                                <a href="admin_comments?orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
+                                <?php 
+                                if ($orderBy == "creation_date") {
                                 ?>
                                     <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                 <?php   
@@ -203,13 +218,24 @@
                             <tr>
                                 <th scope="row">
                                     <input type="checkbox" name="selectedComments[]" id="comment<?= $datacomments["ID"] ?>" value="<?= $datacomments["ID"] ?>" class=""/>
-                                    <label for="selectedComments[]" class="sr-only">Sélectionné</label>
+                                    <label for="selectedComments[]" class="sr-only">Sélectionner</label>
                                 </th>
                                 <td><a href="post.php?post=<?= $datacomments["id_post"] ?>" class="text-dark"><?= $datacomments["content"] ?></a></td>
                                 <td><?= $datacomments["author"] ?></td>
-                                <td><?= $datacomments["status"] ?></td>
+                                <td>
+                                <?php 
+                                if ($datacomments["status"]==2) {
+                                    echo "Signalé";
+                                } elseif ($datacomments["status"]==1) {
+                                    echo "Modéré";
+                                } else {
+                                    echo "-"; 
+                                };
+                                ?>
+                                </td>
+                                <td><?= $datacomments["report_date"] ?></td>
+                                <td><?= $datacomments["nb_report"] ?></td>
                                 <td><?= $datacomments["creation_date_fr"] ?></td>
-                                <td><?= $datacomments["update_date_fr"] ?></td>
                             </tr>
                         <?php
                         };
