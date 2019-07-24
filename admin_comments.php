@@ -17,21 +17,37 @@
     };
 
     var_dump($_POST);
-    // Supprime les commentaires sélectionnés via une boucle
-    if (isset($_POST["selectedComments"])) {
-        foreach ($_POST["selectedComments"] as $selectedComment) {
-            $req = $bdd->prepare("DELETE FROM comments WHERE ID = ? ");
-            $req->execute(array($selectedComment));
+    if (!empty($_POST)) {
+        // Supprime les commentaires sélectionnés via une boucle
+        if ($_POST["action_apply"] == "delete" && isset($_POST["selectedComments"])) {
+            foreach ($_POST["selectedComments"] as $selectedComment) {
+                $req = $bdd->prepare("DELETE FROM comments WHERE ID = ? ");
+                $req->execute(array($selectedComment));
+            };
+            // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
+            $nbselectedComments = count($_POST["selectedComments"]);
+            if ($nbselectedComments>1) {
+                $msgAdmin = $nbselectedComments . " commentaires ont été supprimés.";
+            } else {
+                $msgAdmin = "Le commentaire a été supprimé.";
+            };
+            $typeAlert = "warning"; 
         };
-        // Compte le nombre d'commentaires supprimés pour adaptés l'affichage du message
-        $nbselectedComments = count($_POST["selectedComments"]);
-        if ($nbselectedComments>1) {
-            $msgAdmin = $nbselectedComments . " commentaires ont été supprimés.";
-        } else {
-            $msgAdmin = "Le commentaire a été supprimé.";
+        // Modère les commentaires sélectionnés via une boucle
+        if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedComments"])) {
+            foreach ($_POST["selectedComments"] as $selectedComment) {
+                $req = $bdd->prepare("UPDATE comments SET status = 1 WHERE ID = ? ");
+                $req->execute(array($selectedComment));
+            };
+            // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
+            $nbselectedComments = count($_POST["selectedComments"]);
+            if ($nbselectedComments>1) {
+                $msgAdmin = $nbselectedComments . " commentaires ont été modérés.";
+            } else {
+                $msgAdmin = "Le commentaire a été modéré.";
+            };
+            $typeAlert = "success"; 
         };
-        $typeAlert = "warning"; 
-
         $_SESSION["flash"] = array(
             "msg" => $msgAdmin,
             "type" =>  $typeAlert
@@ -97,7 +113,7 @@
     require("pagination.php");
 
     // Récupère les commentaires
-    $req = $bdd->prepare("SELECT c.ID, c.id_post, c.content, c.user_ID, u.login AS author, c.status, c.nb_report, 
+    $req = $bdd->prepare("SELECT c.ID, c.id_post, c.content, c.user_ID, c.user_name AS author, u.login, c.status, c.nb_report, 
     DATE_FORMAT(c.report_date, \"%d/%m/%Y %H:%i\") AS report_date, 
     DATE_FORMAT(c.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
     DATE_FORMAT(c.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
@@ -132,8 +148,23 @@
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
                 <form action="<?= $linkNbDisplayed ?>" method="post">
-                    <input type="submit" id="action_admin" name="action" alt="Supprimer" class="btn btn-danger mb-2 shadow" 
-                        value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer le commentaire ?')){return true;}else{return false;}">
+                    <label class="col-form-label ml-2 mb-2 py-2" for="action">Action</label>
+                        <select name="action_apply" id="action_apply" class="custom-select form-control mb-2 shadow" value="Par auteur">
+                            <option value="">--</option>
+                            <option value="moderate">Modérer</option>
+                            <option value="delete">Supprimer</option>
+                        </select>
+                    <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-info mb-2 py-1 shadow" 
+                        value="Appliquer" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
+                    
+                    <label class="col-form-label ml-4  py-2" for="filter_status">Filtre</label>
+                        <select name="filter_status" id="filter_status" class="custom-select form-control mb-2 shadow" value="Par auteur">
+                            <option value="">--Statut--</option>
+                            <option value="0">Non-modéré</option>
+                            <option value="1">Modéré</option>
+                            <option value="2">Signalé</option>
+                        </select>
+                    <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-info mb-2 py-1 shadow" value="Filtrer">
 
                 <table class="table table-bordered table-striped table-hover shadow">
                     <thead class="thead-dark">
@@ -213,29 +244,47 @@
                     <tbody>
 
                         <?php
-                        while ($datacomments=$req->fetch()) {
+                        while ($dataComments=$req->fetch()) {
                         ?>
                             <tr>
                                 <th scope="row">
-                                    <input type="checkbox" name="selectedComments[]" id="comment<?= $datacomments["ID"] ?>" value="<?= $datacomments["ID"] ?>" class=""/>
+                                    <input type="checkbox" name="selectedComments[]" id="comment<?= $dataComments["ID"] ?>" value="<?= $dataComments["ID"] ?>" class=""/>
                                     <label for="selectedComments[]" class="sr-only">Sélectionner</label>
                                 </th>
-                                <td><a href="post.php?post=<?= $datacomments["id_post"] ?>" class="text-dark"><?= $datacomments["content"] ?></a></td>
-                                <td><?= $datacomments["author"] ?></td>
+                                <td><a href="post.php?post=<?= $dataComments["id_post"] ?>" class="text-dark"><?= $dataComments["content"] ?></a></td>
                                 <td>
                                 <?php 
-                                if ($datacomments["status"]==2) {
-                                    echo "Signalé";
-                                } elseif ($datacomments["status"]==1) {
-                                    echo "Modéré";
+                                if (!empty($dataComments["author"])) {
+                                    echo $dataComments["author"];
                                 } else {
-                                    echo "-"; 
+                                    if (!empty($dataComments["login"])) {
+                                        echo $dataComments["login"];
+                                    } else {
+                                        echo "Anonyme";
+                                    };
                                 };
                                 ?>
                                 </td>
-                                <td><?= $datacomments["report_date"] ?></td>
-                                <td><?= $datacomments["nb_report"] ?></td>
-                                <td><?= $datacomments["creation_date_fr"] ?></td>
+                                <td>
+                                <?php 
+                                switch($dataComments["status"]) {
+                                    case 0:
+                                    echo "Non-modéré";
+                                    break;
+                                    case 1:
+                                    echo "Modéré";
+                                    break;
+                                    case 2:
+                                    echo "Signalé";
+                                    break;
+                                    defaut:
+                                    echo "-";
+                                };
+                                ?>
+                                </td>
+                                <td><?= $dataComments["report_date"] ?></td>
+                                <td><?= $dataComments["nb_report"] ?></td>
+                                <td><?= $dataComments["creation_date_fr"] ?></td>
                             </tr>
                         <?php
                         };
