@@ -1,6 +1,6 @@
 <header id="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark my-3 py-3 shadow">
-        <a class="navbar-brand text-info" href="index.php">Blog</a>
+        <a class="navbar-brand text-info" href="index.php">Jean Forteroche | Le blog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
