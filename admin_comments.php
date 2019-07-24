@@ -17,18 +17,18 @@
     };
 
     var_dump($_POST);
-    // Supprime les articles sélectionnés via une boucle
-    if (isset($_POST["selectedPosts"])) {
-        foreach ($_POST["selectedPosts"] as $selectedpost) {
-            // $req = $bdd->prepare("DELETE FROM posts WHERE ID = ? ");
-            // $req->execute(array($selectedpost));
+    // Supprime les commentaires sélectionnés via une boucle
+    if (isset($_POST["selectedComments"])) {
+        foreach ($_POST["selectedComments"] as $selectedComment) {
+            $req = $bdd->prepare("DELETE FROM comments WHERE ID = ? ");
+            $req->execute(array($selectedComment));
         };
-        // Compte le nombre d'articles supprimés pour adaptés l'affichage du message
-        $nbSelectedPosts = count($_POST["selectedPosts"]);
-        if ($nbSelectedPosts>1) {
-            $msgAdmin = $nbSelectedPosts . " articles ont été supprimés.";
+        // Compte le nombre d'commentaires supprimés pour adaptés l'affichage du message
+        $nbselectedComments = count($_POST["selectedComments"]);
+        if ($nbselectedComments>1) {
+            $msgAdmin = $nbselectedComments . " commentaires ont été supprimés.";
         } else {
-            $msgAdmin = "L'article a été supprimé.";
+            $msgAdmin = "Le commentaire a été supprimé.";
         };
         $typeAlert = "warning"; 
 
@@ -38,73 +38,73 @@
         );
     };
 
-    // Compte le nombre d'articles
-    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts");
+    // Compte le nombre d'commentaires
+    $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments");
     $req->execute(array());
-    $nbPosts = $req->fetch();
+    $nbcomments = $req->fetch();
 
-    // Vérification si informations dans variable POST
+    // Vérification si informations dans variable comment
     if (!empty($_POST["nbDisplayed"])) {
         $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-        $_SESSION["adminNbDisplayedPosts"] = $nbDisplayed;
-    } else if (!empty($_SESSION["adminNbDisplayedPosts"])) {
-        $nbDisplayed =  $_SESSION["adminNbDisplayedPosts"];
+        $_SESSION["adminNbDisplayedComments"] = $nbDisplayed;
+    } else if (!empty($_SESSION["adminNbDisplayedComments"])) {
+        $nbDisplayed =  $_SESSION["adminNbDisplayedComments"];
     } else {
         $nbDisplayed = 20;
     };
     var_dump($_GET);  
     // Vérifie l'ordre de tri par type
-    if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
+    if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
         $orderBy = htmlspecialchars($_GET["orderBy"]);
-    } else if (!empty($_SESSION["adminPostsOrderBy"])) {
-        $orderBy = $_SESSION["adminPostsOrderBy"];
+    } else if (!empty($_SESSION["adminCommentsOrderBy"])) {
+        $orderBy = $_SESSION["adminCommentsOrderBy"];
     } else {
         $orderBy = "creation_date_fr";
     };
     // Vérifie l'ordre de tri si ascendant ou descendant
     if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
         $order = htmlspecialchars($_GET["order"]);
-    } else if (!empty($_SESSION["adminPostsOrder"])) {
-        $order = $_SESSION["adminPostsOrder"];
+    } else if (!empty($_SESSION["adminCommentsOrder"])) {
+        $order = $_SESSION["adminCommentsOrder"];
     } else {
         $order = "desc";
     };
     // Si le tri par type vient de changer, alors le tri est toujours ascendant
-    if (!empty($_SESSION["adminPostsOrder"]) && $orderBy != $_SESSION["adminPostsOrderBy"]) {
+    if (!empty($_SESSION["adminCommentsOrder"]) && $orderBy != $_SESSION["adminCommentsOrderBy"]) {
         $order = "asc";
     };
     // Enregistre les tris en SESSION
-    $_SESSION["adminPostsOrderBy"] = $orderBy;
-    $_SESSION["adminPostsOrder"] = $order;
+    $_SESSION["adminCommentsOrderBy"] = $orderBy;
+    $_SESSION["adminCommentsOrder"] = $order;
 
     // Vérification si informations dans variable GET
     if (!empty($_GET["page"])) {
         $page = htmlspecialchars($_GET["page"]);
-        // Calcul le nombre de pages par rapport aux nombre d'articles
-        $maxPost =  $page*$nbDisplayed;
-        $minPost = $maxPost-$nbDisplayed;
+        // Calcul le nombre de pages par rapport aux nombre d'commentaires
+        $maxcomment =  $page*$nbDisplayed;
+        $mincomment = $maxcomment-$nbDisplayed;
     } else  {
         $page = 1;
-        $minPost = 0;
-        $maxPost = $nbDisplayed;
+        $mincomment = 0;
+        $maxcomment = $nbDisplayed;
     };
     
     // Initialisation des variables pour la pagination
-    $linkNbDisplayed = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-    $linkPagination = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-    $anchorPagination = "#table_admin_posts";
-    $nbPages = ceil($nbPosts["nb_Posts"] / $nbDisplayed);
+    $linkNbDisplayed = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+    $linkPagination = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+    $anchorPagination = "#table-admin_comments";
+    $nbPages = ceil($nbcomments["nb_comments"] / $nbDisplayed);
     require("pagination.php");
 
-    // Récupère les articles
-    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_login AS author, u.login, p.status, 
-    DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
-    DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
-    FROM posts p
+    // Récupère les commentaires
+    $req = $bdd->prepare("SELECT c.ID, c.content, c.user_ID, u.login AS author, c.status, c.id_post, 
+    DATE_FORMAT(c.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
+    DATE_FORMAT(c.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
+    FROM comments c
     LEFT JOIN users u
-    ON p.user_ID = u.ID
+    ON c.user_ID = u.ID
     ORDER BY $orderBy $order
-    LIMIT  $minPost, $maxPost");
+    LIMIT  $mincomment, $maxcomment");
     $req->execute(array());
 
 ?>
@@ -120,10 +120,10 @@
     <div class="container">
 
         <div class="row">
-            <section id="table_admin_posts" class="col-md-12 mx-auto mt-4 table_admin">
+            <section id="table-admin_comments" class="col-md-12 mx-auto mt-4 table-admin">
 
-                <h2 class="mb-4">Gestion des articles
-                    <span class="badge badge-secondary font-weight-normal"><?= $nbPosts["nb_Posts"] ?> </span>
+                <h2 class="mb-4">Gestion des commentaires
+                    <span class="badge badge-secondary font-weight-normal"><?= $nbcomments["nb_comments"] ?> </span>
                 </h2>
                 
                 <?php include("msg_session_flash.php") ?>
@@ -131,26 +131,17 @@
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
                 <form action="<?= $linkNbDisplayed ?>" method="post">
-                    <input type="submit" id="action_admin"  name="action" alt="Supprimer" class="btn btn-danger mb-2 shadow" 
-                        value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;}else{return false;}">
-                    
-                    <!-- <form action="" method="post" class="form-inline">
-                        <label class="sr-only mr-2 col-form-label-sm" for="action">Filtrer</label>
-                        <select name="action" id="action" class="custom-select mr-sm-2 form-control-sm" value="Par auteur" >
-                            <option value="edit">Modifier</option>
-                            <option value="erase">Supprimer</option>
-                        </select>
-                        <input type="submit" id="action_admin" class="btn btn-info form-control-sm pt-1" value="Filtrer">
-                    </form> -->
+                    <input type="submit" id="action_admin" name="action" alt="Supprimer" class="btn btn-danger mb-2 shadow" 
+                        value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer le commentaire ?')){return true;}else{return false;}">
 
                 <table class="table table-bordered table-striped table-hover shadow">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col" class="align-middle"><input type="checkbox" name="allSelectedPosts" id="all-checkbox" /><label for="allSelectedPosts"></label></th>
+                            <th scope="col" class="align-middle"><input type="checkbox" name="allselectedComments" id="all-checkbox" /><label for="allselectedComments"></label></th>
                             <th scope="col" class="align-middle">
-                                <a href="admin_posts?orderBy=title&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Titre
+                                <a href="admin_comments?orderBy=content&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Contenu
                                 <?php 
-                                if ($orderBy == "title") {
+                                if ($orderBy == "content") {
                                 ?>
                                     <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                 <?php   
@@ -159,7 +150,7 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin_posts?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
+                                <a href="admin_comments?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
                                 <?php 
                                 if ($orderBy == "author") {
                                 ?>
@@ -170,7 +161,7 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin_posts?orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Statut
+                                <a href="admin_comments?orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Statut
                                 <?php 
                                 if ($orderBy == "status") {
                                 ?>
@@ -181,7 +172,7 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin_posts?orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
+                                <a href="admin_comments?orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
                                 <?php 
                                 if ($orderBy == "creation_date") {
                                 ?>
@@ -192,7 +183,7 @@
                                 </a>
                             </th>
                             <th scope="col" class="align-middle">
-                                <a href="admin_posts?orderBy=update_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise à jour
+                                <a href="admin_comments?orderBy=update_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise à jour
                                 <?php 
                                 if ($orderBy == "update_date_fr") {
                                 ?>
@@ -207,18 +198,18 @@
                     <tbody>
 
                         <?php
-                        while ($dataPosts=$req->fetch()) {
+                        while ($datacomments=$req->fetch()) {
                         ?>
                             <tr>
                                 <th scope="row">
-                                    <input type="checkbox" name="selectedPosts[]" id="post<?= $dataPosts["ID"] ?>" value="<?= $dataPosts["ID"] ?>" class=""/>
-                                    <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
+                                    <input type="checkbox" name="selectedComments[]" id="comment<?= $datacomments["ID"] ?>" value="<?= $datacomments["ID"] ?>" class=""/>
+                                    <label for="selectedComments[]" class="sr-only">Sélectionné</label>
                                 </th>
-                                <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-info font-weight-bold"><?= $dataPosts["title"] ?></a></td>
-                                <td><?= $dataPosts["author"] ?></td>
-                                <td><?= $dataPosts["status"] ?></td>
-                                <td><?= $dataPosts["creation_date_fr"] ?></td>
-                                <td><?= $dataPosts["update_date_fr"] ?></td>
+                                <td><a href="post.php?post=<?= $datacomments["id_post"] ?>" class="text-dark"><?= $datacomments["content"] ?></a></td>
+                                <td><?= $datacomments["author"] ?></td>
+                                <td><?= $datacomments["status"] ?></td>
+                                <td><?= $datacomments["creation_date_fr"] ?></td>
+                                <td><?= $datacomments["update_date_fr"] ?></td>
                             </tr>
                         <?php
                         };
