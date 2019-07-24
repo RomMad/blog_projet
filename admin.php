@@ -4,7 +4,7 @@
     require("connection_bdd.php");
     // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
     if (empty($_SESSION["userID"])) {
-        header("Location: index.php");
+        header("Location: connection.php");
     } else {
         // Récupère les informations de l'utilisateur
         $req = $bdd->prepare("SELECT role FROM users WHERE ID =?");

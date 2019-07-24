@@ -12,7 +12,7 @@
     };
 
     var_dump($_POST);    
-    // Vérification si informations dans variable POST
+    // Vérifie si informations dans variable POST
     if (!empty($_POST["content"])) {
         
         if (isset($_SESSION["userID"])) {

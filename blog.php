@@ -65,11 +65,16 @@
     <div class="container">
 
         <section id="blog">
-
-        <div class="mt-4 mb-4">
-            <a class="text-info" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
-         </div>
-
+            <?php 
+            // Vérifie si l'utilisateur a les droits pour écrire un article
+            if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]==0) {
+            ?> 
+                <div class="mt-4 mb-4">
+                    <a class="text-info" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                </div>
+            <?php
+            };
+            ?>
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
             <?php

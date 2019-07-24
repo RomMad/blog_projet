@@ -2,8 +2,8 @@
     session_start();
 
     include("connection_bdd.php");
-    // Redirige vers la page de connexion si non connecté
-    if (empty($_SESSION)) {
+    // Redirige vers la page de connexion si l'utilisateur n'a pas les droits
+    if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>1) {
         header("Location: connection.php");
     };
 

@@ -1,48 +1,54 @@
 <?php 
-    session_start();
 
-    require("connection_bdd.php");
+session_start();
 
-    var_dump($_POST);
-    // Vérifie si informations dans variable POST
-    if (!empty($_POST)) {
-        $login = htmlspecialchars($_POST["login"]);
-        $pass = htmlspecialchars($_POST["pass"]);
+require("connection_bdd.php");
 
-        // Récupère l'ID de l'utilisateur et son password haché
-        $req = $bdd->prepare("SELECT ID, pass, role FROM users WHERE login = ?");
-        $req->execute(array($login));
-        $dataUser = $req->fetch();
+// Redirige vers la page d'accueil si l'utilisateur est déjà connecté
+if (!empty($_SESSION["userID"])) {
+    header("Location: index.php");
+};
 
-        // Vérifie si login et password existent   
-        $isPasswordCorrect = password_verify($pass, $dataUser["pass"]);// Compare le password envoyé via le formulaire avec la base  
-        if ($dataUser && $isPasswordCorrect) {
-            $_SESSION["userID"] = htmlspecialchars($dataUser["ID"]);
-            $_SESSION["userLogin"] = $login;
-            $_SESSION["userRole"] = htmlspecialchars($dataUser["role"]);
+var_dump($_POST);
+// Vérifie si informations dans variable POST
+if (!empty($_POST)) {
+    $login = htmlspecialchars($_POST["login"]);
+    $pass = htmlspecialchars($_POST["pass"]);
 
-            // Ajoute la date de connexion de l'utilisateur dans la table dédiée
-            $req = $bdd->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
-            $req->execute(array("user_ID" => htmlspecialchars($dataUser["ID"])));
+    // Récupère l'ID de l'utilisateur et son password haché
+    $req = $bdd->prepare("SELECT ID, pass, role FROM users WHERE login = ?");
+    $req->execute(array($login));
+    $dataUser = $req->fetch();
 
-            $message = "Vous êtes connecté.";
-            $typeAlert = "success";
-            header("Refresh: 2; url=index.php");
-        } else {
-            $message = "Login ou mot de passe incorrect.";
-            $typeAlert = "danger";
-        };
+    // Vérifie si login et password existent   
+    $isPasswordCorrect = password_verify($pass, $dataUser["pass"]);// Compare le password envoyé via le formulaire avec la base  
+    if ($dataUser && $isPasswordCorrect) {
+        $_SESSION["userID"] = htmlspecialchars($dataUser["ID"]);
+        $_SESSION["userLogin"] = $login;
+        $_SESSION["userRole"] = htmlspecialchars($dataUser["role"]);
 
-        // Vérifie si le champ login est vide
-        if (empty($login)) {
-            $message = "Veuillez saisir un Login.";
-        };
+        // Ajoute la date de connexion de l'utilisateur dans la table dédiée
+        $req = $bdd->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
+        $req->execute(array("user_ID" => htmlspecialchars($dataUser["ID"])));
 
-        $_SESSION["flash"] = array(
-            "msg" => $message,
-            "type" =>  $typeAlert
-        );
+        $message = "Vous êtes connecté.";
+        $typeAlert = "success";
+        header("Refresh: 2; url=index.php");
+    } else {
+        $message = "Login ou mot de passe incorrect.";
+        $typeAlert = "danger";
     };
+
+    // Vérifie si le champ login est vide
+    if (empty($login)) {
+        $message = "Veuillez saisir un Login.";
+    };
+
+    $_SESSION["flash"] = array(
+        "msg" => $message,
+        "type" =>  $typeAlert
+    );
+};
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +78,7 @@
                 <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-info btn-block mb-4 shadow">
                 <a href="inscription.php" class="btn btn-lg btn-info btn-block mb-4 shadow">S'inscrire</a>
 
-                <a href="forgotpassword.php" class="text-info">Login ou mot de passe oublié ?</a>
+                <a href="forgotpassword.php" class="text-info mb-4">Login ou mot de passe oublié ?</a>
 
                 <?php include("msg_session_flash.php") ?>
 
