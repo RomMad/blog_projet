@@ -31,10 +31,10 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="admin.php">Administration générale</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="admin-posts.php">Gestion des articles</a>
-                        <a class="dropdown-item" href="admin-comments.php">Gestion des commentaires</a>
+                        <a class="dropdown-item" href="admin_posts.php">Gestion des articles</a>
+                        <a class="dropdown-item" href="admin_comments.php">Gestion des commentaires</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="admin-users.php">Gestion des utilisateurs</a>
+                        <a class="dropdown-item" href="admin_users.php">Gestion des utilisateurs</a>
                     </div>
                 </li>
                 <?php 

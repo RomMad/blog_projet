@@ -38,9 +38,9 @@
             <div class="col-md-6 mt-4">
 
                 <div  class="list-group shadow">
-                    <a href="admin-posts.php" class="list-group-item list-group-item-action text-info">Gestion des articles</a>
-                    <a href="admin-comments.php" class="list-group-item list-group-item-action text-info">Gestion des commentaires</a>
-                    <a href="admin-users.php" class="list-group-item list-group-item-action text-info">Gestion des articles</a>
+                    <a href="admin_posts.php" class="list-group-item list-group-item-action text-info">Gestion des articles</a>
+                    <a href="admin_comments.php" class="list-group-item list-group-item-action text-info">Gestion des commentaires</a>
+                    <a href="admin_users.php" class="list-group-item list-group-item-action text-info">Gestion des articles</a>
                 </div>
 
             </div>
