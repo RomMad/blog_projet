@@ -16,45 +16,55 @@
         };
     };
 
+    $filters = "c.ID > 0";
+
     var_dump($_POST);
     if (!empty($_POST)) {
-        // Supprime les commentaires sélectionnés via une boucle
-        if ($_POST["action_apply"] == "delete" && isset($_POST["selectedComments"])) {
-            foreach ($_POST["selectedComments"] as $selectedComment) {
-                $req = $bdd->prepare("DELETE FROM comments WHERE ID = ? ");
-                $req->execute(array($selectedComment));
+        if (!empty($_POST["action_apply"]) && isset($_POST["selectedComments"])) {
+            // Supprime les commentaires sélectionnés via une boucle
+            if ($_POST["action_apply"] == "delete" && isset($_POST["selectedComments"])) {
+                foreach ($_POST["selectedComments"] as $selectedComment) {
+                    $req = $bdd->prepare("DELETE FROM comments WHERE ID = ? ");
+                    $req->execute(array($selectedComment));
+                };
+                // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
+                $nbselectedComments = count($_POST["selectedComments"]);
+                if ($nbselectedComments>1) {
+                    $msgAdmin = $nbselectedComments . " commentaires ont été supprimés.";
+                } else {
+                    $msgAdmin = "Le commentaire a été supprimé.";
+                };
+                $typeAlert = "warning"; 
             };
-            // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
-            $nbselectedComments = count($_POST["selectedComments"]);
-            if ($nbselectedComments>1) {
-                $msgAdmin = $nbselectedComments . " commentaires ont été supprimés.";
-            } else {
-                $msgAdmin = "Le commentaire a été supprimé.";
+            // Modère les commentaires sélectionnés via une boucle
+            if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedComments"])) {
+                foreach ($_POST["selectedComments"] as $selectedComment) {
+                    $req = $bdd->prepare("UPDATE comments SET status = 1 WHERE ID = ? ");
+                    $req->execute(array($selectedComment));
+                };
+                // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
+                $nbselectedComments = count($_POST["selectedComments"]);
+                if ($nbselectedComments>1) {
+                    $msgAdmin = $nbselectedComments . " commentaires ont été modérés.";
+                } else {
+                    $msgAdmin = "Le commentaire a été modéré.";
+                };
+                $typeAlert = "success"; 
             };
-            $typeAlert = "warning"; 
+            $_SESSION["flash"] = array(
+                "msg" => $msgAdmin,
+                "type" =>  $typeAlert
+            );
         };
-        // Modère les commentaires sélectionnés via une boucle
-        if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedComments"])) {
-            foreach ($_POST["selectedComments"] as $selectedComment) {
-                $req = $bdd->prepare("UPDATE comments SET status = 1 WHERE ID = ? ");
-                $req->execute(array($selectedComment));
-            };
-            // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
-            $nbselectedComments = count($_POST["selectedComments"]);
-            if ($nbselectedComments>1) {
-                $msgAdmin = $nbselectedComments . " commentaires ont été modérés.";
-            } else {
-                $msgAdmin = "Le commentaire a été modéré.";
-            };
-            $typeAlert = "success"; 
+        // Enregistre le filtre
+        if (isset($_POST["filter_status"])) {
+            $filters = "c.status = " . htmlspecialchars($_POST["filter_status"]);
         };
-        $_SESSION["flash"] = array(
-            "msg" => $msgAdmin,
-            "type" =>  $typeAlert
-        );
     };
 
-    // Compte le nombre d'commentaires
+
+
+    // Compte le nombre de commentaires
     $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments");
     $req->execute(array());
     $nbcomments = $req->fetch();
@@ -96,7 +106,7 @@
     // Vérification si informations dans variable GET
     if (!empty($_GET["page"])) {
         $page = htmlspecialchars($_GET["page"]);
-        // Calcul le nombre de pages par rapport aux nombre d'commentaires
+        // Calcul le nombre de pages par rapport aux nombre de commentaires
         $maxcomment =  $page*$nbDisplayed;
         $mincomment = $maxcomment-$nbDisplayed;
     } else  {
@@ -120,6 +130,7 @@
     FROM comments c
     LEFT JOIN users u
     ON c.user_ID = u.ID
+    WHERE $filters 
     ORDER BY $orderBy $order
     LIMIT  $mincomment, $maxcomment");
     $req->execute(array());

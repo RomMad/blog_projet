@@ -36,17 +36,17 @@
 
         // Ajoute le commentaire si le commentaire n'est pas vide
         if ($validation) {
-        $req = $bdd->prepare("INSERT INTO comments(id_post, user_ID, user_name, content) 
-        VALUES(:id_post, :user_ID, :user_name, :content)");
-        $req->execute(array(
-            "id_post" => $_SESSION["postID"],
-            "user_ID" =>  $user_ID,
-            "user_name" => $name,
-            "content" => $_POST["content"]
+            $req = $bdd->prepare("INSERT INTO comments(id_post, user_ID, user_name, content) 
+            VALUES(:id_post, :user_ID, :user_name, :content)");
+            $req->execute(array(
+                "id_post" => $_SESSION["postID"],
+                "user_ID" =>  $user_ID,
+                "user_name" => $name,
+                "content" => $content
             ));
         };
     };
-
+    //
     if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]=="erase") {
         $ID = htmlspecialchars($_GET["comment"]);
         $req = $bdd->prepare("DELETE FROM comments WHERE ID = ?");
@@ -55,7 +55,7 @@
         $msgComment = "Le commentaire a été supprimé.";
         $typeAlert = "warning";
     };
-
+    //
     if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]=="report") {
         $ID = htmlspecialchars($_GET["comment"]);
         $req = $bdd->prepare("UPDATE comments SET status = :new_status, nb_report = nb_report + 1, report_date = NOW() WHERE ID = :ID");
@@ -90,7 +90,10 @@
 
     // Compte le nombre de commentaires
     $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments WHERE id_post = ? AND status >= ? ");
-    $req->execute([$post_ID,0]);
+    $req->execute([
+        $post_ID,
+        0
+    ]);
     $nbComments = $req->fetch();
 
     if (!empty($_POST["nbDisplayed"])) {
