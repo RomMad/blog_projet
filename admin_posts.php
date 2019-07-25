@@ -11,7 +11,7 @@
         $req->execute(array($_SESSION["userID"]));
         $userRole = $req->fetch();
         
-        if ($userRole["role"]!=0) {
+        if ($userRole["role"]!=1) {
             header("Location: index.php");
         };
     };

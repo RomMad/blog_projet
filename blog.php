@@ -47,10 +47,10 @@
     WHERE p.status = :status1 || p.status = :status2 
     ORDER BY p.creation_date DESC 
     LIMIT  $minPost, $maxPost");
-        $req->execute(array(
-            "status1" => "Publié", 
-            "status2" => "Brouillon"
-        ));
+    $req->execute(array(
+        "status1" => "Publié", 
+        "status2" => "Brouillon"
+    ));
 
 ?>
 
@@ -67,7 +67,7 @@
         <section id="blog">
             <?php 
             // Vérifie si l'utilisateur a les droits pour écrire un article
-            if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]==0) {
+            if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
             ?> 
                 <div class="mt-4 mb-4">
                     <a class="text-info" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
@@ -128,4 +128,4 @@
 
 </body>
 
-</html
+</html>
