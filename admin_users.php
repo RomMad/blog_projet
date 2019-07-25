@@ -156,124 +156,134 @@
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
                 <form action="<?= $linkNbDisplayed ?>" method="post">
-                    <label class="col-form-label ml-2 mb-2 py-2" for="action">Action</label>
-                        <select name="action_apply" id="action_apply" class="custom-select form-control mb-2 shadow" value="Par auteur">
-                            <option value="">--</option>
-                            <option value="moderate">Modérer</option>
-                            <option value="delete">Supprimer</option>
-                        </select>
-                    <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-info mb-2 py-1 shadow" 
-                        value="Appliquer" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
-                    
-                    <label class="col-form-label ml-4  py-2" for="filter_role">Filtre</label>
-                        <select name="filter_role" id="filter_role" class="custom-select form-control mb-2 shadow" value="Par auteur">
-                            <option value="">--Rôle--</option>
-                            <option value="1">Administrateur</option>
-                            <option value="2">Editeur</option>
-                            <option value="3">Auteur</option>
-                            <option value="4">Contributeur</option>
-                            <option value="5">Abonné</option>
+                    <div class="row">
 
-                        </select>
-                    <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-info mb-2 py-1 shadow" value="Filtrer">
+                        <div class="col-md-6">
+                            <label class="col-form-label ml-2 mb-2 py-2" for="action">Action</label>
+                                <select name="action_apply" id="action_apply" class="custom-select form-control mb-2 shadow" value="Par auteur">
+                                    <option value="">--</option>
+                                    <option value="moderate">Modérer</option>
+                                    <option value="delete">Supprimer</option>
+                                </select>
+                            <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-info mb-2 py-1 shadow" 
+                                value="Appliquer" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
+                        </div>
 
-                <table class="table table-bordered table-striped table-hover shadow">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col" class="align-middle">
-                                <input type="checkbox" name="allselectedUsers" id="all-checkbox" />
-                                <label for="allselectedUsers" class="sr-only">Tout sélectionner</label>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_Users?orderBy=login&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Login
-                                <?php 
-                                if ($orderBy == "login") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_Users?orderBy=name&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Nom
-                                <?php 
-                                if ($orderBy == "name") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_Users?orderBy=surname&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Prénom
-                                <?php 
-                                if ($orderBy == "surname") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_Users?orderBy=email&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Email
-                                <?php 
-                                if ($orderBy == "email") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_Users?orderBy=role&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Rôle
-                                <?php 
-                                if ($orderBy == "role") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_Users?orderBy=registration_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date d'enregistrement
-                                <?php 
-                                if ($orderBy == "registration_date_fr") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                        <div class="col-md-6">
+                            <label class="col-form-label ml-4  py-2" for="filter_role">Filtre</label>
+                                <select name="filter_role" id="filter_role" class="custom-select form-control mb-2 shadow" value="Par auteur">
+                                    <option value="">--Rôle--</option>
+                                    <option value="1">Administrateur</option>
+                                    <option value="2">Editeur</option>
+                                    <option value="3">Auteur</option>
+                                    <option value="4">Contributeur</option>
+                                    <option value="5">Abonné</option>
+                                </select>
+                            <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-info mb-2 py-1 shadow" value="Filtrer">
+                        </div>
+                    </div>
 
-                        <?php
-                        while ($dataUsers=$req->fetch()) {
-                        ?>
-                            <tr>
-                                <th scope="row">
-                                    <input type="checkbox" name="selectedUsers[]" id="User<?= $dataUsers["ID"] ?>" value="<?= $dataUsers["ID"] ?>" class=""/>
-                                    <label for="selectedUsers[]" class="sr-only">Sélectionner</label>
-                                </th>
-                                <td><?= $dataUsers["login"] ?></td>
-                                <td><?= $dataUsers["name"] ?></td>
-                                <td><?= $dataUsers["surname"] ?></td>
-                                <td><?= $dataUsers["email"] ?></td>
-                                <td><?= $dataUsers["role"] ?></td>
-                                <td><?= $dataUsers["registration_date_fr"] ?></td>
-                            </tr>
-                        <?php
-                        };
-                        ?>
-                    </tbody>
-                </table>
+                    <div class="row">
+                        <div class="col-md-12 table-responsive">
+                            <table class="table table-bordered table-striped table-hover shadow">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col" class="align-middle">
+                                            <input type="checkbox" name="allselectedUsers" id="all-checkbox" />
+                                            <label for="allselectedUsers" class="sr-only">Tout sélectionner</label>
+                                        </th>
+                                        <th scope="col" class="align-middle">
+                                            <a href="admin_Users?orderBy=login&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Login
+                                            <?php 
+                                            if ($orderBy == "login") {
+                                            ?>
+                                                <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                            <?php   
+                                            }
+                                            ?>
+                                            </a>
+                                        </th>
+                                        <th scope="col" class="align-middle">
+                                            <a href="admin_Users?orderBy=name&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Nom
+                                            <?php 
+                                            if ($orderBy == "name") {
+                                            ?>
+                                                <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                            <?php   
+                                            }
+                                            ?>
+                                            </a>
+                                        </th>
+                                        <th scope="col" class="align-middle">
+                                            <a href="admin_Users?orderBy=surname&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Prénom
+                                            <?php 
+                                            if ($orderBy == "surname") {
+                                            ?>
+                                                <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                            <?php   
+                                            }
+                                            ?>
+                                            </a>
+                                        </th>
+                                        <th scope="col" class="align-middle">
+                                            <a href="admin_Users?orderBy=email&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Email
+                                            <?php 
+                                            if ($orderBy == "email") {
+                                            ?>
+                                                <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                            <?php   
+                                            }
+                                            ?>
+                                            </a>
+                                        </th>
+                                        <th scope="col" class="align-middle">
+                                            <a href="admin_Users?orderBy=role&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Rôle
+                                            <?php 
+                                            if ($orderBy == "role") {
+                                            ?>
+                                                <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                            <?php   
+                                            }
+                                            ?>
+                                            </a>
+                                        </th>
+                                        <th scope="col" class="align-middle">
+                                            <a href="admin_Users?orderBy=registration_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date d'enregistrement
+                                            <?php 
+                                            if ($orderBy == "registration_date_fr") {
+                                            ?>
+                                                <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                            <?php   
+                                            }
+                                            ?>
+                                            </a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <?php
+                                    while ($dataUsers=$req->fetch()) {
+                                    ?>
+                                        <tr>
+                                            <th scope="row">
+                                                <input type="checkbox" name="selectedUsers[]" id="User<?= $dataUsers["ID"] ?>" value="<?= $dataUsers["ID"] ?>" class=""/>
+                                                <label for="selectedUsers[]" class="sr-only">Sélectionner</label>
+                                            </th>
+                                            <td><?= $dataUsers["login"] ?></td>
+                                            <td><?= $dataUsers["name"] ?></td>
+                                            <td><?= $dataUsers["surname"] ?></td>
+                                            <td><?= $dataUsers["email"] ?></td>
+                                            <td><?= $dataUsers["role"] ?></td>
+                                            <td><?= $dataUsers["registration_date_fr"] ?></td>
+                                        </tr>
+                                    <?php
+                                    };
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>    
+                    </div>
                 </form>
 
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->

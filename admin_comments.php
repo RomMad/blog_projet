@@ -157,149 +157,160 @@
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
                 <form action="<?= $linkNbDisplayed ?>" method="post">
-                    <label class="col-form-label ml-2 mb-2 py-2" for="action">Action</label>
-                        <select name="action_apply" id="action_apply" class="custom-select form-control mb-2 shadow" value="Par auteur">
-                            <option value="">--</option>
-                            <option value="moderate">Modérer</option>
-                            <option value="delete">Supprimer</option>
-                        </select>
-                    <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-info mb-2 py-1 shadow" 
-                        value="Appliquer" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
-                    
-                    <label class="col-form-label ml-4  py-2" for="filter_status">Filtre</label>
-                        <select name="filter_status" id="filter_status" class="custom-select form-control mb-2 shadow" value="Par auteur">
-                            <option value="">--Statut--</option>
-                            <option value="0">Non-modéré</option>
-                            <option value="1">Modéré</option>
-                            <option value="2">Signalé</option>
-                        </select>
-                    <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-info mb-2 py-1 shadow" value="Filtrer">
+                    <div class="row">
 
-                <table class="table table-bordered table-striped table-hover shadow">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col" class="align-middle">
-                                <input type="checkbox" name="allselectedComments" id="all-checkbox" />
-                                <label for="allselectedComments" class="sr-only">Tout sélectionner</label>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_comments?orderBy=content&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Contenu du commentaire
-                                <?php 
-                                if ($orderBy == "content") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_comments?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
-                                <?php 
-                                if ($orderBy == "author") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_comments?orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Statut
-                                <?php 
-                                if ($orderBy == "status") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_comments?orderBy=report_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de signalement
-                                <?php 
-                                if ($orderBy == "report_date") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_comments?orderBy=nb_report&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Nb de signalements
-                                <?php 
-                                if ($orderBy == "nb_report") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_comments?orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
-                                <?php 
-                                if ($orderBy == "creation_date") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                        <div class="col-md-6">
+                            <label class="col-form-label ml-2 mb-2 py-2" for="action">Action</label>
+                                <select name="action_apply" id="action_apply" class="custom-select form-control mb-2 shadow" value="Par auteur">
+                                    <option value="">--</option>
+                                    <option value="moderate">Modérer</option>
+                                    <option value="delete">Supprimer</option>
+                                </select>
+                            <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-info mb-2 py-1 shadow" 
+                                value="Appliquer" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
+                        </div>
 
-                        <?php
-                        while ($dataComments=$req->fetch()) {
-                        ?>
-                            <tr>
-                                <th scope="row">
-                                    <input type="checkbox" name="selectedComments[]" id="comment<?= $dataComments["ID"] ?>" value="<?= $dataComments["ID"] ?>" class=""/>
-                                    <label for="selectedComments[]" class="sr-only">Sélectionner</label>
-                                </th>
-                                <td><a href="post.php?post=<?= $dataComments["id_post"] ?>" class="text-dark"><?= $dataComments["content"] ?></a></td>
-                                <td>
-                                <?php 
-                                if (!empty($dataComments["author"])) {
-                                    echo $dataComments["author"];
-                                } else {
-                                    if (!empty($dataComments["login"])) {
-                                        echo $dataComments["login"];
-                                    } else {
-                                        echo "Anonyme";
-                                    };
+                        <div class="col-md-6">
+                            <label class="col-form-label ml-4  py-2" for="filter_status">Filtre</label>
+                                <select name="filter_status" id="filter_status" class="custom-select form-control mb-2 shadow" value="Par auteur">
+                                    <option value="">--Statut--</option>
+                                    <option value="0">Non-modéré</option>
+                                    <option value="1">Modéré</option>
+                                    <option value="2">Signalé</option>
+                                </select>
+                            <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-info mb-2 py-1 shadow" value="Filtrer">
+                        </div>
+                    </div>
+
+                    <div class="row">    
+                        <div class="col-md-12 table-responsive">
+                            <table class="table table-bordered table-striped table-hover shadow">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col" class="align-middle">
+                                        <input type="checkbox" name="allselectedComments" id="all-checkbox" />
+                                        <label for="allselectedComments" class="sr-only">Tout sélectionner</label>
+                                    </th>
+                                    <th scope="col" class="align-middle">
+                                        <a href="admin_comments?orderBy=content&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Contenu du commentaire
+                                        <?php 
+                                        if ($orderBy == "content") {
+                                        ?>
+                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                        <?php   
+                                        }
+                                        ?>
+                                        </a>
+                                    </th>
+                                    <th scope="col" class="align-middle">
+                                        <a href="admin_comments?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
+                                        <?php 
+                                        if ($orderBy == "author") {
+                                        ?>
+                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                        <?php   
+                                        }
+                                        ?>
+                                        </a>
+                                    </th>
+                                    <th scope="col" class="align-middle">
+                                        <a href="admin_comments?orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Statut
+                                        <?php 
+                                        if ($orderBy == "status") {
+                                        ?>
+                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                        <?php   
+                                        }
+                                        ?>
+                                        </a>
+                                    </th>
+                                    <th scope="col" class="align-middle">
+                                        <a href="admin_comments?orderBy=report_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de signalement
+                                        <?php 
+                                        if ($orderBy == "report_date") {
+                                        ?>
+                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                        <?php   
+                                        }
+                                        ?>
+                                        </a>
+                                    </th>
+                                    <th scope="col" class="align-middle">
+                                        <a href="admin_comments?orderBy=nb_report&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Nb de signalements
+                                        <?php 
+                                        if ($orderBy == "nb_report") {
+                                        ?>
+                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                        <?php   
+                                        }
+                                        ?>
+                                        </a>
+                                    </th>
+                                    <th scope="col" class="align-middle">
+                                        <a href="admin_comments?orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
+                                        <?php 
+                                        if ($orderBy == "creation_date") {
+                                        ?>
+                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                        <?php   
+                                        }
+                                        ?>
+                                        </a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <?php
+                                while ($dataComments=$req->fetch()) {
+                                ?>
+                                    <tr>
+                                        <th scope="row">
+                                            <input type="checkbox" name="selectedComments[]" id="comment<?= $dataComments["ID"] ?>" value="<?= $dataComments["ID"] ?>" class=""/>
+                                            <label for="selectedComments[]" class="sr-only">Sélectionner</label>
+                                        </th>
+                                        <td><a href="post.php?post=<?= $dataComments["id_post"] ?>" class="text-dark"><?= $dataComments["content"] ?></a></td>
+                                        <td>
+                                        <?php 
+                                        if (!empty($dataComments["author"])) {
+                                            echo $dataComments["author"];
+                                        } else {
+                                            if (!empty($dataComments["login"])) {
+                                                echo $dataComments["login"];
+                                            } else {
+                                                echo "Anonyme";
+                                            };
+                                        };
+                                        ?>
+                                        </td>
+                                        <td>
+                                        <?php 
+                                        switch($dataComments["status"]) {
+                                            case 0:
+                                            echo "Non-modéré";
+                                            break;
+                                            case 1:
+                                            echo "Modéré";
+                                            break;
+                                            case 2:
+                                            echo "Signalé";
+                                            break;
+                                            defaut:
+                                            echo "Non-modéré";
+                                        };
+                                        ?>
+                                        </td>
+                                        <td><?= $dataComments["report_date"] ?></td>
+                                        <td><?= $dataComments["nb_report"] ?></td>
+                                        <td><?= $dataComments["creation_date_fr"] ?></td>
+                                    </tr>
+                                <?php
                                 };
                                 ?>
-                                </td>
-                                <td>
-                                <?php 
-                                switch($dataComments["status"]) {
-                                    case 0:
-                                    echo "Non-modéré";
-                                    break;
-                                    case 1:
-                                    echo "Modéré";
-                                    break;
-                                    case 2:
-                                    echo "Signalé";
-                                    break;
-                                    defaut:
-                                    echo "Non-modéré";
-                                };
-                                ?>
-                                </td>
-                                <td><?= $dataComments["report_date"] ?></td>
-                                <td><?= $dataComments["nb_report"] ?></td>
-                                <td><?= $dataComments["creation_date_fr"] ?></td>
-                            </tr>
-                        <?php
-                        };
-                        ?>
-                    </tbody>
-                </table>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </form>
 
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->

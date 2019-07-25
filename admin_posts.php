@@ -142,89 +142,90 @@
                         </select>
                         <input type="submit" id="action_admin" class="btn btn-info form-control-sm pt-1" value="Filtrer">
                     </form> -->
-
-                <table class="table table-bordered table-striped table-hover shadow">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col" class="align-middle"><input type="checkbox" name="allSelectedPosts" id="all-checkbox" /><label for="allSelectedPosts"></label></th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_posts?orderBy=title&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Titre
-                                <?php 
-                                if ($orderBy == "title") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_posts?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
-                                <?php 
-                                if ($orderBy == "author") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_posts?orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Statut
-                                <?php 
-                                if ($orderBy == "status") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_posts?orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
-                                <?php 
-                                if ($orderBy == "creation_date") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                            <th scope="col" class="align-middle">
-                                <a href="admin_posts?orderBy=update_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise à jour
-                                <?php 
-                                if ($orderBy == "update_date_fr") {
-                                ?>
-                                    <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                <?php   
-                                }
-                                ?>
-                                </a>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <?php
-                        while ($dataPosts=$req->fetch()) {
-                        ?>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover shadow">
+                        <thead class="thead-dark">
                             <tr>
-                                <th scope="row">
-                                    <input type="checkbox" name="selectedPosts[]" id="post<?= $dataPosts["ID"] ?>" value="<?= $dataPosts["ID"] ?>" class=""/>
-                                    <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
+                                <th scope="col" class="align-middle"><input type="checkbox" name="allSelectedPosts" id="all-checkbox" /><label for="allSelectedPosts"></label></th>
+                                <th scope="col" class="align-middle">
+                                    <a href="admin_posts?orderBy=title&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Titre
+                                    <?php 
+                                    if ($orderBy == "title") {
+                                    ?>
+                                        <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                    <?php   
+                                    }
+                                    ?>
+                                    </a>
                                 </th>
-                                <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-info font-weight-bold"><?= $dataPosts["title"] ?></a></td>
-                                <td><?= $dataPosts["author"] ?></td>
-                                <td><?= $dataPosts["status"] ?></td>
-                                <td><?= $dataPosts["creation_date_fr"] ?></td>
-                                <td><?= $dataPosts["update_date_fr"] ?></td>
+                                <th scope="col" class="align-middle">
+                                    <a href="admin_posts?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
+                                    <?php 
+                                    if ($orderBy == "author") {
+                                    ?>
+                                        <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                    <?php   
+                                    }
+                                    ?>
+                                    </a>
+                                </th>
+                                <th scope="col" class="align-middle">
+                                    <a href="admin_posts?orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Statut
+                                    <?php 
+                                    if ($orderBy == "status") {
+                                    ?>
+                                        <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                    <?php   
+                                    }
+                                    ?>
+                                    </a>
+                                </th>
+                                <th scope="col" class="align-middle">
+                                    <a href="admin_posts?orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
+                                    <?php 
+                                    if ($orderBy == "creation_date") {
+                                    ?>
+                                        <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                    <?php   
+                                    }
+                                    ?>
+                                    </a>
+                                </th>
+                                <th scope="col" class="align-middle">
+                                    <a href="admin_posts?orderBy=update_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise à jour
+                                    <?php 
+                                    if ($orderBy == "update_date_fr") {
+                                    ?>
+                                        <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
+                                    <?php   
+                                    }
+                                    ?>
+                                    </a>
+                                </th>
                             </tr>
-                        <?php
-                        };
-                        ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+
+                            <?php
+                            while ($dataPosts=$req->fetch()) {
+                            ?>
+                                <tr>
+                                    <th scope="row">
+                                        <input type="checkbox" name="selectedPosts[]" id="post<?= $dataPosts["ID"] ?>" value="<?= $dataPosts["ID"] ?>" class=""/>
+                                        <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
+                                    </th>
+                                    <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-info font-weight-bold"><?= $dataPosts["title"] ?></a></td>
+                                    <td><?= $dataPosts["author"] ?></td>
+                                    <td><?= $dataPosts["status"] ?></td>
+                                    <td><?= $dataPosts["creation_date_fr"] ?></td>
+                                    <td><?= $dataPosts["update_date_fr"] ?></td>
+                                </tr>
+                            <?php
+                            };
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
                 </form>
 
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
