@@ -1,8 +1,8 @@
 <div class="row">
 
-    <div class="col-md-6">
+    <div class="col-sm-5">
         <form action="<?= $linkNbDisplayed ?>" method="post" class="form-inline">
-            <label class="mr-2 col-form-label-sm" for="nbDisplayed">Nb affichés</label>
+            <label class="mr-2 col-form-label-sm" for="nbDisplayed">Affichés</label>
             <select name="nbDisplayed" id="nbDisplayed" class="custom-select mr-sm-2 form-control-sm shadow-sm" >
                 <option value="5" <?= $nbDisplayed==5 ? "selected" : "" ?> >5</option>
                 <option value="10" <?= $nbDisplayed==10 ? "selected" : "" ?> >10</option>
@@ -14,7 +14,7 @@
         </form>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-sm-7">
     <?php 
         if ($nbPages>1) {
         ?>

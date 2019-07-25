@@ -27,6 +27,12 @@ if (!empty($_POST)) {
         $_SESSION["userLogin"] = $login;
         $_SESSION["userRole"] = htmlspecialchars($dataUser["role"]);
 
+        // Enregistre le login et le mot de passe en cookie si la case "Se souvenir de moi" est cochée
+        if (isset($_POST["remember"])) {
+            setcookie("login", $login, time() + 365*24*3600, null, null, false, true);
+            setcookie("pass", $pass, time() + 365*24*3600, null, null, false, true);
+        };
+
         // Ajoute la date de connexion de l'utilisateur dans la table dédiée
         $req = $bdd->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
         $req->execute(array("user_ID" => htmlspecialchars($dataUser["ID"])));
@@ -64,15 +70,15 @@ if (!empty($_POST)) {
             <form action="connection.php" method="post" class="form-signin mx-auto text-center">
                 <h1 class="h3 mb-4 font-weight-normal">Merci de vous connecter</h1>
                 <label for="login" class="sr-only">Login</label>
-                <input type="text" name="login" id="login" class="form-control mb-2 shadow-sm" placeholder="Login" autofocus="">
+                <input type="text" name="login" id="login" class="form-control mb-2 shadow-sm" placeholder="Login" autofocus="" value="<?= isset($_COOKIE["login"]) ? $_COOKIE["login"] : "" ?>">
                 <label for="pass" class="sr-only">Mot de passe</label>
                 <div class="div-user-pass">
-                    <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm" placeholder="Mot de passe">
+                    <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm" placeholder="Mot de passe" value="<?= isset($_COOKIE["pass"]) ? $_COOKIE["pass"] : "" ?>">
                     <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
                 </div>
                 <div class="checkbox mb-3">
-                    <label>
-                        <input type="checkbox" value="remember-me"> Se souvenir de moi
+                    <label for="remember">
+                        <input type="checkbox" name="remember" id="remember" value="true"> Se souvenir de moi
                     </label>
                 </div>
                 <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-info btn-block mb-4 shadow">
