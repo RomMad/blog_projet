@@ -62,8 +62,6 @@
         };
     };
 
-
-
     // Compte le nombre de commentaires
     $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments");
     $req->execute(array());
@@ -289,7 +287,7 @@
                                     echo "Signalé";
                                     break;
                                     defaut:
-                                    echo "-";
+                                    echo "Non-modéré";
                                 };
                                 ?>
                                 </td>
