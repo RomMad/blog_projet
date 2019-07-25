@@ -70,9 +70,9 @@
     // Vérification si informations dans variable POST
     if (!empty($_POST["nbDisplayed"])) {
         $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-        $_SESSION["adminNbDisplayedUsers"] = $nbDisplayed;
-    } else if (!empty($_SESSION["adminNbDisplayedUsers"])) {
-        $nbDisplayed =  $_SESSION["adminNbDisplayedUsers"];
+        setcookie("adminNbDisplayedUsers", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
+    } else if (!empty($_COOKIE["adminNbDisplayedUsers"])) {
+        $nbDisplayed = $_COOKIE["adminNbDisplayedUsers"];
     } else {
         $nbDisplayed = 20;
     };
@@ -80,26 +80,26 @@
     // Vérifie l'ordre de tri par type
     if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "login" || $_GET["orderBy"] == "name" || $_GET["orderBy"] == "surname" || $_GET["orderBy"] == "email" || $_GET["orderBy"] == "role" | $_GET["orderBy"] == "registration_date_fr")) {
         $orderBy = htmlspecialchars($_GET["orderBy"]);
-    } else if (!empty($_SESSION["adminUsersOrderBy"])) {
-        $orderBy = $_SESSION["adminUsersOrderBy"];
+    } else if (!empty($_COOKIE["adminUsersOrderBy"])) {
+        $orderBy = $_COOKIE["adminUsersOrderBy"];
     } else {
         $orderBy = "login";
     };
     // Vérifie l'ordre de tri si ascendant ou descendant
     if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
         $order = htmlspecialchars($_GET["order"]);
-    } else if (!empty($_SESSION["adminUsersOrder"])) {
-        $order = $_SESSION["adminUsersOrder"];
+    } else if (!empty($_COOKIE["adminUsersOrder"])) {
+        $order = $_COOKIE["adminUsersOrder"];
     } else {
         $order = "desc";
     };
     // Si le tri par type vient de changer, alors le tri est toujours ascendant
-    if (!empty($_SESSION["adminUsersOrder"]) && $orderBy != $_SESSION["adminUsersOrderBy"]) {
+    if (!empty($_COOKIE["adminUsersOrder"]) && $orderBy != $_COOKIE["adminUsersOrderBy"]) {
         $order = "asc";
     };
-    // Enregistre les tris en SESSION
-    $_SESSION["adminUsersOrderBy"] = $orderBy;
-    $_SESSION["adminUsersOrder"] = $order;
+    // Enregistre les tris en COOKIES
+    setcookie("adminUsersOrderBy", $orderBy, time() + 365*24*3600, null, null, false, true);
+    setcookie("adminUsersOrder", $order, time() + 365*24*3600, null, null, false, true);
 
     // Vérification si informations dans variable GET
     if (!empty($_GET["page"])) {

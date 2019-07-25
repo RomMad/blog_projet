@@ -1,8 +1,6 @@
 <?php 
     session_start();
 
-    var_dump($_SESSION);  
-
     require("connection_bdd.php"); 
     // Compte le nombre d'articles
     $req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts WHERE status = ? || status = ? ");
@@ -12,12 +10,13 @@
     var_dump($_POST);
     // Vérification si informations dans variable POST
     if (!empty($_POST)) {
-        $_SESSION["nbDisplayedPosts"] = htmlspecialchars($_POST["nbDisplayed"]);
+        $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
+        setcookie("nbDisplayedPosts", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
+    } else if (!empty($_COOKIE["nbDisplayedPosts"])) {
+        $nbDisplayed = $_COOKIE["nbDisplayedPosts"];
+    } else {
+        $nbDisplayed = 10;
     };
-    if (!isset($_SESSION["nbDisplayedPosts"])) {
-        $_SESSION["nbDisplayedPosts"] = 5;
-    };
-    $nbDisplayed = $_SESSION["nbDisplayedPosts"];
 
     var_dump($_GET);  
     // Vérification si informations dans variable GET

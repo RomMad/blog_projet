@@ -97,13 +97,13 @@
     $nbComments = $req->fetch();
 
     if (!empty($_POST["nbDisplayed"])) {
-        $_SESSION["nbDisplayedComments"] = htmlspecialchars($_POST["nbDisplayed"]);
+        $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
+        setcookie("nbDisplayedComments", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
+    } else if (!empty($_COOKIE["nbDisplayedComments"])) {
+        $nbDisplayed = $_COOKIE["nbDisplayedComments"];
+    } else {
+        $nbDisplayed = 10;
     };
-    if (!isset($_SESSION["nbDisplayedComments"])) {
-        $_SESSION["nbDisplayedComments"] = 5;
-    };
-    $nbDisplayed = $_SESSION["nbDisplayedComments"];
-
 
   if (!empty($_GET["page"])) {
       $page = htmlspecialchars($_GET["page"]);
