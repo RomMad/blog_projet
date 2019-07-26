@@ -16,7 +16,7 @@
         };
     };
 
-    $filters = "c.ID > 0";
+    $filter = "c.ID > 0";
 
     var_dump($_POST);
     if (!empty($_POST)) {
@@ -58,14 +58,15 @@
         };
         // Enregistre le filtre
         if (isset($_POST["filter_status"])) {
-            $filters = "c.status = " . htmlspecialchars($_POST["filter_status"]);
+            $filter = "c.status = " . htmlspecialchars($_POST["filter_status"]);
         };
     };
 
     // Compte le nombre de commentaires
-    $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments");
+    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments FROM comments");
     $req->execute(array());
-    $nbcomments = $req->fetch();
+    $nbComments = $req->fetch();
+    $nbItems = $nbComments["nb_Comments"];
 
     // Vérification si informations dans variable comment
     if (!empty($_POST["nbDisplayed"])) {
@@ -117,7 +118,7 @@
     $linkNbDisplayed = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
     $linkPagination = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
     $anchorPagination = "#table-admin_comments";
-    $nbPages = ceil($nbcomments["nb_comments"] / $nbDisplayed);
+    $nbPages = ceil($nbItems / $nbDisplayed);
     require("pagination.php");
 
     // Récupère les commentaires
@@ -128,7 +129,7 @@
     FROM comments c
     LEFT JOIN users u
     ON c.user_ID = u.ID
-    WHERE $filters 
+    WHERE $filter 
     ORDER BY $orderBy $order
     LIMIT  $mincomment, $maxcomment");
     $req->execute(array());
@@ -149,7 +150,7 @@
             <section id="table-admin_comments" class="col-md-12 mx-auto mt-4 table-admin">
 
                 <h2 class="mb-4">Gestion des commentaires
-                    <span class="badge badge-secondary font-weight-normal"><?= $nbcomments["nb_comments"] ?> </span>
+                    <span class="badge badge-secondary font-weight-normal"><?= $nbComments["nb_Comments"] ?> </span>
                 </h2>
                 
                 <?php include("msg_session_flash.php") ?>

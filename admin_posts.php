@@ -42,6 +42,7 @@
     $req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts");
     $req->execute(array());
     $nbPosts = $req->fetch();
+    $nbItems = $nbPosts["nb_Posts"];
 
     // Vérification si informations dans variable POST
     if (!empty($_POST["nbDisplayed"])) {
@@ -93,7 +94,7 @@
     $linkNbDisplayed = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
     $linkPagination = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
     $anchorPagination = "#table_admin_posts";
-    $nbPages = ceil($nbPosts["nb_Posts"] / $nbDisplayed);
+    $nbPages = ceil($nbItems / $nbDisplayed);
     require("pagination.php");
 
     // Récupère les articles

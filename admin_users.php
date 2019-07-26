@@ -16,7 +16,7 @@
         };
     };
 
-    $filters = "u.ID > 0";
+    $filter = "u.ID > 0";
 
     var_dump($_POST);
     if (!empty($_POST)) {
@@ -58,12 +58,12 @@
         };
         // Si sélection d'un filtre 'rôle', enregistre le filtre
         if (!empty($_POST["filter_role"])) {
-            $filters = "u.role = " . htmlspecialchars($_POST["filter_role"]);
+            $filter = "u.role = " . htmlspecialchars($_POST["filter_role"]);
         };
         // Si recherche, enregistre le filtre
         if (!empty($_POST["filter_search"])) {
             $search = htmlspecialchars($_POST["search_user"]);
-            $filters = "u.login LIKE '%" . $search . "%' OR u.email LIKE '%" . $search . "%' OR u.name LIKE '%" . $search . "%' OR u.surname LIKE '%"  . $search . "%'";
+            $filter = "u.login LIKE '%" . $search . "%' OR u.email LIKE '%" . $search . "%' OR u.name LIKE '%" . $search . "%' OR u.surname LIKE '%"  . $search . "%'";
         };
     };
 
@@ -71,6 +71,7 @@
     $req = $bdd->prepare("SELECT COUNT(*) AS nb_Users FROM users");
     $req->execute(array());
     $nbUsers = $req->fetch();
+    $nbItems = $nbUsers["nb_Users"];
 
     // Vérification si informations dans variable POST
     if (!empty($_POST["nbDisplayed"])) {
@@ -122,7 +123,7 @@
     $linkNbDisplayed = "admin_Users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
     $linkPagination = "admin_Users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
     $anchorPagination = "#table-admin_Users";
-    $nbPages = ceil($nbUsers["nb_Users"] / $nbDisplayed);
+    $nbPages = ceil($nbItems / $nbDisplayed);
     require("pagination.php");
 
     // Récupère les utilisateurs
@@ -132,7 +133,7 @@
     FROM users u
     LEFT JOIN user_role r
     ON u.role = r.ID
-    WHERE $filters 
+    WHERE $filter 
     ORDER BY $orderBy $order
     LIMIT  $minUser, $maxUser");
     $req->execute(array());

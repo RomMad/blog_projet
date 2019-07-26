@@ -89,12 +89,13 @@
     $dataPost = $req->fetch();
 
     // Compte le nombre de commentaires
-    $req = $bdd->prepare("SELECT COUNT(*) AS nb_comments FROM comments WHERE id_post = ? AND status >= ? ");
+    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments FROM comments WHERE id_post = ? AND status >= ? ");
     $req->execute([
         $post_ID,
         0
     ]);
     $nbComments = $req->fetch();
+    $nbItems = $nbComments["nb_Comments"];
 
     if (!empty($_POST["nbDisplayed"])) {
         $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
@@ -120,7 +121,7 @@
     $linkNbDisplayed= "post.php?" . $post_ID . "#form-comment";
     $linkPagination= "post.php?";
     $anchorPagination= "#comments";
-    $nbPages = ceil($nbComments["nb_comments"] / $nbDisplayed);
+    $nbPages = ceil($nbItems / $nbDisplayed);
     require("pagination.php");
 
     // Vérifie s'il y a des commentaires
@@ -167,7 +168,7 @@
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { ?>
                             <a class="text-info a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($dataPost["ID"]) ?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php }; ?>
-                        <a href="#comments" class="badge badge-info ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_comments"] ?> </span></a>
+                        <a href="#comments" class="badge badge-info ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_Comments"] ?> </span></a>
                     </div>
                     <div class="card-body text-body">
                     <?= html_entity_decode($dataPost["content"]) ?>

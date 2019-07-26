@@ -7,12 +7,12 @@ require("connection_bdd.php");
 var_dump($_GET);  
 // Si recherche, filtre les résultats
 if (!empty($_GET["search"])) {
-    $filters = "title like '%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
+    $filter = "title like '%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
 } else {
-    $filters = "status = ? || status = ?";
+    $filter = "status = ? || status = ?";
 };  
 // Compte le nombre d'articles
-$req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts WHERE $filters");
+$req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts WHERE $filter");
 $req->execute(array("
     Publié", 
     "Brouillon"
@@ -55,7 +55,7 @@ $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.
 FROM posts p
 LEFT JOIN users u
 ON p.user_ID = u.ID
-WHERE $filters 
+WHERE $filter 
 ORDER BY p.creation_date DESC 
 LIMIT  $minPost, $maxPost");
 $req->execute(array(
@@ -85,22 +85,24 @@ $req->execute(array(
                 </div>
             <?php
             };
+            // Affiche les résultats si recherche
+            if (!empty($_GET["search"])) {                
+                echo "<p> " . $nbItems . " résultat(s).</p>";
+            };    
             ?>
 
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
             <?php
-                if ($nbItems==0) {
-                    echo "<p>Aucun résultat.</p>";
-                } else {
-                    while ($dataPosts = $req->fetch()) {
-                        $post_ID = htmlspecialchars($dataPosts["ID"]);
-                        $title = htmlspecialchars($dataPosts["title"]);
-                        $user_ID = htmlspecialchars($dataPosts["user_ID"]);
-                        $user_login = htmlspecialchars($dataPosts["user_login"]);
-                        $login = htmlspecialchars($dataPosts["login"]);
-                        $content = html_entity_decode($dataPosts["content"]);
-                        $creation_date_fr = htmlspecialchars($dataPosts["creation_date_fr"]);
+            if ($nbItems) {
+                while ($dataPosts = $req->fetch()) {
+                    $post_ID = htmlspecialchars($dataPosts["ID"]);
+                    $title = htmlspecialchars($dataPosts["title"]);
+                    $user_ID = htmlspecialchars($dataPosts["user_ID"]);
+                    $user_login = htmlspecialchars($dataPosts["user_login"]);
+                    $login = htmlspecialchars($dataPosts["login"]);
+                    $content = html_entity_decode($dataPosts["content"]);
+                    $creation_date_fr = htmlspecialchars($dataPosts["creation_date_fr"]);
                 ?>
                     <div class="card shadow">
                         <div class="card-header bg-dark text-light">
