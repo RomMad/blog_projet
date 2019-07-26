@@ -57,8 +57,8 @@
             );
         };
         // Enregistre le filtre
-        if (isset($_POST["filter_status"])) {
-            $filter = "c.status = " . htmlspecialchars($_POST["filter_status"]);
+        if (isset($_POST["filter_status"]) && $_POST["filter_status"] == "moderate") {
+            $filter = "c.status = 1";
         };
     };
 

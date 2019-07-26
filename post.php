@@ -3,12 +3,25 @@
 
     require("connection_bdd.php");
 
+
+    var_dump($_SESSION);
+
     var_dump($_GET);
     if (!empty($_GET["post"])) {
         $post_ID = htmlspecialchars($_GET["post"]);
         $_SESSION["postID"] = $post_ID;
     } else {
         $post_ID = $_SESSION["postID"];
+    };
+
+    // Récupère les paramètres de modération
+    $req = $bdd->prepare("SELECT moderation FROM settings");
+    $req->execute(array());
+    $dataSettings = $req->fetch();
+    if ($dataSettings["moderation"] == 0) {
+        $filter = "status >= 0";  
+    } else {
+        $filter = "status > 0";  
     };
 
     var_dump($_POST);    
@@ -23,7 +36,7 @@
 
         $content = htmlspecialchars($_POST["content"]);
         $name = htmlspecialchars($_POST["name"]);
-        $msgComment = "Le commentaire a été ajouté.";
+        $msgComment = "";
         $typeAlert = "success";
         $validation = true;
 
@@ -36,14 +49,26 @@
 
         // Ajoute le commentaire si le commentaire n'est pas vide
         if ($validation) {
-            $req = $bdd->prepare("INSERT INTO comments(id_post, user_ID, user_name, content) 
-            VALUES(:id_post, :user_ID, :user_name, :content)");
+            if (isset($_SESSION["userRole"]) && $_SESSION["userRole"] == 1 ) {
+                $status = 1;
+            } else {
+                $status = 0;
+            };
+            $req = $bdd->prepare("INSERT INTO comments(id_post, user_ID, user_name, content, status) 
+            VALUES(:id_post, :user_ID, :user_name, :content, :status)");
             $req->execute(array(
                 "id_post" => $_SESSION["postID"],
                 "user_ID" =>  $user_ID,
                 "user_name" => $name,
-                "content" => $content
+                "content" => $content,
+                "status" =>  $status
             ));
+            if ($dataSettings["moderation"] == 0 || (isset($_SESSION["userRole"]) && $_SESSION["userRole"] == 1 )) {
+                $msgComment = "Le commentaire a été ajouté.";
+            } else {
+                $msgComment = "Le commentaire est en attente de modération.";
+                $typeAlert = "info";
+            };
         };
     };
     //
@@ -76,7 +101,6 @@
     };
 
 
-
     // Récupère le post
     $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, 
     DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr, 
@@ -89,10 +113,9 @@
     $dataPost = $req->fetch();
 
     // Compte le nombre de commentaires
-    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments FROM comments WHERE id_post = ? AND status >= ? ");
+    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments FROM comments WHERE id_post = ? AND $filter");
     $req->execute([
-        $post_ID,
-        0
+        $post_ID
     ]);
     $nbComments = $req->fetch();
     $nbItems = $nbComments["nb_Comments"];
@@ -125,8 +148,10 @@
     require("pagination.php");
 
     // Vérifie s'il y a des commentaires
-    $req = $bdd->prepare("SELECT ID FROM comments WHERE id_post = ? AND status >= ? ");
-    $req->execute([$post_ID,0]);
+    $req = $bdd->prepare("SELECT ID FROM comments WHERE id_post = ? AND $filter ");
+    $req->execute([
+        $post_ID
+        ]);
     $commentsExist = $req->fetch();
 
     if (!$commentsExist) {
@@ -138,12 +163,11 @@
         FROM comments c
         LEFT JOIN users u
         ON c.user_ID = u.ID
-        WHERE c.id_post = :post_ID AND c.status >= :status 
+        WHERE c.id_post = :post_ID AND $filter 
         ORDER BY c.creation_date DESC
         LIMIT  $minComment,  $maxComment");
         $req->execute(array(
-            "post_ID" => $post_ID,
-            "status" => 0
+            "post_ID" => $post_ID
         ));
     };
 ?>

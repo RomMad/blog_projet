@@ -41,7 +41,6 @@ if (!empty($_POST)) {
     $req = $bdd->prepare("SELECT * FROM settings");
     $req->execute(array());
     $dataSettings = $req->fetch();   
-    echo $dataSettings["moderation"];
 
 ?>
 
@@ -62,6 +61,8 @@ if (!empty($_POST)) {
 
             </div>
         </div>
+
+        <?php include("msg_session_flash.php") ?>
 
         <div class="row">
             <form action="admin.php" method="post" class="col-md-6 card shadow mt-4">
