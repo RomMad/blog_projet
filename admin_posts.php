@@ -1,112 +1,168 @@
 <?php 
-    session_start();
 
-    require("connection_bdd.php");
-    // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
-    if (empty($_SESSION["userID"])) {
+session_start();
+
+require("connection_bdd.php");
+// Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
+if (empty($_SESSION["userID"])) {
+    header("Location: index.php");
+} else {
+    // Récupère les informations de l'utilisateur
+    $req = $bdd->prepare("SELECT role FROM users WHERE ID =?");
+    $req->execute(array($_SESSION["userID"]));
+    $userRole = $req->fetch();
+    
+    if ($userRole["role"]!=1) {
         header("Location: index.php");
-    } else {
-        // Récupère les informations de l'utilisateur
-        $req = $bdd->prepare("SELECT role FROM users WHERE ID =?");
-        $req->execute(array($_SESSION["userID"]));
-        $userRole = $req->fetch();
-        
-        if ($userRole["role"]!=1) {
-            header("Location: index.php");
-        };
     };
+};
 
-    var_dump($_POST);
-    // Supprime les articles sélectionnés via une boucle
-    if (isset($_POST["selectedPosts"])) {
-        foreach ($_POST["selectedPosts"] as $selectedpost) {
-            // $req = $bdd->prepare("DELETE FROM posts WHERE ID = ? ");
-            // $req->execute(array($selectedpost));
-        };
-        // Compte le nombre d'articles supprimés pour adaptés l'affichage du message
-        $nbSelectedPosts = count($_POST["selectedPosts"]);
-        if ($nbSelectedPosts>1) {
-            $msgAdmin = $nbSelectedPosts . " articles ont été supprimés.";
-        } else {
-            $msgAdmin = "L'article a été supprimé.";
-        };
-        $typeAlert = "warning"; 
+$filter = "p.ID > 0";
 
+var_dump($_POST);
+
+if (!empty($_POST)) {
+    if (!empty($_POST["action_apply"]) && isset($_POST["selectedPosts"])) {
+        // Supprime les articles sélectionnés via une boucle
+        if ($_POST["action_apply"] == "delete") {
+            foreach ($_POST["selectedPosts"] as $selectedPost) {
+                $req = $bdd->prepare("DELETE FROM posts WHERE ID = ? ");
+                $req->execute(array($selectedPost));
+            };
+            // Compte le nombre d'articles supprimés pour adaptés l'affichage du message
+            $nbSelectedPosts = count($_POST["selectedPosts"]);
+            if ($nbSelectedPosts>1) {
+                $msgAdmin = $nbSelectedPosts . " articles ont été supprimés.";
+            } else {
+                $msgAdmin = "L'article a été supprimé.";
+            };
+            $typeAlert = "warning"; 
+        };
+        // Met en brouillon les articles sélectionnés via une boucle
+        if ($_POST["action_apply"] == "Brouillon") {
+            foreach ($_POST["selectedPosts"] as $selectedPost) {
+                $req = $bdd->prepare("UPDATE posts SET status = ? WHERE ID = ? ");
+                $req->execute(array(
+                    htmlspecialchars($_POST["action_apply"]),
+                    $selectedPost
+                ));
+            };
+            // Compte le nombre d'articles publiés pour adaptés l'affichage du message
+            $selectedPosts = count($_POST["selectedPosts"]);
+            if ($selectedPosts>1) {
+                $msgAdmin = $selectedPosts . " articles ont été mis en brouillon.";
+            } else {
+                $msgAdmin = "L'article a été mis en brouillon.";
+            };
+            $typeAlert = "success"; 
+        };
+        // Publie les articles sélectionnés via une boucle
+        if ($_POST["action_apply"] == "Publié") {
+            foreach ($_POST["selectedPosts"] as $selectedPost) {
+                $req = $bdd->prepare("UPDATE posts SET status = ? WHERE ID = ? ");
+                $req->execute(array(
+                    htmlspecialchars($_POST["action_apply"]),
+                    $selectedPost
+                ));
+            };
+            // Compte le nombre d'articles publiés pour adaptés l'affichage du message
+            $selectedPosts = count($_POST["selectedPosts"]);
+            if ($selectedPosts>1) {
+                $msgAdmin = $selectedPosts . " articles ont été publié.";
+            } else {
+                $msgAdmin = "L'article a été publié.";
+            };
+            $typeAlert = "success"; 
+        };
+    
         $_SESSION["flash"] = array(
             "msg" => $msgAdmin,
             "type" =>  $typeAlert
         );
     };
+};
 
-    // Compte le nombre d'articles
-    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts");
-    $req->execute(array());
-    $nbPosts = $req->fetch();
-    $nbItems = $nbPosts["nb_Posts"];
+    // Si sélection d'un filtre 'rôle', enregistre le filtre
+    if (!empty($_POST["filter_status"])) {
+        $filter = "status = '" . htmlspecialchars($_POST["filter_status"]) . "'";
+    };
+    // Si recherche, enregistre le filtre
+    if (!empty($_POST["filter_search"])) {
+        $search = htmlspecialchars($_POST["search_post"]);
+        $filter = "title LIKE '%" . $search . "%' OR content LIKE '%" . $search . "%'";
+        echo "RECHERCHE";
+    };
 
-    // Vérification si informations dans variable POST
-    if (!empty($_POST["nbDisplayed"])) {
-        $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-        setcookie("adminNbDisplayedPosts", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-    } else if (!empty($_COOKIE["adminNbDisplayedPosts"])) {
-        $nbDisplayed =  $_COOKIE["adminNbDisplayedPosts"];
-    } else {
-        $nbDisplayed = 20;
-    };
-    var_dump($_GET);  
-    // Vérifie l'ordre de tri par type
-    if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
-        $orderBy = htmlspecialchars($_GET["orderBy"]);
-    } else if (!empty($_COOKIE["adminPostsOrderBy"])) {
-        $orderBy = $_COOKIE["adminPostsOrderBy"];
-    } else {
-        $orderBy = "creation_date_fr";
-    };
-    // Vérifie l'ordre de tri si ascendant ou descendant
-    if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
-        $order = htmlspecialchars($_GET["order"]);
-    } else if (!empty($_COOKIE["adminPostsOrder"])) {
-        $order = $_COOKIE["adminPostsOrder"];
-    } else {
-        $order = "desc";
-    };
-    // Si le tri par type vient de changer, alors le tri est toujours ascendant
-    if (!empty($_COOKIE["adminPostsOrder"]) && $orderBy != $_COOKIE["adminPostsOrderBy"]) {
-        $order = "asc";
-    };
-    // Enregistre les tris en COOKIES
-    setcookie("adminPostsOrderBy", $orderBy, time() + 365*24*3600, null, null, false, true);
-    setcookie("adminPostsOrder", $order, time() + 365*24*3600, null, null, false, true);
+// Compte le nombre d'articles
+$req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts");
+$req->execute(array());
+$nbPosts = $req->fetch();
+$nbItems = $nbPosts["nb_Posts"];
 
-    // Vérification si informations dans variable GET
-    if (!empty($_GET["page"])) {
-        $page = htmlspecialchars($_GET["page"]);
-        // Calcul le nombre de pages par rapport aux nombre d'articles
-        $maxPost =  $page*$nbDisplayed;
-        $minPost = $maxPost-$nbDisplayed;
-    } else  {
-        $page = 1;
-        $minPost = 0;
-        $maxPost = $nbDisplayed;
-    };
-    
-    // Initialisation des variables pour la pagination
-    $linkNbDisplayed = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-    $linkPagination = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-    $anchorPagination = "#table_admin_posts";
-    $nbPages = ceil($nbItems / $nbDisplayed);
-    require("pagination.php");
+// Vérification si informations dans variable POST
+if (!empty($_POST["nbDisplayed"])) {
+    $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
+    setcookie("adminNbDisplayedPosts", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
+} else if (!empty($_COOKIE["adminNbDisplayedPosts"])) {
+    $nbDisplayed =  $_COOKIE["adminNbDisplayedPosts"];
+} else {
+    $nbDisplayed = 20;
+};
+var_dump($_GET);  
+// Vérifie l'ordre de tri par type
+if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
+    $orderBy = htmlspecialchars($_GET["orderBy"]);
+} else if (!empty($_COOKIE["adminPostsOrderBy"])) {
+    $orderBy = $_COOKIE["adminPostsOrderBy"];
+} else {
+    $orderBy = "creation_date_fr";
+};
+// Vérifie l'ordre de tri si ascendant ou descendant
+if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
+    $order = htmlspecialchars($_GET["order"]);
+} else if (!empty($_COOKIE["adminPostsOrder"])) {
+    $order = $_COOKIE["adminPostsOrder"];
+} else {
+    $order = "desc";
+};
+// Si le tri par type vient de changer, alors le tri est toujours ascendant
+if (!empty($_COOKIE["adminPostsOrder"]) && $orderBy != $_COOKIE["adminPostsOrderBy"]) {
+    $order = "asc";
+};
+// Enregistre les tris en COOKIES
+setcookie("adminPostsOrderBy", $orderBy, time() + 365*24*3600, null, null, false, true);
+setcookie("adminPostsOrder", $order, time() + 365*24*3600, null, null, false, true);
 
-    // Récupère les articles
-    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_login AS author, u.login, p.status, 
-    DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
-    DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
-    FROM posts p
-    LEFT JOIN users u
-    ON p.user_ID = u.ID
-    ORDER BY $orderBy $order
-    LIMIT  $minPost, $maxPost");
-    $req->execute(array());
+// Vérification si informations dans variable GET
+if (!empty($_GET["page"])) {
+    $page = htmlspecialchars($_GET["page"]);
+    // Calcul le nombre de pages par rapport aux nombre d'articles
+    $maxPost =  $page*$nbDisplayed;
+    $minPost = $maxPost-$nbDisplayed;
+} else  {
+    $page = 1;
+    $minPost = 0;
+    $maxPost = $nbDisplayed;
+};
+
+// Initialisation des variables pour la pagination
+$linkNbDisplayed = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+$linkPagination = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+$anchorPagination = "#table_admin_posts";
+$nbPages = ceil($nbItems / $nbDisplayed);
+require("pagination.php");
+
+// Récupère les articles
+$req = $bdd->prepare("SELECT p.ID, p.title, p.user_login AS author, u.login, p.status, 
+DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
+DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
+FROM posts p
+LEFT JOIN users u
+ON p.user_ID = u.ID
+WHERE $filter 
+ORDER BY $orderBy $order
+LIMIT  $minPost, $maxPost");
+$req->execute(array());
 
 ?>
 
@@ -132,17 +188,35 @@
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
                 <form action="<?= $linkNbDisplayed ?>" method="post">
-                    <input type="submit" id="action_admin"  name="action" alt="Supprimer" class="btn btn-danger mb-2 shadow" 
-                        value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;}else{return false;}">
-                    
-                    <!-- <form action="" method="post" class="form-inline">
-                        <label class="sr-only mr-2 col-form-label-sm" for="action">Filtrer</label>
-                        <select name="action" id="action" class="custom-select mr-sm-2 form-control-sm" value="Par auteur" >
-                            <option value="edit">Modifier</option>
-                            <option value="erase">Supprimer</option>
-                        </select>
-                        <input type="submit" id="action_admin" class="btn btn-info form-control-sm pt-1" value="Filtrer">
-                    </form> -->
+                    <div class="row">
+
+                        <div class="col-md-4 form-inline mb-2 pr-md-2">
+                            <label class="sr-only col-form-label px-2 py-2" for="action">Action</label>
+                                <select name="action_apply" id="action_apply" class="custom-select form-control shadow" value="Par auteur">
+                                    <option value="">-- Action --</option>
+                                    <option value="Brouillon">Mettre en brouillon</option>
+                                    <option value="Publié">Publier</option>
+                                    <option value="delete">Supprimer</option>
+                                </select>
+                            <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-info px-lg-3 px-md-2 py-1 shadow" 
+                                value="OK" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
+                        </div>
+                        <div class="col-md-4 form-inline mx-md-0 mb-2 pr-md-2">
+                            <label class="sr-only col-form-label px-2 py-2" for="filter_status">Filtre</label>
+                                <select name="filter_status" id="filter_status" class="custom-select form-control shadow" value="Par auteur">
+                                    <option value="">-- Statut --</option>
+                                    <option value="brouillon">Brouillon</option>
+                                    <option value="publié">Publié</option>
+                                </select>
+                            <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-info px-lg-3 px-md-2 py-1 shadow" value="Filtrer">
+                        </div>
+                        <div class="col-md-4 form-inline mx-md-0 mb-2 px-md-2">
+                                <label for="search_post"class="sr-only col-form-label px-2 py-2">Recherche</label>
+                                <input type="text" name="search_post" id="search_post" class="form-control px-md-1 shadow" placeholder="Recherche">
+                                <input type="submit" id="filter_search" name="filter_search" alt="filter_search" class="btn btn-info px-lg-3 px-md-2 py-1 shadow" value="OK">
+                        </div>
+                    </div>
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover shadow">
                         <thead class="thead-dark">

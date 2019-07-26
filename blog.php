@@ -7,16 +7,13 @@ require("connection_bdd.php");
 var_dump($_GET);  
 // Si recherche, filtre les résultats
 if (!empty($_GET["search"])) {
-    $filter = "title like '%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
+    $filter = "AND title like '%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
 } else {
-    $filter = "status = ? || status = ?";
-};  
+    $filter = "";
+};
 // Compte le nombre d'articles
-$req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts WHERE $filter");
-$req->execute(array("
-    Publié", 
-    "Brouillon"
-));
+$req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts WHERE status = 'publié' $filter");
+$req->execute(array());
 $nbPosts = $req->fetch();
 $nbItems = $nbPosts["nb_Posts"];
 
@@ -55,13 +52,10 @@ $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.
 FROM posts p
 LEFT JOIN users u
 ON p.user_ID = u.ID
-WHERE $filter 
+WHERE status = 'publié' $filter 
 ORDER BY p.creation_date DESC 
 LIMIT  $minPost, $maxPost");
-$req->execute(array(
-    "Publié", 
-    "Brouillon"
-));
+$req->execute(array());
 
 ?>
 

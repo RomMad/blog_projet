@@ -22,7 +22,7 @@
     if (!empty($_POST)) {
         if (!empty($_POST["action_apply"]) && isset($_POST["selectedUsers"])) {
             // Supprime les utilisateurs sélectionnés via une boucle
-            if ($_POST["action_apply"] == "delete" && isset($_POST["selectedUsers"])) {
+            if ($_POST["action_apply"] == "delete") {
                 foreach ($_POST["selectedUsers"] as $selectedUser) {
                     $req = $bdd->prepare("DELETE FROM users WHERE ID = ? ");
                     $req->execute(array($selectedUser));
@@ -37,7 +37,7 @@
                 $typeAlert = "warning"; 
             };
             // Modère les utilisateurs sélectionnés via une boucle
-            if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedUsers"])) {
+            if ($_POST["action_apply"] == "moderate") {
                 foreach ($_POST["selectedUsers"] as $selectedUser) {
                     $req = $bdd->prepare("UPDATE users SET role = 1 WHERE ID = ? ");
                     $req->execute(array($selectedUser));
