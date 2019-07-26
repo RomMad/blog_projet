@@ -68,6 +68,9 @@ if (!empty($_POST)) {
     <div class="container">
         <section id="connection" class="row">
             <form action="connection.php" method="post" class="form-signin mx-auto text-center">
+
+            <?php include("msg_session_flash.php") ?>
+
                 <h1 class="h3 mb-4 font-weight-normal">Merci de vous connecter</h1>
                 <label for="login" class="sr-only">Login</label>
                 <input type="text" name="login" id="login" class="form-control mb-2 shadow-sm" placeholder="Login" autofocus="" value="<?= isset($_COOKIE["login"]) ? $_COOKIE["login"] : "" ?>">
@@ -85,8 +88,6 @@ if (!empty($_POST)) {
                 <a href="inscription.php" class="btn btn-lg btn-info btn-block mb-4 shadow">S'inscrire</a>
 
                 <a href="forgotpassword.php" class="text-info mb-4">Login ou mot de passe oublié ?</a>
-
-                <?php include("msg_session_flash.php") ?>
 
             <p class="mt-4 text-muted">© 2019</p>
             </form>
