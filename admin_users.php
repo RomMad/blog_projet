@@ -62,7 +62,7 @@
         };
         // Si recherche, enregistre le filtre
         if (!empty($_POST["search"])) {
-            $search = htmlspecialchars($_POST["filter_search"]);
+            $search = htmlspecialchars($_POST["search_user"]);
             $filters = "u.login LIKE '%" . $search . "%' OR u.email LIKE '%" . $search . "%' OR u.name LIKE '%" . $search . "%' OR u.surname LIKE '%"  . $search . "%'";
         };
     };
@@ -187,8 +187,8 @@
                             <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-info px-lg-3 px-md-2 py-1 shadow" value="Filtrer">
                         </div>
                         <div class="col-md-4 form-inline mx-md-0 mb-2 px-md-2">
-                                <label class="sr-only col-form-label px-2 py-2" for="filter_search">Recherche</label>
-                                <input type="text" name="filter_search" id="filter_search" class="form-control px-md-1 shadow" placeholder="Recherche">
+                                <label class="sr-only col-form-label px-2 py-2" for="search_user">Recherche</label>
+                                <input type="text" name="search_user" id="search_user" class="form-control px-md-1 shadow" placeholder="Recherche">
                                 <input type="submit" id="search" name="search" alt="search" class="btn btn-info px-lg-3 px-md-2 py-1 shadow" value="OK">
                         </div>
                     </div>
