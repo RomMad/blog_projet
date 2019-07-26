@@ -170,7 +170,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="col-form-label ml-4  py-2" for="filter_role">Filtre</label>
+                            <label class="col-form-label ml-2  py-2" for="filter_role">Filtre</label>
                                 <select name="filter_role" id="filter_role" class="custom-select form-control mb-2 shadow" value="Par auteur">
                                     <option value="">--Rôle--</option>
                                     <option value="1">Administrateur</option>
