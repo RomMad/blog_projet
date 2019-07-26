@@ -56,9 +56,14 @@
                 "type" =>  $typeAlert
             );
         };
-        // Enregistre le filtre
+        // Si sélection d'un filtre 'rôle', enregistre le filtre
         if (!empty($_POST["filter_role"])) {
             $filters = "u.role = " . htmlspecialchars($_POST["filter_role"]);
+        };
+        // Si recherche, enregistre le filtre
+        if (!empty($_POST["search"])) {
+            $search = htmlspecialchars($_POST["filter_search"]);
+            $filters = "u.login LIKE '%" . $search . "%' OR u.email LIKE '%" . $search . "%' OR u.name LIKE '%" . $search . "%' OR u.surname LIKE '%"  . $search . "%'";
         };
     };
 
@@ -155,33 +160,39 @@
 
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
-                <form action="<?= $linkNbDisplayed ?>" method="post">
+                <form action="<?= $linkNbDisplayed ?>" method="post" class="">
                     <div class="row">
-
-                        <div class="col-md-6">
-                            <label class="col-form-label ml-2 mb-2 py-2" for="action">Action</label>
-                                <select name="action_apply" id="action_apply" class="custom-select form-control mb-2 shadow" value="Par auteur">
-                                    <option value="">--</option>
+                    
+                        <div class="col-md-4 form-inline mb-2 pr-md-2">
+                            <label class="sr-only col-form-label px-2 py-2" for="action">Action</label>
+                                <select name="action_apply" id="action_apply" class="custom-select form-control shadow" value="Par auteur">
+                                    <option value="">-- Action --</option>
                                     <option value="moderate">Modérer</option>
                                     <option value="delete">Supprimer</option>
                                 </select>
-                            <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-info mb-2 py-1 shadow" 
-                                value="Appliquer" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
+                            <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-info px-lg-3 px-md-2 py-1 shadow" 
+                                value="OK" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="col-form-label ml-2  py-2" for="filter_role">Filtre</label>
-                                <select name="filter_role" id="filter_role" class="custom-select form-control mb-2 shadow" value="Par auteur">
-                                    <option value="">--Rôle--</option>
+                        <div class="col-md-4 form-inline mx-md-0 mb-2 pr-md-2">
+                            <label class="sr-only col-form-label px-2 py-2" for="filter_role">Filtre</label>
+                                <select name="filter_role" id="filter_role" class="custom-select form-control shadow" value="Par auteur">
+                                    <option value="">-- Rôle --</option>
                                     <option value="1">Administrateur</option>
                                     <option value="2">Editeur</option>
                                     <option value="3">Auteur</option>
                                     <option value="4">Contributeur</option>
                                     <option value="5">Abonné</option>
                                 </select>
-                            <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-info mb-2 py-1 shadow" value="Filtrer">
+                            <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-info px-lg-3 px-md-2 py-1 shadow" value="Filtrer">
+                        </div>
+                        <div class="col-md-4 form-inline mx-md-0 mb-2 px-md-2">
+                                <label class="sr-only col-form-label px-2 py-2" for="filter_search">Recherche</label>
+                                <input type="text" name="filter_search" id="filter_search" class="form-control px-md-1 shadow" placeholder="Recherche">
+                                <input type="submit" id="search" name="search" alt="search" class="btn btn-info px-lg-3 px-md-2 py-1 shadow" value="OK">
                         </div>
                     </div>
+
 
                     <div class="row">
                         <div class="col-md-12 table-responsive">
