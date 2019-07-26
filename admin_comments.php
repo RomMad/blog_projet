@@ -161,9 +161,9 @@
                     <div class="row">
 
                         <div class="col-md-6">
-                            <label class="col-form-label ml-2 mb-2 py-2" for="action">Action</label>
+                            <label class="sr-only col-form-label ml-2 mb-2 py-2" for="action">Action</label>
                                 <select name="action_apply" id="action_apply" class="custom-select form-control mb-2 shadow" value="Par auteur">
-                                    <option value="">--</option>
+                                    <option value="">-- Action --</option>
                                     <option value="moderate">Modérer</option>
                                     <option value="delete">Supprimer</option>
                                 </select>
@@ -172,9 +172,9 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="col-form-label ml-4  py-2" for="filter_status">Filtre</label>
+                            <label class="sr-only col-form-label ml-4  py-2" for="filter_status">Filtre</label>
                                 <select name="filter_status" id="filter_status" class="custom-select form-control mb-2 shadow" value="Par auteur">
-                                    <option value="">--Statut--</option>
+                                    <option value="">-- Statut --</option>
                                     <option value="0">Non-modéré</option>
                                     <option value="1">Modéré</option>
                                     <option value="2">Signalé</option>
