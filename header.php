@@ -1,3 +1,13 @@
+<?php
+// Si recherche, enregistre le filtre
+if (!empty($POST)) {
+    if (!empty($_POST["search"])) {
+        header("Location : index.php");
+    };
+};
+
+?>
+
 <header id="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark my-3 py-3 shadow">
         <a class="navbar-brand text-info" href="index.php">Jean Forteroche | Le blog</a>
@@ -45,8 +55,8 @@
                 </li> -->
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Search">
-                <button class="btn btn-outline-info my-2 my-sm-0" type="submit"><span class="fas fa-search"></span></button>
+                <input for="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search">
+                <button name="search" id="search" class="btn btn-outline-info my-2 my-sm-0" type="submit"><span class="fas fa-search"></span></button>
             </form>
 
             <div class="ml-3 text-light">
