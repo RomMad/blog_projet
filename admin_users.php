@@ -16,7 +16,7 @@
         };
     };
 
-    $filter = "u.ID > 0";
+    $filter = "login IS NOT NULL";
 
     var_dump($_POST);
     if (!empty($_POST)) {
@@ -63,12 +63,12 @@
         // Si recherche, enregistre le filtre
         if (!empty($_POST["filter_search"])) {
             $search = htmlspecialchars($_POST["search_user"]);
-            $filter = "u.login LIKE '%" . $search . "%' OR u.email LIKE '%" . $search . "%' OR u.name LIKE '%" . $search . "%' OR u.surname LIKE '%"  . $search . "%'";
+            $filter = "login LIKE '%" . $search . "%' OR email LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR surname LIKE '%"  . $search . "%'";
         };
     };
 
     // Compte le nombre d'utilisateurs
-    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Users FROM users");
+    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Users FROM users WHERE $filter");
     $req->execute(array());
     $nbUsers = $req->fetch();
     $nbItems = $nbUsers["nb_Users"];
