@@ -1,7 +1,7 @@
 <?php
 // Si recherche, enregistre le filtre
 if (!empty($POST)) {
-    if (!empty($_POST["search"])) {
+    if (!empty($_POST["filter_search"])) {
         header("Location : index.php");
     };
 };
@@ -54,9 +54,10 @@ if (!empty($POST)) {
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Page 3</a>
                 </li> -->
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input for="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search">
-                <button name="search" id="search" class="btn btn-outline-info my-2 my-sm-0" type="submit"><span class="fas fa-search"></span></button>
+            <form action="blog.php" method="get" class="form-inline my-2 my-lg-0">
+                <label for="search" class="sr-only col-form-label">Recherche</label>
+                <input name="search" id="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search">
+                <button id="search" class="btn btn-outline-info my-2 my-sm-0" type="submit"><span class="fas fa-search"></span></button>
             </form>
 
             <div class="ml-3 text-light">
