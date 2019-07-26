@@ -1,13 +1,3 @@
-<?php
-// Si recherche, enregistre le filtre
-if (!empty($POST)) {
-    if (!empty($_POST["filter_search"])) {
-        header("Location : index.php");
-    };
-};
-
-?>
-
 <header id="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark my-3 py-3 shadow">
         <a class="navbar-brand text-info font-weight-bold" href="index.php">Jean Forteroche | Le blog</a>
