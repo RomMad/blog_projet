@@ -46,7 +46,8 @@
             </ul>
             <form action="blog.php" method="get" class="form-inline my-2 my-lg-0">
                 <label for="search" class="sr-only col-form-label">Recherche</label>
-                <input name="search" id="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search">
+                <input name="search" id="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search" 
+                    value="<?= isset($_GET["search"]) ? htmlspecialchars($_GET["search"]) : "" ?>">
                 <button id="search" class="btn btn-outline-blue my-2 my-sm-0" type="submit"><span class="fas fa-search"></span></button>
             </form>
 

@@ -220,7 +220,8 @@ $req->execute(array());
                         </div>
                         <div class="col-md-4 form-inline mx-md-0 mb-2 px-md-2">
                                 <label for="search_post"class="sr-only col-form-label px-2 py-2">Recherche</label>
-                                <input type="text" name="search_post" id="search_post" class="form-control px-md-1 shadow" placeholder="Recherche">
+                                <input type="search" name="search_post" id="search_post" class="form-control px-md-1 shadow" placeholder="Recherche" aria-label="Search" 
+                                    value="<?= isset($_POST["search_post"]) ? htmlspecialchars($_POST["search_post"]) : "" ?>">
                                 <input type="submit" id="filter_search" name="filter_search" alt="filter_search" class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="OK">
                         </div>
                     </div>
