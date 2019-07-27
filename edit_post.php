@@ -144,10 +144,17 @@
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-2">
-                        <div class="form-group">
-                                <label for="post_ID">ID</label>
-                                <input type="text" name="post_ID" class="form-control shadow-sm" id="post_ID" readonly value="<?= isset($post_ID) ? $post_ID : "" ?>">
-                        </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group float-right">
+                                        <input type="submit" id="save"  name="save" value="Enregistrer" class="btn btn-blue mb-2 shadow">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                    <label for="post_ID">ID</label>
+                                    <input type="text" name="post_ID" class="form-control shadow-sm" id="post_ID" readonly value="<?= isset($post_ID) ? $post_ID : "" ?>">
+                            </div>
                             <div class="form-group">
                                 <label for="post_user_ID">Auteur</label>
                                 <input type="text" name="post_user_ID" class="form-control shadow-sm" id="post_user_ID" readonly value="<?= isset($post_user_ID) ? $post_user_ID : "" ?>">
@@ -167,16 +174,20 @@
                                     <option <?php if (isset($status) && $status=="Brouillon") { ?> selected <?php } ?> >Brouillon</option>
                                 </select>
                             </div>
-                            <div class="form-group float-right">
-                                <input type="submit" id="save"  name="save" value="Enregistrer" class="btn btn-blue mb-2 shadow">
-                                <?php 
-                                    if (isset($post_ID)) { 
-                                ?>
-                                <input type="submit" id="erase"  name="erase" alt="Supprimer l'article" class="btn btn-danger mb-2 shadow" 
-                                value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;}else{return false;}">
-                                <?php 
-                                    }; 
-                                ?>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group float-right">
+                                        <input type="submit" id="save"  name="save" value="Enregistrer" class="btn btn-blue mb-2 shadow">
+                                        <?php 
+                                            if (isset($post_ID)) { 
+                                        ?>
+                                        <input type="submit" id="erase"  name="erase" alt="Supprimer l'article" class="btn btn-danger mb-2 shadow" 
+                                        value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;}else{return false;}">
+                                        <?php 
+                                            }; 
+                                        ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
