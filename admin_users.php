@@ -58,7 +58,7 @@
         };
         // Si sélection d'un filtre 'rôle', enregistre le filtre
         if (!empty($_POST["filter_role"])) {
-            $filter = "u.role = " . htmlspecialchars($_POST["filter_role"]);
+            $filter = "role = " . htmlspecialchars($_POST["filter_role"]);
         };
         // Si recherche, enregistre le filtre
         if (!empty($_POST["filter_search"])) {
@@ -127,7 +127,7 @@
     require("pagination.php");
 
     // Récupère les utilisateurs
-    $req = $bdd->prepare("SELECT u.ID, u.login, u.name, u.surname, u.email, r.role, 
+    $req = $bdd->prepare("SELECT u.ID, u.login, u.name, u.surname, u.email, r.role_user, 
     DATE_FORMAT(u.registration_date, \"%d/%m/%Y %H:%i\") AS registration_date_fr, 
     DATE_FORMAT(u.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
     FROM users u
@@ -176,7 +176,6 @@
                             <label class="sr-only col-form-label px-2 py-2" for="action">Action</label>
                                 <select name="action_apply" id="action_apply" class="custom-select form-control shadow" value="Par auteur">
                                     <option value="">-- Action --</option>
-                                    <option value="moderate">Modérer</option>
                                     <option value="delete">Supprimer</option>
                                 </select>
                             <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" 
@@ -295,7 +294,7 @@
                                             <td><?= $dataUsers["name"] ?></td>
                                             <td><?= $dataUsers["surname"] ?></td>
                                             <td><?= $dataUsers["email"] ?></td>
-                                            <td><?= $dataUsers["role"] ?></td>
+                                            <td><?= $dataUsers["role_user"] ?></td>
                                             <td><?= $dataUsers["registration_date_fr"] ?></td>
                                         </tr>
                                     <?php
