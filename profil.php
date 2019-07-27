@@ -221,7 +221,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="role" class="col-md-4 col-form-label">Rôle</label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-5">
                                         <select name="role" id="role" class="custom-select form-control shadow-sm">
                                             <option value="1" <?= isset($role) && $role == 1 ? "selected" : "" ?>>Administrateur</option>
                                             <option value="2" <?= isset($role) &&  $role == 2 ? "selected" : "" ?>>Editeur</option>

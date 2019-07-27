@@ -10,7 +10,7 @@
     if ($page<$nbPages) {
         $nextPage = $page+1;
         $nextPageLink = "";
-        $nextPageColorLink = "text-info";
+        $nextPageColorLink = "text-blue";
     } else {
         $nextPage = $page;
         $nextPageLink = "disabled";
@@ -39,7 +39,7 @@
         $pageLink_3 = $page+1;
         $prevPage = $page-1;
         $prevPageLink = "";
-        $prevPageColorLink = "text-info";
+        $prevPageColorLink = "text-blue";
     };
   
     if ($nbPages==2 && $page==2) {
