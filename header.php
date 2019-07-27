@@ -35,6 +35,7 @@
                         <a class="dropdown-item" href="admin_comments.php">Gestion des commentaires</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="admin_users.php">Gestion des utilisateurs</a>
+                        <a class="dropdown-item" href="user_new.php">Ajouter un utilisateur</a>
                     </div>
                 </li>
                 <?php 

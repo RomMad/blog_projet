@@ -91,7 +91,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
                 <form action="reset_password.php?token=<?= isset($_GET["token"]) ? htmlspecialchars($_GET["token"]) : "" ?>" method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 mx-auto mt-4 mb-4">
                     <h1 class="h3 mb-4 font-weight-normal text-center">Réinitialisation du mot de passe</h1>
                     <label for="email" class="sr-only">Email</label>
-                    <input type="text" name="email" id="email" class="form-control mb-4" placeholder="Email">
+                    <input type="email" name="email" id="email" class="form-control mb-4" placeholder="Email">
                     <label for="new_pass" class="sr-only">Mot de passe</label>
                         <div class="div-user-pass">
                             <input type="password" name="new_pass" id="new_pass" class="form-control mb-2 shadow-sm" placeholder="Nouveau mot de passe">

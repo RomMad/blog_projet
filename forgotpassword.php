@@ -8,7 +8,7 @@
     if (!empty($_POST)) {
         $email = htmlspecialchars($_POST["email"]);
 
-        // Récupère l'email de l'utilisateur et son password haché
+        // Récupère l'ID de l'utilisateur et son password haché
         $req = $bdd->prepare("SELECT ID FROM users WHERE email = ?");
         $req->execute(array($email));
         $dataUser = $req->fetch();
@@ -17,7 +17,6 @@
         if ($dataUser) {
             $bytes = random_bytes(8);
             $token = bin2hex($bytes);
-            var_dump($token);
 
             $req = $bdd->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
             $req->execute(array(
