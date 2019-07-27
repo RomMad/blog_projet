@@ -150,6 +150,14 @@
 
     <div class="container">
 
+    <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light">
+                <li class="breadcrumb-item"><a href="index.php">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="admin.php">Administration</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Gestion des utilisateurs</li>
+            </ol>
+    </nav>
+
         <div class="row">
             <section id="table-admin_Users" class="col-md-12 mx-auto mt-4 table-admin">
 

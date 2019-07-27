@@ -163,6 +163,13 @@
 
     <div class="container">
 
+    <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light">
+                <li class="breadcrumb-item"><a href="index.php">Accueil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Profil</li>
+            </ol>
+    </nav>
+
         <section id="profil" class="row">
 
             <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">

@@ -182,6 +182,13 @@
 
     <div class="container">
 
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light">
+                <li class="breadcrumb-item"><a href="blog.php">Blog</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Article</li>
+            </ol>
+        </nav>
+
         <!-- Affichage de l'article -->
         <section id="post">
                 <div class="card shadow">

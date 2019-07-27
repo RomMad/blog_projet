@@ -123,12 +123,20 @@
 
     <div class="container">
 
+    <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light">
+                <li class="breadcrumb-item"><a href="blog.php">Blog</a></li>
+                <li class="breadcrumb-item"><a href="post.php?post=<?= isset($_GET["post"]) ? htmlspecialchars($_GET["post"]) : "" ?>">Article</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Édition</li>
+            </ol>
+        </nav>
+
         <section id="post_form" class="row">
             <div class="col-sm-12 col-md-12 mx-auto">
 
                 <form action="edit_post.php" method="post" class="">
 
-                    <h2 class="mb-4">Edition d'article</h2>
+                    <h2 class="mb-4">Édition d'article</h2>
 
                     <?php include("msg_session_flash.php") ?>
 
