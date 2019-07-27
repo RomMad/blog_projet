@@ -193,11 +193,11 @@
         <section id="post">
                 <div class="card shadow">
                     <div class="card-header bg-dark text-light">
-                        <h1 class="h2 mt-2 mb-3"><?= htmlspecialchars($dataPost["title"]) ?></h1>
-                        <em>Créé le <?= htmlspecialchars($dataPost["creation_date_fr"]) ?> par <a class="text-blue" href=""> <?= htmlspecialchars($dataPost["login"]) ?> </a> et modifié le <?=  htmlspecialchars($dataPost["update_date_fr"]) ?></em>
+                        <h1 class="h2 mt-2 mb-3"><?= $dataPost["title"] ?></h1>
+                        <em>Créé le <?= $dataPost["creation_date_fr"] ?> par <a class="text-blue" href=""> <?= $dataPost["login"] ?> </a> et modifié le <?=  $dataPost["update_date_fr"] ?></em>
                         <?php
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { ?>
-                            <a class="text-blue a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($dataPost["ID"]) ?>"><span class="far fa-edit"></span> Modifier</a>
+                            <a class="text-blue a-edit-post" href="edit_post.php?post=<?=  $dataPost["ID"]?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php }; ?>
                         <a href="#comments" class="badge badge-blue ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_Comments"] ?> </span></a>
                     </div>
@@ -251,26 +251,26 @@
                     <?php 
                         while ($dataComment = $req->fetch()) {
                     ?>
-                            <div class="card shadow">
+                            <div id="comment-<?=  $dataComment["ID"] ?>" class="card shadow">
                                 <div class="card-body position relative">
                                     <?php 
                                         if (!empty($dataComment["login"])) {
-                                            $user_login = htmlspecialchars($dataComment["login"]);
+                                            $user_login = $dataComment["login"];
                                             } else {
                                                 if (!empty($dataComment["user_name"])) {
-                                                    $user_login = htmlspecialchars($dataComment["user_name"]);
+                                                    $user_login = $dataComment["user_name"];
                                                 } else {
                                                     $user_login = "Anonyme";
                                                 };
                                             };
                                     ?>
                                     <p><strong><?= $user_login ?></strong>, le <?= $dataComment["creation_date_fr"] ?></p>
-                                    <p><?= nl2br(htmlspecialchars($dataComment["content"])) ?></p>
+                                    <p><?= nl2br($dataComment["content"]) ?></p>
                                     <?php                        
                                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataComment["user_ID"]) { 
                                     ?>
                                             <div>
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($dataComment["ID"]) ?>&action=erase#form-comment" onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=erase#form-comment" onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
                                             </div>
                                         <?php
                                         } else {
@@ -281,7 +281,7 @@
                                             } else {
                                         ?>
                                             <div class="report-comment">
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($dataComment["ID"]) ?>&action=report#form-comment" onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="far fa-flag text-blue"> Signaler</span></a>
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=report#form-comment" onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="far fa-flag text-warning"> Signaler</span></a>
                                             </div>
                                         <?php
                                             };
