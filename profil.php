@@ -219,13 +219,18 @@
                                             value="<?= isset($birthdate) ? $birthdate : "" ?>">
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <label for="role" class="col-md-4 col-form-label">Type de profil</label>
-                                    <div class="col-md-5">
-                                        <input type="text" name="role" id="role" class="form-control mb-4"
-                                            value="<?= isset($role) ? $role : "" ?>">
+                                <div class="form-group row">
+                                    <label for="role" class="col-md-4 col-form-label">Rôle</label>
+                                    <div class="col-md-8">
+                                        <select name="role" id="role" class="custom-select form-control shadow-sm">
+                                            <option value="1" <?= isset($role) && $role == 1 ? "selected" : "" ?>>Administrateur</option>
+                                            <option value="2" <?= isset($role) &&  $role == 2 ? "selected" : "" ?>>Editeur</option>
+                                            <option value="3" <?= isset($role) &&  $role == 3 ? "selected" : "" ?>>Auteur</option>
+                                            <option value="4" <?= isset($role) &&  $role == 4 ? "selected" : "" ?>>Contributeur</option>
+                                            <option value="5" <?= isset($role) &&  $role == 5 ? "selected" : "" ?>>Abonné</option>
+                                        </select>
                                     </div>
-                                </div>
+                                </div> 
                                 <div class="row">
                                     <label for="pass" class="col-md-4 col-form-label mt-4">Mot de passe</label>
                                     <div class="col-md-5">
