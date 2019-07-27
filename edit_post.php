@@ -168,7 +168,7 @@
                                 </select>
                             </div>
                             <div class="form-group float-right">
-                                <input type="submit" id="save"  name="save" value="Enregistrer" class="btn btn-info mb-2 shadow">
+                                <input type="submit" id="save"  name="save" value="Enregistrer" class="btn btn-blue mb-2 shadow">
                                 <?php 
                                     if (isset($post_ID)) { 
                                 ?>

@@ -84,10 +84,10 @@ if (!empty($_POST)) {
                         <input type="checkbox" name="remember" id="remember" value="true"> Se souvenir de moi
                     </label>
                 </div>
-                <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-info btn-block mb-4 shadow">
-                <a href="inscription.php" class="btn btn-lg btn-info btn-block mb-4 shadow">S'inscrire</a>
+                <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-blue btn-block mb-4 shadow">
+                <a href="inscription.php" class="btn btn-lg btn-blue btn-block mb-4 shadow">S'inscrire</a>
 
-                <a href="forgotpassword.php" class="text-info mb-4">Login ou mot de passe oublié ?</a>
+                <a href="forgotpassword.php" class="text-blue mb-4">Login ou mot de passe oublié ?</a>
 
             <p class="mt-4 text-muted">© 2019</p>
             </form>

@@ -167,7 +167,7 @@
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <div class="float-right">
-                                        <input type="submit" value="Valider" id="validation" class="btn btn-info shadow">
+                                        <input type="submit" value="Valider" id="validation" class="btn btn-blue shadow">
                                     </div>
                                 </div>
                             </div>

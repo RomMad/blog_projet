@@ -240,7 +240,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <div class="float-right">
-                                            <input type="submit" value="Mettre à jour" id="updateInfo" class="btn btn-info shadow">
+                                            <input type="submit" value="Mettre à jour" id="updateInfo" class="btn btn-blue shadow">
                                         </div>
                                     </div>
                                 </div>
@@ -282,7 +282,7 @@
                                     <div class="col-md-12">
                                         <div class="float-right">
                                             <input type="submit" value="Mettre à jour" id="updatePassword"
-                                                class="btn btn-info shadow">
+                                                class="btn btn-blue shadow">
                                         </div>
                                     </div>
                                 </div>

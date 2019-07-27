@@ -187,12 +187,12 @@
                 <div class="card shadow">
                     <div class="card-header bg-dark text-light">
                         <h1 class="h2 mt-2 mb-3"><?= htmlspecialchars($dataPost["title"]) ?></h1>
-                        <em>Créé le <?= htmlspecialchars($dataPost["creation_date_fr"]) ?> par <a class="text-info" href=""> <?= htmlspecialchars($dataPost["login"]) ?> </a> et modifié le <?=  htmlspecialchars($dataPost["update_date_fr"]) ?></em>
+                        <em>Créé le <?= htmlspecialchars($dataPost["creation_date_fr"]) ?> par <a class="text-blue" href=""> <?= htmlspecialchars($dataPost["login"]) ?> </a> et modifié le <?=  htmlspecialchars($dataPost["update_date_fr"]) ?></em>
                         <?php
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { ?>
-                            <a class="text-info a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($dataPost["ID"]) ?>"><span class="far fa-edit"></span> Modifier</a>
+                            <a class="text-blue a-edit-post" href="edit_post.php?post=<?=  htmlspecialchars($dataPost["ID"]) ?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php }; ?>
-                        <a href="#comments" class="badge badge-info ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_Comments"] ?> </span></a>
+                        <a href="#comments" class="badge badge-blue ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_Comments"] ?> </span></a>
                     </div>
                     <div class="card-body text-body">
                     <?= html_entity_decode($dataPost["content"]) ?>
@@ -201,7 +201,7 @@
                 <?php 
                     if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { 
                 ?>
-                        <a class="text-info" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
+                        <a class="text-blue" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
                 <?php 
                 }; 
                 ?>
@@ -226,7 +226,7 @@
                         <textarea name="content" class="form-control shadow-sm" id="content" rows="4"></textarea>
                     </div>
                     <div class="form-group float-right">
-                        <input type="submit" value="Envoyer" id="save" class="btn btn-info shadow">
+                        <input type="submit" value="Envoyer" id="save" class="btn btn-blue shadow">
                     </div>
                 </form>
             </div>
@@ -274,7 +274,7 @@
                                             } else {
                                         ?>
                                             <div class="report-comment">
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($dataComment["ID"]) ?>&action=report#form-comment" onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="far fa-flag text-info"> Signaler</span></a>
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  htmlspecialchars($dataComment["ID"]) ?>&action=report#form-comment" onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="far fa-flag text-blue"> Signaler</span></a>
                                             </div>
                                         <?php
                                             };

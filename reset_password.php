@@ -101,7 +101,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
                             <input type="password" name="new_pass_confirm" id="new_pass_confirm" class="form-control mb-4" placeholder="Confirmation du mot de passe">
                             <div id="showConfirmPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
                         </div>
-                    <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-info btn-block mb-4 shadow">
+                    <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-blue btn-block mb-4 shadow">
 
                     <?php include("msg_session_flash.php") ?>
                 </form>

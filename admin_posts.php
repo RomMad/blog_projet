@@ -198,7 +198,7 @@ $req->execute(array());
                                     <option value="Publié">Publier</option>
                                     <option value="delete">Supprimer</option>
                                 </select>
-                            <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-info px-lg-3 px-md-2 py-1 shadow" 
+                            <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" 
                                 value="OK" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
                         </div>
                         <div class="col-md-4 form-inline mx-md-0 mb-2 pr-md-2">
@@ -208,12 +208,12 @@ $req->execute(array());
                                     <option value="brouillon">Brouillon</option>
                                     <option value="publié">Publié</option>
                                 </select>
-                            <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-info px-lg-3 px-md-2 py-1 shadow" value="Filtrer">
+                            <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="Filtrer">
                         </div>
                         <div class="col-md-4 form-inline mx-md-0 mb-2 px-md-2">
                                 <label for="search_post"class="sr-only col-form-label px-2 py-2">Recherche</label>
                                 <input type="text" name="search_post" id="search_post" class="form-control px-md-1 shadow" placeholder="Recherche">
-                                <input type="submit" id="filter_search" name="filter_search" alt="filter_search" class="btn btn-info px-lg-3 px-md-2 py-1 shadow" value="OK">
+                                <input type="submit" id="filter_search" name="filter_search" alt="filter_search" class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="OK">
                         </div>
                     </div>
 
@@ -289,7 +289,7 @@ $req->execute(array());
                                         <input type="checkbox" name="selectedPosts[]" id="post<?= $dataPosts["ID"] ?>" value="<?= $dataPosts["ID"] ?>" class=""/>
                                         <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
                                     </th>
-                                    <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-info font-weight-bold"><?= $dataPosts["title"] ?></a></td>
+                                    <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-blue font-weight-bold"><?= $dataPosts["title"] ?></a></td>
                                     <td><?= $dataPosts["author"] ?></td>
                                     <td><?= $dataPosts["status"] ?></td>
                                     <td><?= $dataPosts["creation_date_fr"] ?></td>

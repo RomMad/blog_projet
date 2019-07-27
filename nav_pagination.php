@@ -14,7 +14,7 @@ if ($nbItems>0) {
                     <option value="20" <?= $nbDisplayed==20 ? "selected" : "" ?> >20</option>
                     <option value="50" <?= $nbDisplayed==50 ? "selected" : "" ?> >50</option>
                 </select>
-                <input type="submit" id="pagination" class="btn btn-info form-control-sm pt-1 shadow-sm" value="OK">
+                <input type="submit" id="pagination" class="btn btn-blue form-control-sm pt-1 shadow-sm" value="OK">
             </form>
         </div>
 
@@ -30,17 +30,17 @@ if ($nbItems>0) {
                         <?php 
                             if ($page>2 && $nbPages>3) {
                         ?>
-                                <li class="page-item"><a class="page-link text-info shadow-sm" href="<?= $linkPagination ?>page=1<?= $anchorPagination ?>">1...</a></li>
+                                <li class="page-item"><a class="page-link text-blue shadow-sm" href="<?= $linkPagination ?>page=1<?= $anchorPagination ?>">1...</a></li>
                         <?php                                                               
                             };
                         ?>
-                        <li class="page-item <?= $activepageLink_1 ?> shadow-sm"><a class="page-link text-info" href="<?= $linkPagination ?>page=<?= $pageLink_1 . $anchorPagination ?>"><?= $pageLink_1 ?></a></li>
-                        <li class="page-item <?= $activepageLink_2 ?> shadow-sm"><a class="page-link text-info" href="<?= $linkPagination ?>page=<?= $pageLink_2 . $anchorPagination ?>"><?= $pageLink_2 ?></a></li>
+                        <li class="page-item <?= $activepageLink_1 ?> shadow-sm"><a class="page-link text-blue" href="<?= $linkPagination ?>page=<?= $pageLink_1 . $anchorPagination ?>"><?= $pageLink_1 ?></a></li>
+                        <li class="page-item <?= $activepageLink_2 ?> shadow-sm"><a class="page-link text-blue" href="<?= $linkPagination ?>page=<?= $pageLink_2 . $anchorPagination ?>"><?= $pageLink_2 ?></a></li>
 
                         <?php 
                             if ($nbPages>2) {
                         ?>
-                                <li class="page-item <?= $activepageLink_3 ?> shadow-sm"><a class="page-link text-info" href="<?= $linkPagination ?>page=<?= $pageLink_3 . $anchorPagination ?>"><?= $pageLink_3 ?></a></li>
+                                <li class="page-item <?= $activepageLink_3 ?> shadow-sm"><a class="page-link text-blue" href="<?= $linkPagination ?>page=<?= $pageLink_3 . $anchorPagination ?>"><?= $pageLink_3 ?></a></li>
                         <?php 
                             };
                         ?>
@@ -48,7 +48,7 @@ if ($nbItems>0) {
                         <?php 
                             if ($page<$nbPages-1 && $nbPages>3) {
                         ?>
-                                <li class="page-item shadow-sm"><a class="page-link text-info" href="<?= $linkPagination ?>page=<?= $nbPages . $anchorPagination ?>">...<?= $nbPages ?></a></li>
+                                <li class="page-item shadow-sm"><a class="page-link text-blue" href="<?= $linkPagination ?>page=<?= $nbPages . $anchorPagination ?>">...<?= $nbPages ?></a></li>
                         <?php 
                             };
                         ?>

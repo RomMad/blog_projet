@@ -167,7 +167,7 @@
                                     <option value="moderate">Modérer</option>
                                     <option value="delete">Supprimer</option>
                                 </select>
-                            <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-info mb-2 py-1 shadow" 
+                            <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-blue mb-2 py-1 shadow" 
                                 value="Appliquer" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
                         </div>
 
@@ -179,7 +179,7 @@
                                     <option value="1">Modéré</option>
                                     <option value="2">Signalé</option>
                                 </select>
-                            <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-info mb-2 py-1 shadow" value="Filtrer">
+                            <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-blue mb-2 py-1 shadow" value="Filtrer">
                         </div>
                     </div>
 

@@ -92,7 +92,7 @@
                     <label for="email" class="sr-only">Email</label>
                     <input type="text" name="email" id="email" class="form-control mb-4 shadow-sm" placeholder="Email"
                         autofocus="">
-                    <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-info btn-block mb-4 shadow">
+                    <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-blue btn-block mb-4 shadow">
 
                     <?php include("msg_session_flash.php") ?>
                 </form>

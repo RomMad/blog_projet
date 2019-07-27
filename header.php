@@ -1,6 +1,6 @@
 <header id="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark my-3 py-3 shadow">
-        <a class="navbar-brand text-info font-weight-bold" href="index.php">Jean Forteroche | Le blog</a>
+        <a class="navbar-brand text-blue font-weight-bold" href="index.php">Jean Forteroche | Le blog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -47,22 +47,22 @@
             <form action="blog.php" method="get" class="form-inline my-2 my-lg-0">
                 <label for="search" class="sr-only col-form-label">Recherche</label>
                 <input name="search" id="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search">
-                <button id="search" class="btn btn-outline-info my-2 my-sm-0" type="submit"><span class="fas fa-search"></span></button>
+                <button id="search" class="btn btn-outline-blue my-2 my-sm-0" type="submit"><span class="fas fa-search"></span></button>
             </form>
 
             <div class="ml-3 text-light">
             <?php 
             if (isset($_SESSION["userID"])) {
             ?>
-            <a class="text-info font-weight-bold" href="profil.php"><span class="fas fa-user"></span> <?= $_SESSION["userLogin"] ?></a>
+            <a class="text-blue font-weight-bold" href="profil.php"><span class="fas fa-user"></span> <?= $_SESSION["userLogin"] ?></a>
             <br />
-            <a class="text-info" href="deconnection.php">Vous déconnecter</a>
+            <a class="text-blue" href="deconnection.php">Vous déconnecter</a>
             <?php 
             } else {
                 ?>
-                <a class="text-info" href="connection.php">Se connecter</a>
+                <a class="text-blue" href="connection.php">Se connecter</a>
                 <br />
-                <a class="text-info" href="inscription.php">S'inscrire</a>
+                <a class="text-blue" href="inscription.php">S'inscrire</a>
             <?php
             };
             ?>

@@ -75,7 +75,7 @@ $req->execute(array());
             if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
             ?> 
                 <div class="mt-4 mb-4">
-                    <a class="text-info" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                    <a class="text-blue" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
                 </div>
             <?php
             };
@@ -100,13 +100,13 @@ $req->execute(array());
                 ?>
                     <div class="card shadow">
                         <div class="card-header bg-dark text-light">
-                            <a class="text-info" href="post.php?post=<?= $post_ID ?>">
+                            <a class="text-blue" href="post.php?post=<?= $post_ID ?>">
                                 <h3 class="mt-1"><?= $title ?></h3>
                             </a>
-                            <em>Créé le <?= $creation_date_fr ?> par <a class="text-info" href=""> <?= !empty($user_login) ? $user_login : $user_login ?> </a></em>
+                            <em>Créé le <?= $creation_date_fr ?> par <a class="text-blue" href=""> <?= !empty($user_login) ? $user_login : $user_login ?> </a></em>
                             <?php 
                             if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$user_ID) { ?>
-                                <a class="text-info a-edit-post" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier</a>
+                                <a class="text-blue a-edit-post" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier</a>
                             <?php }; ?>
                         </div>
                         <div class="card-body text-body">
@@ -114,7 +114,7 @@ $req->execute(array());
                                 <?= $content ?>
                             </div>
                             <div class="">
-                                <a href="post.php?post=<?= $post_ID ?>" class="btn btn-outline-info">Continuer la lecture <span class="fas fa-angle-right"></span></a>
+                                <a href="post.php?post=<?= $post_ID ?>" class="btn btn-outline-blue">Continuer la lecture <span class="fas fa-angle-right"></span></a>
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@ $req->execute(array());
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
             <div class="mt-4 mb-4">
-                <a class="text-info" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                <a class="text-blue" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
 
             </section>
