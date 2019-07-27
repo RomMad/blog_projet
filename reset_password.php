@@ -57,17 +57,36 @@ if (!empty($_POST) && isset($_GET["token"])) {
         $msgReset = $msgReset . "<li>Le mot de passe et la confirmation sont différents.</li>";
         $validation = false;
     };
-    // Met à jour le mot de passe si validation est vraie
-    if ($validation) {        
-    $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
-    $req = $bdd->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
-    $req->execute(array(
-        "new_pass" => $new_pass_hash,
-        "ID" => $_SESSION["userID"]
-        )); 
+    // Si validation est vraie, met à jour le mot de passe 
+    if ($validation) {      
+        // Récupère l'ID de l'utilisateur et son password haché
+        $req = $bdd->prepare("SELECT * FROM users WHERE email = ?");
+        $req->execute(array(
+            $email
+        ));
+        $dataUser = $req->fetch();
+        // Met à jour le mot de passe
+        $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
+        $req = $bdd->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
+        $req->execute(array(
+            "ID" => $dataUser["ID"],
+            "new_pass" => $new_pass_hash
+            )); 
 
-    $msgReset = "Le mot de passe a été modifié.";
-    $typeAlert = "success";
+        $_SESSION["userID"] = $dataUser["ID"];
+        $_SESSION["userLogin"] =$dataUser["login"];
+        $_SESSION["userRole"] = $dataUser["role"];
+
+        // Ajoute la date de connexion de l'utilisateur dans la table dédiée
+        $req = $bdd->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
+        $req->execute(array(
+            "user_ID" => $dataUser["ID"]
+        ));
+
+        $msgReset = "Le mot de passe a été modifié.";
+        $typeAlert = "success";
+
+        header("Refresh: 2; url=profil.php");
     };
 
     $_SESSION["flash"] = array(
@@ -91,7 +110,8 @@ if (!empty($_POST) && isset($_GET["token"])) {
                 <form action="reset_password.php?token=<?= isset($_GET["token"]) ? htmlspecialchars($_GET["token"]) : "" ?>" method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 mx-auto mt-4 mb-4">
                     <h1 class="h3 mb-4 font-weight-normal text-center">Réinitialisation du mot de passe</h1>
                     <label for="email" class="sr-only">Email</label>
-                    <input type="email" name="email" id="email" class="form-control mb-4" placeholder="Email">
+                    <input type="email" name="email" id="email" class="form-control mb-4" placeholder="Email"
+                        value="<?= isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "" ?>">
                     <label for="new_pass" class="sr-only">Mot de passe</label>
                         <div class="div-user-pass">
                             <input type="password" name="new_pass" id="new_pass" class="form-control mb-2 shadow-sm" placeholder="Nouveau mot de passe">
