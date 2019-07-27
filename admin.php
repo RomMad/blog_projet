@@ -94,7 +94,7 @@ if (!empty($_POST)) {
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="default_role" class="col-md-4 col-form-label">Rôle par défaut</label>
+                    <label for="default_role" class="col-md-4 col-form-label">Rôle par défaut des utilisateurs</label>
                     <div class="col-md-8">
                         <select name="default_role" id="default_role" class="custom-select form-control shadow-sm">
                             <option value="1" <?= $dataSettings["default_role"] == 1 ? "selected" : "" ?>>Administrateur</option>
@@ -115,7 +115,7 @@ if (!empty($_POST)) {
                 <div class="form-group row">
                     <div class="col-md-12">
                         <div class="float-right">
-                            <input type="submit" name="validation" value="Valider" id="validation" class="btn btn-info shadow">
+                            <input type="submit" name="validation" value="Valider" id="validation" class="btn btn-blue shadow">
                         </div>
                     </div>
                 </div>
