@@ -251,8 +251,8 @@
                     <?php 
                         while ($dataComment = $req->fetch()) {
                     ?>
-                            <div id="comment-<?=  $dataComment["ID"] ?>" class="card shadow">
-                                <div class="card-body position relative">
+                            <div id="comment-<?=  $dataComment["ID"] ?>" class="comment card shadow">
+                                <div class="card-body">
                                     <?php 
                                         if (!empty($dataComment["login"])) {
                                             $user_login = $dataComment["login"];
@@ -303,6 +303,7 @@
     <?php include("footer.php"); ?>
 
     <?php include("scripts.html"); ?>
+    <script src="js/see_more_comment.js"></script>
 
 </body>
 
