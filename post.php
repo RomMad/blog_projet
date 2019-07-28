@@ -1,32 +1,39 @@
 <?php 
-    session_start(); 
 
-    require("connection_bdd.php");
+session_start(); 
 
+require("connection_bdd.php");
 
-    var_dump($_SESSION);
+var_dump($_GET);
+if (!empty($_GET["post"])) {
+    $post_ID = htmlspecialchars($_GET["post"]);
+    $_SESSION["postID"] = $post_ID;
+} else {
+    $post_ID = $_SESSION["postID"];
+};
 
-    var_dump($_GET);
-    if (!empty($_GET["post"])) {
-        $post_ID = htmlspecialchars($_GET["post"]);
-        $_SESSION["postID"] = $post_ID;
+// Récupère les paramètres de modération
+$req = $bdd->prepare("SELECT moderation FROM settings");
+$req->execute(array());
+$dataSettings = $req->fetch();
+if ($dataSettings["moderation"] == 0) {
+    $filter = "status >= 0";  
+} else {
+    $filter = "status > 0";  
+};
+
+var_dump($_POST);   
+    
+// Vérifie si informations dans variable POST
+if (!empty($_POST)) {
+
+    if (isset($_SESSION["userRole"]) && $_SESSION["userRole"] == 1 ) {
+        $status = 1;
     } else {
-        $post_ID = $_SESSION["postID"];
+        $status = 0;
     };
 
-    // Récupère les paramètres de modération
-    $req = $bdd->prepare("SELECT moderation FROM settings");
-    $req->execute(array());
-    $dataSettings = $req->fetch();
-    if ($dataSettings["moderation"] == 0) {
-        $filter = "status >= 0";  
-    } else {
-        $filter = "status > 0";  
-    };
-
-    var_dump($_POST);    
-    // Vérifie si informations dans variable POST
-    if (!empty($_POST["content"])) {
+    if (isset($_POST["save_comment"])) {
         
         if (isset($_SESSION["userID"])) {
             $user_ID = $_SESSION["userID"];
@@ -34,14 +41,12 @@
             $user_ID = NULL;
         };
 
-        $content = htmlspecialchars($_POST["content"]);
-        $name = htmlspecialchars($_POST["name"]);
         $msgComment = "";
         $typeAlert = "success";
         $validation = true;
 
         // Vérifie si le commentaire est vide
-        if (empty($content)) {
+        if (empty($_POST["content"])) {
             $msgComment = "Le commentaire est vide.";
             $typeAlert = "danger";
             $validation = false;
@@ -49,18 +54,13 @@
 
         // Ajoute le commentaire si le commentaire n'est pas vide
         if ($validation) {
-            if (isset($_SESSION["userRole"]) && $_SESSION["userRole"] == 1 ) {
-                $status = 1;
-            } else {
-                $status = 0;
-            };
             $req = $bdd->prepare("INSERT INTO comments(id_post, user_ID, user_name, content, status) 
             VALUES(:id_post, :user_ID, :user_name, :content, :status)");
             $req->execute(array(
                 "id_post" => $_SESSION["postID"],
                 "user_ID" =>  $user_ID,
-                "user_name" => $name,
-                "content" => $content,
+                "user_name" =>  htmlspecialchars($_POST["name"]),
+                "content" => htmlspecialchars($_POST["content"]),
                 "status" =>  $status
             ));
             if ($dataSettings["moderation"] == 0 || (isset($_SESSION["userRole"]) && $_SESSION["userRole"] == 1 )) {
@@ -71,105 +71,120 @@
             };
         };
     };
-    //
-    if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]=="erase") {
-        $ID = htmlspecialchars($_GET["comment"]);
-        $req = $bdd->prepare("DELETE FROM comments WHERE ID = ?");
-        $req->execute(array($ID));
-
-        $msgComment = "Le commentaire a été supprimé.";
-        $typeAlert = "warning";
-    };
-    //
-    if (isset($_GET["comment"]) && isset($_GET["action"]) && $_GET["action"]=="report") {
-        $ID = htmlspecialchars($_GET["comment"]);
-        $req = $bdd->prepare("UPDATE comments SET status = :new_status, nb_report = nb_report + 1, report_date = NOW() WHERE ID = :ID");
+    // Modifie le commentaire
+    if (isset($_POST["edit_comment"])) {
+        $req = $bdd->prepare("UPDATE comments SET content = :new_content, status = :new_status, update_date = NOW() WHERE ID = :ID");
         $req->execute(array(
-            "new_status" => 2,
-            "ID" => $ID
+            "new_content" => htmlspecialchars($_POST["content"]),
+            "new_status" => $status,
+            "ID" => htmlspecialchars($_GET["comment"])
         ));
 
-        $msgComment = "Le commentaire a été signalé.";
-        $typeAlert = "warning";
+        $msgComment = "Le commentaire a été modifié.";
+        $typeAlert = "success";
     };
+};
 
-    if (isset($msgComment)) {
-        $_SESSION["flash"] = array(
-            "msg" => $msgComment,
-            "type" =>  $typeAlert
-        );
-    };
+//
+if (isset($_GET["action"]) && $_GET["action"]=="erase") {
+    $req = $bdd->prepare("DELETE FROM comments WHERE ID = ?");
+    $req->execute(array(
+        htmlspecialchars($_GET["comment"])
+    ));
+
+    $msgComment = "Le commentaire a été supprimé.";
+    $typeAlert = "warning";
+};
+// Ajoute le signalement du commentaire
+if (isset($_GET["action"]) && $_GET["action"]=="report") {
+    $req = $bdd->prepare("UPDATE comments SET status = :new_status, nb_report = nb_report + 1, report_date = NOW() WHERE ID = :ID");
+    $req->execute(array(
+        "new_status" => 2,
+        "ID" => htmlspecialchars($_GET["comment"])
+    ));
+
+    $msgComment = "Le commentaire a été signalé.";
+    $typeAlert = "warning";
+};
+
+if (isset($msgComment)) {
+    $_SESSION["flash"] = array(
+        "msg" => $msgComment,
+        "type" =>  $typeAlert
+    );
+};
 
 
-    // Récupère le post
-    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, 
-    DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr, 
-    DATE_FORMAT(p.update_date, \"%d/%m/%Y à %H:%i\") AS update_date_fr 
-    FROM posts p
-    LEFT JOIN users u
-    ON p.user_ID = u.ID
-    WHERE p.ID=?");
-    $req->execute(array($post_ID));
-    $dataPost = $req->fetch();
+// Récupère le post
+$req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, 
+DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr, 
+DATE_FORMAT(p.update_date, \"%d/%m/%Y à %H:%i\") AS update_date_fr 
+FROM posts p
+LEFT JOIN users u
+ON p.user_ID = u.ID
+WHERE p.ID=?");
+$req->execute(array($post_ID));
+$dataPost = $req->fetch();
 
-    // Compte le nombre de commentaires
-    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments FROM comments WHERE id_post = ? AND $filter");
-    $req->execute([
-        $post_ID
+// Compte le nombre de commentaires
+$req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments FROM comments WHERE id_post = ? AND $filter");
+$req->execute([
+    $post_ID
+]);
+$nbComments = $req->fetch();
+$nbItems = $nbComments["nb_Comments"];
+
+if (!empty($_POST["nbDisplayed"])) {
+    $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
+    setcookie("nbDisplayedComments", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
+} else if (!empty($_COOKIE["nbDisplayedComments"])) {
+    $nbDisplayed = $_COOKIE["nbDisplayedComments"];
+} else {
+    $nbDisplayed = 10;
+};
+
+if (!empty($_GET["page"])) {
+    $page = htmlspecialchars($_GET["page"]);
+    // Calcul le nombre de pages par rapport aux nombre d'articles
+    $maxComment =  $page*$nbDisplayed;
+    $minComment = $maxComment-$nbDisplayed;
+} else  {
+    $page = 1;
+    $minComment = 0;
+    $maxComment = $nbDisplayed;
+};
+
+// Initialisation des variables pour la pagination
+$linkNbDisplayed= "post.php?" . $post_ID . "#form-comment";
+$linkPagination= "post.php?";
+$anchorPagination= "#comments";
+$nbPages = ceil($nbItems / $nbDisplayed);
+require("pagination.php");
+
+// Vérifie s'il y a des commentaires
+$req = $bdd->prepare("SELECT ID FROM comments WHERE id_post = ? AND $filter ");
+$req->execute([
+    $post_ID
     ]);
-    $nbComments = $req->fetch();
-    $nbItems = $nbComments["nb_Comments"];
+$commentsExist = $req->fetch();
 
-    if (!empty($_POST["nbDisplayed"])) {
-        $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-        setcookie("nbDisplayedComments", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-    } else if (!empty($_COOKIE["nbDisplayedComments"])) {
-        $nbDisplayed = $_COOKIE["nbDisplayedComments"];
-    } else {
-        $nbDisplayed = 10;
-    };
+if (!$commentsExist) {
+    $infoComments = "Aucun commentaire.";
+} else  {
+    // Récupère les commentaires
+    $req = $bdd->prepare("SELECT c.ID, c.user_ID, u.login, c.user_name, c.content, c.status, 
+    DATE_FORMAT(c.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr 
+    FROM comments c
+    LEFT JOIN users u
+    ON c.user_ID = u.ID
+    WHERE c.id_post = :post_ID AND $filter 
+    ORDER BY c.creation_date DESC
+    LIMIT  $minComment,  $maxComment");
+    $req->execute(array(
+        "post_ID" => $post_ID
+    ));
+};
 
-  if (!empty($_GET["page"])) {
-      $page = htmlspecialchars($_GET["page"]);
-      // Calcul le nombre de pages par rapport aux nombre d'articles
-      $maxComment =  $page*$nbDisplayed;
-      $minComment = $maxComment-$nbDisplayed;
-  } else  {
-      $page = 1;
-      $minComment = 0;
-      $maxComment = $nbDisplayed;
-  };
-  
-    // Initialisation des variables pour la pagination
-    $linkNbDisplayed= "post.php?" . $post_ID . "#form-comment";
-    $linkPagination= "post.php?";
-    $anchorPagination= "#comments";
-    $nbPages = ceil($nbItems / $nbDisplayed);
-    require("pagination.php");
-
-    // Vérifie s'il y a des commentaires
-    $req = $bdd->prepare("SELECT ID FROM comments WHERE id_post = ? AND $filter ");
-    $req->execute([
-        $post_ID
-        ]);
-    $commentsExist = $req->fetch();
-
-    if (!$commentsExist) {
-        $infoComments = "Aucun commentaire.";
-    } else  {
-        // Récupère les commentaires
-        $req = $bdd->prepare("SELECT c.ID, c.user_ID, u.login, c.user_name, c.content, c.status, 
-        DATE_FORMAT(c.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr 
-        FROM comments c
-        LEFT JOIN users u
-        ON c.user_ID = u.ID
-        WHERE c.id_post = :post_ID AND $filter 
-        ORDER BY c.creation_date DESC
-        LIMIT  $minComment,  $maxComment");
-        $req->execute(array(
-            "post_ID" => $post_ID
-        ));
-    };
 ?>
 
 <!DOCTYPE html>
@@ -233,7 +248,7 @@
                         <textarea name="content" class="form-control shadow-sm" id="content" rows="4"></textarea>
                     </div>
                     <div class="form-group float-right">
-                        <input type="submit" value="Envoyer" id="save" class="btn btn-blue shadow">
+                        <input type="submit" value="Envoyer" name="save_comment" id="save_comment" class="btn btn-blue shadow">
                     </div>
                 </form>
             </div>
@@ -242,7 +257,7 @@
         <!-- Affiche les commentaires -->
         <section id="comments">
             <div class="row">
-                <div class="col-sm-12 col-md-6 mt-2">
+                <div class="col-sm-12 col-md-8 col-lg-6 mt-2">
 
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
             
@@ -251,6 +266,7 @@
                     <?php 
                         while ($dataComment = $req->fetch()) {
                     ?>
+                            <!--  Affiche le commentaire -->
                             <div id="comment-<?=  $dataComment["ID"] ?>" class="comment card shadow">
                                 <div class="card-body">
                                     <?php 
@@ -265,12 +281,17 @@
                                             };
                                     ?>
                                     <p><strong><?= $user_login ?></strong>, le <?= $dataComment["creation_date_fr"] ?></p>
-                                    <p><?= nl2br($dataComment["content"]) ?></p>
-                                    <?php                        
+                                    <div class="comment-content position relative"><?= nl2br($dataComment["content"]) ?>
+                                        <span class="comment-fade-out d-none"></sapi_windows_cp_set>
+                                    </div>
+                                        <?php                        
                                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataComment["user_ID"]) { 
-                                    ?>
+                                        ?>
                                             <div>
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=erase#form-comment" onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="fas fa-times text-danger"></span></a>
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=erase#form-comment" 
+                                                    onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
+                                                    <span class="fas fa-times text-danger"></span>
+                                                </a>
                                             </div>
                                         <?php
                                         } else {
@@ -281,13 +302,39 @@
                                             } else {
                                         ?>
                                             <div class="report-comment">
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=report#form-comment" onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}"><span class="far fa-flag text-warning"> Signaler</span></a>
+                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=report#form-comment" 
+                                                    onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
+                                                    <span class="far fa-flag text-warning"> Signaler</span>
+                                                </a>
                                             </div>
                                         <?php
                                             };
                                         };
                                         ?>
+                                        <?php                        
+                                        if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataComment["user_ID"]) { 
+                                        ?>
+                                            <div class="edit-comment mt-3">
+                                                <a href="#comment-<?= $dataComment["ID"] ?>"><span class="far fa-edit text-blue"> Modifier</span></a>
+                                            </div>
+                                        <?php
+                                        };
+                                        ?>
+                                     <div id="form-edit-comment-<?= $dataComment["ID"] ?>"class="form-edit-comment d-none">
+                                        <form action="post.php?post=<?= $post_ID ?>&comment=<?= $dataComment["ID"] ?>&action=edit#form-comment" method="post">
+                                            <div class="form-group">
+                                                <label for="content"></label>
+                                                <textarea name="content" class="form-control shadow-sm" id="content" rows="4"><?= $dataComment["content"] ?></textarea>
+                                            </div>
+                                            <div class="form-group float-right">
+                                                <input type="submit" value="Modifier" name="edit_comment" id="edit-<?= $dataComment["ID"] ?>" class="btn btn-blue shadow">
+                                                <button value="Annuler" id="cancel_edit-comment-<?= $dataComment["ID"] ?>" class="cancel-edit-comment btn btn-secondary shadow">Annuler</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
+
+
                             </div>
                     <?php
                         };
