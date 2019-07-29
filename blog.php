@@ -48,7 +48,9 @@ $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Récupère les derniers articles
-$req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.content, p.status, DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr 
+$req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.status, 
+IF(CHAR_LENGTH(p.content) > 1200, CONCAT(SUBSTRING(p.content, 1, 1200), ' [...]'), p.content) AS content, 
+DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr 
 FROM posts p
 LEFT JOIN users u
 ON p.user_ID = u.ID
