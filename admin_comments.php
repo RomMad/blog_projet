@@ -58,12 +58,16 @@
         };
         // Enregistre le filtre
         if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= "0") {
-            $filter = "c.status = " . htmlspecialchars($_POST["filter_status"]);
+            $filter = "status = " . htmlspecialchars($_POST["filter_status"]);
         };
     };
 
     // Compte le nombre de commentaires
-    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments FROM comments");
+    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments, c.user_ID, u.ID
+    FROM comments c
+    LEFT JOIN users u
+    ON c.user_ID = u.ID
+    WHERE $filter");
     $req->execute(array());
     $nbComments = $req->fetch();
     $nbItems = $nbComments["nb_Comments"];
@@ -147,7 +151,7 @@
     <div class="container">
 
     <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-light">
+            <ol class="breadcrumb bg-light mb-0">
                 <li class="breadcrumb-item"><a href="index.php">Accueil</a></li>
                 <li class="breadcrumb-item"><a href="admin.php">Administration</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Gestion des commentaires</li>
@@ -163,6 +167,13 @@
                 
                 <?php include("msg_session_flash.php") ?>
 
+                <?php 
+                // Affiche les résultats si recherche
+                if (isset($_POST["filter"])) {
+                    echo "<p> " . $nbItems . " résultat(s).</p>";
+                };    
+                ?>
+                
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
                 <form action="<?= $linkNbDisplayed ?>" method="post">

@@ -16,7 +16,7 @@
         };
     };
 
-    $filter = "login IS NOT NULL";
+    $filter = "u.ID > 0";
 
     var_dump($_POST);
     if (!empty($_POST)) {
@@ -68,7 +68,12 @@
     };
 
     // Compte le nombre d'utilisateurs
-    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Users FROM users WHERE $filter");
+    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Users, u.role, r.ID 
+    FROM users u
+    LEFT JOIN user_role r
+    ON u.role = r.ID  
+    WHERE $filter
+    ");
     $req->execute(array());
     $nbUsers = $req->fetch();
     $nbItems = $nbUsers["nb_Users"];
@@ -151,7 +156,7 @@
     <div class="container">
 
     <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-light">
+            <ol class="breadcrumb bg-light mb-0">
                 <li class="breadcrumb-item"><a href="index.php">Accueil</a></li>
                 <li class="breadcrumb-item"><a href="admin.php">Administration</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Gestion des utilisateurs</li>
@@ -166,6 +171,13 @@
                 </h2>
                 
                 <?php include("msg_session_flash.php") ?>
+
+                <?php 
+                // Affiche les résultats si recherche
+                if (isset($_POST["filter"])) {
+                    echo "<p> " . $nbItems . " résultat(s).</p>";
+                };    
+                ?>
 
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 

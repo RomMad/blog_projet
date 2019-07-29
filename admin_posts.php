@@ -94,7 +94,11 @@ if (!empty($_POST)) {
     };
 
 // Compte le nombre d'articles
-$req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts");
+$req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts, p.user_ID,  u.ID
+FROM posts p
+LEFT JOIN users u
+ON p.user_ID = u.ID
+WHERE $filter");
 $req->execute(array());
 $nbPosts = $req->fetch();
 $nbItems = $nbPosts["nb_Posts"];
@@ -177,7 +181,7 @@ $req->execute(array());
     <div class="container">
 
     <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-light">
+            <ol class="breadcrumb bg-light mb-0">
                 <li class="breadcrumb-item"><a href="index.php">Accueil</a></li>
                 <li class="breadcrumb-item"><a href="admin.php">Administration</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Gestion des articles</li>
@@ -185,13 +189,20 @@ $req->execute(array());
     </nav>
 
         <div class="row">
-            <section id="table_admin_posts" class="col-md-12 mx-auto mt-4 table_admin">
+            <section id="table_admin_posts" class="col-md-12 mx-auto mt-4 table-admin">
 
                 <h2 class="mb-4">Gestion des articles
                     <span class="badge badge-secondary font-weight-normal"><?= $nbPosts["nb_Posts"] ?> </span>
                 </h2>
                 
                 <?php include("msg_session_flash.php") ?>
+
+                <?php 
+                // Affiche les résultats si recherche
+                if (isset($_POST["filter"])) {
+                    echo "<p> " . $nbItems . " résultat(s).</p>";
+                };    
+                ?>
 
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
