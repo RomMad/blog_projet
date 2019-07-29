@@ -179,8 +179,6 @@
                 };    
                 ?>
 
-                <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
-
                 <form action="<?= $linkNbDisplayed ?>" method="post" class="">
                     <div class="row">
                     
