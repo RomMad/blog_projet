@@ -4,9 +4,8 @@ session_start();
 
 require("connection_bdd.php"); 
 
-echo "Adresse IP : " . $_SERVER["SERVER_ADDR"];
-
 // var_dump($_GET);  
+
 // Si recherche, filtre les résultats
 if (!empty($_GET["search"])) {
     $filter = "AND title like '%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";

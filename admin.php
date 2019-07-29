@@ -124,7 +124,7 @@ if (!empty($_POST)) {
                 </form>
             </div>
 
-            <div class="col-md-6 mt-4">
+            <div class="offset-md-2 col-md-4 offset-lg-3 col-lg-3 mt-4">
                 <div class="list-group shadow">
                 <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Navigation</h3>
                     <a href="admin_posts.php" class="list-group-item list-group-item-action text-blue">Gestion des articles</a>

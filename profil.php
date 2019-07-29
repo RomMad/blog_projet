@@ -177,142 +177,148 @@
             <?php include("msg_session_flash.php") ?>
 
                 <div class="row">
-                    <form action="profil.php" method="post" class="col-md-6 card mt-4 shadow">
-                        <div class="form-group row">
-                            <h2 class="card-header col-md-12 h2 bg-light text-dark">Profil</h2>
-                        </div>
+            
+                    <div class="col-md-6 mt-4">
+                        <form action="profil.php" method="post" class="col-md-12 card shadow">
+                            <div class="form-group row">
+                                <h2 class="card-header col-md-12 h2 bg-light text-dark">Profil</h2>
+                            </div>
 
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <label for="login" class="col-md-4 col-form-label">Login</label>
-                                    <div class="col-md-8">
-                                        <input type="text" name="login" id="login" class="form-control mb-4" 
-                                            value="<?= isset($login) ? $login : "" ?>">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label for="email" class="col-md-4 col-form-label">Adresse email</label>
-                                    <div class="col-md-8">
-                                        <input type="text" name="email" id="email" class="form-control mb-4" 
-                                            value="<?= isset($email) ? $email : "" ?>">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label for="name" class="col-md-4 col-form-label">Nom</label>
-                                    <div class="col-md-8">
-                                        <input type="text" name="name" id="name" class="form-control mb-4"
-                                            value="<?= isset($name) ? $name : "" ?>">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label for="surname" class="col-md-4 col-form-label">Prénom</label>
-                                    <div class="col-md-8">
-                                        <input type="text" name="surname" id="surname" class="form-control mb-4"
-                                            value="<?= isset($surname) ? $surname : "" ?>">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label for="birthdate" class="col-md-4 col-form-label">Date de naissance</label>
-                                    <div class="col-md-5">
-                                        <input type="date" name="birthdate" id="birthdate" class="form-control mb-4"
-                                            value="<?= isset($birthdate) ? $birthdate : "" ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="role" class="col-md-4 col-form-label">Rôle</label>
-                                    <div class="col-md-5">
-                                        <select name="role" id="role" class="custom-select form-control shadow-sm">
-                                            <option value="1" <?= isset($role) && $role == 1 ? "selected" : "" ?>>Administrateur</option>
-                                            <option value="2" <?= isset($role) &&  $role == 2 ? "selected" : "" ?>>Editeur</option>
-                                            <option value="3" <?= isset($role) &&  $role == 3 ? "selected" : "" ?>>Auteur</option>
-                                            <option value="4" <?= isset($role) &&  $role == 4 ? "selected" : "" ?>>Contributeur</option>
-                                            <option value="5" <?= isset($role) &&  $role == 5 ? "selected" : "" ?>>Abonné</option>
-                                        </select>
-                                    </div>
-                                </div> 
-                                <div class="row">
-                                    <label for="pass" class="col-md-4 col-form-label mt-4">Mot de passe</label>
-                                    <div class="col-md-5">
-                                        <div class="div-user-pass">
-                                            <input type="password" name="pass" id="pass" class="form-control mt-4 mb-4" >
-                                            <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <label for="login" class="col-md-4 col-form-label">Login</label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="login" id="login" class="form-control mb-4" 
+                                                value="<?= isset($login) ? $login : "" ?>">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="pass_confirm" class="col-md-4 col-form-label">Confirmation mot de passe</label>
-                                    <div class="col-md-5">
-                                        <div class="div-user-pass">
-                                            <input type="password" name="pass_confirm" id="pass_confirm" class="form-control mb-4" >
-                                            <div id="showConfirmPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                                    <div class="row">
+                                        <label for="email" class="col-md-4 col-form-label">Adresse email</label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="email" id="email" class="form-control mb-4" 
+                                                value="<?= isset($email) ? $email : "" ?>">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <div class="float-right">
-                                            <input type="submit" value="Mettre à jour" id="updateInfo" class="btn btn-blue shadow">
+                                    <div class="row">
+                                        <label for="name" class="col-md-4 col-form-label">Nom</label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="name" id="name" class="form-control mb-4"
+                                                value="<?= isset($name) ? $name : "" ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="surname" class="col-md-4 col-form-label">Prénom</label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="surname" id="surname" class="form-control mb-4"
+                                                value="<?= isset($surname) ? $surname : "" ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="birthdate" class="col-md-4 col-form-label">Date de naissance</label>
+                                        <div class="col-md-5">
+                                            <input type="date" name="birthdate" id="birthdate" class="form-control mb-4"
+                                                value="<?= isset($birthdate) ? $birthdate : "" ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="role" class="col-md-4 col-form-label">Rôle</label>
+                                        <div class="col-md-5">
+                                            <select name="role" id="role" class="custom-select form-control shadow-sm">
+                                                <option value="1" <?= isset($role) && $role == 1 ? "selected" : "" ?>>Administrateur</option>
+                                                <option value="2" <?= isset($role) &&  $role == 2 ? "selected" : "" ?>>Editeur</option>
+                                                <option value="3" <?= isset($role) &&  $role == 3 ? "selected" : "" ?>>Auteur</option>
+                                                <option value="4" <?= isset($role) &&  $role == 4 ? "selected" : "" ?>>Contributeur</option>
+                                                <option value="5" <?= isset($role) &&  $role == 5 ? "selected" : "" ?>>Abonné</option>
+                                            </select>
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <label for="pass" class="col-md-4 col-form-label mt-4">Mot de passe</label>
+                                        <div class="col-md-5">
+                                            <div class="div-user-pass">
+                                                <input type="password" name="pass" id="pass" class="form-control mt-4 mb-4" >
+                                                <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="pass_confirm" class="col-md-4 col-form-label">Confirmation mot de passe</label>
+                                        <div class="col-md-5">
+                                            <div class="div-user-pass">
+                                                <input type="password" name="pass_confirm" id="pass_confirm" class="form-control mb-4" >
+                                                <div id="showConfirmPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <div class="float-right">
+                                                <input type="submit" value="Mettre à jour" id="updateInfo" class="btn btn-blue shadow">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
 
-                    <form action="profil.php" method="post" class="offset-md-1 col-md-5 card mt-4 shadow">
-                        <div class="form-group row">
-                            <h2 class="card-header  col-md-12 h2 bg-light text-dark">Mot de passe</h2>
-                        </div>
-                        <div class="row">
-                            <label for="old_pass" class="col-md-6 col-form-label">Ancien mot de passe</label>
-                            <div class="col-md-6">
-                                <input type="password" name="old_pass" id="old_pass" class="form-control mb-4" >
+                    <div class="offset-md-1 col-md-5 mt-4">
+                        <form action="profil.php" method="post" class="col-md-12 card shadow">
+                            <div class="form-group row">
+                                <h2 class="card-header  col-md-12 h2 bg-light text-dark">Mot de passe</h2>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <label for="new_pass" class="col-md-6 col-form-label">Nouveau mot de passe</label>
-                                    <div class="col-md-6">
-                                        <div class="div-user-pass">
-                                            <input type="password" name="new_pass" id="new_pass" class="form-control mb-4">
-                                            <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
-                                        </div>    
-                                    </div>
+                            <div class="row">
+                                <label for="old_pass" class="col-md-6 col-form-label">Ancien mot de passe</label>
+                                <div class="col-md-6">
+                                    <input type="password" name="old_pass" id="old_pass" class="form-control mb-4" >
                                 </div>
-                                <div class="row">
-                                    <label for="new_pass_confirm" class="col-md-6 col-form-label">Confirmation nouveau mot de passe</label>
-                                    <div class="col-md-6">
-                                        <div class="div-user-pass">
-                                            <input type="password" name="new_pass_confirm" id="new_pass_confirm" class="form-control mb-4">
-                                            <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <label for="new_pass" class="col-md-6 col-form-label">Nouveau mot de passe</label>
+                                        <div class="col-md-6">
+                                            <div class="div-user-pass">
+                                                <input type="password" name="new_pass" id="new_pass" class="form-control mb-4">
+                                                <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                                            </div>    
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="new_pass_confirm" class="col-md-6 col-form-label">Confirmation nouveau mot de passe</label>
+                                        <div class="col-md-6">
+                                            <div class="div-user-pass">
+                                                <input type="password" name="new_pass_confirm" id="new_pass_confirm" class="form-control mb-4">
+                                                <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <div class="float-right">
+                                                <input type="submit" value="Mettre à jour" id="updatePassword"
+                                                    class="btn btn-blue shadow">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <small class="text-muted">Le mot de passe doit contenir au minimum :
+                                                <ul>
+                                                    <li>6 caractères</li>
+                                                    <li>1 lettre minuscule</li>
+                                                    <li>1 lettre majuscule</li>
+                                                    <li>1 chiffre</li>
+                                                </ul>
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <div class="float-right">
-                                            <input type="submit" value="Mettre à jour" id="updatePassword"
-                                                class="btn btn-blue shadow">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <small class="text-muted">Le mot de passe doit contenir au minimum :
-                                            <ul>
-                                                <li>6 caractères</li>
-                                                <li>1 lettre minuscule</li>
-                                                <li>1 lettre majuscule</li>
-                                                <li>1 chiffre</li>
-                                            </ul>
-                                        </small>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </section>
