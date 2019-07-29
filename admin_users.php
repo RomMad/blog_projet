@@ -125,9 +125,9 @@
     };
     
     // Initialisation des variables pour la pagination
-    $linkNbDisplayed = "admin_Users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-    $linkPagination = "admin_Users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-    $anchorPagination = "#table-admin_Users";
+    $linkNbDisplayed = "admin_users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+    $linkPagination = "admin_users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+    $anchorPagination = "#table-admin_users";
     $nbPages = ceil($nbItems / $nbDisplayed);
     require("pagination.php");
 
@@ -164,7 +164,7 @@
     </nav>
 
         <div class="row">
-            <section id="table-admin_Users" class="col-md-12 mx-auto mt-4 table-admin">
+            <section id="table-admin_users" class="col-md-12 mx-auto mt-4 table-admin">
 
                 <h2 class="mb-4">Gestion des utilisateurs
                     <span class="badge badge-secondary font-weight-normal"><?= $nbUsers["nb_Users"] ?> </span>
@@ -225,7 +225,7 @@
                                             <label for="allselectedUsers" class="sr-only">Tout sélectionner</label>
                                         </th>
                                         <th scope="col" class="align-middle">
-                                            <a href="admin_Users?orderBy=login&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Login
+                                            <a href="admin_users?orderBy=login&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Login
                                             <?php 
                                             if ($orderBy == "login") {
                                             ?>
@@ -236,7 +236,7 @@
                                             </a>
                                         </th>
                                         <th scope="col" class="align-middle">
-                                            <a href="admin_Users?orderBy=name&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Nom
+                                            <a href="admin_users?orderBy=name&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Nom
                                             <?php 
                                             if ($orderBy == "name") {
                                             ?>
@@ -247,7 +247,7 @@
                                             </a>
                                         </th>
                                         <th scope="col" class="align-middle">
-                                            <a href="admin_Users?orderBy=surname&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Prénom
+                                            <a href="admin_users?orderBy=surname&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Prénom
                                             <?php 
                                             if ($orderBy == "surname") {
                                             ?>
@@ -258,7 +258,7 @@
                                             </a>
                                         </th>
                                         <th scope="col" class="align-middle">
-                                            <a href="admin_Users?orderBy=email&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Email
+                                            <a href="admin_users?orderBy=email&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Email
                                             <?php 
                                             if ($orderBy == "email") {
                                             ?>
@@ -269,7 +269,7 @@
                                             </a>
                                         </th>
                                         <th scope="col" class="align-middle">
-                                            <a href="admin_Users?orderBy=role&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Rôle
+                                            <a href="admin_users?orderBy=role&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Rôle
                                             <?php 
                                             if ($orderBy == "role") {
                                             ?>
@@ -280,7 +280,7 @@
                                             </a>
                                         </th>
                                         <th scope="col" class="align-middle">
-                                            <a href="admin_Users?orderBy=registration_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date d'enregistrement
+                                            <a href="admin_users?orderBy=registration_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date d'enregistrement
                                             <?php 
                                             if ($orderBy == "registration_date_fr") {
                                             ?>
