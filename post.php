@@ -238,17 +238,23 @@ if (!$commentsExist) {
             <div class="row">
                 <form action="post.php?post=<?= $post_ID ?>#form-comment" method="post" class="col-sm-12 col-md-10 col-lg-6 mt-4">
                     <h2 class="h3 mb-4">Nouveau commentaire</h2>
-                    <div class="form-group">
-                        <div class="row">
-                            <label for="name" class="col-md-4 col-form-label">Nom</label>
-                            <div class="col-md-8">
-                                <input type="text" name="name" id="name" class="form-control mb-4 shadow-sm" value="<?= isset($_SESSION["userLogin"]) ? $_SESSION["userLogin"] : "" ?>">
-                            </div>
+                    <?php 
+                        if (!isset($_SESSION["userID"])) { 
+                    ?>
+                    <div class="row">
+                        <label for="name" class="col-md-4 col-form-label">Nom</label>
+                        <div class="col-md-8">
+                            <input type="text" name="name" id="name" class="form-control mb-4 shadow-sm" value="">
                         </div>
-                        <label for="content"></label>
-                        <textarea name="content" class="form-control shadow-sm" id="content" rows="4"></textarea>
                     </div>
-                    <div class="form-group float-right">
+                    <?php
+                    };
+                    ?>
+                    <div class="form-group row">
+                        <label for="content" class="sr-only">Contenu du message</label>
+                        <textarea name="content" class="form-control col-dm-12 shadow-sm" id="content" rows="4"></textarea>
+                    </div>
+                    <div class="form-group row float-right">
                         <input type="submit" value="Envoyer" name="save_comment" id="save_comment" class="btn btn-blue shadow">
                     </div>
                 </form>
@@ -259,11 +265,12 @@ if (!$commentsExist) {
         <section id="comments">
             <div class="row">
                 <div class="col-sm-12 col-md-10 col-lg-6 mt-2">
-
-                <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
             
                     <h2 class="h3 mb-4">Commentaires</h2>
                     <p> <?= isset($infoComments) ? $infoComments : "" ?> </p>
+
+                    <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+
                     <?php 
                         while ($dataComment = $req->fetch()) {
                     ?>
