@@ -231,33 +231,37 @@ if (!$commentsExist) {
         </section>
 
         <!-- Formulaire d'ajout d'un commentaire -->
-        <section id="form-comment">
+        <section id="form-comment" class="mt-4">
 
         <?php include("msg_session_flash.php") ?>
 
             <div class="row">
-                <form action="post.php?post=<?= $post_ID ?>#form-comment" method="post" class="col-sm-12 col-md-10 col-lg-6 mt-4">
+                <div class="col-sm-12 col-md-10 col-lg-6">
                     <h2 class="h3 mb-4">Nouveau commentaire</h2>
-                    <?php 
-                        if (!isset($_SESSION["userID"])) { 
-                    ?>
                     <div class="row">
-                        <label for="name" class="col-md-4 col-form-label">Nom</label>
-                        <div class="col-md-8">
-                            <input type="text" name="name" id="name" class="form-control mb-4 shadow-sm" value="">
-                        </div>
+                        <div class="col-md-12">
+                            <form action="post.php?post=<?= $post_ID ?>#form-comment" method="post" class="px-3">
+                                <?php 
+                                    if (!isset($_SESSION["userID"])) { 
+                                ?>
+                                <div class="row">
+                                    <label for="name" class="col-md-4 col-form-label">Nom</label>
+                                    <input type="text" name="name" id="name" class="col-md-8 form-control mb-4 shadow-sm" value="">
+                                </div>
+                                <?php
+                                };
+                                ?>
+                                <div class="form-group row">
+                                    <label for="content" class="sr-only">Contenu du message</label>
+                                    <textarea name="content" class="col-md-12 form-control shadow-sm" id="content" rows="4"></textarea>
+                                </div>
+                                <div class="form-group row float-right">
+                                    <input type="submit" value="Envoyer" name="save_comment" id="save_comment" class="btn btn-blue shadow">
+                                </div>
+                            </form>
+                        </div> 
                     </div>
-                    <?php
-                    };
-                    ?>
-                    <div class="form-group row">
-                        <label for="content" class="sr-only">Contenu du message</label>
-                        <textarea name="content" class="form-control col-dm-12 shadow-sm" id="content" rows="4"></textarea>
-                    </div>
-                    <div class="form-group row float-right">
-                        <input type="submit" value="Envoyer" name="save_comment" id="save_comment" class="btn btn-blue shadow">
-                    </div>
-                </form>
+                </div>
             </div>
         </section>
 
