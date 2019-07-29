@@ -75,51 +75,54 @@ if (!empty($_POST)) {
         <?php include("msg_session_flash.php") ?>
 
         <div class="row">
-            <form action="admin.php" method="post" class="col-md-6 card shadow mt-4">
-                <div class="form-group row">
-                    <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Paramètres</h3>
-                </div>
-                <div class="form-group row">
-                    <label for="blog_name" class="col-md-4 col-form-label">Titre du blog</label>
-                    <div class="col-md-8">
-                        <input type="text" name="blog_name" id="blog_name" class="form-control mb-4 shadow-sm" 
-                            value="<?= $dataSettings["blog_name"] ?>">
+            
+            <div class="col-md-6 mt-4">
+                <form action="admin.php" method="post" class="col-md-12 card shadow">
+                    <div class="form-group row">
+                        <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Paramètres</h3>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label for="admin_email" class="col-md-4 col-form-label">Adresse email</label>
-                    <div class="col-md-8">
-                        <input type="text" name="admin_email" id="admin_email" class="form-control mb-4 shadow-sm" 
-                            value="<?= $dataSettings["admin_email"] ?>">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="default_role" class="col-md-4 col-form-label">Rôle par défaut des utilisateurs</label>
-                    <div class="col-md-8">
-                        <select name="default_role" id="default_role" class="custom-select form-control shadow-sm">
-                            <option value="1" <?= $dataSettings["default_role"] == 1 ? "selected" : "" ?>>Administrateur</option>
-                            <option value="2" <?= $dataSettings["default_role"] == 2 ? "selected" : "" ?>>Editeur</option>
-                            <option value="3" <?= $dataSettings["default_role"] == 3 ? "selected" : "" ?>>Auteur</option>
-                            <option value="4" <?= $dataSettings["default_role"] == 4 ? "selected" : "" ?>>Contributeur</option>
-                            <option value="5" <?= $dataSettings["default_role"] == 5 ? "selected" : "" ?>>Abonné</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="moderation" class="col-md-4 col-form-label">Modération</label>
-                    <div class="col-md-1">
-                        <input type="checkbox" name="moderation" id="moderation" class="form-control mb-4" 
-                            value="true" <?= $dataSettings["moderation"] == 1 ? "checked" : "" ?>>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-12">
-                        <div class="float-right">
-                            <input type="submit" name="validation" value="Valider" id="validation" class="btn btn-blue shadow">
+                    <div class="form-group row">
+                        <label for="blog_name" class="col-md-4 col-form-label">Titre du blog</label>
+                        <div class="col-md-8">
+                            <input type="text" name="blog_name" id="blog_name" class="form-control mb-4 shadow-sm" 
+                                value="<?= $dataSettings["blog_name"] ?>">
                         </div>
                     </div>
-                </div>
-            </form>
+                    <div class="form-group row">
+                        <label for="admin_email" class="col-md-4 col-form-label">Adresse email</label>
+                        <div class="col-md-8">
+                            <input type="text" name="admin_email" id="admin_email" class="form-control mb-4 shadow-sm" 
+                                value="<?= $dataSettings["admin_email"] ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="default_role" class="col-md-4 col-form-label">Rôle par défaut des utilisateurs</label>
+                        <div class="col-md-8">
+                            <select name="default_role" id="default_role" class="custom-select form-control shadow-sm">
+                                <option value="1" <?= $dataSettings["default_role"] == 1 ? "selected" : "" ?>>Administrateur</option>
+                                <option value="2" <?= $dataSettings["default_role"] == 2 ? "selected" : "" ?>>Editeur</option>
+                                <option value="3" <?= $dataSettings["default_role"] == 3 ? "selected" : "" ?>>Auteur</option>
+                                <option value="4" <?= $dataSettings["default_role"] == 4 ? "selected" : "" ?>>Contributeur</option>
+                                <option value="5" <?= $dataSettings["default_role"] == 5 ? "selected" : "" ?>>Abonné</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="moderation" class="col-md-4 col-form-label">Modération</label>
+                        <div class="col-md-1">
+                            <input type="checkbox" name="moderation" id="moderation" class="form-control mb-4" 
+                                value="true" <?= $dataSettings["moderation"] == 1 ? "checked" : "" ?>>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="float-right">
+                                <input type="submit" name="validation" value="Valider" id="validation" class="btn btn-blue shadow">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
             <div class="col-md-6 mt-4">
                 <div class="list-group shadow">
@@ -130,6 +133,7 @@ if (!empty($_POST)) {
                     <a href="user_new.php" class="list-group-item list-group-item-action text-blue">Ajouter un utilisateur</a>
                 </div>
             </div>
+
         </div>
     </div>
 
