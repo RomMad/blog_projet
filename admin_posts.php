@@ -199,7 +199,7 @@ $req->execute(array());
 
                 <?php 
                 // Affiche les résultats si recherche
-                if (isset($_POST["filter"])) {
+                if (isset($_POST["filter"]) || isset($_POST["filter_search"])) {
                     echo "<p> " . $nbItems . " résultat(s).</p>";
                 };    
                 ?>
