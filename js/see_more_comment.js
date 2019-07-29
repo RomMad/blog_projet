@@ -12,7 +12,7 @@ for (let i = 0; i < nbCommentsElt; i++) {
     let formEditCommentElt = commentsElt2[i].querySelector(".comment .form-edit-comment");
     let cancelEditCommentElt = commentsElt2[i].querySelector(".comment .form-edit-comment .cancel-edit-comment");
 
-    commentContentElt.style.transition = "max-height 0.5s ease";
+    // commentContentElt.style.transition = "max-height 0.5s ease";
 
     // Masque le contenu du commentaire quand celui dépasse les 200px de hauteur
     if (rectCardBodyElt.height > 150) {

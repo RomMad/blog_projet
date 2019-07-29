@@ -57,7 +57,7 @@
             );
         };
         // Enregistre le filtre
-        if ($_POST["filter_status"] >= "0") {
+        if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= "0") {
             $filter = "c.status = " . htmlspecialchars($_POST["filter_status"]);
         };
     };
