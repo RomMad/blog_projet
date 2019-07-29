@@ -124,9 +124,9 @@
     $anchorPagination = "#table-admin_comments";
     $nbPages = ceil($nbItems / $nbDisplayed);
     require("pagination.php");
-
     // Récupère les commentaires
-    $req = $bdd->prepare("SELECT c.ID, c.id_post, c.content, c.user_ID, c.user_name AS author, u.login, c.status, c.nb_report, 
+    $req = $bdd->prepare("SELECT c.ID, c.id_post, c.user_ID, c.user_name AS author, u.login, c.status, c.nb_report, 
+    IF(CHAR_LENGTH(c.content) > 240, CONCAT(SUBSTRING(c.content, 1, 240), ' [...]'), c.content) AS content, 
     DATE_FORMAT(c.report_date, \"%d/%m/%Y %H:%i\") AS report_date, 
     DATE_FORMAT(c.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
     DATE_FORMAT(c.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
