@@ -199,8 +199,8 @@ if (!$commentsExist) {
     <div class="container">
 
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-light">
-                <li class="breadcrumb-item"><a href="blog.php">Blog</a></li>
+            <ol class="breadcrumb bg-transparent">
+                <li class="breadcrumb-item"><a href="blog.php" class="text-blue">Blog</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Article</li>
             </ol>
         </nav>

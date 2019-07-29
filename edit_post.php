@@ -124,9 +124,9 @@
     <div class="container">
 
     <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-light">
-                <li class="breadcrumb-item"><a href="blog.php">Blog</a></li>
-                <li class="breadcrumb-item"><a href="post.php?post=<?= isset($_GET["post"]) ? htmlspecialchars($_GET["post"]) : "" ?>">Article</a></li>
+            <ol class="breadcrumb bg-transparent">
+                <li class="breadcrumb-item"><a href="blog.php" class="text-blue">Blog</a></li>
+                <li class="breadcrumb-item"><a href="post.php?post=<?= isset($_GET["post"]) ? htmlspecialchars($_GET["post"]) : "" ?>" class="text-blue">Article</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Édition</li>
             </ol>
         </nav>
