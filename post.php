@@ -173,7 +173,8 @@ if (!$commentsExist) {
 } else  {
     // Récupère les commentaires
     $req = $bdd->prepare("SELECT c.ID, c.user_ID, u.login, c.user_name, c.content, c.status, 
-    DATE_FORMAT(c.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr 
+    DATE_FORMAT(c.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr,
+    DATE_FORMAT(c.update_date, \"%d/%m/%Y à %H:%i\") AS update_date_fr 
     FROM comments c
     LEFT JOIN users u
     ON c.user_ID = u.ID
@@ -235,7 +236,7 @@ if (!$commentsExist) {
         <?php include("msg_session_flash.php") ?>
 
             <div class="row">
-                <form action="post.php?post=<?= $post_ID ?>#form-comment" method="post" class="col-sm-12 col-md-6 mt-4">
+                <form action="post.php?post=<?= $post_ID ?>#form-comment" method="post" class="col-sm-12 col-md-10 col-lg-6 mt-4">
                     <h2 class="h3 mb-4">Nouveau commentaire</h2>
                     <div class="form-group">
                         <div class="row">
@@ -257,7 +258,7 @@ if (!$commentsExist) {
         <!-- Affiche les commentaires -->
         <section id="comments">
             <div class="row">
-                <div class="col-sm-12 col-md-8 col-lg-6 mt-2">
+                <div class="col-sm-12 col-md-10 col-lg-6 mt-2">
 
                 <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
             
@@ -280,7 +281,13 @@ if (!$commentsExist) {
                                                 };
                                             };
                                     ?>
-                                    <p><strong><?= $user_login ?></strong>, le <?= $dataComment["creation_date_fr"] ?></p>
+                                    <p><strong><?= $user_login ?></strong>, le <?= $dataComment["creation_date_fr"] ?>
+                                    <?php
+                                    if ($dataComment["update_date_fr"] != $dataComment["creation_date_fr"]) {
+                                        echo "(Modifié le " . $dataComment["update_date_fr"] . ")";
+                                    };
+                                    ?>
+                                    </p>
                                     <div class="comment-content position relative"><?= nl2br($dataComment["content"]) ?>
                                         <span class="comment-fade-out d-none"></sapi_windows_cp_set>
                                     </div>
