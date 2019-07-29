@@ -4,7 +4,9 @@ session_start();
 
 require("connection_bdd.php"); 
 
-var_dump($_GET);  
+echo "Adresse IP : " . $_SERVER["SERVER_ADDR"];
+
+// var_dump($_GET);  
 // Si recherche, filtre les résultats
 if (!empty($_GET["search"])) {
     $filter = "AND title like '%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
@@ -17,7 +19,7 @@ $req->execute(array());
 $nbPosts = $req->fetch();
 $nbItems = $nbPosts["nb_Posts"];
 
-var_dump($_POST);
+// var_dump($_POST);
 // Vérification si informations dans variable POST
 if (!empty($_POST)) {
     $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
