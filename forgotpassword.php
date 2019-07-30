@@ -3,7 +3,6 @@
 
     require("connection_bdd.php");
 
-    var_dump($_POST);
     // Vérifie si information dans variable POST
     if (!empty($_POST)) {
         $email = htmlspecialchars($_POST["email"]);

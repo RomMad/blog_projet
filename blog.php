@@ -58,7 +58,7 @@ ORDER BY p.creation_date DESC
 LIMIT  $minPost, $maxPost");
 $req->execute(array());
 
-var_dump($_COOKIE);
+// var_dump($_COOKIE);
 // var_dump($_POST);
 // var_dump($_GET);
 

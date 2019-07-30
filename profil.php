@@ -21,7 +21,6 @@
         $role =  htmlspecialchars($dataUser["role"]);
     };
 
-    var_dump($_POST);
     // Vérifie si informations dans variable POST
     if (!empty($_POST)) {
         $validation = true;

@@ -4,9 +4,6 @@ session_start();
 
 require("connection_bdd.php");
 
-var_dump($_GET);
-var_dump($_POST);
-
 // Vérifie si informations dans variables POST et GET
 if (!empty($_POST) && isset($_GET["token"])) {
     $token = htmlspecialchars($_GET["token"]);

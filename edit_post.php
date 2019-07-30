@@ -7,7 +7,6 @@
         header("Location: connection.php");
     };
 
-    var_dump($_POST);    
     // Vérification si informations dans variable POST
     if (!empty($_POST)) {
         $title = htmlspecialchars($_POST["title"]);
@@ -90,7 +89,6 @@
     };
 
     // 
-    var_dump($_GET);
     if (!empty($_GET["post"])) {
         $idPost = htmlspecialchars($_GET["post"]);
         // Récupère l'article

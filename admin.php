@@ -16,8 +16,6 @@ if (empty($_SESSION["userID"])) {
     };
 };
 
-var_dump($_POST);
-
 if (!empty($_POST)) {
     if (isset($_POST["moderation"])) {
        $moderation = 1; 
