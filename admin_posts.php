@@ -19,8 +19,6 @@ if (empty($_SESSION["userID"])) {
 
 $filter = "p.ID > 0";
 
-var_dump($_POST);
-
 if (!empty($_POST)) {
     if (!empty($_POST["action_apply"]) && isset($_POST["selectedPosts"])) {
         // Supprime les articles sélectionnés via une boucle
@@ -106,36 +104,36 @@ $nbItems = $nbPosts["nb_Posts"];
 // Vérification si informations dans variable POST
 if (!empty($_POST["nbDisplayed"])) {
     $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-    setcookie("adminNbDisplayedPosts", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-} else if (!empty($_COOKIE["adminNbDisplayedPosts"])) {
-    $nbDisplayed =  $_COOKIE["adminNbDisplayedPosts"];
+    setcookie("pagination[adminNbDisplayedPosts]", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
+} else if (!empty($_COOKIE["pagination"]["adminNbDisplayedPosts"])) {
+    $nbDisplayed =  $_COOKIE["pagination"]["adminNbDisplayedPosts"];
 } else {
     $nbDisplayed = 20;
 };
-var_dump($_GET);  
+
 // Vérifie l'ordre de tri par type
 if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
     $orderBy = htmlspecialchars($_GET["orderBy"]);
-} else if (!empty($_COOKIE["adminPostsOrderBy"])) {
-    $orderBy = $_COOKIE["adminPostsOrderBy"];
+} else if (!empty($_COOKIE["orderBy"]["adminPosts"])) {
+    $orderBy = $_COOKIE["orderBy"]["adminPosts"];
 } else {
     $orderBy = "creation_date_fr";
 };
 // Vérifie l'ordre de tri si ascendant ou descendant
 if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
     $order = htmlspecialchars($_GET["order"]);
-} else if (!empty($_COOKIE["adminPostsOrder"])) {
-    $order = $_COOKIE["adminPostsOrder"];
+} else if (!empty($_COOKIE["order"]["adminPosts"])) {
+    $order = $_COOKIE["order"]["adminPosts"];
 } else {
     $order = "desc";
 };
 // Si le tri par type vient de changer, alors le tri est toujours ascendant
-if (!empty($_COOKIE["adminPostsOrder"]) && $orderBy != $_COOKIE["adminPostsOrderBy"]) {
+if (!empty($_COOKIE["order"]["adminPosts"]) && $orderBy != $_COOKIE["orderBy"]["adminPosts"]) {
     $order = "asc";
 };
 // Enregistre les tris en COOKIES
-setcookie("adminPostsOrderBy", $orderBy, time() + 365*24*3600, null, null, false, true);
-setcookie("adminPostsOrder", $order, time() + 365*24*3600, null, null, false, true);
+setcookie("orderBy[adminPosts]", $orderBy, time() + 365*24*3600, null, null, false, true);
+setcookie("order[adminPosts]", $order, time() + 365*24*3600, null, null, false, true);
 
 // Vérification si informations dans variable GET
 if (!empty($_GET["page"])) {

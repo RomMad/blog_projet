@@ -137,10 +137,6 @@ ORDER BY $orderBy $order
 LIMIT  $mincomment, $maxcomment");
 $req->execute(array());
 
-var_dump($_COOKIE);
-// var_dump($_POST);
-// var_dump($_GET);
-
 ?>
 
 <!DOCTYPE html>
