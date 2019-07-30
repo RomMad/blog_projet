@@ -104,7 +104,7 @@ $req->execute(array());
                 ?>
                     <div class="card shadow">
                         <div class="card-header bg-dark text-light">
-                            <a class="text-blue" href="post.php?post=<?= $post_ID ?>">
+                            <a class="text-blue" href="post_view.php?post=<?= $post_ID ?>">
                                 <h3 class="mt-1"><?= $title ?></h3>
                             </a>
                             <em>Créé le <?= $creation_date_fr ?> par <a class="text-blue" href=""> <?= !empty($user_login) ? $user_login : $user_login ?> </a></em>
@@ -118,7 +118,7 @@ $req->execute(array());
                                 <?= $content ?>
                             </div>
                             <div class="">
-                                <a href="post.php?post=<?= $post_ID ?>" class="btn btn-outline-blue">Continuer la lecture <span class="fas fa-angle-right"></span></a>
+                                <a href="post_view.php?post=<?= $post_ID ?>" class="btn btn-outline-blue">Continuer la lecture <span class="fas fa-angle-right"></span></a>
                             </div>
                         </div>
                     </div>
