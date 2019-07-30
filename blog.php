@@ -1,15 +1,17 @@
 <?php 
 
+ini_set("display_errors",1);
+error_reporting(E_ALL);	
+
 session_start();
 
-require("connection_bdd.php"); 
+require("connection_bdd.php");
 
-var_dump($_COOKIE);
 // var_dump($_GET);  
 
 // Si recherche, filtre les résultats
 if (!empty($_GET["search"])) {
-    $filter = "AND title like '%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
+    $filter = "AND title like \'%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
 } else {
     $filter = "";
 };
@@ -23,13 +25,12 @@ $nbItems = $nbPosts["nb_Posts"];
 // Vérification si informations dans variable POST
 if (!empty($_POST)) {
     $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-    setcookie("nbDisplayedPosts", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-} else if (!empty($_COOKIE["nbDisplayedPosts"])) {
-    $nbDisplayed = $_COOKIE["nbDisplayedPosts"];
+    setcookie("pagination[nbPostsDisplayed]", $nbDisplayed, time() + 365*24*3600, null, null, false, false);
+} else if (!empty($_COOKIE["pagination"]["nbPostsDisplayed"])) {
+    $nbDisplayed = $_COOKIE["pagination"]["nbPostsDisplayed"];
 } else {
     $nbDisplayed = 10;
 };
-
 // Vérification si informations dans variable GET
 if (!empty($_GET["page"])) {
     $page = htmlspecialchars($_GET["page"]);
@@ -60,6 +61,8 @@ WHERE status = 'publié' $filter
 ORDER BY p.creation_date DESC 
 LIMIT  $minPost, $maxPost");
 $req->execute(array());
+
+var_dump($_COOKIE);
 
 ?>
 
