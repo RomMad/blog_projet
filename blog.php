@@ -1,13 +1,10 @@
 <?php 
-
-ini_set("display_errors",1);
-error_reporting(E_ALL);	
+// ini_set("display_errors",1);
+// error_reporting(E_ALL);	
 
 session_start();
 
 require("connection_bdd.php");
-
-// var_dump($_GET);  
 
 // Si recherche, filtre les résultats
 if (!empty($_GET["search"])) {
@@ -21,13 +18,12 @@ $req->execute(array());
 $nbPosts = $req->fetch();
 $nbItems = $nbPosts["nb_Posts"];
 
-// var_dump($_POST);
 // Vérification si informations dans variable POST
 if (!empty($_POST)) {
     $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-    setcookie("pagination[nbPostsDisplayed]", $nbDisplayed, time() + 365*24*3600, null, null, false, false);
-} else if (!empty($_COOKIE["pagination"]["nbPostsDisplayed"])) {
-    $nbDisplayed = $_COOKIE["pagination"]["nbPostsDisplayed"];
+    setcookie("pagination[nbDisplayedPosts]", $nbDisplayed, time() + 365*24*3600, null, null, false, false);
+} else if (!empty($_COOKIE["pagination"]["nbDisplayedPosts"])) {
+    $nbDisplayed = $_COOKIE["pagination"]["nbDisplayedPosts"];
 } else {
     $nbDisplayed = 10;
 };
@@ -63,6 +59,8 @@ LIMIT  $minPost, $maxPost");
 $req->execute(array());
 
 var_dump($_COOKIE);
+// var_dump($_POST);
+// var_dump($_GET);
 
 ?>
 

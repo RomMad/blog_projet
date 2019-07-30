@@ -1,142 +1,145 @@
 <?php 
-    session_start();
+session_start();
 
-    require("connection_bdd.php");
-    // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
-    if (empty($_SESSION["userID"])) {
-        header("Location: index.php");
-    } else {
-        // Récupère les informations de l'utilisateur
-        $req = $bdd->prepare("SELECT role FROM users WHERE ID =?");
-        $req->execute(array($_SESSION["userID"]));
-        $userRole = $req->fetch();
-        
-        if ($userRole["role"]!=1) {
-            header("Location: index.php");
-        };
-    };
+require("connection_bdd.php");
 
-    $filter = "c.ID > 0";
-
-    var_dump($_POST);
-    if (!empty($_POST)) {
-        if (!empty($_POST["action_apply"]) && isset($_POST["selectedComments"])) {
-            // Supprime les commentaires sélectionnés via une boucle
-            if ($_POST["action_apply"] == "delete" && isset($_POST["selectedComments"])) {
-                foreach ($_POST["selectedComments"] as $selectedComment) {
-                    $req = $bdd->prepare("DELETE FROM comments WHERE ID = ? ");
-                    $req->execute(array($selectedComment));
-                };
-                // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
-                $nbselectedComments = count($_POST["selectedComments"]);
-                if ($nbselectedComments>1) {
-                    $msgAdmin = $nbselectedComments . " commentaires ont été supprimés.";
-                } else {
-                    $msgAdmin = "Le commentaire a été supprimé.";
-                };
-                $typeAlert = "warning"; 
-            };
-            // Modère les commentaires sélectionnés via une boucle
-            if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedComments"])) {
-                foreach ($_POST["selectedComments"] as $selectedComment) {
-                    $req = $bdd->prepare("UPDATE comments SET status = 1 WHERE ID = ? ");
-                    $req->execute(array($selectedComment));
-                };
-                // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
-                $nbselectedComments = count($_POST["selectedComments"]);
-                if ($nbselectedComments>1) {
-                    $msgAdmin = $nbselectedComments . " commentaires ont été modérés.";
-                } else {
-                    $msgAdmin = "Le commentaire a été modéré.";
-                };
-                $typeAlert = "success"; 
-            };
-            $_SESSION["flash"] = array(
-                "msg" => $msgAdmin,
-                "type" =>  $typeAlert
-            );
-        };
-        // Enregistre le filtre
-        if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= "0") {
-            $filter = "status = " . htmlspecialchars($_POST["filter_status"]);
-        };
-    };
-
-    // Compte le nombre de commentaires
-    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments, c.user_ID, u.ID
-    FROM comments c
-    LEFT JOIN users u
-    ON c.user_ID = u.ID
-    WHERE $filter");
-    $req->execute(array());
-    $nbComments = $req->fetch();
-    $nbItems = $nbComments["nb_Comments"];
-
-    // Vérification si informations dans variable comment
-    if (!empty($_POST["nbDisplayed"])) {
-        $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-        setcookie("adminNbDisplayedComments", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-    } else if (!empty($_COOKIE["adminNbDisplayedComments"])) {
-        $nbDisplayed =  $_COOKIE["adminNbDisplayedComments"];
-    } else {
-        $nbDisplayed = 20;
-    };
-    var_dump($_GET);  
-    // Vérifie l'ordre de tri par type
-    if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
-        $orderBy = htmlspecialchars($_GET["orderBy"]);
-    } else if (!empty($_COOKIE["adminCommentsOrderBy"])) {
-        $orderBy = $_COOKIE["adminCommentsOrderBy"];
-    } else {
-        $orderBy = "creation_date_fr";
-    };
-    // Vérifie l'ordre de tri si ascendant ou descendant
-    if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
-        $order = htmlspecialchars($_GET["order"]);
-    } else if (!empty($_COOKIE["adminCommentsOrder"])) {
-        $order = $_COOKIE["adminCommentsOrder"];
-    } else {
-        $order = "desc";
-    };
-    // Si le tri par type vient de changer, alors le tri est toujours ascendant
-    if (!empty($_COOKIE["adminCommentsOrder"]) && $orderBy != $_COOKIE["adminCommentsOrderBy"]) {
-        $order = "asc";
-    };
-    // Enregistre les tris en COOKIES
-    setcookie("adminCommentsOrderBy", $orderBy, time() + 365*24*3600, null, null, false, true);
-    setcookie("adminCommentsOrder", $order, time() + 365*24*3600, null, null, false, true);
-
-    // Vérification si informations dans variable GET
-    if (!empty($_GET["page"])) {
-        $page = htmlspecialchars($_GET["page"]);
-        // Calcul le nombre de pages par rapport aux nombre de commentaires
-        $maxcomment =  $page*$nbDisplayed;
-        $mincomment = $maxcomment-$nbDisplayed;
-    } else  {
-        $page = 1;
-        $mincomment = 0;
-        $maxcomment = $nbDisplayed;
-    };
+// Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
+if (empty($_SESSION["userID"])) {
+    header("Location: index.php");
+} else {
+    // Récupère les informations de l'utilisateur
+    $req = $bdd->prepare("SELECT role FROM users WHERE ID =?");
+    $req->execute(array($_SESSION["userID"]));
+    $userRole = $req->fetch();
     
-    // Initialisation des variables pour la pagination
-    $linkNbDisplayed = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-    $linkPagination = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-    $anchorPagination = "#table-admin_comments";
-    $nbPages = ceil($nbItems / $nbDisplayed);
-    require("pagination.php");
-    // Récupère les commentaires
-    $req = $bdd->prepare("SELECT c.ID, c.id_post, c.user_ID, c.user_name AS author, u.login, c.status, c.nb_report, 
-    IF(CHAR_LENGTH(c.content) > 200, CONCAT(SUBSTRING(c.content, 1, 200), ' [...]'), c.content) AS content, 
-    DATE_FORMAT(c.report_date, \"%d/%m/%Y %H:%i\") AS report_date, 
-    DATE_FORMAT(c.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
-    DATE_FORMAT(c.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
-    FROM comments c
-    LEFT JOIN users u
-    ON c.user_ID = u.ID
-    WHERE $filter 
-    ORDER BY $orderBy $order
-    LIMIT  $mincomment, $maxcomment");
-    $req->execute(array());
+    if ($userRole["role"]!=1) {
+        header("Location: index.php");
+    };
+};
+
+$filter = "c.ID > 0";
+
+if (!empty($_POST)) {
+    if (!empty($_POST["action_apply"]) && isset($_POST["selectedComments"])) {
+        // Supprime les commentaires sélectionnés via une boucle
+        if ($_POST["action_apply"] == "delete" && isset($_POST["selectedComments"])) {
+            foreach ($_POST["selectedComments"] as $selectedComment) {
+                $req = $bdd->prepare("DELETE FROM comments WHERE ID = ? ");
+                $req->execute(array($selectedComment));
+            };
+            // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
+            $nbselectedComments = count($_POST["selectedComments"]);
+            if ($nbselectedComments>1) {
+                $msgAdmin = $nbselectedComments . " commentaires ont été supprimés.";
+            } else {
+                $msgAdmin = "Le commentaire a été supprimé.";
+            };
+            $typeAlert = "warning"; 
+        };
+        // Modère les commentaires sélectionnés via une boucle
+        if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedComments"])) {
+            foreach ($_POST["selectedComments"] as $selectedComment) {
+                $req = $bdd->prepare("UPDATE comments SET status = 1 WHERE ID = ? ");
+                $req->execute(array($selectedComment));
+            };
+            // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
+            $nbselectedComments = count($_POST["selectedComments"]);
+            if ($nbselectedComments>1) {
+                $msgAdmin = $nbselectedComments . " commentaires ont été modérés.";
+            } else {
+                $msgAdmin = "Le commentaire a été modéré.";
+            };
+            $typeAlert = "success"; 
+        };
+        $_SESSION["flash"] = array(
+            "msg" => $msgAdmin,
+            "type" =>  $typeAlert
+        );
+    };
+    // Enregistre le filtre
+    if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= "0") {
+        $filter = "status = " . htmlspecialchars($_POST["filter_status"]);
+    };
+};
+
+// Compte le nombre de commentaires
+$req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments, c.user_ID, u.ID
+FROM comments c
+LEFT JOIN users u
+ON c.user_ID = u.ID
+WHERE $filter");
+$req->execute(array());
+$nbComments = $req->fetch();
+$nbItems = $nbComments["nb_Comments"];
+
+// Vérification si informations dans variable comment
+if (!empty($_POST["nbDisplayed"])) {
+    $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
+    setcookie("pagination[adminNbDisplayedComments]", $nbDisplayed, time() + 365*24*3600, null, null, false, false);
+} else if (!empty($_COOKIE["pagination"]["adminNbDisplayedComments"])) {
+    $nbDisplayed =  $_COOKIE["pagination"]["adminNbDisplayedComments"];
+} else {
+    $nbDisplayed = 20;
+};
+// Vérifie l'ordre de tri par type
+if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
+    $orderBy = htmlspecialchars($_GET["orderBy"]);
+} else if (!empty($_COOKIE["orderBy"]["adminComments"])) {
+    $orderBy = $_COOKIE["orderBy"]["adminComments"];
+} else {
+    $orderBy = "creation_date_fr";
+};
+// Vérifie l'ordre de tri si ascendant ou descendant
+if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
+    $order = htmlspecialchars($_GET["order"]);
+} else if (!empty($_COOKIE["order"]["adminComments"])) {
+    $order = $_COOKIE["order"]["adminComments"];
+} else {
+    $order = "desc";
+};
+// Si le tri par type vient de changer, alors le tri est toujours ascendant
+if (!empty($_COOKIE["order"]["adminComments"]) && $orderBy != $_COOKIE["orderBy"]["adminComments"]) {
+    $order = "asc";
+};
+// Enregistre les tris en COOKIES
+setcookie("orderBy[adminComments]", $orderBy, time() + 365*24*3600, null, null, false, false);
+setcookie("order[adminComments]", $order, time() + 365*24*3600, null, null, false, false);
+
+// Vérification si informations dans variable GET
+if (!empty($_GET["page"])) {
+    $page = htmlspecialchars($_GET["page"]);
+    // Calcul le nombre de pages par rapport aux nombre de commentaires
+    $maxcomment =  $page*$nbDisplayed;
+    $mincomment = $maxcomment-$nbDisplayed;
+} else  {
+    $page = 1;
+    $mincomment = 0;
+    $maxcomment = $nbDisplayed;
+};
+
+// Initialisation des variables pour la pagination
+$linkNbDisplayed = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+$linkPagination = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+$anchorPagination = "#table-admin_comments";
+$nbPages = ceil($nbItems / $nbDisplayed);
+require("pagination.php");
+// Récupère les commentaires
+$req = $bdd->prepare("SELECT c.ID, c.id_post, c.user_ID, c.user_name AS author, u.login, c.status, c.nb_report, 
+IF(CHAR_LENGTH(c.content) > 200, CONCAT(SUBSTRING(c.content, 1, 200), ' [...]'), c.content) AS content, 
+DATE_FORMAT(c.report_date, \"%d/%m/%Y %H:%i\") AS report_date, 
+DATE_FORMAT(c.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
+DATE_FORMAT(c.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
+FROM comments c
+LEFT JOIN users u
+ON c.user_ID = u.ID
+WHERE $filter 
+ORDER BY $orderBy $order
+LIMIT  $mincomment, $maxcomment");
+$req->execute(array());
+
+var_dump($_COOKIE);
+// var_dump($_POST);
+// var_dump($_GET);
 
 ?>
 
