@@ -1,10 +1,8 @@
 <?php 
-
 session_start(); 
 
 require("connection_bdd.php");
 
-var_dump($_GET);
 if (!empty($_GET["post"])) {
     $post_ID = htmlspecialchars($_GET["post"]);
     $_SESSION["postID"] = $post_ID;
@@ -21,8 +19,6 @@ if ($dataSettings["moderation"] == 0) {
 } else {
     $filter = "status > 0";  
 };
-
-var_dump($_POST);   
     
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
@@ -137,8 +133,8 @@ $nbItems = $nbComments["nb_Comments"];
 if (!empty($_POST["nbDisplayed"])) {
     $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
     setcookie("pagination[nbDisplayedComments]", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-} else if (!empty($_COOKIE["nbDisplayedComments"])) {
-    $nbDisplayed = $_COOKIE["nbDisplayedComments"];
+} else if (!empty($_COOKIE["pagination"]["nbDisplayedComments"])) {
+    $nbDisplayed = $_COOKIE["pagination"]["nbDisplayedComments"];
 } else {
     $nbDisplayed = 10;
 };
@@ -155,8 +151,8 @@ if (!empty($_GET["page"])) {
 };
 
 // Initialisation des variables pour la pagination
-$linkNbDisplayed= "post.php?" . $post_ID . "#form-comment";
-$linkPagination= "post.php?";
+$linkNbDisplayed= "post_view.php?" . $post_ID . "#form-comment";
+$linkPagination= "post_view.php?";
 $anchorPagination= "#comments";
 $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
@@ -213,7 +209,7 @@ if (!$commentsExist) {
                         <em>Créé le <?= $dataPost["creation_date_fr"] ?> par <a class="text-blue" href=""> <?= $dataPost["login"] ?> </a> et modifié le <?=  $dataPost["update_date_fr"] ?></em>
                         <?php
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { ?>
-                            <a class="text-blue a-edit-post" href="edit_post.php?post=<?=  $dataPost["ID"]?>"><span class="far fa-edit"></span> Modifier</a>
+                            <a class="text-blue a-edit-post" href="edit_post_view.php?post=<?=  $dataPost["ID"]?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php }; ?>
                         <a href="#comments" class="badge badge-blue ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_Comments"] ?> </span></a>
                     </div>
@@ -224,7 +220,7 @@ if (!$commentsExist) {
                 <?php 
                     if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { 
                 ?>
-                        <a class="text-blue" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
+                        <a class="text-blue" href="edit_post_view.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
                 <?php 
                 }; 
                 ?>
@@ -240,7 +236,7 @@ if (!$commentsExist) {
                     <h2 class="h3 mb-4">Nouveau commentaire</h2>
                     <div class="row">
                         <div class="col-md-12">
-                            <form action="post.php?post=<?= $post_ID ?>#form-comment" method="post" class="px-3">
+                            <form action="post_view.php?post=<?= $post_ID ?>#form-comment" method="post" class="px-3">
                                 <?php 
                                     if (!isset($_SESSION["userID"])) { 
                                 ?>
@@ -306,7 +302,7 @@ if (!$commentsExist) {
                                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataComment["user_ID"]) { 
                                         ?>
                                             <div>
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=erase#form-comment" 
+                                                <a href="post_view.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=erase#form-comment" 
                                                     onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
                                                     <span class="fas fa-times text-danger"></span>
                                                 </a>
@@ -320,7 +316,7 @@ if (!$commentsExist) {
                                             } else {
                                         ?>
                                             <div class="report-comment">
-                                                <a href="post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=report#form-comment" 
+                                                <a href="post_view.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=report#form-comment" 
                                                     onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
                                                     <span class="far fa-flag text-warning"> Signaler</span>
                                                 </a>
@@ -339,7 +335,7 @@ if (!$commentsExist) {
                                         };
                                         ?>
                                      <div id="form-edit-comment-<?= $dataComment["ID"] ?>"class="form-edit-comment d-none">
-                                        <form action="post.php?post=<?= $post_ID ?>&comment=<?= $dataComment["ID"] ?>&action=edit#form-comment" method="post">
+                                        <form action="post_view.php?post=<?= $post_ID ?>&comment=<?= $dataComment["ID"] ?>&action=edit#form-comment" method="post">
                                             <div class="form-group">
                                                 <label for="content"></label>
                                                 <textarea name="content" class="form-control shadow-sm" id="content" rows="4"><?= $dataComment["content"] ?></textarea>
