@@ -14,8 +14,8 @@ if (empty($_SESSION["userID"])) {
     
     if ($userRole["role"]!=1) {
         header("Location: index.php");
-    };
-};
+    }
+}
 
 $filter = "c.ID > 0";
 
@@ -26,41 +26,41 @@ if (!empty($_POST)) {
             foreach ($_POST["selectedComments"] as $selectedComment) {
                 $req = $bdd->prepare("DELETE FROM comments WHERE ID = ? ");
                 $req->execute(array($selectedComment));
-            };
+            }
             // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
             $nbselectedComments = count($_POST["selectedComments"]);
             if ($nbselectedComments>1) {
                 $msgAdmin = $nbselectedComments . " commentaires ont été supprimés.";
             } else {
                 $msgAdmin = "Le commentaire a été supprimé.";
-            };
+            }
             $typeAlert = "warning"; 
-        };
+        }
         // Modère les commentaires sélectionnés via une boucle
         if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedComments"])) {
             foreach ($_POST["selectedComments"] as $selectedComment) {
                 $req = $bdd->prepare("UPDATE comments SET status = 1 WHERE ID = ? ");
                 $req->execute(array($selectedComment));
-            };
+            }
             // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
             $nbselectedComments = count($_POST["selectedComments"]);
             if ($nbselectedComments>1) {
                 $msgAdmin = $nbselectedComments . " commentaires ont été modérés.";
             } else {
                 $msgAdmin = "Le commentaire a été modéré.";
-            };
+            }
             $typeAlert = "success"; 
-        };
+        }
         $_SESSION["flash"] = array(
             "msg" => $msgAdmin,
             "type" =>  $typeAlert
         );
-    };
+    }
     // Enregistre le filtre
     if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= "0") {
         $filter = "status = " . htmlspecialchars($_POST["filter_status"]);
-    };
-};
+    }
+}
 
 // Compte le nombre de commentaires
 $req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments, c.user_ID, u.ID
@@ -80,7 +80,7 @@ if (!empty($_POST["nbDisplayed"])) {
     $nbDisplayed =  $_COOKIE["pagination"]["adminNbDisplayedComments"];
 } else {
     $nbDisplayed = 20;
-};
+}
 // Vérifie l'ordre de tri par type
 if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
     $orderBy = htmlspecialchars($_GET["orderBy"]);
@@ -88,7 +88,7 @@ if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy
     $orderBy = $_COOKIE["orderBy"]["adminComments"];
 } else {
     $orderBy = "creation_date_fr";
-};
+}
 // Vérifie l'ordre de tri si ascendant ou descendant
 if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
     $order = htmlspecialchars($_GET["order"]);
@@ -96,11 +96,11 @@ if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "as
     $order = $_COOKIE["order"]["adminComments"];
 } else {
     $order = "desc";
-};
+}
 // Si le tri par type vient de changer, alors le tri est toujours ascendant
 if (!empty($_COOKIE["order"]["adminComments"]) && $orderBy != $_COOKIE["orderBy"]["adminComments"]) {
     $order = "asc";
-};
+}
 // Enregistre les tris en COOKIES
 setcookie("orderBy[adminComments]", $orderBy, time() + 365*24*3600, null, null, false, false);
 setcookie("order[adminComments]", $order, time() + 365*24*3600, null, null, false, false);
@@ -115,7 +115,7 @@ if (!empty($_GET["page"])) {
     $page = 1;
     $mincomment = 0;
     $maxcomment = $nbDisplayed;
-};
+}
 
 // Initialisation des variables pour la pagination
 $linkNbDisplayed = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
@@ -170,7 +170,7 @@ $req->execute(array());
                 // Affiche les résultats si recherche
                 if (isset($_POST["filter"])) {
                     echo "<p> " . $nbItems . " résultat(s).</p>";
-                };    
+                }    
                 ?>
                 
                 <form action="<?= $linkNbDisplayed ?>" method="post">
@@ -296,8 +296,8 @@ $req->execute(array());
                                                 echo $dataComments["login"];
                                             } else {
                                                 echo "Anonyme";
-                                            };
-                                        };
+                                            }
+                                        }
                                         ?>
                                         </td>
                                         <td>
@@ -314,7 +314,7 @@ $req->execute(array());
                                             break;
                                             defaut:
                                             echo "Non-modéré";
-                                        };
+                                        }
                                         ?>
                                         </td>
                                         <td><?= $dataComments["report_date"] ?></td>
@@ -322,7 +322,7 @@ $req->execute(array());
                                         <td><?= $dataComments["creation_date_fr"] ?></td>
                                     </tr>
                                 <?php
-                                };
+                                }
                                 ?>
                             </tbody>
                             </table>

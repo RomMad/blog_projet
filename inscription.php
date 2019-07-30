@@ -1,96 +1,96 @@
 <?php 
-    session_start();
+session_start();
 
-    require("connection_bdd.php");
+require("connection_bdd.php");
 
-    // Vérifie si informations dans variable POST
-    if (!empty($_POST)) {
-        $login = htmlspecialchars($_POST["login"]);
-        $name = htmlspecialchars($_POST["name"]);
-        $surname = htmlspecialchars($_POST["surname"]);
-        $email = htmlspecialchars($_POST["email"]);
-        $birthdate = !empty($_POST["birthdate"]) ? htmlspecialchars($_POST["birthdate"]) : NULL;
-        $pass = htmlspecialchars($_POST["pass"]);
-        $validation = true;
-        $msgInscription = "Attention :";
-        $typeAlert = "danger";
+// Vérifie si informations dans variable POST
+if (!empty($_POST)) {
+    $login = htmlspecialchars($_POST["login"]);
+    $name = htmlspecialchars($_POST["name"]);
+    $surname = htmlspecialchars($_POST["surname"]);
+    $email = htmlspecialchars($_POST["email"]);
+    $birthdate = !empty($_POST["birthdate"]) ? htmlspecialchars($_POST["birthdate"]) : NULL;
+    $pass = htmlspecialchars($_POST["pass"]);
+    $validation = true;
+    $msgInscription = "Attention :";
+    $typeAlert = "danger";
 
-        // Vérifie si le login est déjà utilisé
-        $req = $bdd->prepare("SELECT * FROM users WHERE login = ? ");
-        $req->execute([$login]);
-        $loginExist = $req->fetch();
-        // Vérifie si l'adresse email est déjà utilisée
-        $req = $bdd->prepare("SELECT * FROM users WHERE email = ? ");
-        $req->execute([$email]);
-        $emailExist = $req->fetch();
+    // Vérifie si le login est déjà utilisé
+    $req = $bdd->prepare("SELECT * FROM users WHERE login = ? ");
+    $req->execute([$login]);
+    $loginExist = $req->fetch();
+    // Vérifie si l'adresse email est déjà utilisée
+    $req = $bdd->prepare("SELECT * FROM users WHERE email = ? ");
+    $req->execute([$email]);
+    $emailExist = $req->fetch();
 
-        // Vérifie si le champ login est vide
-        if (empty($login)) {
-            $msgInscription = $msgInscription . "<li>Veuillez saisir un Login.</li>";
-            $validation = false;
-        };
-        // Vérifie si le login est déjà utilisé
-        if ($loginExist) {
-            $msgInscription = $msgInscription . "<li>Ce login est déjà utilisé. Veuillez en utiliser un autre.</li>";
-            $validation = false;
-        };
-        // Vérifie si l'adresse email est correcte
-        if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
-            $msgInscription = $msgInscription . "<li>L'adresse \"" . $email . "\" est incorrecte.</li>";
-            $validation = false;
-        };
-        // Vérifie si l'adresse email est déjà utilisée
-        if ($emailExist) {
-            $msgInscription = $msgInscription . "<li>L'adresse email est déjà utilisée.</li>";
-            $validation = false;
-        };
-        // Vérifie si le mot de passe est correct
-        // (?=.*[a-z])  : teste la présence d'une lettre minuscule
-        // (?=.*[A-Z])  : teste la présence d'une lettre majuscule
-        // (?=.*[0-9])  : teste la présence d'un chiffre de 0 à 9
-        // .{6,}$       : teste si au moins 6 caractères
-        if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $pass)) {
-            $msgInscription = $msgInscription . "<li>Le mot de passe n'est pas valide.</li>";
-            $validation = false;
-        };
-        // Vérifie si la confirmation du mot de passe est identique
-        if ($pass!=$_POST["pass_confirm"]) {
-            $msgInscription =  $msgInscription . "<li>Le mot de passe et la confirmation sont différents.</li>";
-            $validation = false;
-        };
-        // Si validation est vrai, valide l'inscription de l'utilisateur
-        if ($validation) {
-            $pass_hash = password_hash($pass, PASSWORD_DEFAULT); // Hachage du mot de passe
-            // Insert les données dans la table users
-            $req = $bdd->prepare("INSERT INTO users(login, email, name, surname, birthdate, pass) 
-                                    VALUES(:login, :email, :name, :surname, :birthdate, :pass)");
-            $req->execute(array(
-                "login" => $login,
-                "email" => $email,
-                "name" => $name,
-                "surname" => $surname,
-                "birthdate" => $birthdate,
-                "pass" => $pass_hash,
-                ));
-                // Récupère l'ID de l'utilisateur
-                $req = $bdd->prepare("SELECT ID FROM users WHERE login = ? ");
-                $req->execute([$login]);
-                $idUser = $req->fetch();
-                // Ajoute les infos de l"utilisateurs dans la Session
-                $_SESSION["userID"] = $idUser["ID"];
-                $_SESSION["userLogin"] = $login;
-                $typeAlert = "success";
-                $msgInscription = "L'inscription est réussie.";
+    // Vérifie si le champ login est vide
+    if (empty($login)) {
+        $msgInscription = $msgInscription . "<li>Veuillez saisir un Login.</li>";
+        $validation = false;
+    }
+    // Vérifie si le login est déjà utilisé
+    if ($loginExist) {
+        $msgInscription = $msgInscription . "<li>Ce login est déjà utilisé. Veuillez en utiliser un autre.</li>";
+        $validation = false;
+    }
+    // Vérifie si l'adresse email est correcte
+    if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
+        $msgInscription = $msgInscription . "<li>L'adresse \"" . $email . "\" est incorrecte.</li>";
+        $validation = false;
+    }
+    // Vérifie si l'adresse email est déjà utilisée
+    if ($emailExist) {
+        $msgInscription = $msgInscription . "<li>L'adresse email est déjà utilisée.</li>";
+        $validation = false;
+    }
+    // Vérifie si le mot de passe est correct
+    // (?=.*[a-z])  : teste la présence d'une lettre minuscule
+    // (?=.*[A-Z])  : teste la présence d'une lettre majuscule
+    // (?=.*[0-9])  : teste la présence d'un chiffre de 0 à 9
+    // .{6,}$       : teste si au moins 6 caractères
+    if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $pass)) {
+        $msgInscription = $msgInscription . "<li>Le mot de passe n'est pas valide.</li>";
+        $validation = false;
+    }
+    // Vérifie si la confirmation du mot de passe est identique
+    if ($pass!=$_POST["pass_confirm"]) {
+        $msgInscription =  $msgInscription . "<li>Le mot de passe et la confirmation sont différents.</li>";
+        $validation = false;
+    }
+    // Si validation est vrai, valide l'inscription de l'utilisateur
+    if ($validation) {
+        $pass_hash = password_hash($pass, PASSWORD_DEFAULT); // Hachage du mot de passe
+        // Insert les données dans la table users
+        $req = $bdd->prepare("INSERT INTO users(login, email, name, surname, birthdate, pass) 
+                                VALUES(:login, :email, :name, :surname, :birthdate, :pass)");
+        $req->execute(array(
+            "login" => $login,
+            "email" => $email,
+            "name" => $name,
+            "surname" => $surname,
+            "birthdate" => $birthdate,
+            "pass" => $pass_hash,
+            ));
+            // Récupère l'ID de l'utilisateur
+            $req = $bdd->prepare("SELECT ID FROM users WHERE login = ? ");
+            $req->execute([$login]);
+            $idUser = $req->fetch();
+            // Ajoute les infos de l"utilisateurs dans la Session
+            $_SESSION["userID"] = $idUser["ID"];
+            $_SESSION["userLogin"] = $login;
+            $typeAlert = "success";
+            $msgInscription = "L'inscription est réussie.";
 
-                header("Refresh: 2; url=index.php");
-            };
+            header("Refresh: 2; url=index.php");
+        }
 
-        $_SESSION["flash"] = array(
-            "msg" => $msgInscription,
-            "type" =>  $typeAlert
-        );
+    $_SESSION["flash"] = array(
+        "msg" => $msgInscription,
+        "type" =>  $typeAlert
+    );
 
-    };
+}
 ?>
 
 <!DOCTYPE html>

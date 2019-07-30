@@ -11,7 +11,7 @@ if (!empty($_GET["search"])) {
     $filter = "AND title like \'%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
 } else {
     $filter = "";
-};
+}
 // Compte le nombre d'articles
 $req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts WHERE status = 'publié' $filter");
 $req->execute(array());
@@ -26,7 +26,7 @@ if (!empty($_POST)) {
     $nbDisplayed = $_COOKIE["pagination"]["nbDisplayedPosts"];
 } else {
     $nbDisplayed = 10;
-};
+}
 // Vérification si informations dans variable GET
 if (!empty($_GET["page"])) {
     $page = htmlspecialchars($_GET["page"]);
@@ -37,7 +37,7 @@ if (!empty($_GET["page"])) {
     $page = 1;
     $minPost = 0;
     $maxPost = $nbDisplayed;
-};
+}
 
 // Initialisation des variables pour la pagination
 $linkNbDisplayed= "blog.php#blog";
@@ -83,11 +83,11 @@ $req->execute(array());
                     <a class="text-blue" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
                 </div>
             <?php
-            };
+            }
             // Affiche les résultats si recherche
             if (!empty($_GET["search"])) {                
                 echo "<p> " . $nbItems . " résultat(s).</p>";
-            };    
+            }    
             ?>
 
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
@@ -112,7 +112,7 @@ $req->execute(array());
                             <?php 
                             if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$user_ID) { ?>
                                 <a class="text-blue a-edit-post" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier</a>
-                            <?php }; ?>
+                            <?php } ?>
                         </div>
                         <div class="card-body text-body">
                             <div class="post_content">
@@ -124,8 +124,8 @@ $req->execute(array());
                         </div>
                     </div>
                     <?php
-                    };
-                };
+                    }
+                }
                 ?>  
 
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->

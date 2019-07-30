@@ -1,5 +1,4 @@
 <?php 
-
 session_start();
 
 require("connection_bdd.php");
@@ -7,7 +6,7 @@ require("connection_bdd.php");
 // Redirige vers la page d'accueil si l'utilisateur est déjà connecté
 if (!empty($_SESSION["userID"])) {
     header("Location: index.php");
-};
+}
 
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
@@ -30,7 +29,7 @@ if (!empty($_POST)) {
         if (isset($_POST["remember"])) {
             setcookie("user[login]", $login, time() + 365*24*3600, null,null, false, true);
             setcookie("user[pass]", $pass, time() + 365*24*3600, null,null, false, true);
-        };
+        }
 
         // Ajoute la date de connexion de l'utilisateur dans la table dédiée
         $req = $bdd->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
@@ -42,18 +41,18 @@ if (!empty($_POST)) {
     } else {
         $message = "Login ou mot de passe incorrect.";
         $typeAlert = "danger";
-    };
+    }
 
     // Vérifie si le champ login est vide
     if (empty($login)) {
         $message = "Veuillez saisir un Login.";
-    };
+    }
 
     $_SESSION["flash"] = array(
         "msg" => $message,
         "type" =>  $typeAlert
     );
-};
+}
 ?>
 
 <!DOCTYPE html>

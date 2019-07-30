@@ -8,7 +8,7 @@ if (!empty($_GET["post"])) {
     $_SESSION["postID"] = $post_ID;
 } else {
     $post_ID = $_SESSION["postID"];
-};
+}
 
 // Récupère les paramètres de modération
 $req = $bdd->prepare("SELECT moderation FROM settings");
@@ -18,7 +18,7 @@ if ($dataSettings["moderation"] == 0) {
     $filter = "status >= 0";  
 } else {
     $filter = "status > 0";  
-};
+}
     
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
@@ -27,7 +27,7 @@ if (!empty($_POST)) {
         $status = 1;
     } else {
         $status = 0;
-    };
+    }
 
     if (isset($_POST["save_comment"])) {
         
@@ -35,7 +35,7 @@ if (!empty($_POST)) {
             $user_ID = $_SESSION["userID"];
         } else {
             $user_ID = NULL;
-        };
+        }
 
         $msgComment = "";
         $typeAlert = "success";
@@ -46,7 +46,7 @@ if (!empty($_POST)) {
             $msgComment = "Le commentaire est vide.";
             $typeAlert = "danger";
             $validation = false;
-        };
+        }
 
         // Ajoute le commentaire si le commentaire n'est pas vide
         if ($validation) {
@@ -64,9 +64,9 @@ if (!empty($_POST)) {
             } else {
                 $msgComment = "Le commentaire est en attente de modération.";
                 $typeAlert = "info";
-            };
-        };
-    };
+            }
+        }
+    }
     // Modifie le commentaire
     if (isset($_POST["edit_comment"])) {
         $req = $bdd->prepare("UPDATE comments SET content = :new_content, status = :new_status, update_date = NOW() WHERE ID = :ID");
@@ -78,8 +78,8 @@ if (!empty($_POST)) {
 
         $msgComment = "Le commentaire a été modifié.";
         $typeAlert = "success";
-    };
-};
+    }
+}
 
 //
 if (isset($_GET["action"]) && $_GET["action"]=="erase") {
@@ -90,7 +90,7 @@ if (isset($_GET["action"]) && $_GET["action"]=="erase") {
 
     $msgComment = "Le commentaire a été supprimé.";
     $typeAlert = "warning";
-};
+}
 // Ajoute le signalement du commentaire
 if (isset($_GET["action"]) && $_GET["action"]=="report") {
     $req = $bdd->prepare("UPDATE comments SET status = :new_status, nb_report = nb_report + 1, report_date = NOW() WHERE ID = :ID");
@@ -101,14 +101,14 @@ if (isset($_GET["action"]) && $_GET["action"]=="report") {
 
     $msgComment = "Le commentaire a été signalé.";
     $typeAlert = "warning";
-};
+}
 
 if (isset($msgComment)) {
     $_SESSION["flash"] = array(
         "msg" => $msgComment,
         "type" =>  $typeAlert
     );
-};
+}
 
 
 // Récupère le post
@@ -137,7 +137,7 @@ if (!empty($_POST["nbDisplayed"])) {
     $nbDisplayed = $_COOKIE["pagination"]["nbDisplayedComments"];
 } else {
     $nbDisplayed = 10;
-};
+}
 
 if (!empty($_GET["page"])) {
     $page = htmlspecialchars($_GET["page"]);
@@ -148,7 +148,7 @@ if (!empty($_GET["page"])) {
     $page = 1;
     $minComment = 0;
     $maxComment = $nbDisplayed;
-};
+}
 
 // Initialisation des variables pour la pagination
 $linkNbDisplayed= "post_view.php?" . $post_ID . "#form-comment";
@@ -180,7 +180,7 @@ if (!$commentsExist) {
     $req->execute(array(
         "post_ID" => $post_ID
     ));
-};
+}
 
 ?>
 
@@ -209,8 +209,8 @@ if (!$commentsExist) {
                         <em>Créé le <?= $dataPost["creation_date_fr"] ?> par <a class="text-blue" href=""> <?= $dataPost["login"] ?> </a> et modifié le <?=  $dataPost["update_date_fr"] ?></em>
                         <?php
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { ?>
-                            <a class="text-blue a-edit-post" href="edit_post_view.php?post=<?=  $dataPost["ID"]?>"><span class="far fa-edit"></span> Modifier</a>
-                        <?php }; ?>
+                            <a class="text-blue a-edit-post" href="edit_post.php?post=<?=  $dataPost["ID"]?>"><span class="far fa-edit"></span> Modifier</a>
+                        <?php } ?>
                         <a href="#comments" class="badge badge-blue ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_Comments"] ?> </span></a>
                     </div>
                     <div class="card-body text-body">
@@ -220,9 +220,9 @@ if (!$commentsExist) {
                 <?php 
                     if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { 
                 ?>
-                        <a class="text-blue" href="edit_post_view.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
+                        <a class="text-blue" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
                 <?php 
-                }; 
+                } 
                 ?>
         </section>
 
@@ -245,7 +245,7 @@ if (!$commentsExist) {
                                     <input type="text" name="name" id="name" class="col-md-8 form-control mb-4 shadow-sm" value="">
                                 </div>
                                 <?php
-                                };
+                                }
                                 ?>
                                 <div class="form-group row">
                                     <label for="content" class="sr-only">Contenu du message</label>
@@ -285,14 +285,14 @@ if (!$commentsExist) {
                                                     $user_login = $dataComment["user_name"];
                                                 } else {
                                                     $user_login = "Anonyme";
-                                                };
-                                            };
+                                                }
+                                            }
                                     ?>
                                     <p><strong><?= $user_login ?></strong>, le <?= $dataComment["creation_date_fr"] ?>
                                     <?php
                                     if ($dataComment["update_date_fr"] != $dataComment["creation_date_fr"]) {
                                         echo "(Modifié le " . $dataComment["update_date_fr"] . ")";
-                                    };
+                                    }
                                     ?>
                                     </p>
                                     <div class="comment-content position relative"><?= nl2br($dataComment["content"]) ?>
@@ -322,8 +322,8 @@ if (!$commentsExist) {
                                                 </a>
                                             </div>
                                         <?php
-                                            };
-                                        };
+                                            }
+                                        }
                                         ?>
                                         <?php                        
                                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataComment["user_ID"]) { 
@@ -332,7 +332,7 @@ if (!$commentsExist) {
                                                 <a href="#comment-<?= $dataComment["ID"] ?>"><span class="far fa-edit text-blue"> Modifier</span></a>
                                             </div>
                                         <?php
-                                        };
+                                        }
                                         ?>
                                      <div id="form-edit-comment-<?= $dataComment["ID"] ?>"class="form-edit-comment d-none">
                                         <form action="post_view.php?post=<?= $post_ID ?>&comment=<?= $dataComment["ID"] ?>&action=edit#form-comment" method="post">
@@ -351,7 +351,7 @@ if (!$commentsExist) {
 
                             </div>
                     <?php
-                        };
+                        }
                     ?>
 
                     <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->

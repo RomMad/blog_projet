@@ -19,7 +19,7 @@
                     <a class="nav-link" href="edit_post.php?type=1">Nouvel article</a>
                 </li>
                 <?php 
-                };
+                }
 
                 if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]==1) {
                 ?> 
@@ -39,7 +39,7 @@
                     </div>
                 </li>
                 <?php 
-                };
+                }
                 ?>
                 <!-- <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Page 3</a>
@@ -66,7 +66,7 @@
                 <br />
                 <a class="text-blue" href="inscription.php">S'inscrire</a>
             <?php
-            };
+            }
             ?>
             </div>
 

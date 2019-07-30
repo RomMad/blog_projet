@@ -1,123 +1,123 @@
 <?php 
-    session_start();
+session_start();
 
-    require("connection_bdd.php");
+require("connection_bdd.php");
 
-    if (!isset($_POST["pass"])) {
-        $bytes = random_bytes(8);
-        $token = bin2hex($bytes);
-        $pass = $token ;
-    };
+if (!isset($_POST["pass"])) {
+    $bytes = random_bytes(8);
+    $token = bin2hex($bytes);
+    $pass = $token ;
+}
 
-    $role = 5;
+$role = 5;
 
-    // Vérifie si informations dans variable POST
-    if (!empty($_POST)) {
-        $login = htmlspecialchars($_POST["login"]);
-        $email = htmlspecialchars($_POST["email"]);
-        $name = htmlspecialchars($_POST["name"]);
-        $surname = htmlspecialchars($_POST["surname"]);
-        $role = htmlspecialchars($_POST["role"]);
-        $pass = htmlspecialchars($_POST["pass"]);
-        $validation = true;
-        $msgInscription = "Attention :";
-        $typeAlert = "danger";
+// Vérifie si informations dans variable POST
+if (!empty($_POST)) {
+    $login = htmlspecialchars($_POST["login"]);
+    $email = htmlspecialchars($_POST["email"]);
+    $name = htmlspecialchars($_POST["name"]);
+    $surname = htmlspecialchars($_POST["surname"]);
+    $role = htmlspecialchars($_POST["role"]);
+    $pass = htmlspecialchars($_POST["pass"]);
+    $validation = true;
+    $msgInscription = "Attention :";
+    $typeAlert = "danger";
 
-        // Vérifie si le login est déjà utilisé
-        $req = $bdd->prepare("SELECT * FROM users WHERE login = ? ");
-        $req->execute([$login]);
-        $loginExist = $req->fetch();
-        // Vérifie si l'adresse email est déjà utilisée
-        $req = $bdd->prepare("SELECT * FROM users WHERE email = ? ");
-        $req->execute([$email]);
-        $emailExist = $req->fetch();
+    // Vérifie si le login est déjà utilisé
+    $req = $bdd->prepare("SELECT * FROM users WHERE login = ? ");
+    $req->execute([$login]);
+    $loginExist = $req->fetch();
+    // Vérifie si l'adresse email est déjà utilisée
+    $req = $bdd->prepare("SELECT * FROM users WHERE email = ? ");
+    $req->execute([$email]);
+    $emailExist = $req->fetch();
 
-        // Vérifie si le champ login est vide
-        if (empty($login)) {
-            $msgInscription = $msgInscription . "<li>Veuillez saisir un Login.</li>";
-            $validation = false;
-        };
-        // Vérifie si le login est déjà utilisé
-        if ($loginExist) {
-            $msgInscription = $msgInscription . "<li>Ce login est déjà utilisé. Veuillez en utiliser un autre.</li>";
-            $validation = false;
-        };
-        // Vérifie si l'adresse email est correcte
-        if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
-            $msgInscription = $msgInscription . "<li>L'adresse \"" . $email . "\" est incorrecte.</li>";
-            $validation = false;
-        };
-        // Vérifie si l'adresse email est déjà utilisée
-        if ($emailExist) {
-            $msgInscription = $msgInscription . "<li>L'adresse email est déjà utilisée.</li>";
-            $validation = false;
-        };
-        // Si validation est vrai, valide l'inscription de l'utilisateur
-        if ($validation) {
-            // Insert les données dans la table users
-            $req = $bdd->prepare("INSERT INTO users(login, email, name, surname, role, pass) 
-                                    VALUES(:login, :email, :name, :surname, :role, :pass)");
-            $req->execute(array(
-                "login" => $login,
-                "email" => $email,
-                "name" => $name,
-                "surname" => $surname,
-                "role" => $role,
-                "pass" => $pass
-                ));
-
-            // Récupère l'ID de l'utilisateur et son password haché
-            $req = $bdd->prepare("SELECT ID FROM users WHERE email = ?");
-            $req->execute(array($email));
-            $dataUser = $req->fetch();
-
-            $req = $bdd->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
-            $req->execute(array(
-                "user_id" => $dataUser["ID"],
-                "token" => $pass
+    // Vérifie si le champ login est vide
+    if (empty($login)) {
+        $msgInscription = $msgInscription . "<li>Veuillez saisir un Login.</li>";
+        $validation = false;
+    }
+    // Vérifie si le login est déjà utilisé
+    if ($loginExist) {
+        $msgInscription = $msgInscription . "<li>Ce login est déjà utilisé. Veuillez en utiliser un autre.</li>";
+        $validation = false;
+    }
+    // Vérifie si l'adresse email est correcte
+    if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
+        $msgInscription = $msgInscription . "<li>L'adresse \"" . $email . "\" est incorrecte.</li>";
+        $validation = false;
+    }
+    // Vérifie si l'adresse email est déjà utilisée
+    if ($emailExist) {
+        $msgInscription = $msgInscription . "<li>L'adresse email est déjà utilisée.</li>";
+        $validation = false;
+    }
+    // Si validation est vrai, valide l'inscription de l'utilisateur
+    if ($validation) {
+        // Insert les données dans la table users
+        $req = $bdd->prepare("INSERT INTO users(login, email, name, surname, role, pass) 
+                                VALUES(:login, :email, :name, :surname, :role, :pass)");
+        $req->execute(array(
+            "login" => $login,
+            "email" => $email,
+            "name" => $name,
+            "surname" => $surname,
+            "role" => $role,
+            "pass" => $pass
             ));
 
-            $link = "http://localhost/blog_projet/reset_password.php?token=" . $pass;
-            $to = $email;
-            $subject = "Création de compte";
-            $message = "
-            <html>
-                <head>
-                    <title>Création de compte</title>
-                </head>
-                <body>
-                    <p>Bonjour, </p>
-                    <p>Un compte utilisateur a été créé pour vous. <br />
-                    Veuillez cliquer sur le lien ci-dessous pour confirmer la création et personnaliser votr mot de passe : </p>
-                    <a href=" . $link . ">" . $link . "</a>
-                    <p>--<br />Ceci est un message automatique, merci de ne pas y répondre. </p>
-                </body>
-            </html>";
-        
-            $headers = array(
-                "MIME-Version" => "1.0",
-                "Content-type" => "text/html;charset=UTF-8",
-                "From" => "Admin Blog <no-reply@gmail.com>",
-                // "CC" => $cc,
-                // "Bcc" => $bcc,
-                "Reply-To" => "Admin Blog <romain.madelaine@gmail.com>",
-                "X-Mailer" => "PHP/" . phpversion()
-            );
-            
-            mail($to,$subject,$message,$headers);
+        // Récupère l'ID de l'utilisateur et son password haché
+        $req = $bdd->prepare("SELECT ID FROM users WHERE email = ?");
+        $req->execute(array($email));
+        $dataUser = $req->fetch();
 
-                $typeAlert = "success";
-                $msgInscription = "L'utilisateur a été ajouté. Un email lui a été envoyé.";
+        $req = $bdd->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
+        $req->execute(array(
+            "user_id" => $dataUser["ID"],
+            "token" => $pass
+        ));
 
-                // header("Refresh: 2; url=admin_users.php");
-            };
-
-        $_SESSION["flash"] = array(
-            "msg" => $msgInscription,
-            "type" =>  $typeAlert
+        $link = "http://localhost/blog_projet/reset_password.php?token=" . $pass;
+        $to = $email;
+        $subject = "Création de compte";
+        $message = "
+        <html>
+            <head>
+                <title>Création de compte</title>
+            </head>
+            <body>
+                <p>Bonjour, </p>
+                <p>Un compte utilisateur a été créé pour vous. <br />
+                Veuillez cliquer sur le lien ci-dessous pour confirmer la création et personnaliser votr mot de passe : </p>
+                <a href=" . $link . ">" . $link . "</a>
+                <p>--<br />Ceci est un message automatique, merci de ne pas y répondre. </p>
+            </body>
+        </html>";
+    
+        $headers = array(
+            "MIME-Version" => "1.0",
+            "Content-type" => "text/html;charset=UTF-8",
+            "From" => "Admin Blog <no-reply@gmail.com>",
+            // "CC" => $cc,
+            // "Bcc" => $bcc,
+            "Reply-To" => "Admin Blog <romain.madelaine@gmail.com>",
+            "X-Mailer" => "PHP/" . phpversion()
         );
+        
+        mail($to,$subject,$message,$headers);
 
-    };
+            $typeAlert = "success";
+            $msgInscription = "L'utilisateur a été ajouté. Un email lui a été envoyé.";
+
+            // header("Refresh: 2; url=admin_users.php");
+        }
+
+    $_SESSION["flash"] = array(
+        "msg" => $msgInscription,
+        "type" =>  $typeAlert
+    );
+
+}
 ?>
 
 <!DOCTYPE html>

@@ -1,8 +1,8 @@
 <?php 
-
 session_start();
 
 require("connection_bdd.php");
+
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: connection.php");
@@ -13,15 +13,15 @@ if (empty($_SESSION["userID"])) {
     $userRole = $req->fetch();
     if ($userRole["role"]!=1) {
         header("Location: index.php");
-    };
-};
+    }
+}
 
 if (!empty($_POST)) {
     if (isset($_POST["moderation"])) {
        $moderation = 1; 
     } else {
         $moderation = 0; 
-    };
+    }
     $req = $bdd->prepare("UPDATE settings SET blog_name = :blog_name, admin_email = :admin_email, default_role = :default_role, moderation = :moderation WHERE ID = 1 ");
     $req->execute(array(
         "blog_name" => htmlspecialchars($_POST["blog_name"]),
@@ -37,7 +37,7 @@ if (!empty($_POST)) {
         "msg" => $msgAdmin,
         "type" =>  $typeAlert
     );
-};
+}
     // Récupère les paramètres
     $req = $bdd->prepare("SELECT * FROM settings");
     $req->execute(array());

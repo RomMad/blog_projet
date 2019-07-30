@@ -38,22 +38,22 @@ if (!empty($_POST) && isset($_GET["token"])) {
     if (!$dataResetPassword) {
         $msgReset = $msgReset . "<li>Le lien de réinitialisation ou l'adresse email sont incorrects.</li>";
         $validation = false;
-    };
+    }
     //  Vérifie si la demande de réinitialisation est inférieure à 15 minutes
     if ($interval>$delay) {
         $msgReset = $msgReset . "<li>Le lien de réinitialisation est périmé.</li>";
         $validation = false;
-    };
+    }
     // Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
     if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $new_pass)) {
         $msgReset = $msgReset . "<li>Le nouveau mot de passe n'est pas valide.</li>";
         $validation = false;
-    };
+    }
     // Vérifie si la confirmation du mot de passe est identique
     if ($new_pass!=$new_pass_confirm) {
         $msgReset = $msgReset . "<li>Le mot de passe et la confirmation sont différents.</li>";
         $validation = false;
-    };
+    }
     // Si validation est vraie, met à jour le mot de passe 
     if ($validation) {      
         // Récupère l'ID de l'utilisateur et son password haché
@@ -84,7 +84,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
         $typeAlert = "success";
 
         header("Refresh: 2; url=profil.php");
-    };
+    }
 
     $_SESSION["flash"] = array(
         "msg" => $msgReset,

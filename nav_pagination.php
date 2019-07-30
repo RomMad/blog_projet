@@ -1,5 +1,4 @@
 <?php 
-
 if ($nbItems>0) {
 ?>
     <div class="row">
@@ -32,7 +31,7 @@ if ($nbItems>0) {
                         ?>
                                 <li class="page-item"><a class="page-link text-blue shadow-sm" href="<?= $linkPagination ?>page=1<?= $anchorPagination ?>">1...</a></li>
                         <?php                                                               
-                            };
+                            }
                         ?>
                         <li class="page-item <?= $activepageLink_1 ?> shadow-sm"><a class="page-link text-blue" href="<?= $linkPagination ?>page=<?= $pageLink_1 . $anchorPagination ?>"><?= $pageLink_1 ?></a></li>
                         <li class="page-item <?= $activepageLink_2 ?> shadow-sm"><a class="page-link text-blue" href="<?= $linkPagination ?>page=<?= $pageLink_2 . $anchorPagination ?>"><?= $pageLink_2 ?></a></li>
@@ -42,7 +41,7 @@ if ($nbItems>0) {
                         ?>
                                 <li class="page-item <?= $activepageLink_3 ?> shadow-sm"><a class="page-link text-blue" href="<?= $linkPagination ?>page=<?= $pageLink_3 . $anchorPagination ?>"><?= $pageLink_3 ?></a></li>
                         <?php 
-                            };
+                            }
                         ?>
 
                         <?php 
@@ -50,7 +49,7 @@ if ($nbItems>0) {
                         ?>
                                 <li class="page-item shadow-sm"><a class="page-link text-blue" href="<?= $linkPagination ?>page=<?= $nbPages . $anchorPagination ?>">...<?= $nbPages ?></a></li>
                         <?php 
-                            };
+                            }
                         ?>
                             <li class="page-item <?= $nextPageLink ?> shadow-sm">
                         <a class="page-link <?= $nextPageColorLink ?> font-weight-bold"" href="<?= $linkPagination ?>page=<?= $nextPage . $anchorPagination ?>"><span aria-hidden="true">&raquo;</span></a>
@@ -59,11 +58,10 @@ if ($nbItems>0) {
                 </nav>
 
             <?php 
-            };
+            }
             ?>
         </div>
     </div>
     
 <?php
-};
-?>
+}

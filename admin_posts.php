@@ -1,8 +1,8 @@
 <?php 
-
 session_start();
 
 require("connection_bdd.php");
+
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: index.php");
@@ -14,8 +14,8 @@ if (empty($_SESSION["userID"])) {
     
     if ($userRole["role"]!=1) {
         header("Location: index.php");
-    };
-};
+    }
+}
 
 $filter = "p.ID > 0";
 
@@ -26,16 +26,16 @@ if (!empty($_POST)) {
             foreach ($_POST["selectedPosts"] as $selectedPost) {
                 $req = $bdd->prepare("DELETE FROM posts WHERE ID = ? ");
                 $req->execute(array($selectedPost));
-            };
+            }
             // Compte le nombre d'articles supprimés pour adaptés l'affichage du message
             $nbSelectedPosts = count($_POST["selectedPosts"]);
             if ($nbSelectedPosts>1) {
                 $msgAdmin = $nbSelectedPosts . " articles ont été supprimés.";
             } else {
                 $msgAdmin = "L'article a été supprimé.";
-            };
+            }
             $typeAlert = "warning"; 
-        };
+        }
         // Met en brouillon les articles sélectionnés via une boucle
         if ($_POST["action_apply"] == "Brouillon") {
             foreach ($_POST["selectedPosts"] as $selectedPost) {
@@ -44,16 +44,16 @@ if (!empty($_POST)) {
                     htmlspecialchars($_POST["action_apply"]),
                     $selectedPost
                 ));
-            };
+            }
             // Compte le nombre d'articles publiés pour adaptés l'affichage du message
             $selectedPosts = count($_POST["selectedPosts"]);
             if ($selectedPosts>1) {
                 $msgAdmin = $selectedPosts . " articles ont été mis en brouillon.";
             } else {
                 $msgAdmin = "L'article a été mis en brouillon.";
-            };
+            }
             $typeAlert = "success"; 
-        };
+        }
         // Publie les articles sélectionnés via une boucle
         if ($_POST["action_apply"] == "Publié") {
             foreach ($_POST["selectedPosts"] as $selectedPost) {
@@ -62,34 +62,34 @@ if (!empty($_POST)) {
                     htmlspecialchars($_POST["action_apply"]),
                     $selectedPost
                 ));
-            };
+            }
             // Compte le nombre d'articles publiés pour adaptés l'affichage du message
             $selectedPosts = count($_POST["selectedPosts"]);
             if ($selectedPosts>1) {
                 $msgAdmin = $selectedPosts . " articles ont été publié.";
             } else {
                 $msgAdmin = "L'article a été publié.";
-            };
+            }
             $typeAlert = "success"; 
-        };
+        }
     
         $_SESSION["flash"] = array(
             "msg" => $msgAdmin,
             "type" =>  $typeAlert
         );
-    };
-};
+    }
+}
 
     // Si sélection d'un filtre 'rôle', enregistre le filtre
     if (!empty($_POST["filter_status"])) {
         $filter = "status = '" . htmlspecialchars($_POST["filter_status"]) . "'";
-    };
+    }
     // Si recherche, enregistre le filtre
     if (!empty($_POST["filter_search"])) {
         $search = htmlspecialchars($_POST["search_post"]);
         $filter = "title LIKE '%" . $search . "%' OR content LIKE '%" . $search . "%'";
         echo "RECHERCHE";
-    };
+    }
 
 // Compte le nombre d'articles
 $req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts, p.user_ID,  u.ID
@@ -109,7 +109,7 @@ if (!empty($_POST["nbDisplayed"])) {
     $nbDisplayed =  $_COOKIE["pagination"]["adminNbDisplayedPosts"];
 } else {
     $nbDisplayed = 20;
-};
+}
 
 // Vérifie l'ordre de tri par type
 if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
@@ -118,7 +118,7 @@ if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"]
     $orderBy = $_COOKIE["orderBy"]["adminPosts"];
 } else {
     $orderBy = "creation_date_fr";
-};
+}
 // Vérifie l'ordre de tri si ascendant ou descendant
 if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
     $order = htmlspecialchars($_GET["order"]);
@@ -126,11 +126,11 @@ if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "as
     $order = $_COOKIE["order"]["adminPosts"];
 } else {
     $order = "desc";
-};
+}
 // Si le tri par type vient de changer, alors le tri est toujours ascendant
 if (!empty($_COOKIE["order"]["adminPosts"]) && $orderBy != $_COOKIE["orderBy"]["adminPosts"]) {
     $order = "asc";
-};
+}
 // Enregistre les tris en COOKIES
 setcookie("orderBy[adminPosts]", $orderBy, time() + 365*24*3600, null, null, false, true);
 setcookie("order[adminPosts]", $order, time() + 365*24*3600, null, null, false, true);
@@ -145,7 +145,7 @@ if (!empty($_GET["page"])) {
     $page = 1;
     $minPost = 0;
     $maxPost = $nbDisplayed;
-};
+}
 
 // Initialisation des variables pour la pagination
 $linkNbDisplayed = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
@@ -199,7 +199,7 @@ $req->execute(array());
                 // Affiche les résultats si recherche
                 if (isset($_POST["filter"]) || isset($_POST["filter_search"])) {
                     echo "<p> " . $nbItems . " résultat(s).</p>";
-                };    
+                }    
                 ?>
 
                 <form action="<?= $linkNbDisplayed ?>" method="post">
@@ -312,7 +312,7 @@ $req->execute(array());
                                     <td><?= $dataPosts["update_date_fr"] ?></td>
                                 </tr>
                             <?php
-                            };
+                            }
                             ?>
                         </tbody>
                     </table>

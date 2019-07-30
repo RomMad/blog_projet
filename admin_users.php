@@ -1,145 +1,146 @@
 <?php 
-    session_start();
+session_start();
 
-    require("connection_bdd.php");
-    // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
-    if (empty($_SESSION["userID"])) {
-        header("Location: index.php");
-    } else {
-        // Récupère les informations de l'utilisateur
-        $req = $bdd->prepare("SELECT role FROM users WHERE ID =?");
-        $req->execute(array($_SESSION["userID"]));
-        $userRole = $req->fetch();
-        
-        if ($userRole["role"]!=1) {
-            header("Location: index.php");
-        };
-    };
+require("connection_bdd.php");
 
-    $filter = "u.ID > 0";
-
-    if (!empty($_POST)) {
-        if (!empty($_POST["action_apply"]) && isset($_POST["selectedUsers"])) {
-            // Supprime les utilisateurs sélectionnés via une boucle
-            if ($_POST["action_apply"] == "delete") {
-                foreach ($_POST["selectedUsers"] as $selectedUser) {
-                    $req = $bdd->prepare("DELETE FROM users WHERE ID = ? ");
-                    $req->execute(array($selectedUser));
-                };
-                // Compte le nombre d'utilisateurs supprimés pour adaptés l'affichage du message
-                $nbselectedUsers = count($_POST["selectedUsers"]);
-                if ($nbselectedUsers>1) {
-                    $msgAdmin = $nbselectedUsers . " utilisateurs ont été supprimés.";
-                } else {
-                    $msgAdmin = "L'utilisateur a été supprimé.";
-                };
-                $typeAlert = "warning"; 
-            };
-            // Modère les utilisateurs sélectionnés via une boucle
-            if ($_POST["action_apply"] == "moderate") {
-                foreach ($_POST["selectedUsers"] as $selectedUser) {
-                    $req = $bdd->prepare("UPDATE users SET role = 1 WHERE ID = ? ");
-                    $req->execute(array($selectedUser));
-                };
-                // Compte le nombre d'utilisateurs modérés pour adaptés l'affichage du message
-                $nbselectedUsers = count($_POST["selectedUsers"]);
-                if ($nbselectedUsers>1) {
-                    $msgAdmin = $nbselectedUsers . " utilisateurs ont été modérés.";
-                } else {
-                    $msgAdmin = "L'utilisateur a été modéré.";
-                };
-                $typeAlert = "success"; 
-            };
-            $_SESSION["flash"] = array(
-                "msg" => $msgAdmin,
-                "type" =>  $typeAlert
-            );
-        };
-        // Si sélection d'un filtre 'rôle', enregistre le filtre
-        if (!empty($_POST["filter_role"])) {
-            $filter = "role = " . htmlspecialchars($_POST["filter_role"]);
-        };
-        // Si recherche, enregistre le filtre
-        if (!empty($_POST["filter_search"])) {
-            $search = htmlspecialchars($_POST["search_user"]);
-            $filter = "login LIKE '%" . $search . "%' OR email LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR surname LIKE '%"  . $search . "%'";
-        };
-    };
-
-    // Compte le nombre d'utilisateurs
-    $req = $bdd->prepare("SELECT COUNT(*) AS nb_Users, u.role, r.ID 
-    FROM users u
-    LEFT JOIN user_role r
-    ON u.role = r.ID  
-    WHERE $filter
-    ");
-    $req->execute(array());
-    $nbUsers = $req->fetch();
-    $nbItems = $nbUsers["nb_Users"];
-
-    // Vérification si informations dans variable POST
-    if (!empty($_POST["nbDisplayed"])) {
-        $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-        setcookie("pagination[adminNbDisplayedUsers]", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-    } else if (!empty($_COOKIE["pagination"]["adminNbDisplayedUsers"])) {
-        $nbDisplayed = $_COOKIE["pagination"]["adminNbDisplayedUsers"];
-    } else {
-        $nbDisplayed = 20;
-    };
-    // Vérifie l'ordre de tri par type
-    if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "login" || $_GET["orderBy"] == "name" || $_GET["orderBy"] == "surname" || $_GET["orderBy"] == "email" || $_GET["orderBy"] == "role" | $_GET["orderBy"] == "registration_date_fr")) {
-        $orderBy = htmlspecialchars($_GET["orderBy"]);
-    } else if (!empty($_COOKIE["orderBy"]["adminUsers"])) {
-        $orderBy = $_COOKIE["orderBy"]["adminUsers"];
-    } else {
-        $orderBy = "login";
-    };
-    // Vérifie l'ordre de tri si ascendant ou descendant
-    if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
-        $order = htmlspecialchars($_GET["order"]);
-    } else if (!empty($_COOKIE["order"]["adminUsers"])) {
-        $order = $_COOKIE["order"]["adminUsers"];
-    } else {
-        $order = "desc";
-    };
-    // Si le tri par type vient de changer, alors le tri est toujours ascendant
-    if (!empty($_COOKIE["order"]["adminUsers"]) && $orderBy != $_COOKIE["orderBy"]["adminUsers"]) {
-        $order = "asc";
-    };
-    // Enregistre les tris en COOKIES
-    setcookie("orderBy[adminUsers]", $orderBy, time() + 365*24*3600, null, null, false, true);
-    setcookie("order[adminUsers]", $order, time() + 365*24*3600, null, null, false, true);
-
-    // Vérification si informations dans variable GET
-    if (!empty($_GET["page"])) {
-        $page = htmlspecialchars($_GET["page"]);
-        // Calcul le nombre de pages par rapport aux nombre d'utilisateurs
-        $maxUser =  $page*$nbDisplayed;
-        $minUser = $maxUser-$nbDisplayed;
-    } else  {
-        $page = 1;
-        $minUser = 0;
-        $maxUser = $nbDisplayed;
-    };
+// Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
+if (empty($_SESSION["userID"])) {
+    header("Location: index.php");
+} else {
+    // Récupère les informations de l'utilisateur
+    $req = $bdd->prepare("SELECT role FROM users WHERE ID =?");
+    $req->execute(array($_SESSION["userID"]));
+    $userRole = $req->fetch();
     
-    // Initialisation des variables pour la pagination
-    $linkNbDisplayed = "admin_users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-    $linkPagination = "admin_users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-    $anchorPagination = "#table-admin_users";
-    $nbPages = ceil($nbItems / $nbDisplayed);
-    require("pagination.php");
+    if ($userRole["role"]!=1) {
+        header("Location: index.php");
+    }
+}
 
-    // Récupère les utilisateurs
-    $req = $bdd->prepare("SELECT u.ID, u.login, u.name, u.surname, u.email, r.role_user, 
-    DATE_FORMAT(u.registration_date, \"%d/%m/%Y %H:%i\") AS registration_date_fr, 
-    DATE_FORMAT(u.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
-    FROM users u
-    LEFT JOIN user_role r
-    ON u.role = r.ID
-    WHERE $filter 
-    ORDER BY $orderBy $order
-    LIMIT  $minUser, $maxUser");
-    $req->execute(array());
+$filter = "u.ID > 0";
+
+if (!empty($_POST)) {
+    if (!empty($_POST["action_apply"]) && isset($_POST["selectedUsers"])) {
+        // Supprime les utilisateurs sélectionnés via une boucle
+        if ($_POST["action_apply"] == "delete") {
+            foreach ($_POST["selectedUsers"] as $selectedUser) {
+                $req = $bdd->prepare("DELETE FROM users WHERE ID = ? ");
+                $req->execute(array($selectedUser));
+            }
+            // Compte le nombre d'utilisateurs supprimés pour adaptés l'affichage du message
+            $nbselectedUsers = count($_POST["selectedUsers"]);
+            if ($nbselectedUsers>1) {
+                $msgAdmin = $nbselectedUsers . " utilisateurs ont été supprimés.";
+            } else {
+                $msgAdmin = "L'utilisateur a été supprimé.";
+            }
+            $typeAlert = "warning"; 
+        }
+        // Modère les utilisateurs sélectionnés via une boucle
+        if ($_POST["action_apply"] == "moderate") {
+            foreach ($_POST["selectedUsers"] as $selectedUser) {
+                $req = $bdd->prepare("UPDATE users SET role = 1 WHERE ID = ? ");
+                $req->execute(array($selectedUser));
+            }
+            // Compte le nombre d'utilisateurs modérés pour adaptés l'affichage du message
+            $nbselectedUsers = count($_POST["selectedUsers"]);
+            if ($nbselectedUsers>1) {
+                $msgAdmin = $nbselectedUsers . " utilisateurs ont été modérés.";
+            } else {
+                $msgAdmin = "L'utilisateur a été modéré.";
+            }
+            $typeAlert = "success"; 
+        }
+        $_SESSION["flash"] = array(
+            "msg" => $msgAdmin,
+            "type" =>  $typeAlert
+        );
+    }
+    // Si sélection d'un filtre 'rôle', enregistre le filtre
+    if (!empty($_POST["filter_role"])) {
+        $filter = "role = " . htmlspecialchars($_POST["filter_role"]);
+    }
+    // Si recherche, enregistre le filtre
+    if (!empty($_POST["filter_search"])) {
+        $search = htmlspecialchars($_POST["search_user"]);
+        $filter = "login LIKE '%" . $search . "%' OR email LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR surname LIKE '%"  . $search . "%'";
+    }
+}
+
+// Compte le nombre d'utilisateurs
+$req = $bdd->prepare("SELECT COUNT(*) AS nb_Users, u.role, r.ID 
+FROM users u
+LEFT JOIN user_role r
+ON u.role = r.ID  
+WHERE $filter
+");
+$req->execute(array());
+$nbUsers = $req->fetch();
+$nbItems = $nbUsers["nb_Users"];
+
+// Vérification si informations dans variable POST
+if (!empty($_POST["nbDisplayed"])) {
+    $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
+    setcookie("pagination[adminNbDisplayedUsers]", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
+} else if (!empty($_COOKIE["pagination"]["adminNbDisplayedUsers"])) {
+    $nbDisplayed = $_COOKIE["pagination"]["adminNbDisplayedUsers"];
+} else {
+    $nbDisplayed = 20;
+}
+// Vérifie l'ordre de tri par type
+if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "login" || $_GET["orderBy"] == "name" || $_GET["orderBy"] == "surname" || $_GET["orderBy"] == "email" || $_GET["orderBy"] == "role" | $_GET["orderBy"] == "registration_date_fr")) {
+    $orderBy = htmlspecialchars($_GET["orderBy"]);
+} else if (!empty($_COOKIE["orderBy"]["adminUsers"])) {
+    $orderBy = $_COOKIE["orderBy"]["adminUsers"];
+} else {
+    $orderBy = "login";
+}
+// Vérifie l'ordre de tri si ascendant ou descendant
+if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
+    $order = htmlspecialchars($_GET["order"]);
+} else if (!empty($_COOKIE["order"]["adminUsers"])) {
+    $order = $_COOKIE["order"]["adminUsers"];
+} else {
+    $order = "desc";
+}
+// Si le tri par type vient de changer, alors le tri est toujours ascendant
+if (!empty($_COOKIE["order"]["adminUsers"]) && $orderBy != $_COOKIE["orderBy"]["adminUsers"]) {
+    $order = "asc";
+}
+// Enregistre les tris en COOKIES
+setcookie("orderBy[adminUsers]", $orderBy, time() + 365*24*3600, null, null, false, true);
+setcookie("order[adminUsers]", $order, time() + 365*24*3600, null, null, false, true);
+
+// Vérification si informations dans variable GET
+if (!empty($_GET["page"])) {
+    $page = htmlspecialchars($_GET["page"]);
+    // Calcul le nombre de pages par rapport aux nombre d'utilisateurs
+    $maxUser =  $page*$nbDisplayed;
+    $minUser = $maxUser-$nbDisplayed;
+} else  {
+    $page = 1;
+    $minUser = 0;
+    $maxUser = $nbDisplayed;
+}
+
+// Initialisation des variables pour la pagination
+$linkNbDisplayed = "admin_users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+$linkPagination = "admin_users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+$anchorPagination = "#table-admin_users";
+$nbPages = ceil($nbItems / $nbDisplayed);
+require("pagination.php");
+
+// Récupère les utilisateurs
+$req = $bdd->prepare("SELECT u.ID, u.login, u.name, u.surname, u.email, r.role_user, 
+DATE_FORMAT(u.registration_date, \"%d/%m/%Y %H:%i\") AS registration_date_fr, 
+DATE_FORMAT(u.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
+FROM users u
+LEFT JOIN user_role r
+ON u.role = r.ID
+WHERE $filter 
+ORDER BY $orderBy $order
+LIMIT  $minUser, $maxUser");
+$req->execute(array());
 
 ?>
 
@@ -174,7 +175,7 @@
                 // Affiche les résultats si recherche
                 if (isset($_POST["filter"]) || isset($_POST["filter_search"])) {
                     echo "<p> " . $nbItems . " résultat(s).</p>";
-                };    
+                }    
                 ?>
 
                 <form action="<?= $linkNbDisplayed ?>" method="post" class="">
@@ -306,7 +307,7 @@
                                             <td><?= $dataUsers["registration_date_fr"] ?></td>
                                         </tr>
                                     <?php
-                                    };
+                                    }
                                     ?>
                                 </tbody>
                             </table>

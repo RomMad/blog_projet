@@ -1,113 +1,114 @@
 <?php 
-    session_start();
+session_start();
 
-    include("connection_bdd.php");
-    // Redirige vers la page de connexion si l'utilisateur n'a pas les droits
-    if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) {
-        header("Location: connection.php");
-    };
+include("connection_bdd.php");
 
-    // Vérification si informations dans variable POST
-    if (!empty($_POST)) {
-        $title = htmlspecialchars($_POST["title"]);
-        $content = htmlspecialchars($_POST["post_content"]);
-        $post_ID = htmlspecialchars($_POST["post_ID"]);
-        $user_ID = htmlspecialchars($_SESSION["userID"]);
-        $user_login  = htmlspecialchars($_SESSION["userLogin"]);
-        $status = htmlspecialchars($_POST["status"]);
-        $creation_date = htmlspecialchars($_POST["creation_date"]);
-        $update_date = htmlspecialchars($_POST["update_date"]);
-        $typeAlert = "info";
-        $validation = true;
+// Redirige vers la page de connexion si l'utilisateur n'a pas les droits
+if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) {
+    header("Location: connection.php");
+}
 
-        // Vérifie si le titre est vide
-        if (empty($title)) {
-            $msgPost = "Le titre de l'article est vide.";
-            $typeAlert = "danger";
-            $validation = false;
-        };
+// Vérification si informations dans variable POST
+if (!empty($_POST)) {
+    $title = htmlspecialchars($_POST["title"]);
+    $content = htmlspecialchars($_POST["post_content"]);
+    $post_ID = htmlspecialchars($_POST["post_ID"]);
+    $user_ID = htmlspecialchars($_SESSION["userID"]);
+    $user_login  = htmlspecialchars($_SESSION["userLogin"]);
+    $status = htmlspecialchars($_POST["status"]);
+    $creation_date = htmlspecialchars($_POST["creation_date"]);
+    $update_date = htmlspecialchars($_POST["update_date"]);
+    $typeAlert = "info";
+    $validation = true;
 
-        // Ajoute ou modifie l'article si le titre n'est pas vide
-        if ($validation) {
-            // Ajoute l'article si nouvel article
-            if (isset($_POST["save"]) && empty($_POST["post_ID"])) {
-                $req = $bdd->prepare("INSERT INTO posts(user_ID, user_login, title, content, status) 
-                VALUES(:user_ID, :user_login, :title, :content, :status)");
-                $req->execute(array(
-                    "user_ID" => $user_ID,
-                    "user_login" => $user_login,
-                    "title" => $title,
-                    "content" => $content,
-                    "status" => $status
-                    ));
-                $msgPost = "L'article a été enregistré.";
-            };
+    // Vérifie si le titre est vide
+    if (empty($title)) {
+        $msgPost = "Le titre de l'article est vide.";
+        $typeAlert = "danger";
+        $validation = false;
+    }
 
-            // Met à jour l'article si article existant
-            if (isset($_POST["save"]) && !empty($_POST["post_ID"])) {
-                $req = $bdd->prepare("UPDATE posts SET title = :new_title, content = :new_content, status = :new_status, update_date = NOW() WHERE ID = :post_ID");
-                $req->execute(array(
-                    "new_title" => $title,
-                    "new_content" => $content,
-                    "new_status" => $status,
-                    "post_ID" => $post_ID
-                    ));     
-                $msgPost = "L'article a été modifié.";
-            };
+    // Ajoute ou modifie l'article si le titre n'est pas vide
+    if ($validation) {
+        // Ajoute l'article si nouvel article
+        if (isset($_POST["save"]) && empty($_POST["post_ID"])) {
+            $req = $bdd->prepare("INSERT INTO posts(user_ID, user_login, title, content, status) 
+            VALUES(:user_ID, :user_login, :title, :content, :status)");
+            $req->execute(array(
+                "user_ID" => $user_ID,
+                "user_login" => $user_login,
+                "title" => $title,
+                "content" => $content,
+                "status" => $status
+                ));
+            $msgPost = "L'article a été enregistré.";
+        }
 
-            // Récupère l'article
-            $req = $bdd->prepare("SELECT p.ID, p.user_ID, u.login, DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
-            FROM posts p
-            LEFT JOIN users u
-            ON p.user_ID = u.ID
-            WHERE p.user_ID =?  
-            ORDER BY p.ID DESC 
-            LIMIT 0, 1");
-            $req->execute(array($user_ID));
-            $dataPost = $req->fetch();
-    
-            $post_ID = htmlspecialchars($dataPost["ID"]);
-            $post_user_ID  = htmlspecialchars($dataPost["login"]);
-            $creation_date = htmlspecialchars($dataPost["creation_date_fr"]);
-            $update_date = htmlspecialchars($dataPost["update_date_fr"]);
-        };
+        // Met à jour l'article si article existant
+        if (isset($_POST["save"]) && !empty($_POST["post_ID"])) {
+            $req = $bdd->prepare("UPDATE posts SET title = :new_title, content = :new_content, status = :new_status, update_date = NOW() WHERE ID = :post_ID");
+            $req->execute(array(
+                "new_title" => $title,
+                "new_content" => $content,
+                "new_status" => $status,
+                "post_ID" => $post_ID
+                ));     
+            $msgPost = "L'article a été modifié.";
+        }
 
-        // Supprime l'article
-        if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) {
-            $req = $bdd->prepare("DELETE FROM posts WHERE ID = ? ");
-            $req->execute(array($post_ID));
-            $msgPost = "L'article a été supprimé.";
-            $typeAlert = "warning";
-            header("Refresh: 2; url=blog.php");
-        };
-
-        $_SESSION["flash"] = array(
-            "msg" => $msgPost,
-            "type" =>  $typeAlert
-        );
-
-    };
-
-    // 
-    if (!empty($_GET["post"])) {
-        $idPost = htmlspecialchars($_GET["post"]);
         // Récupère l'article
-        $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
+        $req = $bdd->prepare("SELECT p.ID, p.user_ID, u.login, DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
         FROM posts p
         LEFT JOIN users u
         ON p.user_ID = u.ID
-        WHERE p.ID=?");
-        $req->execute(array($idPost));
+        WHERE p.user_ID =?  
+        ORDER BY p.ID DESC 
+        LIMIT 0, 1");
+        $req->execute(array($user_ID));
         $dataPost = $req->fetch();
 
-        $title = $dataPost["title"];
-        $content = $dataPost["content"];
-        $post_ID = $dataPost["ID"];
-        $post_user_ID  = $dataPost["login"];
-        $creation_date = $dataPost["creation_date_fr"];
-        $update_date = $dataPost["update_date_fr"];
-        $status = $dataPost["status"];
-    };
+        $post_ID = htmlspecialchars($dataPost["ID"]);
+        $post_user_ID  = htmlspecialchars($dataPost["login"]);
+        $creation_date = htmlspecialchars($dataPost["creation_date_fr"]);
+        $update_date = htmlspecialchars($dataPost["update_date_fr"]);
+    }
+
+    // Supprime l'article
+    if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) {
+        $req = $bdd->prepare("DELETE FROM posts WHERE ID = ? ");
+        $req->execute(array($post_ID));
+        $msgPost = "L'article a été supprimé.";
+        $typeAlert = "warning";
+        header("Refresh: 2; url=blog.php");
+    }
+
+    $_SESSION["flash"] = array(
+        "msg" => $msgPost,
+        "type" =>  $typeAlert
+    );
+
+}
+
+// 
+if (!empty($_GET["post"])) {
+    $idPost = htmlspecialchars($_GET["post"]);
+    // Récupère l'article
+    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
+    FROM posts p
+    LEFT JOIN users u
+    ON p.user_ID = u.ID
+    WHERE p.ID=?");
+    $req->execute(array($idPost));
+    $dataPost = $req->fetch();
+
+    $title = $dataPost["title"];
+    $content = $dataPost["content"];
+    $post_ID = $dataPost["ID"];
+    $post_user_ID  = $dataPost["login"];
+    $creation_date = $dataPost["creation_date_fr"];
+    $update_date = $dataPost["update_date_fr"];
+    $status = $dataPost["status"];
+}
 
 ?>
 
@@ -190,7 +191,7 @@
                                         <input type="submit" id="erase"  name="erase" alt="Supprimer l'article" class="btn btn-danger mb-2 shadow" 
                                         value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;}else{return false;}">
                                         <?php 
-                                            }; 
+                                            } 
                                         ?>
                                     </div>
                                 </div>
