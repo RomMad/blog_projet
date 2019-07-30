@@ -74,7 +74,10 @@ $req->execute(array());
 
     <div class="container">
 
-        <section id="blog">
+        <section id="blog" class="row">
+
+            <div class="col-md-12">
+
             <?php 
             // Vérifie si l'utilisateur a les droits pour écrire un article
             if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
@@ -92,41 +95,42 @@ $req->execute(array());
 
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
-            <?php
-            if ($nbItems) {
-                while ($dataPosts = $req->fetch()) {
-                    $post_ID = htmlspecialchars($dataPosts["ID"]);
-                    $title = htmlspecialchars($dataPosts["title"]);
-                    $user_ID = htmlspecialchars($dataPosts["user_ID"]);
-                    $user_login = htmlspecialchars($dataPosts["user_login"]);
-                    $login = htmlspecialchars($dataPosts["login"]);
-                    $content = html_entity_decode($dataPosts["content"]);
-                    $creation_date_fr = htmlspecialchars($dataPosts["creation_date_fr"]);
-                ?>
-                    <div class="card shadow">
-                        <div class="card-header bg-dark text-light">
-                            <a class="text-blue" href="post_view.php?post=<?= $post_ID ?>">
-                                <h3 class="mt-1"><?= $title ?></h3>
-                            </a>
-                            <em>Créé le <?= $creation_date_fr ?> par <a class="text-blue" href=""> <?= !empty($user_login) ? $user_login : $user_login ?> </a></em>
-                            <?php 
-                            if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$user_ID) { ?>
-                                <a class="text-blue a-edit-post" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier</a>
-                            <?php } ?>
-                        </div>
-                        <div class="card-body text-body">
-                            <div class="post_content">
-                                <?= $content ?>
+            <div class="row">
+
+                <?php
+                if ($nbItems) {
+                    while ($dataPosts = $req->fetch()) {
+                    ?>
+                    <div class="col-md-12">
+                        <div class="card shadow">
+                            <div class="card-header bg-dark text-light">
+                                <a class="text-blue" href="post_view.php?post=<?= $dataPosts["ID"] ?>">
+                                    <h3 class="mt-1"><?= $dataPosts["title"] ?></h3>
+                                </a>
+                                <em>Créé le <?= $dataPosts["creation_date_fr"] ?> par <a class="text-blue" href=""><?=  $dataPosts["user_login"] ?></a></em>
+                                <?php 
+                                if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPosts["user_ID"]) { ?>
+                                    <a class="text-blue a-edit-post" href="edit_post.php?post=<?= $dataPosts["ID"] ?>"><span class="far fa-edit"></span> Modifier</a>
+                                <?php 
+                                } 
+                                ?>
                             </div>
-                            <div class="">
-                                <a href="post_view.php?post=<?= $post_ID ?>" class="btn btn-outline-blue">Continuer la lecture <span class="fas fa-angle-right"></span></a>
+                            <div class="card-body text-body">
+                                <div class="post_content"><?= htmlspecialchars_decode($dataPosts["content"] ) ?></div>
+                                    <div>
+                                        <a href="post_view.php?post=<?= $dataPosts["ID"] ?>" class="btn btn-outline-blue">Continuer la lecture 
+                                            <span class="fas fa-angle-right"></span>
+                                        </a>
+                                    </div>
                             </div>
                         </div>
                     </div>
                     <?php
                     }
                 }
-                ?>  
+                ?>
+
+            </div>
 
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
