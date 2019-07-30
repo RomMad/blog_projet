@@ -4,6 +4,7 @@ session_start();
 
 require("connection_bdd.php"); 
 
+var_dump($_COOKIE);
 // var_dump($_GET);  
 
 // Si recherche, filtre les résultats

@@ -4,6 +4,8 @@ session_start();
 
 require("connection_bdd.php");
 
+var_dump($_COOKIE);
+
 // Redirige vers la page d'accueil si l'utilisateur est déjà connecté
 if (!empty($_SESSION["userID"])) {
     header("Location: index.php");
@@ -29,8 +31,8 @@ if (!empty($_POST)) {
 
         // Enregistre le login et le mot de passe en cookie si la case "Se souvenir de moi" est cochée
         if (isset($_POST["remember"])) {
-            setcookie("login", $login, time() + 365*24*3600, null, null, false, true);
-            setcookie("pass", $pass, time() + 365*24*3600, null, null, false, true);
+            setcookie("login", $login, time() + (365*24*3600), "/foo/", "https://romain-mad.fr", false, true);
+            setcookie("pass", $pass, time() + (365*24*3600), "/foo/", "https://romain-mad.fr", false, true);
         };
 
         // Ajoute la date de connexion de l'utilisateur dans la table dédiée
