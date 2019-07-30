@@ -18,7 +18,6 @@
 
     $filter = "u.ID > 0";
 
-    var_dump($_POST);
     if (!empty($_POST)) {
         if (!empty($_POST["action_apply"]) && isset($_POST["selectedUsers"])) {
             // Supprime les utilisateurs sélectionnés via une boucle
@@ -81,36 +80,35 @@
     // Vérification si informations dans variable POST
     if (!empty($_POST["nbDisplayed"])) {
         $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-        setcookie("adminNbDisplayedUsers", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-    } else if (!empty($_COOKIE["adminNbDisplayedUsers"])) {
-        $nbDisplayed = $_COOKIE["adminNbDisplayedUsers"];
+        setcookie("pagination[adminNbDisplayedUsers]", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
+    } else if (!empty($_COOKIE["pagination"]["adminNbDisplayedUsers"])) {
+        $nbDisplayed = $_COOKIE["pagination"]["adminNbDisplayedUsers"];
     } else {
         $nbDisplayed = 20;
     };
-    var_dump($_GET);  
     // Vérifie l'ordre de tri par type
     if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "login" || $_GET["orderBy"] == "name" || $_GET["orderBy"] == "surname" || $_GET["orderBy"] == "email" || $_GET["orderBy"] == "role" | $_GET["orderBy"] == "registration_date_fr")) {
         $orderBy = htmlspecialchars($_GET["orderBy"]);
-    } else if (!empty($_COOKIE["adminUsersOrderBy"])) {
-        $orderBy = $_COOKIE["adminUsersOrderBy"];
+    } else if (!empty($_COOKIE["orderBy"]["adminUsers"])) {
+        $orderBy = $_COOKIE["orderBy"]["adminUsers"];
     } else {
         $orderBy = "login";
     };
     // Vérifie l'ordre de tri si ascendant ou descendant
     if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
         $order = htmlspecialchars($_GET["order"]);
-    } else if (!empty($_COOKIE["adminUsersOrder"])) {
-        $order = $_COOKIE["adminUsersOrder"];
+    } else if (!empty($_COOKIE["order"]["adminUsers"])) {
+        $order = $_COOKIE["order"]["adminUsers"];
     } else {
         $order = "desc";
     };
     // Si le tri par type vient de changer, alors le tri est toujours ascendant
-    if (!empty($_COOKIE["adminUsersOrder"]) && $orderBy != $_COOKIE["adminUsersOrderBy"]) {
+    if (!empty($_COOKIE["order"]["adminUsers"]) && $orderBy != $_COOKIE["orderBy"]["adminUsers"]) {
         $order = "asc";
     };
     // Enregistre les tris en COOKIES
-    setcookie("adminUsersOrderBy", $orderBy, time() + 365*24*3600, null, null, false, true);
-    setcookie("adminUsersOrder", $order, time() + 365*24*3600, null, null, false, true);
+    setcookie("orderBy[adminUsers]", $orderBy, time() + 365*24*3600, null, null, false, true);
+    setcookie("order[adminUsers]", $order, time() + 365*24*3600, null, null, false, true);
 
     // Vérification si informations dans variable GET
     if (!empty($_GET["page"])) {
