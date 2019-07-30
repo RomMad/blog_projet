@@ -263,7 +263,7 @@
                         </form>
                     </div>
 
-                    <div class="offset-md-1 col-md-5 mt-4">
+                    <div class="col-md-6 offset-lg-1 col-lg-5 mt-4">
                         <form action="profil.php" method="post" class="col-md-12 card shadow">
                             <div class="form-group row">
                                 <h2 class="card-header  col-md-12 h2 bg-light text-dark">Mot de passe</h2>
