@@ -136,7 +136,7 @@ $nbItems = $nbComments["nb_Comments"];
 
 if (!empty($_POST["nbDisplayed"])) {
     $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-    setcookie("nbDisplayedComments", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
+    setcookie("pagination[nbDisplayedComments]", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
 } else if (!empty($_COOKIE["nbDisplayedComments"])) {
     $nbDisplayed = $_COOKIE["nbDisplayedComments"];
 } else {

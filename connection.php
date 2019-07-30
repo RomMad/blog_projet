@@ -4,14 +4,11 @@ session_start();
 
 require("connection_bdd.php");
 
-var_dump($_COOKIE);
-
 // Redirige vers la page d'accueil si l'utilisateur est déjà connecté
 if (!empty($_SESSION["userID"])) {
     header("Location: index.php");
 };
 
-var_dump($_POST);
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
     $login = htmlspecialchars($_POST["login"]);
@@ -31,8 +28,8 @@ if (!empty($_POST)) {
 
         // Enregistre le login et le mot de passe en cookie si la case "Se souvenir de moi" est cochée
         if (isset($_POST["remember"])) {
-            setcookie("login", $login, time() + (365*24*3600), "/foo/", "https://romain-mad.fr", false, true);
-            setcookie("pass", $pass, time() + (365*24*3600), "/foo/", "https://romain-mad.fr", false, true);
+            setcookie("user[login]", $login, time() + 365*24*3600, null,null, false, true);
+            setcookie("user[pass]", $pass, time() + 365*24*3600, null,null, false, true);
         };
 
         // Ajoute la date de connexion de l'utilisateur dans la table dédiée
@@ -75,10 +72,10 @@ if (!empty($_POST)) {
 
                 <h1 class="h3 mb-4 font-weight-normal">Merci de vous connecter</h1>
                 <label for="login" class="sr-only">Login</label>
-                <input type="text" name="login" id="login" class="form-control mb-2 shadow-sm" placeholder="Login" autofocus="" value="<?= isset($_COOKIE["login"]) ? $_COOKIE["login"] : "" ?>">
+                <input type="text" name="login" id="login" class="form-control mb-2 shadow-sm" placeholder="Login" autofocus="" value="<?= isset($_COOKIE["user"]["login"]) ? $_COOKIE["user"]["login"] : "" ?>">
                 <label for="pass" class="sr-only">Mot de passe</label>
                 <div class="div-user-pass">
-                    <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm" placeholder="Mot de passe" value="<?= isset($_COOKIE["pass"]) ? $_COOKIE["pass"] : "" ?>">
+                    <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm" placeholder="Mot de passe" value="<?= isset($_COOKIE["user"]["pass"]) ? $_COOKIE["user"]["pass"] : "" ?>">
                     <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
                 </div>
                 <div class="checkbox mb-3">
