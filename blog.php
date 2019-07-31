@@ -116,7 +116,7 @@ $req->execute(array());
                                 ?>
                             </div>
                             <div class="card-body text-body">
-                                <div class="post_content"><?= htmlspecialchars_decode($dataPosts["content"] ) ?></div>
+                                <div class="post_content"><?= strip_tags(htmlspecialchars_decode($dataPosts["content"])) ?></div>
                                     <div>
                                         <a href="post_view.php?post=<?= $dataPosts["ID"] ?>" class="btn btn-outline-blue">Continuer la lecture 
                                             <span class="fas fa-angle-right"></span>
