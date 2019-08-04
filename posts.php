@@ -8,14 +8,13 @@ class Posts {
             $_content,
             $_status,
             $_creation_date,
-            $update_date;
+            $_update_date;
             
     const UNAUTHORIZED = 1;
     const CREATE_POST = 2;
     const READ_POST = 3;
     const EDIT_POST = 4;
-    const DELETE POST = 5;
-
+    const DELETE_POST = 5;
 
     public function __construct(array $datas) {
         $this->hydrate($datas);
@@ -51,7 +50,7 @@ class Posts {
         // Informe l'utilisateur de la mise à jour de l'article
 
     }
-    
+
     public function deletePost (User $user, Posts $post) {
         // Vérifie si l'utilisateur a les droits pour supprimer l'article
         if ($user->id() != $this->_user_id || $user->role() >1) {
@@ -62,11 +61,13 @@ class Posts {
     }
 
 
-
-
     // Getters
     public function id() {
         return $this->_id;
+    }
+
+    public function title() {
+        return $this->_title;
     }
 
     public function user_id() {
@@ -85,8 +86,8 @@ class Posts {
         return $this->_status;
     }
 
-    public function create_date() {
-        return $this->_create_date;
+    public function creation_date() {
+        return $this->_creation_date;
     }
 
     public function update_date() {
@@ -101,9 +102,15 @@ class Posts {
         }
     }
 
-    public function setId($_user_id) {
-        $_user_id = (int) $_user_id;
-        if ($_user_id > 0) {
+    public function setTitle($title) {
+        if (is_string($title)) {
+            $this->_title = $title;
+        }
+    }
+
+    public function setUser_Id($user_id) {
+        $user_id = (int) $user_id;
+        if ($user_id > 0) {
             $this->_user_id = $user_id;
         }
     }
@@ -115,7 +122,7 @@ class Posts {
 
     public function setContent($content) {
         if (is_string($content)) {
-            $this->_contet = $content;
+            $this->_content = $content;
         }
     }
 
@@ -123,19 +130,22 @@ class Posts {
         if (is_string($status) && ($status == "Publié" || $status == "Brouillon")) {
             $this->_status = $status;
         }
+    }
 
     public function setCreation_date($creation_date) {
-        $isDate = $this->validateDate($creation_date, "d/m/Y");
+        $isDate = $this->validateDate($creation_date, "d/m/Y à H:i");
         if ($isDate) {
             $this->_creation_date = $creation_date;
         } else {
             echo "Erreur dans le format de la date !";
+        }
     }
     
     public function setUpdate_date($update_date) {
-        $isDate = $this->validateDate($update_date, "d/m/Y");
+        $isDate = $this->validateDate($update_date, "d/m/Y à H:i");
         if ($isDate) {
             $this->_update_date = $update_date;
+        }
     }
     
     private function validateDate($date, $format = 'Y-m-d H:i:s') {

@@ -29,8 +29,8 @@ class PostsManager {
     // Méthode de lecture d'un article
     public function get($id) {
         $req = $this->_db->prepare("SELECT p.ID, p.user_ID, u.login, 
-            DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
-            DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
+            DATE_FORMAT(p.creation_date, '%d/%m/%Y %H:%i') AS creation_date,
+            DATE_FORMAT(p.update_date, '%d/%m/%Y %H:%i') AS update_date
             FROM posts p 
             LEFT JOIN users u 
             ON p.user_ID = u.ID 
@@ -44,10 +44,11 @@ class PostsManager {
         return new Personnage($datas);
     }
     // Méthode de récupération d'une liste d'articles
-    public function getist($filter, $minPost, $maxPost) {
+    public function getList($filter, $minPost, $maxPost) {
         $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.status, 
             IF(CHAR_LENGTH(p.content) > 1200, CONCAT(SUBSTRING(p.content, 1, 1200), ' [...]'), p.content) AS content, 
-            DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr 
+            DATE_FORMAT(p.creation_date, '%d/%m/%Y à %H:%i') AS creation_date, 
+            DATE_FORMAT(p.update_date, '%d/%m/%Y à %H:%i') AS update_date
             FROM posts p
             LEFT JOIN users u
             ON p.user_ID = u.ID
@@ -55,6 +56,11 @@ class PostsManager {
             ORDER BY p.creation_date DESC 
             LIMIT  $minPost, $maxPost");
         $req->execute();
+
+        while ($datas = $req->fetch()) {
+            $dataPosts[] = new Posts($datas);
+        }
+        return $dataPosts;
     }
     // Méthode de mise à jour d'un article
     public function update(Posts $post) {
