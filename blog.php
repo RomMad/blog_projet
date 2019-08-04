@@ -2,9 +2,17 @@
 // ini_set("display_errors",1);
 // error_reporting(E_ALL);	
 
+function loadClass($classname) {
+    require $classname . ".php";
+}
+
+spl_autoload_register("loadClass");
+
 session_start();
 
 require("connection_db.php");
+
+$manager = new Postsmanager($db);
 
 // Si recherche, filtre les résultats
 if (!empty($_GET["search"])) {
@@ -13,10 +21,7 @@ if (!empty($_GET["search"])) {
     $filter = "";
 }
 // Compte le nombre d'articles
-$req = $db->prepare("SELECT COUNT(*) AS nb_Posts FROM posts WHERE status = 'publié' $filter");
-$req->execute(array());
-$nbPosts = $req->fetch();
-$nbItems = $nbPosts["nb_Posts"];
+$nbItems = $manager->count($filter);
 
 // Vérification si informations dans variable POST
 if (!empty($_POST)) {
@@ -47,16 +52,7 @@ $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Récupère les derniers articles
-$req = $db->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.status, 
-IF(CHAR_LENGTH(p.content) > 1200, CONCAT(SUBSTRING(p.content, 1, 1200), ' [...]'), p.content) AS content, 
-DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr 
-FROM posts p
-LEFT JOIN users u
-ON p.user_ID = u.ID
-WHERE status = 'publié' $filter 
-ORDER BY p.creation_date DESC 
-LIMIT  $minPost, $maxPost");
-$req->execute(array());
+$dataPosts = $manager->getList($filter, $minPost, $maxPost);
 
 // var_dump($_COOKIE);
 // var_dump($_POST);
@@ -99,26 +95,26 @@ $req->execute(array());
 
                 <?php
                 if ($nbItems) {
-                    while ($dataPosts = $req->fetch()) {
+                    foreach ($dataPosts as $dataPost) {
                     ?>
                     <div class="col-md-12">
                         <div class="card shadow">
                             <div class="card-header bg-dark text-light">
-                                <a class="text-blue" href="post_view.php?post=<?= $dataPosts["ID"] ?>">
-                                    <h3 class="mt-1"><?= $dataPosts["title"] ?></h3>
+                                <a class="text-blue" href="post_view.php?post=<?= $dataPost->id() ?>">
+                                    <h3 class="mt-1"><?= $dataPost->title() ?></h3>
                                 </a>
-                                <em>Créé le <?= $dataPosts["creation_date_fr"] ?> par <a class="text-blue" href=""><?=  $dataPosts["user_login"] ?></a></em>
+                                <em>Créé le <?= $dataPost->creation_date() ?> par <a class="text-blue" href=""><?=  $dataPost->user_login() ?></a></em>
                                 <?php 
-                                if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPosts["user_ID"]) { ?>
-                                    <a class="text-blue a-edit-post" href="edit_post.php?post=<?= $dataPosts["ID"] ?>"><span class="far fa-edit"></span> Modifier</a>
+                                if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost->user_id()) { ?>
+                                    <a class="text-blue a-edit-post" href="edit_post.php?post=<?= $dataPost->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                                 <?php 
                                 } 
                                 ?>
                             </div>
                             <div class="card-body text-body">
-                                <div class="post_content"><?= strip_tags(htmlspecialchars_decode($dataPosts["content"])) ?></div>
+                                <div class="post_content"><?= strip_tags(htmlspecialchars_decode($dataPost->content())) ?></div>
                                     <div>
-                                        <a href="post_view.php?post=<?= $dataPosts["ID"] ?>" class="btn btn-outline-blue">Continuer la lecture 
+                                        <a href="post_view.php?post=<?= $dataPost->id() ?>" class="btn btn-outline-blue">Continuer la lecture 
                                             <span class="fas fa-angle-right"></span>
                                         </a>
                                     </div>
