@@ -1,14 +1,14 @@
 <?php 
 session_start();
 
-require("connection_bdd.php");
+require("connection_db.php");
 
 // Vérifie si information dans variable POST
 if (!empty($_POST)) {
     $email = htmlspecialchars($_POST["email"]);
 
     // Récupère l'ID de l'utilisateur et son password haché
-    $req = $bdd->prepare("SELECT ID FROM users WHERE email = ?");
+    $req = $db->prepare("SELECT ID FROM users WHERE email = ?");
     $req->execute(array($email));
     $dataUser = $req->fetch();
 
@@ -17,7 +17,7 @@ if (!empty($_POST)) {
         $bytes = random_bytes(8);
         $token = bin2hex($bytes);
 
-        $req = $bdd->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
+        $req = $db->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
         $req->execute(array(
             "user_id" => $dataUser["ID"],
             "token" => $token

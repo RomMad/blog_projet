@@ -1,7 +1,7 @@
 <?php 
 session_start(); 
 
-require("connection_bdd.php");
+require("connection_db.php");
 
 if (!empty($_GET["post"])) {
     $post_ID = htmlspecialchars($_GET["post"]);
@@ -11,7 +11,7 @@ if (!empty($_GET["post"])) {
 }
 
 // Récupère les paramètres de modération
-$req = $bdd->prepare("SELECT moderation FROM settings");
+$req = $db->prepare("SELECT moderation FROM settings");
 $req->execute(array());
 $dataSettings = $req->fetch();
 if ($dataSettings["moderation"] == 0) {
@@ -50,7 +50,7 @@ if (!empty($_POST)) {
 
         // Ajoute le commentaire si le commentaire n'est pas vide
         if ($validation) {
-            $req = $bdd->prepare("INSERT INTO comments(id_post, user_ID, user_name, content, status) 
+            $req = $db->prepare("INSERT INTO comments(id_post, user_ID, user_name, content, status) 
             VALUES(:id_post, :user_ID, :user_name, :content, :status)");
             $req->execute(array(
                 "id_post" => $_SESSION["postID"],
@@ -69,7 +69,7 @@ if (!empty($_POST)) {
     }
     // Modifie le commentaire
     if (isset($_POST["edit_comment"])) {
-        $req = $bdd->prepare("UPDATE comments SET content = :new_content, status = :new_status, update_date = NOW() WHERE ID = :ID");
+        $req = $db->prepare("UPDATE comments SET content = :new_content, status = :new_status, update_date = NOW() WHERE ID = :ID");
         $req->execute(array(
             "new_content" => htmlspecialchars($_POST["content"]),
             "new_status" => $status,
@@ -83,7 +83,7 @@ if (!empty($_POST)) {
 
 //
 if (isset($_GET["action"]) && $_GET["action"]=="erase") {
-    $req = $bdd->prepare("DELETE FROM comments WHERE ID = ?");
+    $req = $db->prepare("DELETE FROM comments WHERE ID = ?");
     $req->execute(array(
         htmlspecialchars($_GET["comment"])
     ));
@@ -93,7 +93,7 @@ if (isset($_GET["action"]) && $_GET["action"]=="erase") {
 }
 // Ajoute le signalement du commentaire
 if (isset($_GET["action"]) && $_GET["action"]=="report") {
-    $req = $bdd->prepare("UPDATE comments SET status = :new_status, nb_report = nb_report + 1, report_date = NOW() WHERE ID = :ID");
+    $req = $db->prepare("UPDATE comments SET status = :new_status, nb_report = nb_report + 1, report_date = NOW() WHERE ID = :ID");
     $req->execute(array(
         "new_status" => 2,
         "ID" => htmlspecialchars($_GET["comment"])
@@ -112,7 +112,7 @@ if (isset($msgComment)) {
 
 
 // Récupère le post
-$req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, 
+$req = $db->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, 
 DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr, 
 DATE_FORMAT(p.update_date, \"%d/%m/%Y à %H:%i\") AS update_date_fr 
 FROM posts p
@@ -123,7 +123,7 @@ $req->execute(array($post_ID));
 $dataPost = $req->fetch();
 
 // Compte le nombre de commentaires
-$req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments FROM comments WHERE id_post = ? AND $filter");
+$req = $db->prepare("SELECT COUNT(*) AS nb_Comments FROM comments WHERE id_post = ? AND $filter");
 $req->execute([
     $post_ID
 ]);
@@ -158,7 +158,7 @@ $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Vérifie s'il y a des commentaires
-$req = $bdd->prepare("SELECT ID FROM comments WHERE id_post = ? AND $filter ");
+$req = $db->prepare("SELECT ID FROM comments WHERE id_post = ? AND $filter ");
 $req->execute([
     $post_ID
     ]);
@@ -168,7 +168,7 @@ if (!$commentsExist) {
     $infoComments = "Aucun commentaire.";
 } else  {
     // Récupère les commentaires
-    $req = $bdd->prepare("SELECT c.ID, c.user_ID, u.login, c.user_name, c.content, c.status, 
+    $req = $db->prepare("SELECT c.ID, c.user_ID, u.login, c.user_name, c.content, c.status, 
     DATE_FORMAT(c.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr,
     DATE_FORMAT(c.update_date, \"%d/%m/%Y à %H:%i\") AS update_date_fr 
     FROM comments c

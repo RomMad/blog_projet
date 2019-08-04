@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-require("connection_bdd.php");
+require("connection_db.php");
 
 // Redirige vers la page d'accueil si l'utilisateur est déjà connecté
 if (!empty($_SESSION["userID"])) {
@@ -14,7 +14,7 @@ if (!empty($_POST)) {
     $pass = htmlspecialchars($_POST["pass"]);
 
     // Récupère l'ID de l'utilisateur et son password haché
-    $req = $bdd->prepare("SELECT ID, pass, role FROM users WHERE login = ?");
+    $req = $db->prepare("SELECT ID, pass, role FROM users WHERE login = ?");
     $req->execute(array($login));
     $dataUser = $req->fetch();
 
@@ -32,7 +32,7 @@ if (!empty($_POST)) {
         }
 
         // Ajoute la date de connexion de l'utilisateur dans la table dédiée
-        $req = $bdd->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
+        $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
         $req->execute(array("user_ID" => htmlspecialchars($dataUser["ID"])));
 
         $message = "Vous êtes connecté.";

@@ -2,7 +2,7 @@
 
 session_start();
 
-require("connection_bdd.php");
+require("connection_db.php");
 
 // Vérifie si informations dans variables POST et GET
 if (!empty($_POST) && isset($_GET["token"])) {
@@ -16,7 +16,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
     $typeAlert = "danger";
 
     // Vérifie si le token est existe
-    $req = $bdd->prepare("SELECT r.user_ID, r.reset_date, u.email
+    $req = $db->prepare("SELECT r.user_ID, r.reset_date, u.email
     FROM reset_passwords r
     LEFT JOIN users u
     ON r.user_ID = u.ID
@@ -57,14 +57,14 @@ if (!empty($_POST) && isset($_GET["token"])) {
     // Si validation est vraie, met à jour le mot de passe 
     if ($validation) {      
         // Récupère l'ID de l'utilisateur et son password haché
-        $req = $bdd->prepare("SELECT * FROM users WHERE email = ?");
+        $req = $db->prepare("SELECT * FROM users WHERE email = ?");
         $req->execute(array(
             $email
         ));
         $dataUser = $req->fetch();
         // Met à jour le mot de passe
         $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
-        $req = $bdd->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
+        $req = $db->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
         $req->execute(array(
             "ID" => $dataUser["ID"],
             "new_pass" => $new_pass_hash
@@ -75,7 +75,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
         $_SESSION["userRole"] = $dataUser["role"];
 
         // Ajoute la date de connexion de l'utilisateur dans la table dédiée
-        $req = $bdd->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
+        $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
         $req->execute(array(
             "user_ID" => $dataUser["ID"]
         ));

@@ -4,7 +4,7 @@
 
 session_start();
 
-require("connection_bdd.php");
+require("connection_db.php");
 
 // Si recherche, filtre les résultats
 if (!empty($_GET["search"])) {
@@ -13,7 +13,7 @@ if (!empty($_GET["search"])) {
     $filter = "";
 }
 // Compte le nombre d'articles
-$req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts FROM posts WHERE status = 'publié' $filter");
+$req = $db->prepare("SELECT COUNT(*) AS nb_Posts FROM posts WHERE status = 'publié' $filter");
 $req->execute(array());
 $nbPosts = $req->fetch();
 $nbItems = $nbPosts["nb_Posts"];
@@ -47,7 +47,7 @@ $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Récupère les derniers articles
-$req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.status, 
+$req = $db->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.status, 
 IF(CHAR_LENGTH(p.content) > 1200, CONCAT(SUBSTRING(p.content, 1, 1200), ' [...]'), p.content) AS content, 
 DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr 
 FROM posts p

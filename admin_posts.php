@@ -1,14 +1,14 @@
 <?php 
 session_start();
 
-require("connection_bdd.php");
+require("connection_db.php");
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: index.php");
 } else {
     // Récupère les informations de l'utilisateur
-    $req = $bdd->prepare("SELECT role FROM users WHERE ID =?");
+    $req = $db->prepare("SELECT role FROM users WHERE ID =?");
     $req->execute(array($_SESSION["userID"]));
     $userRole = $req->fetch();
     
@@ -24,7 +24,7 @@ if (!empty($_POST)) {
         // Supprime les articles sélectionnés via une boucle
         if ($_POST["action_apply"] == "delete") {
             foreach ($_POST["selectedPosts"] as $selectedPost) {
-                $req = $bdd->prepare("DELETE FROM posts WHERE ID = ? ");
+                $req = $db->prepare("DELETE FROM posts WHERE ID = ? ");
                 $req->execute(array($selectedPost));
             }
             // Compte le nombre d'articles supprimés pour adaptés l'affichage du message
@@ -39,7 +39,7 @@ if (!empty($_POST)) {
         // Met en brouillon les articles sélectionnés via une boucle
         if ($_POST["action_apply"] == "Brouillon") {
             foreach ($_POST["selectedPosts"] as $selectedPost) {
-                $req = $bdd->prepare("UPDATE posts SET status = ? WHERE ID = ? ");
+                $req = $db->prepare("UPDATE posts SET status = ? WHERE ID = ? ");
                 $req->execute(array(
                     htmlspecialchars($_POST["action_apply"]),
                     $selectedPost
@@ -57,7 +57,7 @@ if (!empty($_POST)) {
         // Publie les articles sélectionnés via une boucle
         if ($_POST["action_apply"] == "Publié") {
             foreach ($_POST["selectedPosts"] as $selectedPost) {
-                $req = $bdd->prepare("UPDATE posts SET status = ? WHERE ID = ? ");
+                $req = $db->prepare("UPDATE posts SET status = ? WHERE ID = ? ");
                 $req->execute(array(
                     htmlspecialchars($_POST["action_apply"]),
                     $selectedPost
@@ -92,7 +92,7 @@ if (!empty($_POST)) {
     }
 
 // Compte le nombre d'articles
-$req = $bdd->prepare("SELECT COUNT(*) AS nb_Posts, p.user_ID,  u.ID
+$req = $db->prepare("SELECT COUNT(*) AS nb_Posts, p.user_ID,  u.ID
 FROM posts p
 LEFT JOIN users u
 ON p.user_ID = u.ID
@@ -155,7 +155,7 @@ $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Récupère les articles
-$req = $bdd->prepare("SELECT p.ID, p.title, p.user_login AS author, u.login, p.status, 
+$req = $db->prepare("SELECT p.ID, p.title, p.user_login AS author, u.login, p.status, 
 DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
 DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
 FROM posts p

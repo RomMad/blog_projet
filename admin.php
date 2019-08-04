@@ -1,14 +1,14 @@
 <?php 
 session_start();
 
-require("connection_bdd.php");
+require("connection_db.php");
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: connection.php");
 } else {
     // Récupère les informations de l'utilisateur
-    $req = $bdd->prepare("SELECT role FROM users WHERE ID = ?");
+    $req = $db->prepare("SELECT role FROM users WHERE ID = ?");
     $req->execute(array($_SESSION["userID"]));
     $userRole = $req->fetch();
     if ($userRole["role"]!=1) {
@@ -22,7 +22,7 @@ if (!empty($_POST)) {
     } else {
         $moderation = 0; 
     }
-    $req = $bdd->prepare("UPDATE settings SET blog_name = :blog_name, admin_email = :admin_email, default_role = :default_role, moderation = :moderation WHERE ID = 1 ");
+    $req = $db->prepare("UPDATE settings SET blog_name = :blog_name, admin_email = :admin_email, default_role = :default_role, moderation = :moderation WHERE ID = 1 ");
     $req->execute(array(
         "blog_name" => htmlspecialchars($_POST["blog_name"]),
         "admin_email" => htmlspecialchars($_POST["admin_email"]),
@@ -39,7 +39,7 @@ if (!empty($_POST)) {
     );
 }
     // Récupère les paramètres
-    $req = $bdd->prepare("SELECT * FROM settings");
+    $req = $db->prepare("SELECT * FROM settings");
     $req->execute(array());
     $dataSettings = $req->fetch();   
 

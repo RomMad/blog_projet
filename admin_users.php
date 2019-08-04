@@ -1,14 +1,14 @@
 <?php 
 session_start();
 
-require("connection_bdd.php");
+require("connection_db.php");
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: index.php");
 } else {
     // Récupère les informations de l'utilisateur
-    $req = $bdd->prepare("SELECT role FROM users WHERE ID =?");
+    $req = $db->prepare("SELECT role FROM users WHERE ID =?");
     $req->execute(array($_SESSION["userID"]));
     $userRole = $req->fetch();
     
@@ -24,7 +24,7 @@ if (!empty($_POST)) {
         // Supprime les utilisateurs sélectionnés via une boucle
         if ($_POST["action_apply"] == "delete") {
             foreach ($_POST["selectedUsers"] as $selectedUser) {
-                $req = $bdd->prepare("DELETE FROM users WHERE ID = ? ");
+                $req = $db->prepare("DELETE FROM users WHERE ID = ? ");
                 $req->execute(array($selectedUser));
             }
             // Compte le nombre d'utilisateurs supprimés pour adaptés l'affichage du message
@@ -39,7 +39,7 @@ if (!empty($_POST)) {
         // Modère les utilisateurs sélectionnés via une boucle
         if ($_POST["action_apply"] == "moderate") {
             foreach ($_POST["selectedUsers"] as $selectedUser) {
-                $req = $bdd->prepare("UPDATE users SET role = 1 WHERE ID = ? ");
+                $req = $db->prepare("UPDATE users SET role = 1 WHERE ID = ? ");
                 $req->execute(array($selectedUser));
             }
             // Compte le nombre d'utilisateurs modérés pour adaptés l'affichage du message
@@ -68,7 +68,7 @@ if (!empty($_POST)) {
 }
 
 // Compte le nombre d'utilisateurs
-$req = $bdd->prepare("SELECT COUNT(*) AS nb_Users, u.role, r.ID 
+$req = $db->prepare("SELECT COUNT(*) AS nb_Users, u.role, r.ID 
 FROM users u
 LEFT JOIN user_role r
 ON u.role = r.ID  
@@ -131,7 +131,7 @@ $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Récupère les utilisateurs
-$req = $bdd->prepare("SELECT u.ID, u.login, u.name, u.surname, u.email, r.role_user, 
+$req = $db->prepare("SELECT u.ID, u.login, u.name, u.surname, u.email, r.role_user, 
 DATE_FORMAT(u.registration_date, \"%d/%m/%Y %H:%i\") AS registration_date_fr, 
 DATE_FORMAT(u.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
 FROM users u

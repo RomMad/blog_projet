@@ -1,14 +1,14 @@
 <?php 
 session_start();
 
-require("connection_bdd.php");
+require("connection_db.php");
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: index.php");
 } else {
     // Récupère les informations de l'utilisateur
-    $req = $bdd->prepare("SELECT role FROM users WHERE ID =?");
+    $req = $db->prepare("SELECT role FROM users WHERE ID =?");
     $req->execute(array($_SESSION["userID"]));
     $userRole = $req->fetch();
     
@@ -24,7 +24,7 @@ if (!empty($_POST)) {
         // Supprime les commentaires sélectionnés via une boucle
         if ($_POST["action_apply"] == "delete" && isset($_POST["selectedComments"])) {
             foreach ($_POST["selectedComments"] as $selectedComment) {
-                $req = $bdd->prepare("DELETE FROM comments WHERE ID = ? ");
+                $req = $db->prepare("DELETE FROM comments WHERE ID = ? ");
                 $req->execute(array($selectedComment));
             }
             // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
@@ -39,7 +39,7 @@ if (!empty($_POST)) {
         // Modère les commentaires sélectionnés via une boucle
         if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedComments"])) {
             foreach ($_POST["selectedComments"] as $selectedComment) {
-                $req = $bdd->prepare("UPDATE comments SET status = 1 WHERE ID = ? ");
+                $req = $db->prepare("UPDATE comments SET status = 1 WHERE ID = ? ");
                 $req->execute(array($selectedComment));
             }
             // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
@@ -63,7 +63,7 @@ if (!empty($_POST)) {
 }
 
 // Compte le nombre de commentaires
-$req = $bdd->prepare("SELECT COUNT(*) AS nb_Comments, c.user_ID, u.ID
+$req = $db->prepare("SELECT COUNT(*) AS nb_Comments, c.user_ID, u.ID
 FROM comments c
 LEFT JOIN users u
 ON c.user_ID = u.ID
@@ -124,7 +124,7 @@ $anchorPagination = "#table-admin_comments";
 $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 // Récupère les commentaires
-$req = $bdd->prepare("SELECT c.ID, c.id_post, c.user_ID, c.user_name AS author, u.login, c.status, c.nb_report, 
+$req = $db->prepare("SELECT c.ID, c.id_post, c.user_ID, c.user_name AS author, u.login, c.status, c.nb_report, 
 IF(CHAR_LENGTH(c.content) > 200, CONCAT(SUBSTRING(c.content, 1, 200), ' [...]'), c.content) AS content, 
 DATE_FORMAT(c.report_date, \"%d/%m/%Y %H:%i\") AS report_date, 
 DATE_FORMAT(c.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 

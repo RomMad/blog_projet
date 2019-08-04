@@ -1,13 +1,13 @@
 <?php 
 session_start();
 
-require("connection_bdd.php");
+require("connection_db.php");
 // Redirige vers la page de connexion si non connecté
 if (empty($_SESSION["userID"])) {
     header("Location: connection.php");
 } else {
     // Récupère les informations de l'utilisateur
-    $req = $bdd->prepare("SELECT * FROM users WHERE ID =?");
+    $req = $db->prepare("SELECT * FROM users WHERE ID =?");
     $req->execute(array($_SESSION["userID"]));
     $dataUser = $req->fetch();
 }
@@ -40,14 +40,14 @@ if (!empty($_POST)) {
         $isPasswordCorrect = password_verify($pass, htmlspecialchars($dataUser["pass"])); // Compare le pass envoyé via le formulaire avec la base
 
         // Vérifie si le login est déjà pris par un autre utilisateur
-        $req = $bdd->prepare("SELECT ID FROM users WHERE login = ? AND ID != ? ");
+        $req = $db->prepare("SELECT ID FROM users WHERE login = ? AND ID != ? ");
         $req->execute([
             $login,
             $_SESSION["userID"]
         ]);
         $loginExist = $req->fetch();
         // Vérifie si l'email est déjà pris par un autre utilisateur
-        $req = $bdd->prepare("SELECT ID FROM users WHERE email = ? AND ID != ? ");
+        $req = $db->prepare("SELECT ID FROM users WHERE email = ? AND ID != ? ");
         $req->execute([
             $email,
             $_SESSION["userID"]
@@ -91,7 +91,7 @@ if (!empty($_POST)) {
         }
         // Met à jour les informations du profil si validation est vraie
         if ($validation) {
-            $req = $bdd->prepare("UPDATE users SET login = :new_login, email = :new_email, name = :new_name, surname = :new_surname, birthdate = :new_birthdate, role = :new_role, update_date = NOW() 
+            $req = $db->prepare("UPDATE users SET login = :new_login, email = :new_email, name = :new_name, surname = :new_surname, birthdate = :new_birthdate, role = :new_role, update_date = NOW() 
             WHERE ID = :ID");
             $req->execute(array(
                 "new_login" => $login,
@@ -133,7 +133,7 @@ if (!empty($_POST)) {
         // Met à jour le mot de passe si validation est vraie
         if ($validation) {        
         $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
-        $req = $bdd->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
+        $req = $db->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
         $req->execute(array(
             "new_pass" => $new_pass_hash,
             "ID" => $_SESSION["userID"]

@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-include("connection_bdd.php");
+include("connection_db.php");
 
 // Redirige vers la page de connexion si l'utilisateur n'a pas les droits
 if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) {
@@ -32,7 +32,7 @@ if (!empty($_POST)) {
     if ($validation) {
         // Ajoute l'article si nouvel article
         if (isset($_POST["save"]) && empty($_POST["post_ID"])) {
-            $req = $bdd->prepare("INSERT INTO posts(user_ID, user_login, title, content, status) 
+            $req = $db->prepare("INSERT INTO posts(user_ID, user_login, title, content, status) 
             VALUES(:user_ID, :user_login, :title, :content, :status)");
             $req->execute(array(
                 "user_ID" => $user_ID,
@@ -46,7 +46,7 @@ if (!empty($_POST)) {
 
         // Met à jour l'article si article existant
         if (isset($_POST["save"]) && !empty($_POST["post_ID"])) {
-            $req = $bdd->prepare("UPDATE posts SET title = :new_title, content = :new_content, status = :new_status, update_date = NOW() WHERE ID = :post_ID");
+            $req = $db->prepare("UPDATE posts SET title = :new_title, content = :new_content, status = :new_status, update_date = NOW() WHERE ID = :post_ID");
             $req->execute(array(
                 "new_title" => $title,
                 "new_content" => $content,
@@ -57,7 +57,7 @@ if (!empty($_POST)) {
         }
 
         // Récupère l'article
-        $req = $bdd->prepare("SELECT p.ID, p.user_ID, u.login, DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
+        $req = $db->prepare("SELECT p.ID, p.user_ID, u.login, DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
         FROM posts p
         LEFT JOIN users u
         ON p.user_ID = u.ID
@@ -75,7 +75,7 @@ if (!empty($_POST)) {
 
     // Supprime l'article
     if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) {
-        $req = $bdd->prepare("DELETE FROM posts WHERE ID = ? ");
+        $req = $db->prepare("DELETE FROM posts WHERE ID = ? ");
         $req->execute(array($post_ID));
         $msgPost = "L'article a été supprimé.";
         $typeAlert = "warning";
@@ -93,7 +93,7 @@ if (!empty($_POST)) {
 if (!empty($_GET["post"])) {
     $idPost = htmlspecialchars($_GET["post"]);
     // Récupère l'article
-    $req = $bdd->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
+    $req = $db->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
     FROM posts p
     LEFT JOIN users u
     ON p.user_ID = u.ID

@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-require("connection_bdd.php");
+require("connection_db.php");
 
 if (!isset($_POST["pass"])) {
     $bytes = random_bytes(8);
@@ -24,11 +24,11 @@ if (!empty($_POST)) {
     $typeAlert = "danger";
 
     // Vérifie si le login est déjà utilisé
-    $req = $bdd->prepare("SELECT * FROM users WHERE login = ? ");
+    $req = $db->prepare("SELECT * FROM users WHERE login = ? ");
     $req->execute([$login]);
     $loginExist = $req->fetch();
     // Vérifie si l'adresse email est déjà utilisée
-    $req = $bdd->prepare("SELECT * FROM users WHERE email = ? ");
+    $req = $db->prepare("SELECT * FROM users WHERE email = ? ");
     $req->execute([$email]);
     $emailExist = $req->fetch();
 
@@ -55,7 +55,7 @@ if (!empty($_POST)) {
     // Si validation est vrai, valide l'inscription de l'utilisateur
     if ($validation) {
         // Insert les données dans la table users
-        $req = $bdd->prepare("INSERT INTO users(login, email, name, surname, role, pass) 
+        $req = $db->prepare("INSERT INTO users(login, email, name, surname, role, pass) 
                                 VALUES(:login, :email, :name, :surname, :role, :pass)");
         $req->execute(array(
             "login" => $login,
@@ -67,11 +67,11 @@ if (!empty($_POST)) {
             ));
 
         // Récupère l'ID de l'utilisateur et son password haché
-        $req = $bdd->prepare("SELECT ID FROM users WHERE email = ?");
+        $req = $db->prepare("SELECT ID FROM users WHERE email = ?");
         $req->execute(array($email));
         $dataUser = $req->fetch();
 
-        $req = $bdd->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
+        $req = $db->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
         $req->execute(array(
             "user_id" => $dataUser["ID"],
             "token" => $pass

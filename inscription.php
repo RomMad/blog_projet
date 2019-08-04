@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-require("connection_bdd.php");
+require("connection_db.php");
 
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
@@ -16,11 +16,11 @@ if (!empty($_POST)) {
     $typeAlert = "danger";
 
     // Vérifie si le login est déjà utilisé
-    $req = $bdd->prepare("SELECT * FROM users WHERE login = ? ");
+    $req = $db->prepare("SELECT * FROM users WHERE login = ? ");
     $req->execute([$login]);
     $loginExist = $req->fetch();
     // Vérifie si l'adresse email est déjà utilisée
-    $req = $bdd->prepare("SELECT * FROM users WHERE email = ? ");
+    $req = $db->prepare("SELECT * FROM users WHERE email = ? ");
     $req->execute([$email]);
     $emailExist = $req->fetch();
 
@@ -62,7 +62,7 @@ if (!empty($_POST)) {
     if ($validation) {
         $pass_hash = password_hash($pass, PASSWORD_DEFAULT); // Hachage du mot de passe
         // Insert les données dans la table users
-        $req = $bdd->prepare("INSERT INTO users(login, email, name, surname, birthdate, pass) 
+        $req = $db->prepare("INSERT INTO users(login, email, name, surname, birthdate, pass) 
                                 VALUES(:login, :email, :name, :surname, :birthdate, :pass)");
         $req->execute(array(
             "login" => $login,
@@ -73,7 +73,7 @@ if (!empty($_POST)) {
             "pass" => $pass_hash,
             ));
             // Récupère l'ID de l'utilisateur
-            $req = $bdd->prepare("SELECT ID FROM users WHERE login = ? ");
+            $req = $db->prepare("SELECT ID FROM users WHERE login = ? ");
             $req->execute([$login]);
             $idUser = $req->fetch();
             // Ajoute les infos de l"utilisateurs dans la Session
