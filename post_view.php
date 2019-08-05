@@ -213,7 +213,7 @@ if (!$commentsExist) {
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $dataPost->user_id()) { ?>
                             <a class="text-blue a-edit-post" href="post_edit.php?post=<?=  $dataPost->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php } ?>
-                        <a href="#comments" class="badge badge-blue ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_Comments"] ?> </span></a>
+                        <a href="#comments" class="badge badge-blue ml-2"> <span class="badge badge-light"><?= $nbComments["nb_Comments"] ?> </span></a>
                     </div>
                     <div class="card-body text-body">
                     <?= html_entity_decode($dataPost->content()) ?>
