@@ -32,6 +32,13 @@ if (!empty($_POST))
         $typeAlert = "danger";
         $validation = false;
     }
+    // Vérifie si le contenu de l'article est vide
+    if (empty($_POST["post_content"]) && $_POST["status"] == "Publié")
+    {
+        $message = "L'article ne peut pas être publié si le contenu est vide.";
+        $typeAlert = "danger";
+        $validation = false;
+    }
 
     // Ajoute ou modifie l'article si le titre n'est pas vide
     if ($validation) 
