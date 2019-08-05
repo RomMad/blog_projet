@@ -55,14 +55,14 @@ class PostsManager {
         return new Posts($dataPost);
     }
     // Méthode de récupération d'une liste d'articles
-    public function getList($filter, $minPost, $maxPost) {
+    public function getList($filter, $orderBy, $order, $minPost, $maxPost) {
         $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.status, p.creation_date, p.update_date, 
             IF(CHAR_LENGTH(p.content) > 1200, CONCAT(SUBSTRING(p.content, 1, 1200), ' [...]'), p.content) AS content
             FROM posts p
             LEFT JOIN users u
             ON p.user_ID = u.ID
-            WHERE status = 'publié' $filter 
-            ORDER BY p.creation_date DESC 
+            WHERE $filter 
+            ORDER BY $orderBy $order
             LIMIT  $minPost, $maxPost");
         $req->execute();
 
@@ -73,14 +73,22 @@ class PostsManager {
     }
     // Méthode de mise à jour d'un article
     public function update(Posts $post) {
-        $req = $this->_db->prepare("UPDATE posts SET title = :new_title, content = :new_content, status = :new_status, update_date = NOW() WHERE ID = :post_ID");
+        $req = $this->_db->prepare("UPDATE posts SET title = :newTitle, content = :newContent, status = :newStatus, update_date = NOW() WHERE ID = :postId");
         $req->execute([
-            "new_title" => $post->title(),
-            "new_content" => $post->content(),
-            "new_status" => $post->status(),
-            "post_ID" => $post->id()
+            "newTitle" => $post->title(),
+            "newContent" => $post->content(),
+            "newStatus" => $post->status(),
+            "postId" => $post->id()
         ]);
         return "L'article a été modifié.";
+    }
+    // Méthode de mise à jour du statut d'un article
+    public function updateStatus($id, $status) {
+        $req = $this->_db->prepare("UPDATE posts SET status = :newStatus WHERE ID = :id ");
+        $req->execute([
+            "id" => $id,
+            "newStatus" => $status
+        ]);
     }
     // Méthode de suppresion d'un article
     public function delete($id) {
@@ -90,15 +98,18 @@ class PostsManager {
         ]);
         return "L'article a été supprimé.";
     }
-    // Méthode qui coimpte le nombre d'articles
+    // Méthode qui compte le nombre d'articles
     public function count($filter) {
         // Prépare une requête COUNT()
-        $req = $this->_db->prepare("SELECT COUNT(*) AS nb_Posts FROM posts 
-            WHERE status = 'publié' $filter");
+        $req = $this->_db->prepare("SELECT COUNT(*) AS nbPosts, p.id, p.user_ID, u.ID 
+            FROM posts p
+            LEFT JOIN users u
+            ON p.user_ID = u.ID            
+            WHERE $filter");
         $req->execute();
         $nbPosts = $req->fetch();
         //  Retourne le nombre d'enregistrements
-        return  $nbPosts["nb_Posts"];
+        return  $nbPosts["nbPosts"];
     }
 
     public function setDb(PDO $db)

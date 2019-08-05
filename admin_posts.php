@@ -1,74 +1,75 @@
 <?php 
+
+function loadClass($classname) 
+{
+    require $classname . ".php";
+}
+
+spl_autoload_register("loadClass");
+
 session_start();
 
-require("connection_db.php");
+$databaseConnection = new DatabaseConnection();
+$db = $databaseConnection->db();
+
+$postManager = new Postsmanager($databaseConnection->db());
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
-if (empty($_SESSION["userID"])) {
+if (empty($_SESSION["userID"])) 
+{
     header("Location: index.php");
-} else {
+} else 
+{
     // Récupère les informations de l'utilisateur
     $req = $db->prepare("SELECT role FROM users WHERE ID =?");
     $req->execute(array($_SESSION["userID"]));
     $userRole = $req->fetch();
     
-    if ($userRole["role"]!=1) {
+    if ($userRole["role"]!=1) 
+    {
         header("Location: index.php");
     }
 }
 
-$filter = "p.ID > 0";
+$filter = "p.id > 0";
 
-if (!empty($_POST)) {
-    if (!empty($_POST["action_apply"]) && isset($_POST["selectedPosts"])) {
+if (!empty($_POST)) 
+{
+    if (!empty($_POST["action_apply"]) && isset($_POST["selectedPosts"])) 
+    {
         // Supprime les articles sélectionnés via une boucle
-        if ($_POST["action_apply"] == "delete") {
-            foreach ($_POST["selectedPosts"] as $selectedPost) {
-                $req = $db->prepare("DELETE FROM posts WHERE ID = ? ");
-                $req->execute(array($selectedPost));
+        if ($_POST["action_apply"] == "delete") 
+        {
+            foreach ($_POST["selectedPosts"] as $selectedPost) 
+            {
+                $postManager->delete($selectedPost);
             }
             // Compte le nombre d'articles supprimés pour adaptés l'affichage du message
             $nbSelectedPosts = count($_POST["selectedPosts"]);
-            if ($nbSelectedPosts>1) {
+            if ($nbSelectedPosts>1) 
+            {
                 $msgAdmin = $nbSelectedPosts . " articles ont été supprimés.";
-            } else {
+            } else 
+            {
                 $msgAdmin = "L'article a été supprimé.";
             }
             $typeAlert = "warning"; 
         }
         // Met en brouillon les articles sélectionnés via une boucle
-        if ($_POST["action_apply"] == "Brouillon") {
-            foreach ($_POST["selectedPosts"] as $selectedPost) {
-                $req = $db->prepare("UPDATE posts SET status = ? WHERE ID = ? ");
-                $req->execute(array(
-                    htmlspecialchars($_POST["action_apply"]),
-                    $selectedPost
-                ));
+        if ($_POST["action_apply"] == "Brouillon" || $_POST["action_apply"] == "Publié") 
+        {
+            foreach ($_POST["selectedPosts"] as $selectedPost) 
+            {
+                $postManager->updateStatus($selectedPost, htmlspecialchars($_POST["action_apply"]));
             }
             // Compte le nombre d'articles publiés pour adaptés l'affichage du message
             $selectedPosts = count($_POST["selectedPosts"]);
-            if ($selectedPosts>1) {
-                $msgAdmin = $selectedPosts . " articles ont été mis en brouillon.";
-            } else {
-                $msgAdmin = "L'article a été mis en brouillon.";
-            }
-            $typeAlert = "success"; 
-        }
-        // Publie les articles sélectionnés via une boucle
-        if ($_POST["action_apply"] == "Publié") {
-            foreach ($_POST["selectedPosts"] as $selectedPost) {
-                $req = $db->prepare("UPDATE posts SET status = ? WHERE ID = ? ");
-                $req->execute(array(
-                    htmlspecialchars($_POST["action_apply"]),
-                    $selectedPost
-                ));
-            }
-            // Compte le nombre d'articles publiés pour adaptés l'affichage du message
-            $selectedPosts = count($_POST["selectedPosts"]);
-            if ($selectedPosts>1) {
-                $msgAdmin = $selectedPosts . " articles ont été publié.";
-            } else {
-                $msgAdmin = "L'article a été publié.";
+            if ($selectedPosts>1) 
+            {
+                $msgAdmin = $selectedPosts . " articles ont été modifés.";
+            } else 
+            {
+                $msgAdmin = "L'article a été modifié.";
             }
             $typeAlert = "success"; 
         }
@@ -81,54 +82,55 @@ if (!empty($_POST)) {
 }
 
     // Si sélection d'un filtre 'rôle', enregistre le filtre
-    if (!empty($_POST["filter_status"])) {
+    if (!empty($_POST["filter_status"])) 
+    {
         $filter = "status = '" . htmlspecialchars($_POST["filter_status"]) . "'";
     }
     // Si recherche, enregistre le filtre
-    if (!empty($_POST["filter_search"])) {
+    if (!empty($_POST["filter_search"])) 
+    {
         $search = htmlspecialchars($_POST["search_post"]);
         $filter = "title LIKE '%" . $search . "%' OR content LIKE '%" . $search . "%'";
         echo "RECHERCHE";
     }
 
-// Compte le nombre d'articles
-$req = $db->prepare("SELECT COUNT(*) AS nb_Posts, p.user_ID,  u.ID
-FROM posts p
-LEFT JOIN users u
-ON p.user_ID = u.ID
-WHERE $filter");
-$req->execute(array());
-$nbPosts = $req->fetch();
-$nbItems = $nbPosts["nb_Posts"];
+$nbItems = $postManager->count($filter);
 
 // Vérification si informations dans variable POST
-if (!empty($_POST["nbDisplayed"])) {
+if (!empty($_POST["nbDisplayed"])) 
+{
     $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
     setcookie("pagination[adminNbDisplayedPosts]", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-} else if (!empty($_COOKIE["pagination"]["adminNbDisplayedPosts"])) {
+} else if (!empty($_COOKIE["pagination"]["adminNbDisplayedPosts"])) 
+{
     $nbDisplayed =  $_COOKIE["pagination"]["adminNbDisplayedPosts"];
 } else {
     $nbDisplayed = 20;
 }
 
 // Vérifie l'ordre de tri par type
-if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
+if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date")) {
     $orderBy = htmlspecialchars($_GET["orderBy"]);
-} else if (!empty($_COOKIE["orderBy"]["adminPosts"])) {
+} else if (!empty($_COOKIE["orderBy"]["adminPosts"])) 
+{
     $orderBy = $_COOKIE["orderBy"]["adminPosts"];
-} else {
-    $orderBy = "creation_date_fr";
+} else 
+{
+    $orderBy = "creation_date";
 }
 // Vérifie l'ordre de tri si ascendant ou descendant
-if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
+if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) 
+{
     $order = htmlspecialchars($_GET["order"]);
-} else if (!empty($_COOKIE["order"]["adminPosts"])) {
+} else if (!empty($_COOKIE["order"]["adminPosts"])) 
+{
     $order = $_COOKIE["order"]["adminPosts"];
 } else {
     $order = "desc";
 }
 // Si le tri par type vient de changer, alors le tri est toujours ascendant
-if (!empty($_COOKIE["order"]["adminPosts"]) && $orderBy != $_COOKIE["orderBy"]["adminPosts"]) {
+if (!empty($_COOKIE["order"]["adminPosts"]) && $orderBy != $_COOKIE["orderBy"]["adminPosts"]) 
+{
     $order = "asc";
 }
 // Enregistre les tris en COOKIES
@@ -136,12 +138,14 @@ setcookie("orderBy[adminPosts]", $orderBy, time() + 365*24*3600, null, null, fal
 setcookie("order[adminPosts]", $order, time() + 365*24*3600, null, null, false, true);
 
 // Vérification si informations dans variable GET
-if (!empty($_GET["page"])) {
+if (!empty($_GET["page"])) 
+{
     $page = htmlspecialchars($_GET["page"]);
     // Calcul le nombre de pages par rapport aux nombre d'articles
     $maxPost =  $page*$nbDisplayed;
     $minPost = $maxPost-$nbDisplayed;
-} else  {
+} else 
+{
     $page = 1;
     $minPost = 0;
     $maxPost = $nbDisplayed;
@@ -155,16 +159,7 @@ $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Récupère les articles
-$req = $db->prepare("SELECT p.ID, p.title, p.user_login AS author, u.login, p.status, 
-DATE_FORMAT(p.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
-DATE_FORMAT(p.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
-FROM posts p
-LEFT JOIN users u
-ON p.user_ID = u.ID
-WHERE $filter 
-ORDER BY $orderBy $order
-LIMIT  $minPost, $maxPost");
-$req->execute(array());
+$dataPosts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
 
 ?>
 
@@ -190,14 +185,15 @@ $req->execute(array());
             <section id="table_admin_posts" class="col-md-12 mx-auto mt-4 table-admin">
 
                 <h2 class="mb-4">Gestion des articles
-                    <span class="badge badge-secondary font-weight-normal"><?= $nbPosts["nb_Posts"] ?> </span>
+                    <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>
                 </h2>
                 
                 <?php include("msg_session_flash.php") ?>
 
                 <?php 
                 // Affiche les résultats si recherche
-                if (isset($_POST["filter"]) || isset($_POST["filter_search"])) {
+                if (isset($_POST["filter"]) || isset($_POST["filter_search"])) 
+                {
                     echo "<p> " . $nbItems . " résultat(s).</p>";
                 }    
                 ?>
@@ -241,7 +237,8 @@ $req->execute(array());
                                 <th scope="col" class="align-middle">
                                     <a href="admin_posts?orderBy=title&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Titre
                                     <?php 
-                                    if ($orderBy == "title") {
+                                    if ($orderBy == "title") 
+                                    {
                                     ?>
                                         <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                     <?php   
@@ -252,7 +249,8 @@ $req->execute(array());
                                 <th scope="col" class="align-middle">
                                     <a href="admin_posts?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
                                     <?php 
-                                    if ($orderBy == "author") {
+                                    if ($orderBy == "author") 
+                                    {
                                     ?>
                                         <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                     <?php   
@@ -263,7 +261,8 @@ $req->execute(array());
                                 <th scope="col" class="align-middle">
                                     <a href="admin_posts?orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Statut
                                     <?php 
-                                    if ($orderBy == "status") {
+                                    if ($orderBy == "status") 
+                                    {
                                     ?>
                                         <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                     <?php   
@@ -274,7 +273,8 @@ $req->execute(array());
                                 <th scope="col" class="align-middle">
                                     <a href="admin_posts?orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
                                     <?php 
-                                    if ($orderBy == "creation_date") {
+                                    if ($orderBy == "creation_date") 
+                                    {
                                     ?>
                                         <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                     <?php   
@@ -283,9 +283,10 @@ $req->execute(array());
                                     </a>
                                 </th>
                                 <th scope="col" class="align-middle">
-                                    <a href="admin_posts?orderBy=update_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise à jour
+                                    <a href="admin_posts?orderBy=update_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise à jour
                                     <?php 
-                                    if ($orderBy == "update_date_fr") {
+                                    if ($orderBy == "update_date") 
+                                    {
                                     ?>
                                         <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                     <?php   
@@ -298,18 +299,19 @@ $req->execute(array());
                         <tbody>
 
                             <?php
-                            while ($dataPosts=$req->fetch()) {
+                        foreach ($dataPosts as $dataPost)
+                        {
                             ?>
                                 <tr>
                                     <th scope="row">
-                                        <input type="checkbox" name="selectedPosts[]" id="post<?= $dataPosts["ID"] ?>" value="<?= $dataPosts["ID"] ?>" class=""/>
+                                        <input type="checkbox" name="selectedPosts[]" id="post<?= $dataPost->id() ?>" value="<?= $dataPost->id() ?>" class=""/>
                                         <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
                                     </th>
-                                    <td><a href="edit_postView.php?post=<?= $dataPosts["ID"] ?>" class="text-blue font-weight-bold"><?= $dataPosts["title"] ?></a></td>
-                                    <td><?= $dataPosts["author"] ?></td>
-                                    <td><?= $dataPosts["status"] ?></td>
-                                    <td><?= $dataPosts["creation_date_fr"] ?></td>
-                                    <td><?= $dataPosts["update_date_fr"] ?></td>
+                                    <td><a href="edit_postView.php?post=<?= $dataPost->id() ?>" class="text-blue font-weight-bold"><?= $dataPost->title() ?></a></td>
+                                    <td><?= $dataPost->login() ?></td>
+                                    <td><?= $dataPost->status() ?></td>
+                                    <td><?= $dataPost->creation_date() ?></td>
+                                    <td><?= $dataPost->update_date() ?></td>
                                 </tr>
                             <?php
                             }

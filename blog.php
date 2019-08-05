@@ -15,10 +15,9 @@ $databaseConnection = new DatabaseConnection();
 $manager = new Postsmanager($databaseConnection->db());
 
 // Si recherche, filtre les résultats
+$filter = "status = 'Publié'";
 if (!empty($_GET["search"])) {
-    $filter = "AND title like \'%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
-} else {
-    $filter = "";
+    $filter = $filter . " AND title like \'%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
 }
 // Compte le nombre d'articles
 $nbItems = $manager->count($filter);
@@ -52,7 +51,7 @@ $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Récupère les derniers articles
-$dataPosts = $manager->getList($filter, $minPost, $maxPost);
+$dataPosts = $manager->getList($filter, "p.creation_date", "DESC", $minPost, $maxPost);
 
 // var_dump($_COOKIE);
 var_dump($_POST);
