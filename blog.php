@@ -115,7 +115,7 @@ var_dump($_GET);
                                 ?>
                             </div>
                             <div class="card-body text-body">
-                                <div class="content"><?= strip_tags(htmlspecialchars_decode($dataPost->content())) ?></div>
+                                <div class="content"><?= nl2br(strip_tags(htmlspecialchars_decode($dataPost->content()))) ?></div>
                                     <div>
                                         <a href="post_view.php?post=<?= $dataPost->id() ?>" class="btn btn-outline-blue">Continuer la lecture 
                                             <span class="fas fa-angle-right"></span>
