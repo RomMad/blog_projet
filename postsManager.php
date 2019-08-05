@@ -28,9 +28,7 @@ class PostsManager {
     }
     // Méthode de lecture d'un article
     public function get($id) {
-        $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID,  p.user_login, u.login, p.content, p.status, 
-        DATE_FORMAT(p.creation_date, '%d/%m/%Y à %H:%i') AS creation_date, 
-        DATE_FORMAT(p.update_date, '%d/%m/%Y à %H:%i') AS update_date
+        $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID,  p.user_login, u.login, p.content, p.status, p.creation_date, p.update_date 
         FROM posts p
         LEFT JOIN users u
         ON p.user_ID = u.ID
@@ -43,9 +41,7 @@ class PostsManager {
     }
     // Méthode de lecture d'un article
     public function lastCreate($user_id) {
-        $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, 
-        DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date, 
-        DATE_FORMAT(p.update_date, \"%d/%m/%Y à %H:%i\") AS update_date 
+        $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, p.creation_date, p.update_date 
         FROM posts p 
         LEFT JOIN users u 
         ON p.user_ID = u.ID 
@@ -60,10 +56,8 @@ class PostsManager {
     }
     // Méthode de récupération d'une liste d'articles
     public function getList($filter, $minPost, $maxPost) {
-        $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.status, 
-            IF(CHAR_LENGTH(p.content) > 1200, CONCAT(SUBSTRING(p.content, 1, 1200), ' [...]'), p.content) AS content, 
-            DATE_FORMAT(p.creation_date, '%d/%m/%Y à %H:%i') AS creation_date, 
-            DATE_FORMAT(p.update_date, '%d/%m/%Y à %H:%i') AS update_date
+        $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.status, p.creation_date, p.update_date, 
+            IF(CHAR_LENGTH(p.content) > 1200, CONCAT(SUBSTRING(p.content, 1, 1200), ' [...]'), p.content) AS content
             FROM posts p
             LEFT JOIN users u
             ON p.user_ID = u.ID

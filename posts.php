@@ -140,24 +140,26 @@ class Posts {
     }
 
     public function setCreation_date($creation_date) {
-        $isDate = $this->validateDate($creation_date, "d/m/Y à H:i");
+        $isDate = $this->validateDate($creation_date, "Y-m-d H:i:s");
         if ($isDate) {
-            $this->_creation_date = $creation_date;
+            $creation_date = new DateTime($creation_date);
+            $this->_creation_date = date_format($creation_date,"d/m/Y H:i");
         } else {
             echo "Erreur dans le format de la date !";
         }
     }
     
     public function setUpdate_date($update_date) {
-        $isDate = $this->validateDate($update_date, "d/m/Y à H:i");
+        $isDate = $this->validateDate($update_date, "Y-m-d H:i:s");
         if ($isDate) {
-            $this->_update_date = $update_date;
+            $update_date = new DateTime($update_date);
+            $this->_update_date = $update_date->format("d/m/Y H:i");
         }
     }
-    
+
+    // Vérifie si la date est valide
     private function validateDate($date, $format = 'Y-m-d H:i:s') {
         $d = DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) == $date;
     }
-
 }

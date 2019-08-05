@@ -111,7 +111,7 @@ if (!empty($_GET["post"]))
     $status = $dataPost->status();
     $creation_date = $dataPost->creation_date();
     $update_date = $dataPost->update_date();
-
+    
     // Vérifie si l'utilisateur est l'auteur de l'article
     if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $dataPost->user_id() ) 
     {
@@ -123,6 +123,7 @@ if (!empty($_GET["post"]))
 
 var_dump($_SESSION);
 var_dump($_POST);
+var_dump($dataPost);
 
 ?>
 

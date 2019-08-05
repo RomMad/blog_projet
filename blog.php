@@ -106,7 +106,7 @@ var_dump($_GET);
                                 <a class="text-blue" href="post_view.php?post=<?= $dataPost->id() ?>">
                                     <h3 class="mt-1"><?= $dataPost->title() ?></h3>
                                 </a>
-                                <em>Créé le <?= $dataPost->creation_date() ?> par <a class="text-blue" href=""><?=  $dataPost->user_login() ?></a></em>
+                                <em>Créé le <?= str_replace(' ', ' à ', $dataPost->creation_date()) ?> par <a class="text-blue" href=""><?=  $dataPost->user_login() ?></a></em>
                                 <?php 
                                 if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost->user_id()) { ?>
                                     <a class="text-blue a-edit-post" href="edit_post.php?post=<?= $dataPost->id() ?>"><span class="far fa-edit"></span> Modifier</a>
