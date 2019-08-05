@@ -5,6 +5,7 @@ class Posts {
             $_title,
             $_user_id,
             $_user_login,
+            $_login,
             $_content,
             $_status,
             $_creation_date,
@@ -77,7 +78,9 @@ class Posts {
     public function user_login() {
         return $this->_user_login;
     }
-
+    public function login() {
+        return $this->_login;
+    }
     public function content() {
         return $this->_content;
     }
@@ -119,13 +122,17 @@ class Posts {
             $this->_user_login = $user_login;
         }
     }
+    public function setLogin($login) {
+        if (is_string($login)) {
+            $this->_login = $login;
+        }
+    }
 
     public function setContent($content) {
         if (is_string($content)) {
             $this->_content = $content;
         }
     }
-
     public function setStatus($status) {
         if (is_string($status) && ($status == "Publié" || $status == "Brouillon")) {
             $this->_status = $status;

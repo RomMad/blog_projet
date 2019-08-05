@@ -28,20 +28,35 @@ class PostsManager {
     }
     // Méthode de lecture d'un article
     public function get($id) {
-        $req = $this->_db->prepare("SELECT p.ID, p.user_ID, u.login, 
-            DATE_FORMAT(p.creation_date, '%d/%m/%Y %H:%i') AS creation_date,
-            DATE_FORMAT(p.update_date, '%d/%m/%Y %H:%i') AS update_date
-            FROM posts p 
-            LEFT JOIN users u 
-            ON p.user_ID = u.ID 
-            WHERE p.user_ID = ?   
-            ORDER BY p.ID DESC 
-            LIMIT 0, 1");
+        $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID,  p.user_login, u.login, p.content, p.status, 
+        DATE_FORMAT(p.creation_date, '%d/%m/%Y à %H:%i') AS creation_date, 
+        DATE_FORMAT(p.update_date, '%d/%m/%Y à %H:%i') AS update_date
+        FROM posts p
+        LEFT JOIN users u
+        ON p.user_ID = u.ID
+        WHERE p.ID = ? ");
         $req->execute([
             $id
         ]);
-        $datas = $req->fetch();
-        return new Personnage($datas);
+        $dataPost = $req->fetch();
+        return new Posts($dataPost);
+    }
+    // Méthode de lecture d'un article
+    public function lastCreate($user_id) {
+        $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, 
+        DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date, 
+        DATE_FORMAT(p.update_date, \"%d/%m/%Y à %H:%i\") AS update_date 
+        FROM posts p 
+        LEFT JOIN users u 
+        ON p.user_ID = u.ID 
+        WHERE p.user_ID = ? 
+        ORDER BY p.ID DESC 
+        LIMIT 0, 1");
+        $req->execute([
+            $user_id
+        ]);
+        $dataPost = $req->fetch();
+        return new Posts($dataPost);
     }
     // Méthode de récupération d'une liste d'articles
     public function getList($filter, $minPost, $maxPost) {
@@ -70,16 +85,16 @@ class PostsManager {
             "new_content" => $post->content(),
             "new_status" => $post->status(),
             "post_ID" => $post->id()
-        ]);     
+        ]);
         return "L'article a été modifié.";
     }
     // Méthode de suppresion d'un article
-    public function delete(Posts $post) {
-        $req = $_db->prepare("DELETE FROM posts WHERE ID = ? ");
-        $req->execute(array($post_ID));
+    public function delete($id) {
+        $req = $this->_db->prepare("DELETE FROM posts WHERE ID = ? ");
+        $req->execute([
+            $id
+        ]);
         return "L'article a été supprimé.";
-        // $typeAlert = "warning";
-        // header("Refresh: 2; url=blog.php");
     }
     // Méthode qui coimpte le nombre d'articles
     public function count($filter) {

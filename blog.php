@@ -55,8 +55,9 @@ require("pagination.php");
 $dataPosts = $manager->getList($filter, $minPost, $maxPost);
 
 // var_dump($_COOKIE);
-// var_dump($_POST);
-// var_dump($_GET);
+var_dump($_POST);
+var_dump($_GET);
+// var_dump($dataPosts);
 
 ?>
 
@@ -89,6 +90,8 @@ $dataPosts = $manager->getList($filter, $minPost, $maxPost);
             }    
             ?>
 
+            <?php include("msg_session_flash.php") ?>
+
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
             <div class="row">
@@ -112,7 +115,7 @@ $dataPosts = $manager->getList($filter, $minPost, $maxPost);
                                 ?>
                             </div>
                             <div class="card-body text-body">
-                                <div class="post_content"><?= strip_tags(htmlspecialchars_decode($dataPost->content())) ?></div>
+                                <div class="content"><?= strip_tags(htmlspecialchars_decode($dataPost->content())) ?></div>
                                     <div>
                                         <a href="post_view.php?post=<?= $dataPost->id() ?>" class="btn btn-outline-blue">Continuer la lecture 
                                             <span class="fas fa-angle-right"></span>
