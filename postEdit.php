@@ -121,10 +121,6 @@ if (!empty($_GET["post"]))
     }
 }
 
-var_dump($_SESSION);
-var_dump($_POST);
-var_dump($dataPost);
-
 ?>
 
 <!DOCTYPE html>
