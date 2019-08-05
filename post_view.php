@@ -1,7 +1,18 @@
 <?php 
-session_start(); 
 
-require("connection_db.php");
+function loadClass($classname) 
+{
+    require $classname . ".php";
+}
+
+spl_autoload_register("loadClass");
+
+session_start();
+
+$databaseConnection = new DatabaseConnection();
+$db = $databaseConnection->db();
+
+$postManager = new Postsmanager($db);
 
 if (!empty($_GET["post"])) {
     $post_ID = htmlspecialchars($_GET["post"]);
@@ -110,17 +121,8 @@ if (isset($msgComment)) {
     );
 }
 
-
 // Récupère le post
-$req = $db->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, 
-DATE_FORMAT(p.creation_date, \"%d/%m/%Y à %H:%i\") AS creation_date_fr, 
-DATE_FORMAT(p.update_date, \"%d/%m/%Y à %H:%i\") AS update_date_fr 
-FROM posts p
-LEFT JOIN users u
-ON p.user_ID = u.ID
-WHERE p.ID=?");
-$req->execute(array($post_ID));
-$dataPost = $req->fetch();
+$dataPost = $postManager->get($post_ID); 
 
 // Compte le nombre de commentaires
 $req = $db->prepare("SELECT COUNT(*) AS nb_Comments FROM comments WHERE id_post = ? AND $filter");
@@ -205,20 +207,20 @@ if (!$commentsExist) {
         <section id="post">
                 <div class="card shadow">
                     <div class="card-header bg-dark text-light">
-                        <h1 class="h2 mt-2 mb-3"><?= $dataPost["title"] ?></h1>
-                        <em>Créé le <?= $dataPost["creation_date_fr"] ?> par <a class="text-blue" href=""> <?= $dataPost["login"] ?> </a> et modifié le <?=  $dataPost["update_date_fr"] ?></em>
+                        <h1 class="h2 mt-2 mb-3"><?= $dataPost->title() ?></h1>
+                        <em>Créé le <?= str_replace(' ', ' à ', $dataPost->creation_date()) ?> par <a class="text-blue" href=""> <?= $dataPost->login() ?> </a> (Modifié le <?= str_replace(' ', ' à ', $dataPost->update_date()) ?>)</em>
                         <?php
-                        if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { ?>
-                            <a class="text-blue a-edit-post" href="postEdit.php?post=<?=  $dataPost["ID"]?>"><span class="far fa-edit"></span> Modifier</a>
+                        if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $dataPost->user_id()) { ?>
+                            <a class="text-blue a-edit-post" href="postEdit.php?post=<?=  $dataPost->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php } ?>
                         <a href="#comments" class="badge badge-blue ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_Comments"] ?> </span></a>
                     </div>
                     <div class="card-body text-body">
-                    <?= html_entity_decode($dataPost["content"]) ?>
+                    <?= html_entity_decode($dataPost->content()) ?>
                     </div>
                 </div>
                 <?php 
-                    if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { 
+                    if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost->user_id()) { 
                 ?>
                         <a class="text-blue" href="postEdit.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
                 <?php 
