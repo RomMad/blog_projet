@@ -148,7 +148,7 @@ var_dump($dataPost);
         <section id="post_form" class="row">
             <div class="col-sm-12 col-md-12 mx-auto">
 
-                <form action="edit_post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" method="post" class="">
+                <form action="postEdit.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" method="post" class="">
 
                     <h2 class="mb-4">Édition d'article</h2>
 
