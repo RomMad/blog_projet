@@ -22,6 +22,13 @@ if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4)
 // Vérification si informations dans variable POST
 if (!empty($_POST)) 
 {
+    $title = htmlspecialchars($_POST["title"]);
+    $content = htmlspecialchars($_POST["post_content"]);
+    $status = htmlspecialchars($_POST["status"]);
+    $post_ID = htmlspecialchars($_POST["post_ID"]);
+    $user_id = htmlspecialchars($_SESSION["userID"]);
+    $user_login = htmlspecialchars($_SESSION["userLogin"]);
+
     $typeAlert = "info";
     $validation = true;
 
@@ -47,25 +54,29 @@ if (!empty($_POST))
         if (isset($_POST["save"]) && empty($_POST["post_ID"])) 
         {
             $post = new Posts ([
-                "title" => htmlspecialchars($_POST["title"]),
-                "content" => htmlspecialchars($_POST["post_content"]),
-                "user_id" => htmlspecialchars($_SESSION["userID"]),
-                "user_login"  => htmlspecialchars($_SESSION["userLogin"]),
-                "status" => htmlspecialchars($_POST["status"]),
+                "title" => $title,
+                "content" => $content,
+                "user_id" => $user_id,
+                "user_login" => $user_login,
+                "status" => $status,
             ]);
             $manager->add($post);
             $message = "L'article a été enregistré.";
             $dataPost = $manager->lastcreate($_SESSION["userID"]);
+            
+            $post_ID = $dataPost->id();
+            $creation_date = $dataPost->creation_date();
+            $update_date = $dataPost->update_date();
         }
 
         // Met à jour l'article si article existant
         if (isset($_POST["save"]) && !empty($_POST["post_ID"])) 
         {
             $post = new Posts ([
-                "title" => htmlspecialchars($_POST["title"]),
-                "content" => htmlspecialchars($_POST["post_content"]),
-                "status" => htmlspecialchars($_POST["status"]),
-                "id" => htmlspecialchars($_POST["post_ID"]),
+                "title" => $title,
+                "content" => $content,
+                "status" => $status,
+                "id" => $post_ID,
             ]);
             $manager->update($post);
             $message = "L'article a été modifié.";
@@ -75,15 +86,15 @@ if (!empty($_POST))
     // Supprime l'article
     if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) 
     {
-        $manager->delete((htmlspecialchars($_POST["post_ID"])));
-        $message = "L'article \"" . htmlspecialchars($_POST["title"]) . "\" a été supprimé.";
+        $manager->delete(($post_ID));
+        $message = "L'article \"" . $title . "\" a été supprimé.";
         $typeAlert = "warning";
         header("Location: blog.php");
     }
 
     $_SESSION["flash"] = array(
         "msg" => $message,
-        "type" =>  $typeAlert
+        "type" => $typeAlert
     );
 
 }
@@ -92,8 +103,17 @@ if (!empty($_POST))
 if (!empty($_GET["post"])) 
 {
     $dataPost = $manager->get(htmlspecialchars($_GET["post"]));
+
+    $post_ID = $dataPost->id();
+    $title = $dataPost->title();
+    $content = html_entity_decode($dataPost->content());
+    $user_login = $dataPost->user_login();
+    $status = $dataPost->status();
+    $creation_date = $dataPost->creation_date();
+    $update_date = $dataPost->update_date();
+
     // Vérifie si l'utilisateur est l'auteur de l'article
-    if ($_SESSION["userRole"]>2 && $_SESSION["userID"] != $dataPost->user_id() ) 
+    if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $dataPost->user_id() ) 
     {
         $message = "Vous n'avez pas les droits pour accéder à cet article";
         $typeAlert = "warning";
@@ -119,7 +139,7 @@ var_dump($_POST);
     <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent">
                 <li class="breadcrumb-item"><a href="blog.php" class="text-blue">Blog</a></li>
-                <li class="breadcrumb-item"><a href="post_view.php?post=<?= isset($_GET["post"]) ? htmlspecialchars($_GET["post"]) : "" ?>" class="text-blue">Article</a></li>
+                <li class="breadcrumb-item"><a href="post_view.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" class="text-blue">Article</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Édition</li>
             </ol>
         </nav>
@@ -127,51 +147,51 @@ var_dump($_POST);
         <section id="post_form" class="row">
             <div class="col-sm-12 col-md-12 mx-auto">
 
-                <form action="edit_post.php?post=<?= isset($_GET["post"]) ? htmlspecialchars($_GET["post"]) : "" ?>" method="post" class="">
+                <form action="edit_post.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" method="post" class="">
 
                     <h2 class="mb-4">Édition d'article</h2>
 
                     <?php include("msg_session_flash.php") ?>
 
                     <div class="row">
-                        <div class="col-sm-6 col-md-10">
+                        <div class="col-md-12 col-lg-10">
                             <div class="form-group">
                                 <label for="title">Titre</label>
-                                <input type="text" name="title" class="form-control shadow-sm" id="title" value="<?= isset($dataPost) ? $dataPost->title() : "" ?>">
+                                <input type="text" name="title" class="form-control shadow-sm" id="title" value="<?= isset($title) ? $title : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="post_content" class="d-none">Contenu</label>
-                                <textarea name="post_content" class="form-control shadow-sm" id="post_content" rows="12"><?= isset($dataPost) ? html_entity_decode($dataPost->content()) : "" ?></textarea>
+                                <textarea name="post_content" class="form-control shadow-sm" id="post_content" rows="12"><?= isset($content) ?$content : "" ?></textarea>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-2">
+                        <div class="col-md-12 col-lg-2">
                             <div class="form-group sr-only">
-                                    <label for="post_ID"">ID</label>
-                                    <input type="text" name="post_ID" class="form-control shadow-sm" id="post_ID" readonly value="<?= isset($dataPost) ? $dataPost->id() : "" ?>">
+                                    <label for="post_ID">ID</label>
+                                    <input type="text" name="post_ID" class="form-control shadow-sm" id="post_ID" readonly value="<?= isset($post_ID) ? $post_ID : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="post_user_ID">Auteur</label>
-                                <input type="text" name="post_user_ID" class="form-control shadow-sm" id="post_user_ID" readonly value="<?= isset($dataPost) ? $dataPost->user_login() : "" ?>">
+                                <input type="text" name="post_user_ID" class="form-control shadow-sm" id="post_user_ID" readonly value="<?= isset($user_login) ? $user_login : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="creation_date">Date de création</label>
-                                <input type="text" name="creation_date" class="form-control shadow-sm" id="creation_date" readonly value="<?= isset($dataPost) ? $dataPost->creation_date() : "" ?>">
+                                <input type="text" name="creation_date" class="form-control shadow-sm" id="creation_date" readonly value="<?= isset($creation_date) ? $creation_date : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="update_date">Date de mise à jour</label>
-                                <input type="text" name="update_date" class="form-control shadow-sm" id="update_date" readonly value="<?= isset($dataPost) ? $dataPost->update_date() : "" ?>">
+                                <input type="text" name="update_date" class="form-control shadow-sm" id="update_date" readonly value="<?= isset($update_date) ? $update_date : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="status">Statut</label>
                                 <select name="status" class="form-control shadow-sm" id="status">
-                                    <option <?php if (isset($dataPost) && $dataPost->status()=="Publié") { ?> selected <?php } ?>>Publié</option>
-                                    <option <?php if (isset($dataPost) && $dataPost->status()=="Brouillon") { ?> selected <?php } ?>>Brouillon</option>
+                                    <option <?php if (isset($status) && $status=="Publié") { ?> selected <?php } ?>>Publié</option>
+                                    <option <?php if (isset($status) && $status=="Brouillon") { ?> selected <?php } ?>>Brouillon</option>
                                 </select>
                             </div>
                             <div class="form-group float-right">
                                 <input type="submit" id="save" name="save" value="Enregistrer" class="btn btn-block btn-blue mb-2 shadow">
                                 <?php 
-                                    if ( isset($_GET["post"])) { 
+                                    if (isset($_GET["post"])) { 
                                 ?>
                                 <input type="submit" id="erase" name="erase" alt="Supprimer l'article" class="btn btn-block btn-danger mb-2 shadow" 
                                 value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;}else{return false;}">
