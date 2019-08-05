@@ -307,7 +307,7 @@ $dataPosts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost
                                         <input type="checkbox" name="selectedPosts[]" id="post<?= $dataPost->id() ?>" value="<?= $dataPost->id() ?>" class=""/>
                                         <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
                                     </th>
-                                    <td><a href="edit_postView.php?post=<?= $dataPost->id() ?>" class="text-blue font-weight-bold"><?= $dataPost->title() ?></a></td>
+                                    <td><a href="post_view.php?post=<?= $dataPost->id() ?>" class="text-blue font-weight-bold"><?= $dataPost->title() ?></a></td>
                                     <td><?= $dataPost->login() ?></td>
                                     <td><?= $dataPost->status() ?></td>
                                     <td><?= $dataPost->creation_date() ?></td>

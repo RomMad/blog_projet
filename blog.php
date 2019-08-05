@@ -79,7 +79,7 @@ var_dump($_GET);
             if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
             ?> 
                 <div class="mt-4 mb-4">
-                    <a class="text-blue" href="postEdit.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                    <a class="text-blue" href="post_edit.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
                 </div>
             <?php
             }
@@ -102,13 +102,13 @@ var_dump($_GET);
                     <div class="col-md-12">
                         <div class="card shadow">
                             <div class="card-header bg-dark text-light">
-                                <a class="text-blue" href="postView.php?post=<?= $dataPost->id() ?>">
+                                <a class="text-blue" href="post_view.php?post=<?= $dataPost->id() ?>">
                                     <h3 class="mt-1"><?= $dataPost->title() ?></h3>
                                 </a>
                                 <em>Créé le <?= str_replace(' ', ' à ', $dataPost->creation_date()) ?> par <a class="text-blue" href=""><?=  $dataPost->user_login() ?></a></em>
                                 <?php 
                                 if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost->user_id()) { ?>
-                                    <a class="text-blue a-edit-post" href="postEdit.php?post=<?= $dataPost->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                                    <a class="text-blue a-edit-post" href="post_edit.php?post=<?= $dataPost->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                                 <?php 
                                 } 
                                 ?>
@@ -122,7 +122,7 @@ var_dump($_GET);
                                     <span class="post-fade-out"></span>
                                 </div>
                                 <div>
-                                    <a href="postView.php?post=<?= $dataPost->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
+                                    <a href="post_view.php?post=<?= $dataPost->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
                                         <span class="fas fa-angle-right"></span>
                                     </a>
                                 <?php
@@ -142,7 +142,7 @@ var_dump($_GET);
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
             <div class="mt-4 mb-4">
-                <a class="text-blue" href="postEdit.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                <a class="text-blue" href="post_edit.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
 
             </section>

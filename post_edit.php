@@ -136,7 +136,7 @@ if (!empty($_GET["post"]))
     <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent">
                 <li class="breadcrumb-item"><a href="blog.php" class="text-blue">Blog</a></li>
-                <li class="breadcrumb-item"><a href="postView.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" class="text-blue">Article</a></li>
+                <li class="breadcrumb-item"><a href="post_view.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" class="text-blue">Article</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Édition</li>
             </ol>
         </nav>
@@ -144,7 +144,7 @@ if (!empty($_GET["post"]))
         <section id="post_form" class="row">
             <div class="col-sm-12 col-md-12 mx-auto">
 
-                <form action="postEdit.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" method="post" class="">
+                <form action="post_edit.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" method="post" class="">
 
                     <h2 class="mb-4">Édition d'article</h2>
 
