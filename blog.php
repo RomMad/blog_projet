@@ -117,17 +117,18 @@ var_dump($_GET);
                             <div class="card-body text-body">
                                 <div class="post_content"><?= nl2br(strip_tags(htmlspecialchars_decode($dataPost->content()))) ?>
                                 <?php 
-                                if (strlen($dataPost->content()) > 1000) {
+                                // Si le contenu est > à 1200 caractères, affiche le bouton 'Continuer la lecture' et ajoute un effet fade out
+                                if (strlen($dataPost->content()) > 1200) {
                                 ?>
-                                    <span class="post-fade-out"></span> 
-                                <?php
-                                }
-                                ?>
+                                    <span class="post-fade-out"></span>
                                 </div>
                                 <div>
                                     <a href="post_view.php?post=<?= $dataPost->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
                                         <span class="fas fa-angle-right"></span>
                                     </a>
+                                <?php
+                                }
+                                ?>
                                 </div>
                             </div>
                         </div>
