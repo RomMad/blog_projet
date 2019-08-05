@@ -103,7 +103,7 @@ var_dump($_GET);
                     <div class="col-md-12">
                         <div class="card shadow">
                             <div class="card-header bg-dark text-light">
-                                <a class="text-blue" href="post_view.php?post=<?= $dataPost->id() ?>">
+                                <a class="text-blue" href="postView.php?post=<?= $dataPost->id() ?>">
                                     <h3 class="mt-1"><?= $dataPost->title() ?></h3>
                                 </a>
                                 <em>Créé le <?= str_replace(' ', ' à ', $dataPost->creation_date()) ?> par <a class="text-blue" href=""><?=  $dataPost->user_login() ?></a></em>
@@ -123,7 +123,7 @@ var_dump($_GET);
                                     <span class="post-fade-out"></span>
                                 </div>
                                 <div>
-                                    <a href="post_view.php?post=<?= $dataPost->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
+                                    <a href="postView.php?post=<?= $dataPost->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
                                         <span class="fas fa-angle-right"></span>
                                     </a>
                                 <?php

@@ -153,8 +153,8 @@ if (!empty($_GET["page"])) {
 }
 
 // Initialisation des variables pour la pagination
-$linkNbDisplayed= "post_view.php?" . $post_ID . "#form-comment";
-$linkPagination= "post_view.php?";
+$linkNbDisplayed= "postView.php?" . $post_ID . "#form-comment";
+$linkPagination= "postView.php?";
 $anchorPagination= "#comments";
 $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
@@ -238,7 +238,7 @@ if (!$commentsExist) {
                     <h2 class="h3 mb-4">Nouveau commentaire</h2>
                     <div class="row">
                         <div class="col-md-12">
-                            <form action="post_view.php?post=<?= $post_ID ?>#form-comment" method="post" class="px-3">
+                            <form action="postView.php?post=<?= $post_ID ?>#form-comment" method="post" class="px-3">
                                 <?php 
                                     if (!isset($_SESSION["userID"])) { 
                                 ?>
@@ -304,7 +304,7 @@ if (!$commentsExist) {
                                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataComment["user_ID"]) { 
                                         ?>
                                             <div>
-                                                <a href="post_view.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=erase#form-comment" 
+                                                <a href="postView.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=erase#form-comment" 
                                                     onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
                                                     <span class="fas fa-times text-danger"></span>
                                                 </a>
@@ -318,7 +318,7 @@ if (!$commentsExist) {
                                             } else {
                                         ?>
                                             <div class="report-comment">
-                                                <a href="post_view.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=report#form-comment" 
+                                                <a href="postView.php?post=<?= isset($post_ID) ? $post_ID : "" ?>&comment=<?=  $dataComment["ID"] ?>&action=report#form-comment" 
                                                     onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
                                                     <span class="far fa-flag text-warning"> Signaler</span>
                                                 </a>
@@ -337,7 +337,7 @@ if (!$commentsExist) {
                                         }
                                         ?>
                                      <div id="form-edit-comment-<?= $dataComment["ID"] ?>"class="form-edit-comment d-none">
-                                        <form action="post_view.php?post=<?= $post_ID ?>&comment=<?= $dataComment["ID"] ?>&action=edit#form-comment" method="post">
+                                        <form action="postView.php?post=<?= $post_ID ?>&comment=<?= $dataComment["ID"] ?>&action=edit#form-comment" method="post">
                                             <div class="form-group">
                                                 <label for="content"></label>
                                                 <textarea name="content" class="form-control shadow-sm" id="content" rows="4"><?= $dataComment["content"] ?></textarea>

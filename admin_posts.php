@@ -305,7 +305,7 @@ $req->execute(array());
                                         <input type="checkbox" name="selectedPosts[]" id="post<?= $dataPosts["ID"] ?>" value="<?= $dataPosts["ID"] ?>" class=""/>
                                         <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
                                     </th>
-                                    <td><a href="edit_post.php?post=<?= $dataPosts["ID"] ?>" class="text-blue font-weight-bold"><?= $dataPosts["title"] ?></a></td>
+                                    <td><a href="edit_postView.php?post=<?= $dataPosts["ID"] ?>" class="text-blue font-weight-bold"><?= $dataPosts["title"] ?></a></td>
                                     <td><?= $dataPosts["author"] ?></td>
                                     <td><?= $dataPosts["status"] ?></td>
                                     <td><?= $dataPosts["creation_date_fr"] ?></td>

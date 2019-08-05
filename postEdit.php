@@ -140,7 +140,7 @@ var_dump($dataPost);
     <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent">
                 <li class="breadcrumb-item"><a href="blog.php" class="text-blue">Blog</a></li>
-                <li class="breadcrumb-item"><a href="post_view.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" class="text-blue">Article</a></li>
+                <li class="breadcrumb-item"><a href="postView.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" class="text-blue">Article</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Édition</li>
             </ol>
         </nav>

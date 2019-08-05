@@ -286,7 +286,7 @@ $req->execute(array());
                                             <input type="checkbox" name="selectedComments[]" id="comment<?= $dataComments["ID"] ?>" value="<?= $dataComments["ID"] ?>" class=""/>
                                             <label for="selectedComments[]" class="sr-only">Sélectionner</label>
                                         </th>
-                                        <td><a href="post.php?post=<?= $dataComments["id_post"] ?>" class="text-dark"><?= $dataComments["content"] ?></a></td>
+                                        <td><a href="postView.php?post=<?= $dataComments["id_post"] ?>" class="text-dark"><?= $dataComments["content"] ?></a></td>
                                         <td>
                                         <?php 
                                         if (!empty($dataComments["author"])) {
