@@ -209,7 +209,7 @@ if (!$commentsExist) {
                         <em>Créé le <?= $dataPost["creation_date_fr"] ?> par <a class="text-blue" href=""> <?= $dataPost["login"] ?> </a> et modifié le <?=  $dataPost["update_date_fr"] ?></em>
                         <?php
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { ?>
-                            <a class="text-blue a-edit-post" href="edit_post.php?post=<?=  $dataPost["ID"]?>"><span class="far fa-edit"></span> Modifier</a>
+                            <a class="text-blue a-edit-post" href="postEdit.php?post=<?=  $dataPost["ID"]?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php } ?>
                         <a href="#comments" class="badge badge-blue ml-2 font-weight-normal">Commentaires <span class="badge badge-light"><?= $nbComments["nb_Comments"] ?> </span></a>
                     </div>
@@ -220,7 +220,7 @@ if (!$commentsExist) {
                 <?php 
                     if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost["user_ID"]) { 
                 ?>
-                        <a class="text-blue" href="edit_post.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
+                        <a class="text-blue" href="postEdit.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
                 <?php 
                 } 
                 ?>

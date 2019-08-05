@@ -80,7 +80,7 @@ var_dump($_GET);
             if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
             ?> 
                 <div class="mt-4 mb-4">
-                    <a class="text-blue" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                    <a class="text-blue" href="postEdit.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
                 </div>
             <?php
             }
@@ -109,7 +109,7 @@ var_dump($_GET);
                                 <em>Créé le <?= str_replace(' ', ' à ', $dataPost->creation_date()) ?> par <a class="text-blue" href=""><?=  $dataPost->user_login() ?></a></em>
                                 <?php 
                                 if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost->user_id()) { ?>
-                                    <a class="text-blue a-edit-post" href="edit_post.php?post=<?= $dataPost->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                                    <a class="text-blue a-edit-post" href="postEdit.php?post=<?= $dataPost->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                                 <?php 
                                 } 
                                 ?>
@@ -143,7 +143,7 @@ var_dump($_GET);
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
             <div class="mt-4 mb-4">
-                <a class="text-blue" href="edit_post.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                <a class="text-blue" href="postEdit.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
 
             </section>
