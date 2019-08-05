@@ -296,7 +296,7 @@ if (!$commentsExist) {
                                     ?>
                                     </p>
                                     <div class="comment-content position relative"><?= nl2br($dataComment["content"]) ?>
-                                        <span class="comment-fade-out d-none"></sapi_windows_cp_set>
+                                        <span class="comment-fade-out d-none"></span>
                                     </div>
                                         <?php                        
                                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataComment["user_ID"]) { 

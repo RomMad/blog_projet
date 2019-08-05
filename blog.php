@@ -115,12 +115,20 @@ var_dump($_GET);
                                 ?>
                             </div>
                             <div class="card-body text-body">
-                                <div class="content"><?= nl2br(strip_tags(htmlspecialchars_decode($dataPost->content()))) ?></div>
-                                    <div>
-                                        <a href="post_view.php?post=<?= $dataPost->id() ?>" class="btn btn-outline-blue">Continuer la lecture 
-                                            <span class="fas fa-angle-right"></span>
-                                        </a>
-                                    </div>
+                                <div class="post_content"><?= nl2br(strip_tags(htmlspecialchars_decode($dataPost->content()))) ?>
+                                <?php 
+                                if (strlen($dataPost->content()) > 1000) {
+                                ?>
+                                    <span class="post-fade-out"></span> 
+                                <?php
+                                }
+                                ?>
+                                </div>
+                                <div>
+                                    <a href="post_view.php?post=<?= $dataPost->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
+                                        <span class="fas fa-angle-right"></span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
