@@ -10,9 +10,9 @@ spl_autoload_register("loadClass");
 
 session_start();
 
-require("connection_db.php");
+$databaseConnection = new DatabaseConnection();
 
-$manager = new Postsmanager($db);
+$manager = new Postsmanager($databaseConnection->db());
 
 // Si recherche, filtre les résultats
 if (!empty($_GET["search"])) {
