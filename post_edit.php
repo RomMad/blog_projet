@@ -25,20 +25,16 @@ if (!empty($_POST)) {
     $post_ID = htmlspecialchars($_POST["post_ID"]);
     $user_id = htmlspecialchars($_SESSION["userID"]);
     $user_login = htmlspecialchars($_SESSION["userLogin"]);
-
-    $typeAlert = "info";
     $validation = true;
 
     // Vérifie si le titre est vide
     if (empty($_POST["title"])) {
-        $message = "Le titre de l'article est vide.";
-        $typeAlert = "danger";
+        $session->setFlash("Le titre de l'article est vide.", "danger");
         $validation = false;
     }
     // Vérifie si le contenu de l'article est vide
     if (empty($_POST["post_content"]) && $_POST["status"] == "Publié") {
-        $message = "L'article ne peut pas être publié si le contenu est vide.";
-        $typeAlert = "danger";
+        $session->setFlash("L'article ne peut pas être publié si le contenu est vide.", "danger");
         $validation = false;
     }
 
@@ -54,7 +50,7 @@ if (!empty($_POST)) {
                 "status" => $status,
             ]);
             $postsManager->add($post);
-            $message = "L'article a été enregistré.";
+            $session->setFlash("L'article a été enregistré.", "success");
             $post = $postsManager->lastcreate($_SESSION["userID"]);
             
             $post_ID = $post->id();
@@ -71,7 +67,7 @@ if (!empty($_POST)) {
                 "id" => $post_ID,
             ]);
             $postsManager->update($post);
-            $message = "L'article a été modifié.";
+            $session->setFlash("Les modifications ont été enregistrées.", "success");
         }
     }
 
@@ -79,13 +75,9 @@ if (!empty($_POST)) {
     if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) {
         $post = $postsManager->get(htmlspecialchars($_POST["post_ID"]));
         $postsManager->delete($post);
-        $message = "L'article \"" . $title . "\" a été supprimé.";
-        $typeAlert = "warning";
+        $session->setFlash("L'article \"" . $title . "\" a été supprimé.", "warning");
         header("Location: blog.php");
     }
-
-    $session->setFlash($message, $typeAlert);
-
 }
 
 // Récupère l'article si GET post existe
@@ -102,8 +94,7 @@ if (!empty($_GET["post"])) {
     
     // Vérifie si l'utilisateur est l'auteur de l'article
     if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post->user_id()) {
-        $message = "Vous n'avez pas les droits pour accéder à cet article";
-        $typeAlert = "warning";
+        $session->setFlash("Vous n'avez pas les droits pour accéder à cet article", "warning");
         header("Location: blog.php");
     }
 }

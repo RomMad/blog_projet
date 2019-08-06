@@ -60,20 +60,15 @@ if (!empty($_POST)) {
         
         mail($to,$subject,$message,$headers);
 
-        $message = "Un email vient de vous être envoyé.";
-        $typeAlert = "success";
+        $session->setFlash("Un email vient de vous être envoyé", "success");
     } else {
-        $message = "Cette adresse email est inconnue.";
-        $typeAlert = "danger";
+        $session->setFlash("Cette adresse email est inconnue", "danger");
     }
 
-    // Vérifie si le champ login est vide
+    // Vérifie si le champ email est vide
     if (empty($email)) {
-        $message = "Veuillez saisir une adresse email.";
-        $typeAlert = "warning";
+        $session->setFlash("Veuillez saisir une adresse email", "warning");
     }
-
-    $session->setFlash($message, $typeAlert);
 }
 ?>
 

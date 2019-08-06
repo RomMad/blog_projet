@@ -42,20 +42,16 @@ if (!empty($_POST)) {
         $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
         $req->execute(array("user_ID" => htmlspecialchars($dataUser["ID"])));
 
-        $message = "Vous êtes connecté.";
-        $typeAlert = "success";
+        $session->setFlash("Vous êtes connecté.", "success");
         header("Refresh: 2; url=index.php");
     } else {
-        $message = "Login ou mot de passe incorrect.";
-        $typeAlert = "danger";
+        $session->setFlash("Login ou mot de passe incorrect.", "danger");
     }
 
     // Vérifie si le champ login est vide
     if (empty($login)) {
-        $message = "Veuillez saisir un Login.";
+        $session->setFlash("Veuillez saisir un Login.", "danger");
     }
-
-    $session->setFlash($message, $typeAlert);
 }
 ?>
 

@@ -36,11 +36,7 @@ if (!empty($_POST)) {
         "default_role" => htmlspecialchars($_POST["default_role"]),
         "moderation" =>  $moderation
     ));
-
-    $message = "Les paramètres ont été mis à jour.";
-    $typeAlert = "success"; 
-
-    $session->setFlash($message, $typeAlert);
+    $session->setFlash("Les paramètres ont été mis à jour.", "success");
 }
     // Récupère les paramètres
     $req = $db->prepare("SELECT * FROM settings");

@@ -37,11 +37,10 @@ if (!empty($_POST)) {
             // Compte le nombre d'utilisateurs supprimés pour adaptés l'affichage du message
             $nbselectedUsers = count($_POST["selectedUsers"]);
             if ($nbselectedUsers>1) {
-                $message = $nbselectedUsers . " utilisateurs ont été supprimés.";
+                $session->setFlash($nbselectedUsers . " utilisateurs ont été supprimés.", "warning");
             } else {
-                $message = "L'utilisateur a été supprimé.";
+                $session->setFlash("L'utilisateur a été supprimé.", "warning");
             }
-            $typeAlert = "warning"; 
         }
         // Modère les utilisateurs sélectionnés via une boucle
         if ($_POST["action_apply"] == "moderate") {
@@ -52,13 +51,11 @@ if (!empty($_POST)) {
             // Compte le nombre d'utilisateurs modérés pour adaptés l'affichage du message
             $nbselectedUsers = count($_POST["selectedUsers"]);
             if ($nbselectedUsers>1) {
-                $message = $nbselectedUsers . " utilisateurs ont été modérés.";
+                $session->setFlash($nbselectedUsers . " utilisateurs ont été modérés.", "success");
             } else {
-                $message = "L'utilisateur a été modéré.";
+                $session->setFlash("L'utilisateur a été modéré.", "success");
             }
-            $typeAlert = "success"; 
         }
-        $session->setFlash($message, $typeAlert);
     }
     // Si sélection d'un filtre 'rôle', enregistre le filtre
     if (!empty($_POST["filter_role"])) {

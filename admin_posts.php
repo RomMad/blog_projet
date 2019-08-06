@@ -13,18 +13,15 @@ $db = $databaseConnection->db();
 $postManager = new Postsmanager($databaseConnection->db());
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
-if (empty($_SESSION["userID"])) 
-{
+if (empty($_SESSION["userID"])) {
     header("Location: index.php");
-} else 
-{
+} else {
     // Récupère les informations de l'utilisateur
     $req = $db->prepare("SELECT role FROM users WHERE ID =?");
     $req->execute(array($_SESSION["userID"]));
     $userRole = $req->fetch();
     
-    if ($userRole["role"]!=1) 
-    {
+    if ($userRole["role"]!=1) {
         header("Location: index.php");
     }
 }
@@ -33,56 +30,42 @@ $filter = "p.id > 0";
 
 if (!empty($_POST)) 
 {
-    if (!empty($_POST["action_apply"]) && isset($_POST["selectedPosts"])) 
-    {
+    if (!empty($_POST["action_apply"]) && isset($_POST["selectedPosts"])) {
         // Supprime les articles sélectionnés via une boucle
-        if ($_POST["action_apply"] == "delete") 
-        {
-            foreach ($_POST["selectedPosts"] as $selectedPost) 
-            {
+        if ($_POST["action_apply"] == "delete") {
+            foreach ($_POST["selectedPosts"] as $selectedPost) {
                 $postManager->delete($selectedPost);
             }
             // Compte le nombre d'articles supprimés pour adaptés l'affichage du message
             $nbSelectedPosts = count($_POST["selectedPosts"]);
-            if ($nbSelectedPosts>1) 
-            {
-                $message = $nbSelectedPosts . " articles ont été supprimés.";
-            } else 
-            {
-                $message = "L'article a été supprimé.";
+            if ($nbSelectedPosts>1) {
+                $session->setFlash($nbSelectedPosts . " articles ont été supprimés.", "warning");
+            } else {
+                $session->setFlash("L'article a été supprimé.", "warning");
             }
-            $typeAlert = "warning"; 
         }
         // Met en brouillon les articles sélectionnés via une boucle
-        if ($_POST["action_apply"] == "Brouillon" || $_POST["action_apply"] == "Publié") 
-        {
-            foreach ($_POST["selectedPosts"] as $selectedPost) 
-            {
+        if ($_POST["action_apply"] == "Brouillon" || $_POST["action_apply"] == "Publié") {
+            foreach ($_POST["selectedPosts"] as $selectedPost) {
                 $postManager->updateStatus($selectedPost, htmlspecialchars($_POST["action_apply"]));
             }
             // Compte le nombre d'articles publiés pour adaptés l'affichage du message
             $selectedPosts = count($_POST["selectedPosts"]);
-            if ($selectedPosts>1) 
-            {
-                $message = $selectedPosts . " articles ont été modifés.";
-            } else 
-            {
-                $message = "L'article a été modifié.";
+            if ($selectedPosts>1) {
+                $session->setFlash($selectedPosts . " articles ont été modifés.", "success");
+            } else {
+                $session->setFlash("L'article a été modifié.", "success");
             }
-            $typeAlert = "success"; 
         }
-        $session->setFlash($message, $typeAlert);
     }
 }
 
     // Si sélection d'un filtre 'rôle', enregistre le filtre
-    if (!empty($_POST["filter_status"])) 
-    {
+    if (!empty($_POST["filter_status"])) {
         $filter = "status = '" . htmlspecialchars($_POST["filter_status"]) . "'";
     }
     // Si recherche, enregistre le filtre
-    if (!empty($_POST["filter_search"])) 
-    {
+    if (!empty($_POST["filter_search"])) {
         $search = htmlspecialchars($_POST["search_post"]);
         $filter = "title LIKE '%" . $search . "%' OR content LIKE '%" . $search . "%'";
         echo "RECHERCHE";
@@ -91,12 +74,10 @@ if (!empty($_POST))
 $nbItems = $postManager->count($filter);
 
 // Vérification si informations dans variable POST
-if (!empty($_POST["nbDisplayed"])) 
-{
+if (!empty($_POST["nbDisplayed"])) {
     $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
     setcookie("pagination[adminNbDisplayedPosts]", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-} else if (!empty($_COOKIE["pagination"]["adminNbDisplayedPosts"])) 
-{
+} elseif (!empty($_COOKIE["pagination"]["adminNbDisplayedPosts"])) {
     $nbDisplayed =  $_COOKIE["pagination"]["adminNbDisplayedPosts"];
 } else {
     $nbDisplayed = 20;
@@ -186,8 +167,7 @@ $posts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
                 $session->flash(); // Message en session flash
 
                 // Affiche les résultats si recherche
-                if (isset($_POST["filter"]) || isset($_POST["filter_search"])) 
-                {
+                if (isset($_POST["filter"]) || isset($_POST["filter_search"])) {
                     echo "<p> " . $nbItems . " résultat(s).</p>";
                 }    
                 ?>
@@ -231,8 +211,7 @@ $posts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
                                 <th scope="col" class="align-middle">
                                     <a href="admin_posts?orderBy=title&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Titre
                                     <?php 
-                                    if ($orderBy == "title") 
-                                    {
+                                    if ($orderBy == "title") {
                                     ?>
                                         <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                     <?php   
@@ -243,8 +222,7 @@ $posts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
                                 <th scope="col" class="align-middle">
                                     <a href="admin_posts?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
                                     <?php 
-                                    if ($orderBy == "author") 
-                                    {
+                                    if ($orderBy == "author") {
                                     ?>
                                         <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                     <?php   
@@ -255,8 +233,7 @@ $posts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
                                 <th scope="col" class="align-middle">
                                     <a href="admin_posts?orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Statut
                                     <?php 
-                                    if ($orderBy == "status") 
-                                    {
+                                    if ($orderBy == "status") {
                                     ?>
                                         <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                     <?php   
@@ -267,8 +244,7 @@ $posts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
                                 <th scope="col" class="align-middle">
                                     <a href="admin_posts?orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
                                     <?php 
-                                    if ($orderBy == "creation_date") 
-                                    {
+                                    if ($orderBy == "creation_date") {
                                     ?>
                                         <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                     <?php   
@@ -279,8 +255,7 @@ $posts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
                                 <th scope="col" class="align-middle">
                                     <a href="admin_posts?orderBy=update_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise à jour
                                     <?php 
-                                    if ($orderBy == "update_date") 
-                                    {
+                                    if ($orderBy == "update_date") {
                                     ?>
                                         <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                     <?php   
@@ -293,8 +268,7 @@ $posts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
                         <tbody>
 
                             <?php
-                        foreach ($posts as $post)
-                        {
+                        foreach ($posts as $post) {
                             ?>
                                 <tr>
                                     <th scope="row">

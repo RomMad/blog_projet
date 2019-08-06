@@ -19,8 +19,6 @@ if (!empty($_POST)) {
     $birthdate = !empty($_POST["birthdate"]) ? htmlspecialchars($_POST["birthdate"]) : NULL;
     $pass = htmlspecialchars($_POST["pass"]);
     $validation = true;
-    $message = "Attention :";
-    $typeAlert = "danger";
 
     // Vérifie si le login est déjà utilisé
     $req = $db->prepare("SELECT * FROM users WHERE login = ? ");
@@ -33,22 +31,27 @@ if (!empty($_POST)) {
 
     // Vérifie si le champ login est vide
     if (empty($login)) {
-        $message = $message . "<li>Veuillez saisir un Login.</li>";
+        $session->setFlash ("Veuillez saisir un Login.", "danger");
         $validation = false;
     }
     // Vérifie si le login est déjà utilisé
-    if ($loginExist) {
-        $message = $message . "<li>Ce login est déjà utilisé. Veuillez en utiliser un autre.</li>";
+    elseif ($loginExist) {
+        $session->setFlash ("Ce login est déjà utilisé. Veuillez en utiliser un autre.", "danger");
         $validation = false;
     }
+    // Vérifie si l'adresse email est vide
+    if (empty($email)) {
+        $session->setFlash ("L'adresse email est vide.", "danger");
+        $validation = false;
+    } 
     // Vérifie si l'adresse email est correcte
-    if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
-        $message = $message . "<li>L'adresse \"" . $email . "\" est incorrecte.</li>";
+    elseif (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
+        $session->setFlash ("L'adresse \"" . $email . "\" est incorrecte.", "danger");
         $validation = false;
     }
     // Vérifie si l'adresse email est déjà utilisée
-    if ($emailExist) {
-        $message = $message . "<li>L'adresse email est déjà utilisée.</li>";
+    elseif ($emailExist) {
+        $session->setFlash ("L'adresse email est déjà utilisée.", "danger");
         $validation = false;
     }
     // Vérifie si le mot de passe est correct
@@ -57,12 +60,17 @@ if (!empty($_POST)) {
     // (?=.*[0-9])  : teste la présence d'un chiffre de 0 à 9
     // .{6,}$       : teste si au moins 6 caractères
     if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $pass)) {
-        $message = $message . "<li>Le mot de passe n'est pas valide.</li>";
+        $session->setFlash ("Le mot de passe n'est pas valide.", "danger");
         $validation = false;
     }
     // Vérifie si la confirmation du mot de passe est identique
-    if ($pass!=$_POST["pass_confirm"]) {
-        $message =  $message . "<li>Le mot de passe et la confirmation sont différents.</li>";
+    elseif (empty($_POST["pass_confirm"])) {
+        $session->setFlash ("La confirmation du mot de passe est vide.", "danger");
+        $validation = false;
+    }
+    // Vérifie si la confirmation du mot de passe est identique
+    elseif ($pass!=$_POST["pass_confirm"]) {
+        $session->setFlash ("Le mot de passe et la confirmation sont différents.", "danger");
         $validation = false;
     }
     // Si validation est vrai, valide l'inscription de l'utilisateur
@@ -86,13 +94,10 @@ if (!empty($_POST)) {
             // Ajoute les infos de l"utilisateurs dans la Session
             $_SESSION["userID"] = $idUser["ID"];
             $_SESSION["userLogin"] = $login;
-            $typeAlert = "success";
-            $message = "L'inscription est réussie.";
+            $session->setFlash ("L'inscription est réussie.", "success");
 
             header("Refresh: 2; url=index.php");
         }
-
-        $session->setFlash($message, $typeAlert);
 }
 ?>
 

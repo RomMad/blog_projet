@@ -37,11 +37,10 @@ if (!empty($_POST)) {
             // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
             $nbselectedComments = count($_POST["selectedComments"]);
             if ($nbselectedComments>1) {
-                $message = $nbselectedComments . " commentaires ont été supprimés.";
+                $session->setFlash($nbselectedComments . " commentaires ont été supprimés.", "warning");
             } else {
-                $message = "Le commentaire a été supprimé.";
+                $session->setFlash("Le commentaire a été supprimé", "warning");
             }
-            $typeAlert = "warning"; 
         }
         // Modère les commentaires sélectionnés via une boucle
         if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedComments"])) {
@@ -52,13 +51,11 @@ if (!empty($_POST)) {
             // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
             $nbselectedComments = count($_POST["selectedComments"]);
             if ($nbselectedComments>1) {
-                $message = $nbselectedComments . " commentaires ont été modérés.";
+                $session->setFlash($nbselectedComments . " commentaires ont été modérés.", "success");
             } else {
-                $message = "Le commentaire a été modéré.";
+                $session->setFlash("Le commentaire a été modéré.", "success");
             }
-            $typeAlert = "success"; 
         }
-        $session->setFlash($message, $typeAlert);
     }
     // Enregistre le filtre
     if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= "0") {
@@ -78,10 +75,10 @@ $nbItems = $nbComments["nb_Comments"];
 
 // Vérification si informations dans variable comment
 if (!empty($_POST["nbDisplayed"])) {
-    $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
+    $nbDisplayed = htmlspecialchars($_POST["nbDisplayed"]);
     setcookie("pagination[adminNbDisplayedComments]", $nbDisplayed, time() + 365*24*3600, null, null, false, false);
 } else if (!empty($_COOKIE["pagination"]["adminNbDisplayedComments"])) {
-    $nbDisplayed =  $_COOKIE["pagination"]["adminNbDisplayedComments"];
+    $nbDisplayed = $_COOKIE["pagination"]["adminNbDisplayedComments"];
 } else {
     $nbDisplayed = 20;
 }
@@ -113,7 +110,7 @@ setcookie("order[adminComments]", $order, time() + 365*24*3600, null, null, fals
 if (!empty($_GET["page"])) {
     $page = htmlspecialchars($_GET["page"]);
     // Calcul le nombre de pages par rapport aux nombre de commentaires
-    $maxcomment =  $page*$nbDisplayed;
+    $maxcomment = $page*$nbDisplayed;
     $mincomment = $maxcomment-$nbDisplayed;
 } else  {
     $page = 1;
@@ -138,7 +135,7 @@ LEFT JOIN users u
 ON c.user_ID = u.ID
 WHERE $filter 
 ORDER BY $orderBy $order
-LIMIT  $mincomment, $maxcomment");
+LIMIT $mincomment, $maxcomment");
 $req->execute(array());
 
 ?>
@@ -174,7 +171,7 @@ $req->execute(array());
                 // Affiche les résultats si recherche
                 if (isset($_POST["filter"])) {
                     echo "<p> " . $nbItems . " résultat(s).</p>";
-                }    
+                }
                 ?>
                 
                 <form action="<?= $linkNbDisplayed ?>" method="post">
@@ -192,7 +189,7 @@ $req->execute(array());
                         </div>
 
                         <div class="col-md-6">
-                            <label class="sr-only col-form-label ml-4  py-2" for="filter_status">Filtre</label>
+                            <label class="sr-only col-form-label ml-4 py-2" for="filter_status">Filtre</label>
                                 <select name="filter_status" id="filter_status" class="custom-select form-control mb-2 shadow" value="Par auteur">
                                     <option value="">-- Statut --</option>
                                     <option value="0">Non-modéré</option>
@@ -203,7 +200,7 @@ $req->execute(array());
                         </div>
                     </div>
 
-                    <div class="row">    
+                    <div class="row">
                         <div class="col-md-12 table-responsive">
                             <table class="table table-bordered table-striped table-hover shadow">
                             <thead class="thead-dark">
@@ -218,7 +215,7 @@ $req->execute(array());
                                         if ($orderBy == "content") {
                                         ?>
                                             <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
+                                        <?php
                                         }
                                         ?>
                                         </a>
@@ -229,7 +226,7 @@ $req->execute(array());
                                         if ($orderBy == "author") {
                                         ?>
                                             <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
+                                        <?php
                                         }
                                         ?>
                                         </a>
@@ -240,7 +237,7 @@ $req->execute(array());
                                         if ($orderBy == "status") {
                                         ?>
                                             <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
+                                        <?php
                                         }
                                         ?>
                                         </a>
@@ -251,7 +248,7 @@ $req->execute(array());
                                         if ($orderBy == "report_date") {
                                         ?>
                                             <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
+                                        <?php
                                         }
                                         ?>
                                         </a>
@@ -262,7 +259,7 @@ $req->execute(array());
                                         if ($orderBy == "nb_report") {
                                         ?>
                                             <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
+                                        <?php
                                         }
                                         ?>
                                         </a>
@@ -273,7 +270,7 @@ $req->execute(array());
                                         if ($orderBy == "creation_date") {
                                         ?>
                                             <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
+                                        <?php
                                         }
                                         ?>
                                         </a>

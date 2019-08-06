@@ -16,10 +16,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
     $email = htmlspecialchars($_POST["email"]);
     $new_pass = htmlspecialchars($_POST["new_pass"]);
     $new_pass_confirm = htmlspecialchars($_POST["new_pass_confirm"]);
-
     $validation = true;
-    $message = "";
-    $typeAlert = "danger";
 
     // Vérifie si le token est existe
     $req = $db->prepare("SELECT r.user_ID, r.reset_date, u.email
@@ -42,22 +39,22 @@ if (!empty($_POST) && isset($_GET["token"])) {
 
     // Vérifie si le token ou l'adresse email sont corrects
     if (!$dataResetPassword) {
-        $message = $message . "<li>Le lien de réinitialisation ou l'adresse email sont incorrects.</li>";
+        $session->setFlash ("Le lien de réinitialisation ou l'adresse email sont incorrects.", "danger");
         $validation = false;
     }
     //  Vérifie si la demande de réinitialisation est inférieure à 15 minutes
-    if ($interval>$delay) {
-        $message = $message . "<li>Le lien de réinitialisation est périmé.</li>";
+    elseif ($interval>$delay) {
+        $session->setFlash ("Le lien de réinitialisation est périmé.", "danger");
         $validation = false;
     }
     // Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
     if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $new_pass)) {
-        $message = $message . "<li>Le nouveau mot de passe n'est pas valide.</li>";
+        $session->setFlash ("Le nouveau mot de passe n'est pas valide.", "danger");
         $validation = false;
     }
     // Vérifie si la confirmation du mot de passe est identique
-    if ($new_pass!=$new_pass_confirm) {
-        $message = $message . "<li>Le mot de passe et la confirmation sont différents.</li>";
+    elseif ($new_pass!=$new_pass_confirm) {
+        $session->setFlash ("Le mot de passe et la confirmation sont différents.", "danger");
         $validation = false;
     }
     // Si validation est vraie, met à jour le mot de passe 
@@ -86,13 +83,10 @@ if (!empty($_POST) && isset($_GET["token"])) {
             "user_ID" => $dataUser["ID"]
         ));
 
-        $message = "Le mot de passe a été modifié.";
-        $typeAlert = "success";
+        $session->setFlash ("Le mot de passe a été modifié.", "success");
 
         header("Refresh: 2; url=profil.php");
     }
-
-    $session->setFlash($message, $typeAlert);
 }
 
 ?>

@@ -50,8 +50,7 @@ if (!empty($_POST)) {
 
         // Vérifie si le commentaire est vide
         if (empty($_POST["content"])) {
-            $message = "Le commentaire est vide.";
-            $typeAlert = "danger";
+            $session->setFlash("Le commentaire est vide.", "danger");
             $validation = false;
         }
 
@@ -67,11 +66,9 @@ if (!empty($_POST)) {
                 "status" => $status
             ));
             if ($dataSettings["moderation"] == 0 || (isset($_SESSION["userRole"]) && $_SESSION["userRole"] == 1 )) {
-                $message = "Le commentaire a été ajouté.";
-                $typeAlert = "success";
+                $session->setFlash("Le commentaire a été ajouté.", "success");
             } else {
-                $message = "Le commentaire est en attente de modération.";
-                $typeAlert = "info";
+                $session->setFlash("Le commentaire est en attente de modération.", "info");
             }
         }
     }
@@ -83,9 +80,7 @@ if (!empty($_POST)) {
             "new_status" => $status,
             "ID" => htmlspecialchars($_GET["comment"])
         ));
-
-        $message = "Le commentaire a été modifié.";
-        $typeAlert = "success";
+        $session->setFlash("Le commentaire a été modifié.", "success");
     }
 }
 
@@ -95,9 +90,7 @@ if (isset($_GET["action"]) && $_GET["action"]=="erase") {
     $req->execute(array(
         htmlspecialchars($_GET["comment"])
     ));
-
-    $message = "Le commentaire a été supprimé.";
-    $typeAlert = "warning";
+    $session->setFlash("Le commentaire a été supprimé.", "warning");
 }
 // Ajoute le signalement du commentaire
 if (isset($_GET["action"]) && $_GET["action"]=="report") {
@@ -106,13 +99,7 @@ if (isset($_GET["action"]) && $_GET["action"]=="report") {
         "new_status" => 2,
         "ID" => htmlspecialchars($_GET["comment"])
     ));
-
-    $message = "Le commentaire a été signalé.";
-    $typeAlert = "warning";
-}
-
-if (isset($message)) {
-    $session->setFlash($message, $typeAlert);
+    $session->setFlash("Le commentaire a été signalé.", "warning");
 }
 
 // Récupère le post
