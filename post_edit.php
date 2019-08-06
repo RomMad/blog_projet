@@ -113,7 +113,7 @@ if (!empty($_GET["post"]))
     $update_date = $dataPost->update_date();
     
     // Vérifie si l'utilisateur est l'auteur de l'article
-    if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $dataPost->user_id() ) 
+    if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $dataPost->user_id()) 
     {
         $message = "Vous n'avez pas les droits pour accéder à cet article";
         $typeAlert = "warning";
@@ -188,12 +188,13 @@ if (!empty($_GET["post"]))
                             <div class="form-group float-right">
                                 <input type="submit" id="save" name="save" value="Enregistrer" class="btn btn-block btn-blue mb-2 shadow">
                                 <?php 
-                                    if (isset($_GET["post"])) { 
+                                if (isset($_GET["post"])) 
+                                { 
                                 ?>
                                 <input type="submit" id="erase" name="erase" alt="Supprimer l'article" class="btn btn-block btn-danger mb-2 shadow" 
                                 value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;}else{return false;}">
                                 <?php 
-                                    } 
+                                } 
                                 ?>
                             </div>
                         </div>
