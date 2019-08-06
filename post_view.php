@@ -115,12 +115,12 @@ if (!empty($_POST["nbDisplayed"])) {
 }
 
 if (!empty($_GET["page"])) {
-    $page = htmlspecialchars($_GET["page"]);
+    $currentPage = htmlspecialchars($_GET["page"]);
     // Calcul le nombre de pages par rapport aux nombre d'articles
-    $maxLimit =  $page*$nbDisplayed;
+    $maxLimit =  $currentPage*$nbDisplayed;
     $minLimit = $maxLimit-$nbDisplayed;
 } else {
-    $page = 1;
+    $currentPage = 1;
     $minLimit = 0;
     $maxLimit = $nbDisplayed;
 }

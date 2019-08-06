@@ -1,7 +1,4 @@
 <?php 
-// ini_set("display_errors",1);
-// error_reporting(E_ALL);	
-
 function loadClass($classname) {
     require $classname . ".php";
 }
@@ -9,9 +6,7 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-
 $databaseConnection = new DatabaseConnection();
-
 $postsManager = new Postsmanager($databaseConnection->db());
 
 // Si recherche, filtre les résultats
@@ -19,7 +14,7 @@ $filter = "status = 'Publié'";
 if (!empty($_GET["search"])) {
     $filter = $filter . " AND title like \'%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
 }
-// Compte le nombre d'articles
+// Récupère le nombre d'articles
 $nbItems = $postsManager->count($filter);
 
 // Vérification si informations dans variable POST
@@ -31,32 +26,16 @@ if (!empty($_POST)) {
 } else {
     $nbDisplayed = 10;
 }
-// Vérification si informations dans variable GET
-if (!empty($_GET["page"])) {
-    $page = htmlspecialchars($_GET["page"]);
-    // Calcul le nombre de pages par rapport aux nombre d'articles
-    $maxPost = $page*$nbDisplayed;
-    $minPost = $maxPost-$nbDisplayed;
-} else  {
-    $page = 1;
-    $minPost = 0;
-    $maxPost = $nbDisplayed;
-}
 
 // Initialisation des variables pour la pagination
 $linkNbDisplayed= "blog.php#blog";
 $linkPagination= "blog.php?";
 $anchorPagination= "#blog";
-$nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
+// $pagination = new Pagination($nbItems, $nbDisplayed, "blog.php#blog", "blog.php?", "#blog");
 
 // Récupère les derniers articles
-$posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minPost, $maxPost);
-
-// var_dump($_COOKIE);
-var_dump($_POST);
-var_dump($_GET);
-// var_dump($posts);
+$posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $maxLimit);
 
 ?>
 
