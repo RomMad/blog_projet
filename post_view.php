@@ -76,8 +76,8 @@ if (!empty($_POST)) {
     if (isset($_POST["edit_comment"])) {
         $comment = new Comments([
             "id" => htmlspecialchars($_GET["comment"]),
-            "newContent" => htmlspecialchars($_POST["content"]),
-            "newStatus" => $status,
+            "content" => htmlspecialchars($_POST["content"]),
+            "status" => $status,
         ]);
         $commentsManager->update($comment);
         $session->setFlash("Le commentaire a été modifié.", "success");
@@ -254,10 +254,10 @@ var_dump($_GET);
                                                 }
                                             }
                                     ?>
-                                    <p><strong><?= $user_login ?></strong>, le <?= $comment->creation_date() ?>
+                                    <p><strong><?= $user_login ?></strong>, le <?= str_replace(' ', ' à ', $comment->creation_date()) ?>
                                     <?php
                                     if ($comment->update_date() != $comment->creation_date()) {
-                                        echo "(Modifié le " . $comment->update_date() . ")";
+                                        echo "(Modifié le " . str_replace(' ', ' à ', $comment->update_date()) . ")";
                                     }
                                     ?>
                                     </p>
