@@ -12,7 +12,7 @@ $postsManager = new Postsmanager($databaseConnection->db());
 // Si recherche, filtre les résultats
 $filter = "status = 'Publié'";
 if (!empty($_GET["search"])) {
-    $filter = $filter . " AND title like \'%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
+    $filter = $filter . " AND title like '%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
 }
 // Récupère le nombre d'articles
 $nbItems = $postsManager->count($filter);
