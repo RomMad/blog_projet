@@ -10,6 +10,8 @@ $session = new Session();
 $databaseConnection = new DatabaseConnection();
 $db = $databaseConnection->db();
 
+$commentsManager = new CommentsManager($databaseConnection->db());
+
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: index.php");
@@ -31,8 +33,8 @@ if (!empty($_POST)) {
         // Supprime les commentaires sélectionnés via une boucle
         if ($_POST["action_apply"] == "delete" && isset($_POST["selectedComments"])) {
             foreach ($_POST["selectedComments"] as $selectedComment) {
-                $req = $db->prepare("DELETE FROM comments WHERE ID = ? ");
-                $req->execute(array($selectedComment));
+                $comment = $commentsManager->get($selectedComment);
+                $commentsManager->delete($comment);
             }
             // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
             $nbselectedComments = count($_POST["selectedComments"]);
@@ -45,8 +47,7 @@ if (!empty($_POST)) {
         // Modère les commentaires sélectionnés via une boucle
         if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedComments"])) {
             foreach ($_POST["selectedComments"] as $selectedComment) {
-                $req = $db->prepare("UPDATE comments SET status = 1 WHERE ID = ? ");
-                $req->execute(array($selectedComment));
+                $commentsManager->updateStatus($selectedComment, 1);
             }
             // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
             $nbselectedComments = count($_POST["selectedComments"]);
@@ -64,14 +65,7 @@ if (!empty($_POST)) {
 }
 
 // Compte le nombre de commentaires
-$req = $db->prepare("SELECT COUNT(*) AS nb_Comments, c.user_ID, u.ID
-FROM comments c
-LEFT JOIN users u
-ON c.user_ID = u.ID
-WHERE $filter");
-$req->execute(array());
-$nbComments = $req->fetch();
-$nbItems = $nbComments["nb_Comments"];
+$nbItems = $commentsManager->count($filter);
 
 // Vérification si informations dans variable comment
 if (!empty($_POST["nbDisplayed"])) {
@@ -83,7 +77,7 @@ if (!empty($_POST["nbDisplayed"])) {
     $nbDisplayed = 20;
 }
 // Vérifie l'ordre de tri par type
-if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
+if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "user_name" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
     $orderBy = htmlspecialchars($_GET["orderBy"]);
 } else if (!empty($_COOKIE["orderBy"]["adminComments"])) {
     $orderBy = $_COOKIE["orderBy"]["adminComments"];
@@ -110,12 +104,12 @@ setcookie("order[adminComments]", $order, time() + 365*24*3600, null, null, fals
 if (!empty($_GET["page"])) {
     $page = htmlspecialchars($_GET["page"]);
     // Calcul le nombre de pages par rapport aux nombre de commentaires
-    $maxcomment = $page*$nbDisplayed;
-    $mincomment = $maxcomment-$nbDisplayed;
+    $maxLimit = $page*$nbDisplayed;
+    $minLimit = $maxLimit-$nbDisplayed;
 } else  {
     $page = 1;
-    $mincomment = 0;
-    $maxcomment = $nbDisplayed;
+    $minLimit = 0;
+    $maxLimit = $nbDisplayed;
 }
 
 // Initialisation des variables pour la pagination
@@ -125,18 +119,7 @@ $anchorPagination = "#table-admin_comments";
 $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 // Récupère les commentaires
-$req = $db->prepare("SELECT c.ID, c.id_post, c.user_ID, c.user_name AS author, u.login, c.status, c.nb_report, 
-IF(CHAR_LENGTH(c.content) > 200, CONCAT(SUBSTRING(c.content, 1, 200), ' [...]'), c.content) AS content, 
-DATE_FORMAT(c.report_date, \"%d/%m/%Y %H:%i\") AS report_date, 
-DATE_FORMAT(c.creation_date, \"%d/%m/%Y %H:%i\") AS creation_date_fr, 
-DATE_FORMAT(c.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
-FROM comments c
-LEFT JOIN users u
-ON c.user_ID = u.ID
-WHERE $filter 
-ORDER BY $orderBy $order
-LIMIT $mincomment, $maxcomment");
-$req->execute(array());
+$comments = $commentsManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit);
 
 ?>
 
@@ -162,7 +145,7 @@ $req->execute(array());
             <section id="table-admin_comments" class="col-md-12 mx-auto mt-4 table-admin">
 
                 <h2 class="mb-4">Gestion des commentaires
-                    <span class="badge badge-secondary font-weight-normal"><?= $nbComments["nb_Comments"] ?> </span>
+                    <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>
                 </h2>
                 
                 <?php 
@@ -221,9 +204,9 @@ $req->execute(array());
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="admin_comments?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
+                                        <a href="admin_comments?orderBy=user_name&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
                                         <?php 
-                                        if ($orderBy == "author") {
+                                        if ($orderBy == "user_name") {
                                         ?>
                                             <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                         <?php
@@ -280,21 +263,21 @@ $req->execute(array());
                             <tbody>
 
                                 <?php
-                                while ($dataComments=$req->fetch()) {
-                                ?>
+                                foreach ($comments as $comment) {
+                                    ?>
                                     <tr>
                                         <th scope="row">
-                                            <input type="checkbox" name="selectedComments[]" id="comment<?= $dataComments["ID"] ?>" value="<?= $dataComments["ID"] ?>" class=""/>
+                                            <input type="checkbox" name="selectedComments[]" id="comment<?= $comment->id() ?>" value="<?= $comment->id() ?>" class=""/>
                                             <label for="selectedComments[]" class="sr-only">Sélectionner</label>
                                         </th>
-                                        <td><a href="post_view.php?post=<?= $dataComments["id_post"] ?>" class="text-dark"><?= $dataComments["content"] ?></a></td>
+                                        <td><a href="post_view.php?post=<?= $comment->post_id() ?>" class="text-dark"><?= $comment->content() ?></a></td>
                                         <td>
                                         <?php 
-                                        if (!empty($dataComments["author"])) {
-                                            echo $dataComments["author"];
+                                        if (!empty($comment->user_name())) {
+                                            echo $comment->user_name();
                                         } else {
-                                            if (!empty($dataComments["login"])) {
-                                                echo $dataComments["login"];
+                                            if (!empty($comment->login())) {
+                                                echo $comment->login();
                                             } else {
                                                 echo "Anonyme";
                                             }
@@ -303,7 +286,7 @@ $req->execute(array());
                                         </td>
                                         <td>
                                         <?php 
-                                        switch($dataComments["status"]) {
+                                        switch($comment->status()) {
                                             case 0:
                                             echo "Non-modéré";
                                             break;
@@ -318,9 +301,9 @@ $req->execute(array());
                                         }
                                         ?>
                                         </td>
-                                        <td><?= $dataComments["report_date"] ?></td>
-                                        <td><?= $dataComments["nb_report"] ?></td>
-                                        <td><?= $dataComments["creation_date_fr"] ?></td>
+                                        <td><?= $comment->report_date() ?></td>
+                                        <td><?= $comment->nb_report() ?></td>
+                                        <td><?= $comment->creation_date() ?></td>
                                     </tr>
                                 <?php
                                 }

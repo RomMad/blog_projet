@@ -38,23 +38,23 @@ class CommentsManager {
         return new Comments($comment);
     }
     // Méthode de lecture d'un commentaire
-    public function lastCreate($user_id) {
-        $req = $this->_db->prepare("SELECT c.id, c.user_ID, u.login, c.content, c.status, c.creation_date, c.update_date 
-            FROM comments c 
-            LEFT JOIN users u 
-            ON c.user_ID = u.id 
-            WHERE c.user_ID = ? 
-            ORDER BY c.id DESC 
-            LIMIT 0, 1");
-        $req->execute([
-            $user_id
-        ]);
-        $comment = $req->fetch();
-        return new Comments($comment);
-    }
+    // public function lastCreate($user_id) {
+    //     $req = $this->_db->prepare("SELECT c.id, c.user_ID, u.login, c.content, c.status, c.creation_date, c.update_date 
+    //         FROM comments c 
+    //         LEFT JOIN users u 
+    //         ON c.user_ID = u.id 
+    //         WHERE c.user_ID = ? 
+    //         ORDER BY c.id DESC 
+    //         LIMIT 0, 1");
+    //     $req->execute([
+    //         $user_id
+    //     ]);
+    //     $comment = $req->fetch();
+    //     return new Comments($comment);
+    // }
     // Méthode de récupération d'une liste d'commentaires
     public function getList($filter, $orderBy, $order, $minLimit, $maxLimit) {
-        $req = $this->_db->prepare("SELECT c.id, c.user_id, u.login, c.user_name, c.content, c.status, c.creation_date, c.update_date
+        $req = $this->_db->prepare("SELECT c.id, c.user_id, u.login, c.user_name, c.content, c.status, c.report_date, c.nb_report, c.creation_date, c.update_date
             FROM comments c
             LEFT JOIN users u
             ON c.user_id = u.id
@@ -62,7 +62,6 @@ class CommentsManager {
             ORDER BY $orderBy $order 
             LIMIT $minLimit, $maxLimit");
         $req->execute();
-
         while ($datas = $req->fetch()) {
             $comments[] = new Comments($datas);
         }

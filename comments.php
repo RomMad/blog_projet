@@ -52,7 +52,7 @@ class Comments {
         return $this->_report_date;
     }
     public function nb_report() {
-        return $this->nb_report;
+        return $this->_nb_report;
     }
     public function creation_date() {
         return $this->_creation_date;
@@ -107,13 +107,13 @@ class Comments {
             $report_date = new DateTime($report_date);
             $this->_report_date = date_format($report_date,"d/m/Y H:i");
         } else {
-            echo "Erreur dans le format de la date. ";
+            $this->_report_date = "";
         }
     }
     public function setNb_report($nb_report) {
         $nb_report = (int) $nb_report;
         if ($nb_report >= 0) {
-            $this->_b_report = $nb_report;
+            $this->_nb_report = $nb_report;
         }
     }
     public function setCreation_date($creation_date) {

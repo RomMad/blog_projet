@@ -71,6 +71,7 @@ if (!empty($_POST))
         echo "RECHERCHE";
     }
 
+// Compte le nombre d'articles
 $nbItems = $postManager->count($filter);
 
 // Vérification si informations dans variable POST
