@@ -58,7 +58,7 @@
             ?>
             <a class="text-blue font-weight-bold" href="profil.php"><span class="fas fa-user"></span> <?= $_SESSION["userLogin"] ?></a>
             <br />
-            <a class="text-blue" href="deconnection.php">Vous déconnecter</a>
+            <a class="text-blue" href="disconnection.php">Vous déconnecter</a>
             <?php 
             } else {
                 ?>
