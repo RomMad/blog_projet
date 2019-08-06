@@ -105,16 +105,8 @@ $post = $postsManager->get($post_id);
 // Compte le nombre de commentaires
 $nbItems = $commentsManager->count("post_id = " . $post_id . " AND " . $filter);
 
-if (!empty($_POST["nbDisplayed"])) {
-    $nbDisplayed = htmlspecialchars($_POST["nbDisplayed"]);
-    setcookie("pagination[nbDisplayedComments]", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-} else if (!empty($_COOKIE["pagination"]["nbDisplayedComments"])) {
-    $nbDisplayed = $_COOKIE["pagination"]["nbDisplayedComments"];
-} else {
-    $nbDisplayed = 10;
-}
-
 // Initialisation de la pagination
+$typeItem = "posts";
 $linkNbDisplayed= "post_view.php?" . $post_id . "#form-comment";
 $linkPagination= "post_view.php?";
 $anchorPagination= "#comments";

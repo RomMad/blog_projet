@@ -16,9 +16,7 @@ Class Pagination {
 
         if (!empty($GET["page"])) {
             $this->_currentPage = $_GET["page"];
-        };
-
-;
+        }
     }
 
     // Adaptation de la pagination en fonction du nombre de pages et du positionnement
@@ -26,6 +24,16 @@ Class Pagination {
 
     }
     
+}
+
+// Vérification si informations dans variable POST
+if (!empty($_POST)) {
+    $nbDisplayed = htmlspecialchars($_POST["nbDisplayed"]);
+    setcookie("pagination[nbDisplayed" . $typeItem . "]", $nbDisplayed, time() + 365*24*3600, null, null, false, false);
+} elseif (!empty($_COOKIE["pagination"]["nbDisplayed" . $typeItem])) {
+    $nbDisplayed = $_COOKIE["pagination"]["nbDisplayed" . $typeItem];
+} else {
+    $nbDisplayed = 10;
 }
 
 // Vérification si informations dans variable GET

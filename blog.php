@@ -17,20 +17,11 @@ if (!empty($_GET["search"])) {
 // Récupère le nombre d'articles
 $nbItems = $postsManager->count($filter);
 
-// Vérification si informations dans variable POST
-if (!empty($_POST)) {
-    $nbDisplayed = htmlspecialchars($_POST["nbDisplayed"]);
-    setcookie("pagination[nbDisplayedPosts]", $nbDisplayed, time() + 365*24*3600, null, null, false, false);
-} else if (!empty($_COOKIE["pagination"]["nbDisplayedPosts"])) {
-    $nbDisplayed = $_COOKIE["pagination"]["nbDisplayedPosts"];
-} else {
-    $nbDisplayed = 10;
-}
-
 // Initialisation des variables pour la pagination
-$linkNbDisplayed= "blog.php#blog";
-$linkPagination= "blog.php?";
-$anchorPagination= "#blog";
+$typeItem = "posts";
+$linkNbDisplayed = "blog.php#blog";
+$linkPagination = "blog.php?";
+$anchorPagination = "#blog";
 require("pagination.php");
 // $pagination = new Pagination($nbItems, $nbDisplayed, "blog.php#blog", "blog.php?", "#blog");
 
