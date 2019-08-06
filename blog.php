@@ -58,12 +58,12 @@ $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Récupère les derniers articles
-$dataPosts = $postsManager->getList($filter, "p.creation_date", "DESC", $minPost, $maxPost);
+$posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minPost, $maxPost);
 
 // var_dump($_COOKIE);
 var_dump($_POST);
 var_dump($_GET);
-// var_dump($dataPosts);
+// var_dump($posts);
 
 ?>
 
@@ -107,36 +107,36 @@ var_dump($_GET);
                 <?php
                 if ($nbItems) 
                 {
-                    foreach ($dataPosts as $dataPost) 
+                    foreach ($posts as $post) 
                     {
                     ?>
                     <div class="col-md-12">
                         <div class="card shadow">
                             <div class="card-header bg-dark text-light">
-                                <a class="text-blue" href="post_view.php?post=<?= $dataPost->id() ?>">
-                                    <h3 class="mt-1"><?= $dataPost->title() ?></h3>
+                                <a class="text-blue" href="post_view.php?post=<?= $post->id() ?>">
+                                    <h3 class="mt-1"><?= $post->title() ?></h3>
                                 </a>
-                                <em>Créé le <?= str_replace(' ', ' à ', $dataPost->creation_date()) ?> par <a class="text-blue" href=""><?= $dataPost->user_login() ?></a></em>
+                                <em>Créé le <?= str_replace(' ', ' à ', $post->creation_date()) ?> par <a class="text-blue" href=""><?= $post->user_login() ?></a></em>
                                 <?php 
-                                if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost->user_id()) 
+                                if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) 
                                 { 
                                 ?>
-                                    <a class="text-blue a-edit-post" href="post_edit.php?post=<?= $dataPost->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                                    <a class="text-blue a-edit-post" href="post_edit.php?post=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                                 <?php 
                                 } 
                                 ?>
                             </div>
                             <div class="card-body text-body">
-                                <div class="post_content"><?= nl2br(strip_tags(htmlspecialchars_decode($dataPost->content()))) ?>
+                                <div class="post_content"><?= nl2br(strip_tags(htmlspecialchars_decode($post->content()))) ?>
                                 <?php 
                                 // Si le contenu est > à 1200 caractères, affiche le bouton 'Continuer la lecture' et ajoute un effet fade out
-                                if (strlen($dataPost->content()) > 1200) 
+                                if (strlen($post->content()) > 1200) 
                                 {
                                 ?>
                                     <span class="post-fade-out"></span>
                                 </div>
                                 <div>
-                                    <a href="post_view.php?post=<?= $dataPost->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
+                                    <a href="post_view.php?post=<?= $post->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
                                         <span class="fas fa-angle-right"></span>
                                     </a>
                                 <?php

@@ -9,10 +9,8 @@ class PostsManager {
 
     // Méthode d'ajout d'un article
     public function add(Posts $post) {
-        // Prépare la requête d'insertion
         $req = $this->_db->prepare("INSERT INTO posts(user_ID, user_login, title, content, status) 
             VALUES(:user_ID, :user_login, :title, :content, :status)");
-        // Exécute la requête
         $req->execute([
             "user_ID" => $post->user_ID(),
             "user_login" => $post->user_login(),
@@ -28,16 +26,16 @@ class PostsManager {
     }
     // Méthode de lecture d'un article
     public function get($id) {
-        $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID,  p.user_login, u.login, p.content, p.status, p.creation_date, p.update_date 
-        FROM posts p
-        LEFT JOIN users u
-        ON p.user_ID = u.ID
-        WHERE p.ID = ? ");
+        $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.content, p.status, p.creation_date, p.update_date 
+            FROM posts p
+            LEFT JOIN users u
+            ON p.user_ID = u.ID
+            WHERE p.ID = ? ");
         $req->execute([
             $id
         ]);
-        $dataPost = $req->fetch();
-        return new Posts($dataPost);
+        $post = $req->fetch();
+        return new Posts($post);
     }
     // Méthode de lecture d'un article
     public function lastCreate($user_id) {
@@ -51,8 +49,8 @@ class PostsManager {
         $req->execute([
             $user_id
         ]);
-        $dataPost = $req->fetch();
-        return new Posts($dataPost);
+        $post = $req->fetch();
+        return new Posts($post);
     }
     // Méthode de récupération d'une liste d'articles
     public function getList($filter, $orderBy, $order, $minPost, $maxPost) {
@@ -67,9 +65,9 @@ class PostsManager {
         $req->execute();
 
         while ($datas = $req->fetch()) {
-            $dataPosts[] = new Posts($datas);
+            $posts[] = new Posts($datas);
         }
-        return $dataPosts;
+        return $posts;
     }
     // Méthode de mise à jour d'un article
     public function update(Posts $post) {
@@ -91,25 +89,18 @@ class PostsManager {
         ]);
     }
     // Méthode de suppresion d'un article
-    public function delete($id) {
+    public function delete(Posts $post) {
         $req = $this->_db->prepare("DELETE FROM posts WHERE ID = ? ");
         $req->execute([
-            $id
+            $post->id()
         ]);
-        return "L'article a été supprimé.";
     }
     // Méthode qui compte le nombre d'articles
     public function count($filter) {
-        // Prépare une requête COUNT()
-        $req = $this->_db->prepare("SELECT COUNT(*) AS nbPosts, p.id, p.user_ID, u.ID 
-            FROM posts p
-            LEFT JOIN users u
-            ON p.user_ID = u.ID            
-            WHERE $filter");
+        $req = $this->_db->prepare("SELECT COUNT(*) FROM posts p WHERE $filter");
         $req->execute();
-        $nbPosts = $req->fetch();
-        //  Retourne le nombre d'enregistrements
-        return  $nbPosts["nbPosts"];
+        $nbPosts = $req->fetchColumn();
+        return $nbPosts;
     }
 
     public function setDb(PDO $db)

@@ -140,7 +140,7 @@ if (isset($msgComment))
 }
 
 // Récupère le post
-$dataPost = $postManager->get($post_ID); 
+$post = $postManager->get($post_ID); 
 
 // Compte le nombre de commentaires
 $req = $db->prepare("SELECT COUNT(*) AS nb_Comments FROM comments WHERE id_post = ? AND $filter");
@@ -232,20 +232,20 @@ if (!$commentsExist)
         <section id="post">
                 <div class="card shadow">
                     <div class="card-header bg-dark text-light">
-                        <h1 class="h2 mt-2 mb-3"><?= $dataPost->title() ?></h1>
-                        <em>Créé le <?= str_replace(' ', ' à ', $dataPost->creation_date()) ?> par <a class="text-blue" href=""> <?= $dataPost->login() ?> </a> (Modifié le <?= str_replace(' ', ' à ', $dataPost->update_date()) ?>)</em>
+                        <h1 class="h2 mt-2 mb-3"><?= $post->title() ?></h1>
+                        <em>Créé le <?= str_replace(' ', ' à ', $post->creation_date()) ?> par <a class="text-blue" href=""> <?= $post->login() ?> </a> (Modifié le <?= str_replace(' ', ' à ', $post->update_date()) ?>)</em>
                         <?php
-                        if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $dataPost->user_id()) { ?>
-                            <a class="text-blue a-edit-post" href="post_edit.php?post=<?=  $dataPost->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                        if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $post->user_id()) { ?>
+                            <a class="text-blue a-edit-post" href="post_edit.php?post=<?=  $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php } ?>
                         <a href="#comments" class="badge badge-blue ml-2"> <span class="badge badge-light"><?= $nbComments["nb_Comments"] ?> </span></a>
                     </div>
                     <div class="card-body text-body">
-                    <?= html_entity_decode($dataPost->content()) ?>
+                    <?= html_entity_decode($post->content()) ?>
                     </div>
                 </div>
                 <?php 
-                if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$dataPost->user_id()) 
+                if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) 
                 { 
                 ?>
                         <a class="text-blue" href="post_edit.php?post=<?= $post_ID ?>"><span class="far fa-edit"></span> Modifier l'article</a> 

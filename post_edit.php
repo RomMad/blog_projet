@@ -62,11 +62,11 @@ if (!empty($_POST))
             ]);
             $postsManager->add($post);
             $message = "L'article a été enregistré.";
-            $dataPost = $postsManager->lastcreate($_SESSION["userID"]);
+            $post = $postsManager->lastcreate($_SESSION["userID"]);
             
-            $post_ID = $dataPost->id();
-            $creation_date = $dataPost->creation_date();
-            $update_date = $dataPost->update_date();
+            $post_ID = $post->id();
+            $creation_date = $post->creation_date();
+            $update_date = $post->update_date();
         }
 
         // Met à jour l'article si article existant
@@ -86,7 +86,8 @@ if (!empty($_POST))
     // Supprime l'article
     if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) 
     {
-        $postsManager->delete(($post_ID));
+        $post = $postsManager->get(htmlspecialchars($_POST["post_ID"]));
+        $postsManager->delete($post);
         $message = "L'article \"" . $title . "\" a été supprimé.";
         $typeAlert = "warning";
         header("Location: blog.php");
@@ -102,18 +103,18 @@ if (!empty($_POST))
 // Récupère l'article si GET post existe
 if (!empty($_GET["post"])) 
 {
-    $dataPost = $postsManager->get(htmlspecialchars($_GET["post"]));
+    $post = $postsManager->get(htmlspecialchars($_GET["post"]));
 
-    $post_ID = $dataPost->id();
-    $title = $dataPost->title();
-    $content = html_entity_decode($dataPost->content());
-    $user_login = $dataPost->user_login();
-    $status = $dataPost->status();
-    $creation_date = $dataPost->creation_date();
-    $update_date = $dataPost->update_date();
+    $post_ID = $post->id();
+    $title = $post->title();
+    $content = html_entity_decode($post->content());
+    $user_login = $post->user_login();
+    $status = $post->status();
+    $creation_date = $post->creation_date();
+    $update_date = $post->update_date();
     
     // Vérifie si l'utilisateur est l'auteur de l'article
-    if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $dataPost->user_id()) 
+    if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post->user_id()) 
     {
         $message = "Vous n'avez pas les droits pour accéder à cet article";
         $typeAlert = "warning";
@@ -192,7 +193,7 @@ if (!empty($_GET["post"]))
                                 { 
                                 ?>
                                 <input type="submit" id="erase" name="erase" alt="Supprimer l'article" class="btn btn-block btn-danger mb-2 shadow" 
-                                value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;}else{return false;}">
+                                value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;} else{return false;}">
                                 <?php 
                                 } 
                                 ?>

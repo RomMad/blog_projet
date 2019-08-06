@@ -159,7 +159,7 @@ $nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Récupère les articles
-$dataPosts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
+$posts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
 
 ?>
 
@@ -299,19 +299,19 @@ $dataPosts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost
                         <tbody>
 
                             <?php
-                        foreach ($dataPosts as $dataPost)
+                        foreach ($posts as $post)
                         {
                             ?>
                                 <tr>
                                     <th scope="row">
-                                        <input type="checkbox" name="selectedPosts[]" id="post<?= $dataPost->id() ?>" value="<?= $dataPost->id() ?>" class=""/>
+                                        <input type="checkbox" name="selectedPosts[]" id="post<?= $post->id() ?>" value="<?= $post->id() ?>" class=""/>
                                         <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
                                     </th>
-                                    <td><a href="post_view.php?post=<?= $dataPost->id() ?>" class="text-blue font-weight-bold"><?= $dataPost->title() ?></a></td>
-                                    <td><?= $dataPost->login() ?></td>
-                                    <td><?= $dataPost->status() ?></td>
-                                    <td><?= $dataPost->creation_date() ?></td>
-                                    <td><?= $dataPost->update_date() ?></td>
+                                    <td><a href="post_view.php?post=<?= $post->id() ?>" class="text-blue font-weight-bold"><?= $post->title() ?></a></td>
+                                    <td><?= $post->login() ?></td>
+                                    <td><?= $post->status() ?></td>
+                                    <td><?= $post->creation_date() ?></td>
+                                    <td><?= $post->update_date() ?></td>
                                 </tr>
                             <?php
                             }
