@@ -1,7 +1,14 @@
 <?php 
-session_start();
+function loadClass($classname) {
+    require $classname . ".php";
+}
 
-require("connection_db.php");
+spl_autoload_register("loadClass");
+
+$session = new Session();
+
+$databaseConnection = new DatabaseConnection();
+$db = $databaseConnection->db();
 
 if (!isset($_POST["pass"])) {
     $bytes = random_bytes(8);
@@ -20,7 +27,7 @@ if (!empty($_POST)) {
     $role = htmlspecialchars($_POST["role"]);
     $pass = htmlspecialchars($_POST["pass"]);
     $validation = true;
-    $msgInscription = "Attention :";
+    $message = "Attention :";
     $typeAlert = "danger";
 
     // Vérifie si le login est déjà utilisé
@@ -34,22 +41,22 @@ if (!empty($_POST)) {
 
     // Vérifie si le champ login est vide
     if (empty($login)) {
-        $msgInscription = $msgInscription . "<li>Veuillez saisir un Login.</li>";
+        $message = $message . "<li>Veuillez saisir un Login.</li>";
         $validation = false;
     }
     // Vérifie si le login est déjà utilisé
     if ($loginExist) {
-        $msgInscription = $msgInscription . "<li>Ce login est déjà utilisé. Veuillez en utiliser un autre.</li>";
+        $message = $message . "<li>Ce login est déjà utilisé. Veuillez en utiliser un autre.</li>";
         $validation = false;
     }
     // Vérifie si l'adresse email est correcte
     if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
-        $msgInscription = $msgInscription . "<li>L'adresse \"" . $email . "\" est incorrecte.</li>";
+        $message = $message . "<li>L'adresse \"" . $email . "\" est incorrecte.</li>";
         $validation = false;
     }
     // Vérifie si l'adresse email est déjà utilisée
     if ($emailExist) {
-        $msgInscription = $msgInscription . "<li>L'adresse email est déjà utilisée.</li>";
+        $message = $message . "<li>L'adresse email est déjà utilisée.</li>";
         $validation = false;
     }
     // Si validation est vrai, valide l'inscription de l'utilisateur
@@ -107,16 +114,12 @@ if (!empty($_POST)) {
         mail($to,$subject,$message,$headers);
 
             $typeAlert = "success";
-            $msgInscription = "L'utilisateur a été ajouté. Un email lui a été envoyé.";
+            $message = "L'utilisateur a été ajouté. Un email lui a été envoyé.";
 
             // header("Refresh: 2; url=admin_users.php");
         }
 
-    $_SESSION["flash"] = array(
-        "msg" => $msgInscription,
-        "type" =>  $typeAlert
-    );
-
+        $session->setFlash($message, $typeAlert);
 }
 ?>
 
@@ -141,7 +144,7 @@ if (!empty($_POST)) {
         <section id="inscription" class="row">
             <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
 
-            <?php include("msg_session_flash.php") ?>
+            <?php $session->flash(); // Message en session flash ?>      
 
                 <form action="user_new.php" method="post" class="col-md-12 card shadow mt-4">
                     <div class="form-group row">

@@ -1,7 +1,14 @@
 <?php 
-session_start();
+function loadClass($classname) {
+    require $classname . ".php";
+}
 
-require("connection_db.php");
+spl_autoload_register("loadClass");
+
+$session = new Session();
+
+$databaseConnection = new DatabaseConnection();
+$db = $databaseConnection->db();
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
@@ -30,13 +37,10 @@ if (!empty($_POST)) {
         "moderation" =>  $moderation
     ));
 
-    $msgAdmin = "Les paramètres ont été mis à jour.";
+    $message = "Les paramètres ont été mis à jour.";
     $typeAlert = "success"; 
 
-    $_SESSION["flash"] = array(
-        "msg" => $msgAdmin,
-        "type" =>  $typeAlert
-    );
+    $session->setFlash($message, $typeAlert);
 }
     // Récupère les paramètres
     $req = $db->prepare("SELECT * FROM settings");
@@ -70,7 +74,7 @@ if (!empty($_POST)) {
             </div>
         </div>
 
-        <?php include("msg_session_flash.php") ?>
+        <?php $session->flash(); // Message en session flash ?>      
 
         <div class="row">
             

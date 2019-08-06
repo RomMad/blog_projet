@@ -1,7 +1,14 @@
 <?php 
-session_start();
+function loadClass($classname) {
+    require $classname . ".php";
+}
 
-require("connection_db.php");
+spl_autoload_register("loadClass");
+
+$session = new Session();
+
+$databaseConnection = new DatabaseConnection();
+$db = $databaseConnection->db();
 
 // Redirige vers la page d'accueil si l'utilisateur est déjà connecté
 if (!empty($_SESSION["userID"])) {
@@ -48,10 +55,7 @@ if (!empty($_POST)) {
         $message = "Veuillez saisir un Login.";
     }
 
-    $_SESSION["flash"] = array(
-        "msg" => $message,
-        "type" =>  $typeAlert
-    );
+    $session->setFlash($message, $typeAlert);
 }
 ?>
 
@@ -67,7 +71,7 @@ if (!empty($_POST)) {
         <section id="connection" class="row">
             <form action="connection.php" method="post" class="form-signin mx-auto text-center">
 
-            <?php include("msg_session_flash.php") ?>
+                <?php $session->flash(); // Message en session flash ?>      
 
                 <h1 class="h3 mb-4 font-weight-normal">Merci de vous connecter</h1>
                 <label for="login" class="sr-only">Login</label>

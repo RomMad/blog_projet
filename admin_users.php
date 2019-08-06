@@ -1,7 +1,14 @@
 <?php 
-session_start();
+function loadClass($classname) {
+    require $classname . ".php";
+}
 
-require("connection_db.php");
+spl_autoload_register("loadClass");
+
+$session = new Session();
+
+$databaseConnection = new DatabaseConnection();
+$db = $databaseConnection->db();
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
@@ -30,9 +37,9 @@ if (!empty($_POST)) {
             // Compte le nombre d'utilisateurs supprimés pour adaptés l'affichage du message
             $nbselectedUsers = count($_POST["selectedUsers"]);
             if ($nbselectedUsers>1) {
-                $msgAdmin = $nbselectedUsers . " utilisateurs ont été supprimés.";
+                $message = $nbselectedUsers . " utilisateurs ont été supprimés.";
             } else {
-                $msgAdmin = "L'utilisateur a été supprimé.";
+                $message = "L'utilisateur a été supprimé.";
             }
             $typeAlert = "warning"; 
         }
@@ -45,16 +52,13 @@ if (!empty($_POST)) {
             // Compte le nombre d'utilisateurs modérés pour adaptés l'affichage du message
             $nbselectedUsers = count($_POST["selectedUsers"]);
             if ($nbselectedUsers>1) {
-                $msgAdmin = $nbselectedUsers . " utilisateurs ont été modérés.";
+                $message = $nbselectedUsers . " utilisateurs ont été modérés.";
             } else {
-                $msgAdmin = "L'utilisateur a été modéré.";
+                $message = "L'utilisateur a été modéré.";
             }
             $typeAlert = "success"; 
         }
-        $_SESSION["flash"] = array(
-            "msg" => $msgAdmin,
-            "type" =>  $typeAlert
-        );
+        $session->setFlash($message, $typeAlert);
     }
     // Si sélection d'un filtre 'rôle', enregistre le filtre
     if (!empty($_POST["filter_role"])) {
@@ -169,9 +173,9 @@ $req->execute(array());
                     <span class="badge badge-secondary font-weight-normal"><?= $nbUsers["nb_Users"] ?> </span>
                 </h2>
                 
-                <?php include("msg_session_flash.php") ?>
-
                 <?php 
+                $session->flash(); // Message en session flash
+
                 // Affiche les résultats si recherche
                 if (isset($_POST["filter"]) || isset($_POST["filter_search"])) {
                     echo "<p> " . $nbItems . " résultat(s).</p>";

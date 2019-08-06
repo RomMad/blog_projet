@@ -1,27 +1,24 @@
 <?php 
 
-function loadClass($classname) 
-{
+function loadClass($classname) {
     require $classname . ".php";
 }
 
 spl_autoload_register("loadClass");
 
-session_start();
+$session = new Session();
 
 $databaseConnection = new DatabaseConnection();
 
 $postsManager = new Postsmanager($databaseConnection->db());
 
 // Redirige vers la page de connexion si l'utilisateur n'a pas les droits
-if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) 
-{
+if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) {
     header("Location: connection.php");
 }
 
 // Vérification si informations dans variable POST
-if (!empty($_POST)) 
-{
+if (!empty($_POST)) {
     $title = htmlspecialchars($_POST["title"]);
     $content = htmlspecialchars($_POST["post_content"]);
     $status = htmlspecialchars($_POST["status"]);
@@ -33,26 +30,22 @@ if (!empty($_POST))
     $validation = true;
 
     // Vérifie si le titre est vide
-    if (empty($_POST["title"])) 
-    {
+    if (empty($_POST["title"])) {
         $message = "Le titre de l'article est vide.";
         $typeAlert = "danger";
         $validation = false;
     }
     // Vérifie si le contenu de l'article est vide
-    if (empty($_POST["post_content"]) && $_POST["status"] == "Publié")
-    {
+    if (empty($_POST["post_content"]) && $_POST["status"] == "Publié") {
         $message = "L'article ne peut pas être publié si le contenu est vide.";
         $typeAlert = "danger";
         $validation = false;
     }
 
     // Ajoute ou modifie l'article si le titre n'est pas vide
-    if ($validation) 
-    {
+    if ($validation) {
         // Ajoute l'article si nouvel article
-        if (isset($_POST["save"]) && empty($_POST["post_ID"])) 
-        {
+        if (isset($_POST["save"]) && empty($_POST["post_ID"])) {
             $post = new Posts ([
                 "title" => $title,
                 "content" => $content,
@@ -70,8 +63,7 @@ if (!empty($_POST))
         }
 
         // Met à jour l'article si article existant
-        if (isset($_POST["save"]) && !empty($_POST["post_ID"])) 
-        {
+        if (isset($_POST["save"]) && !empty($_POST["post_ID"])) {
             $post = new Posts ([
                 "title" => $title,
                 "content" => $content,
@@ -84,8 +76,7 @@ if (!empty($_POST))
     }
 
     // Supprime l'article
-    if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) 
-    {
+    if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) {
         $post = $postsManager->get(htmlspecialchars($_POST["post_ID"]));
         $postsManager->delete($post);
         $message = "L'article \"" . $title . "\" a été supprimé.";
@@ -93,16 +84,12 @@ if (!empty($_POST))
         header("Location: blog.php");
     }
 
-    $_SESSION["flash"] = array(
-        "msg" => $message,
-        "type" => $typeAlert
-    );
+    $session->setFlash($message, $typeAlert);
 
 }
 
 // Récupère l'article si GET post existe
-if (!empty($_GET["post"])) 
-{
+if (!empty($_GET["post"])) {
     $post = $postsManager->get(htmlspecialchars($_GET["post"]));
 
     $post_ID = $post->id();
@@ -114,8 +101,7 @@ if (!empty($_GET["post"]))
     $update_date = $post->update_date();
     
     // Vérifie si l'utilisateur est l'auteur de l'article
-    if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post->user_id()) 
-    {
+    if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post->user_id()) {
         $message = "Vous n'avez pas les droits pour accéder à cet article";
         $typeAlert = "warning";
         header("Location: blog.php");
@@ -149,7 +135,7 @@ if (!empty($_GET["post"]))
 
                     <h2 class="mb-4">Édition d'article</h2>
 
-                    <?php include("msg_session_flash.php") ?>
+                    <?php $session->flash(); // Message en session flash ?>      
 
                     <div class="row">
                         <div class="col-md-12 col-lg-10">
@@ -189,8 +175,7 @@ if (!empty($_GET["post"]))
                             <div class="form-group float-right">
                                 <input type="submit" id="save" name="save" value="Enregistrer" class="btn btn-block btn-blue mb-2 shadow">
                                 <?php 
-                                if (isset($_GET["post"])) 
-                                { 
+                                if (isset($_GET["post"])) { 
                                 ?>
                                 <input type="submit" id="erase" name="erase" alt="Supprimer l'article" class="btn btn-block btn-danger mb-2 shadow" 
                                 value="Supprimer" onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;} else{return false;}">

@@ -1,13 +1,11 @@
 <?php 
-
-function loadClass($classname) 
-{
+function loadClass($classname) {
     require $classname . ".php";
 }
 
 spl_autoload_register("loadClass");
 
-session_start();
+$session = new Session();
 
 $databaseConnection = new DatabaseConnection();
 $db = $databaseConnection->db();
@@ -48,10 +46,10 @@ if (!empty($_POST))
             $nbSelectedPosts = count($_POST["selectedPosts"]);
             if ($nbSelectedPosts>1) 
             {
-                $msgAdmin = $nbSelectedPosts . " articles ont été supprimés.";
+                $message = $nbSelectedPosts . " articles ont été supprimés.";
             } else 
             {
-                $msgAdmin = "L'article a été supprimé.";
+                $message = "L'article a été supprimé.";
             }
             $typeAlert = "warning"; 
         }
@@ -66,18 +64,14 @@ if (!empty($_POST))
             $selectedPosts = count($_POST["selectedPosts"]);
             if ($selectedPosts>1) 
             {
-                $msgAdmin = $selectedPosts . " articles ont été modifés.";
+                $message = $selectedPosts . " articles ont été modifés.";
             } else 
             {
-                $msgAdmin = "L'article a été modifié.";
+                $message = "L'article a été modifié.";
             }
             $typeAlert = "success"; 
         }
-    
-        $_SESSION["flash"] = array(
-            "msg" => $msgAdmin,
-            "type" =>  $typeAlert
-        );
+        $session->setFlash($message, $typeAlert);
     }
 }
 
@@ -188,9 +182,9 @@ $posts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
                     <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>
                 </h2>
                 
-                <?php include("msg_session_flash.php") ?>
-
                 <?php 
+                $session->flash(); // Message en session flash
+
                 // Affiche les résultats si recherche
                 if (isset($_POST["filter"]) || isset($_POST["filter_search"])) 
                 {

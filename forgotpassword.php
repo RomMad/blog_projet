@@ -1,7 +1,14 @@
 <?php 
-session_start();
+function loadClass($classname) {
+    require $classname . ".php";
+}
 
-require("connection_db.php");
+spl_autoload_register("loadClass");
+
+$session = new Session();
+
+$databaseConnection = new DatabaseConnection();
+$db = $databaseConnection->db();
 
 // Vérifie si information dans variable POST
 if (!empty($_POST)) {
@@ -66,10 +73,7 @@ if (!empty($_POST)) {
         $typeAlert = "warning";
     }
 
-    $_SESSION["flash"] = array(
-        "msg" => $message,
-        "type" =>  $typeAlert
-    );
+    $session->setFlash($message, $typeAlert);
 }
 ?>
 
@@ -92,7 +96,8 @@ if (!empty($_POST)) {
                         autofocus="">
                     <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-blue btn-block mb-4 shadow">
 
-                    <?php include("msg_session_flash.php") ?>
+                    <?php $session->flash(); // Message en session flash ?>      
+
                 </form>
             </div>
         </section>

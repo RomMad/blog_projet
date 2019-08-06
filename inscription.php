@@ -1,7 +1,14 @@
 <?php 
-session_start();
+function loadClass($classname) {
+    require $classname . ".php";
+}
 
-require("connection_db.php");
+spl_autoload_register("loadClass");
+
+$session = new Session();
+
+$databaseConnection = new DatabaseConnection();
+$db = $databaseConnection->db();
 
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
@@ -12,7 +19,7 @@ if (!empty($_POST)) {
     $birthdate = !empty($_POST["birthdate"]) ? htmlspecialchars($_POST["birthdate"]) : NULL;
     $pass = htmlspecialchars($_POST["pass"]);
     $validation = true;
-    $msgInscription = "Attention :";
+    $message = "Attention :";
     $typeAlert = "danger";
 
     // Vérifie si le login est déjà utilisé
@@ -26,22 +33,22 @@ if (!empty($_POST)) {
 
     // Vérifie si le champ login est vide
     if (empty($login)) {
-        $msgInscription = $msgInscription . "<li>Veuillez saisir un Login.</li>";
+        $message = $message . "<li>Veuillez saisir un Login.</li>";
         $validation = false;
     }
     // Vérifie si le login est déjà utilisé
     if ($loginExist) {
-        $msgInscription = $msgInscription . "<li>Ce login est déjà utilisé. Veuillez en utiliser un autre.</li>";
+        $message = $message . "<li>Ce login est déjà utilisé. Veuillez en utiliser un autre.</li>";
         $validation = false;
     }
     // Vérifie si l'adresse email est correcte
     if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
-        $msgInscription = $msgInscription . "<li>L'adresse \"" . $email . "\" est incorrecte.</li>";
+        $message = $message . "<li>L'adresse \"" . $email . "\" est incorrecte.</li>";
         $validation = false;
     }
     // Vérifie si l'adresse email est déjà utilisée
     if ($emailExist) {
-        $msgInscription = $msgInscription . "<li>L'adresse email est déjà utilisée.</li>";
+        $message = $message . "<li>L'adresse email est déjà utilisée.</li>";
         $validation = false;
     }
     // Vérifie si le mot de passe est correct
@@ -50,12 +57,12 @@ if (!empty($_POST)) {
     // (?=.*[0-9])  : teste la présence d'un chiffre de 0 à 9
     // .{6,}$       : teste si au moins 6 caractères
     if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $pass)) {
-        $msgInscription = $msgInscription . "<li>Le mot de passe n'est pas valide.</li>";
+        $message = $message . "<li>Le mot de passe n'est pas valide.</li>";
         $validation = false;
     }
     // Vérifie si la confirmation du mot de passe est identique
     if ($pass!=$_POST["pass_confirm"]) {
-        $msgInscription =  $msgInscription . "<li>Le mot de passe et la confirmation sont différents.</li>";
+        $message =  $message . "<li>Le mot de passe et la confirmation sont différents.</li>";
         $validation = false;
     }
     // Si validation est vrai, valide l'inscription de l'utilisateur
@@ -80,16 +87,12 @@ if (!empty($_POST)) {
             $_SESSION["userID"] = $idUser["ID"];
             $_SESSION["userLogin"] = $login;
             $typeAlert = "success";
-            $msgInscription = "L'inscription est réussie.";
+            $message = "L'inscription est réussie.";
 
             header("Refresh: 2; url=index.php");
         }
 
-    $_SESSION["flash"] = array(
-        "msg" => $msgInscription,
-        "type" =>  $typeAlert
-    );
-
+        $session->setFlash($message, $typeAlert);
 }
 ?>
 
@@ -106,9 +109,9 @@ if (!empty($_POST)) {
         <section id="inscription" class="row">
             <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
 
-            <?php include("msg_session_flash.php") ?>
+                <?php $session->flash(); // Message en session flash ?>      
 
-                <form action="inscription.php" method="post" class="col-md-12 card shadow mt-4">
+                    <form action="inscription.php" method="post" class="col-md-12 card shadow mt-4">
                     <div class="form-group row">
                         <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Inscription</h3>
                     </div>

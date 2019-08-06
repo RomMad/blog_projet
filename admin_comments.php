@@ -1,7 +1,14 @@
 <?php 
-session_start();
+function loadClass($classname) {
+    require $classname . ".php";
+}
 
-require("connection_db.php");
+spl_autoload_register("loadClass");
+
+$session = new Session();
+
+$databaseConnection = new DatabaseConnection();
+$db = $databaseConnection->db();
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
@@ -30,9 +37,9 @@ if (!empty($_POST)) {
             // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
             $nbselectedComments = count($_POST["selectedComments"]);
             if ($nbselectedComments>1) {
-                $msgAdmin = $nbselectedComments . " commentaires ont été supprimés.";
+                $message = $nbselectedComments . " commentaires ont été supprimés.";
             } else {
-                $msgAdmin = "Le commentaire a été supprimé.";
+                $message = "Le commentaire a été supprimé.";
             }
             $typeAlert = "warning"; 
         }
@@ -45,16 +52,13 @@ if (!empty($_POST)) {
             // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
             $nbselectedComments = count($_POST["selectedComments"]);
             if ($nbselectedComments>1) {
-                $msgAdmin = $nbselectedComments . " commentaires ont été modérés.";
+                $message = $nbselectedComments . " commentaires ont été modérés.";
             } else {
-                $msgAdmin = "Le commentaire a été modéré.";
+                $message = "Le commentaire a été modéré.";
             }
             $typeAlert = "success"; 
         }
-        $_SESSION["flash"] = array(
-            "msg" => $msgAdmin,
-            "type" =>  $typeAlert
-        );
+        $session->setFlash($message, $typeAlert);
     }
     // Enregistre le filtre
     if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= "0") {
@@ -164,9 +168,9 @@ $req->execute(array());
                     <span class="badge badge-secondary font-weight-normal"><?= $nbComments["nb_Comments"] ?> </span>
                 </h2>
                 
-                <?php include("msg_session_flash.php") ?>
-
                 <?php 
+                $session->flash(); // Message en session flash
+
                 // Affiche les résultats si recherche
                 if (isset($_POST["filter"])) {
                     echo "<p> " . $nbItems . " résultat(s).</p>";

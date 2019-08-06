@@ -1,8 +1,14 @@
 <?php 
+function loadClass($classname) {
+    require $classname . ".php";
+}
 
-session_start();
+spl_autoload_register("loadClass");
 
-require("connection_db.php");
+$session = new Session();
+
+$databaseConnection = new DatabaseConnection();
+$db = $databaseConnection->db();
 
 // Vérifie si informations dans variables POST et GET
 if (!empty($_POST) && isset($_GET["token"])) {
@@ -12,7 +18,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
     $new_pass_confirm = htmlspecialchars($_POST["new_pass_confirm"]);
 
     $validation = true;
-    $msgReset = "";
+    $message = "";
     $typeAlert = "danger";
 
     // Vérifie si le token est existe
@@ -36,22 +42,22 @@ if (!empty($_POST) && isset($_GET["token"])) {
 
     // Vérifie si le token ou l'adresse email sont corrects
     if (!$dataResetPassword) {
-        $msgReset = $msgReset . "<li>Le lien de réinitialisation ou l'adresse email sont incorrects.</li>";
+        $message = $message . "<li>Le lien de réinitialisation ou l'adresse email sont incorrects.</li>";
         $validation = false;
     }
     //  Vérifie si la demande de réinitialisation est inférieure à 15 minutes
     if ($interval>$delay) {
-        $msgReset = $msgReset . "<li>Le lien de réinitialisation est périmé.</li>";
+        $message = $message . "<li>Le lien de réinitialisation est périmé.</li>";
         $validation = false;
     }
     // Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
     if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $new_pass)) {
-        $msgReset = $msgReset . "<li>Le nouveau mot de passe n'est pas valide.</li>";
+        $message = $message . "<li>Le nouveau mot de passe n'est pas valide.</li>";
         $validation = false;
     }
     // Vérifie si la confirmation du mot de passe est identique
     if ($new_pass!=$new_pass_confirm) {
-        $msgReset = $msgReset . "<li>Le mot de passe et la confirmation sont différents.</li>";
+        $message = $message . "<li>Le mot de passe et la confirmation sont différents.</li>";
         $validation = false;
     }
     // Si validation est vraie, met à jour le mot de passe 
@@ -80,16 +86,13 @@ if (!empty($_POST) && isset($_GET["token"])) {
             "user_ID" => $dataUser["ID"]
         ));
 
-        $msgReset = "Le mot de passe a été modifié.";
+        $message = "Le mot de passe a été modifié.";
         $typeAlert = "success";
 
         header("Refresh: 2; url=profil.php");
     }
 
-    $_SESSION["flash"] = array(
-        "msg" => $msgReset,
-        "type" =>  $typeAlert
-    );
+    $session->setFlash($message, $typeAlert);
 }
 
 ?>
@@ -120,7 +123,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
                         </div>
                     <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-blue btn-block mb-4 shadow">
 
-                    <?php include("msg_session_flash.php") ?>
+                    <?php $session->flash(); // Message en session flash ?>      
                 </form>
             </div>
         </section>

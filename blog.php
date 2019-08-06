@@ -2,14 +2,13 @@
 // ini_set("display_errors",1);
 // error_reporting(E_ALL);	
 
-function loadClass($classname) 
-{
+function loadClass($classname) {
     require $classname . ".php";
 }
 
 spl_autoload_register("loadClass");
 
-session_start();
+$session = new Session();
 
 $databaseConnection = new DatabaseConnection();
 
@@ -17,34 +16,28 @@ $postsManager = new Postsmanager($databaseConnection->db());
 
 // Si recherche, filtre les résultats
 $filter = "status = 'Publié'";
-if (!empty($_GET["search"])) 
-{
+if (!empty($_GET["search"])) {
     $filter = $filter . " AND title like \'%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
 }
 // Compte le nombre d'articles
 $nbItems = $postsManager->count($filter);
 
 // Vérification si informations dans variable POST
-if (!empty($_POST)) 
-{
+if (!empty($_POST)) {
     $nbDisplayed = htmlspecialchars($_POST["nbDisplayed"]);
     setcookie("pagination[nbDisplayedPosts]", $nbDisplayed, time() + 365*24*3600, null, null, false, false);
-} else if (!empty($_COOKIE["pagination"]["nbDisplayedPosts"])) 
-{
+} else if (!empty($_COOKIE["pagination"]["nbDisplayedPosts"])) {
     $nbDisplayed = $_COOKIE["pagination"]["nbDisplayedPosts"];
-} else 
-{
+} else {
     $nbDisplayed = 10;
 }
 // Vérification si informations dans variable GET
-if (!empty($_GET["page"])) 
-{
+if (!empty($_GET["page"])) {
     $page = htmlspecialchars($_GET["page"]);
     // Calcul le nombre de pages par rapport aux nombre d'articles
     $maxPost = $page*$nbDisplayed;
     $minPost = $maxPost-$nbDisplayed;
-} else  
-{
+} else  {
     $page = 1;
     $minPost = 0;
     $maxPost = $nbDisplayed;
@@ -83,8 +76,7 @@ var_dump($_GET);
 
             <?php 
             // Vérifie si l'utilisateur a les droits pour écrire un article
-            if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) 
-            {
+            if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
             ?> 
                 <div class="mt-4 mb-4">
                     <a class="text-blue" href="post_edit.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
@@ -92,23 +84,20 @@ var_dump($_GET);
             <?php
             }
             // Affiche les résultats si recherche
-            if (!empty($_GET["search"])) 
-            {
+            if (!empty($_GET["search"])) {
                 echo "<p> " . $nbItems . " résultat(s).</p>";
             }    
+
+            $session->flash(); // Message en session flash
+
+            include("nav_pagination.php"); // Ajoute la barre de pagination
+
             ?>
-
-            <?php include("msg_session_flash.php") ?>
-
-            <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
-
             <div class="row">
 
                 <?php
-                if ($nbItems) 
-                {
-                    foreach ($posts as $post) 
-                    {
+                if ($nbItems) {
+                    foreach ($posts as $post) {
                     ?>
                     <div class="col-md-12">
                         <div class="card shadow">
@@ -118,8 +107,7 @@ var_dump($_GET);
                                 </a>
                                 <em>Créé le <?= str_replace(' ', ' à ', $post->creation_date()) ?> par <a class="text-blue" href=""><?= $post->user_login() ?></a></em>
                                 <?php 
-                                if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) 
-                                { 
+                                if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { 
                                 ?>
                                     <a class="text-blue a-edit-post" href="post_edit.php?post=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                                 <?php 
@@ -130,8 +118,7 @@ var_dump($_GET);
                                 <div class="post_content"><?= nl2br(strip_tags(htmlspecialchars_decode($post->content()))) ?>
                                 <?php 
                                 // Si le contenu est > à 1200 caractères, affiche le bouton 'Continuer la lecture' et ajoute un effet fade out
-                                if (strlen($post->content()) > 1200) 
-                                {
+                                if (strlen($post->content()) > 1200) {
                                 ?>
                                     <span class="post-fade-out"></span>
                                 </div>

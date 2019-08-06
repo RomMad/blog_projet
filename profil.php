@@ -1,7 +1,15 @@
 <?php 
-session_start();
+function loadClass($classname) {
+    require $classname . ".php";
+}
 
-require("connection_db.php");
+spl_autoload_register("loadClass");
+
+$session = new Session();
+
+$databaseConnection = new DatabaseConnection();
+$db = $databaseConnection->db();
+
 // Redirige vers la page de connexion si non connecté
 if (empty($_SESSION["userID"])) {
     header("Location: connection.php");
@@ -24,7 +32,7 @@ if (!isset($_POST["login"])) {
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
     $validation = true;
-    $msgProfil = "";
+    $message = "";
     $typeAlert = "danger";
     
     // Met à jour des informations du profil
@@ -56,37 +64,37 @@ if (!empty($_POST)) {
 
         // Vérifie si le champ login est vide
         if (empty($login)) {
-            $msgProfil = $msgProfil . "<li>Veuillez saisir un login.</li>";
+            $message = $message . "<li>Veuillez saisir un login.</li>";
             $validation = false;
         }
         // Vérifie si le login est déjà pris par un autre utilisateur
         if ($loginExist) {
-            $msgProfil = $msgProfil . "<li>Ce login est déjà utilisé. Veuillez en choisir un autre.</li>";
+            $message = $message . "<li>Ce login est déjà utilisé. Veuillez en choisir un autre.</li>";
             $validation = false;
         }
         // Vérifie si le champ login est vide
         if (empty($email)) {
-            $msgProfil = $msgProfil . "<li>L'adresse email est obligatoire.</li>";
+            $message = $message . "<li>L'adresse email est obligatoire.</li>";
             $validation = false;
         }
         // Vérifie si l'email est correct
         if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
-            $msgProfil = $msgProfil . "<li>L'adresse email " . $email . " est incorrecte.</li>";
+            $message = $message . "<li>L'adresse email " . $email . " est incorrecte.</li>";
             $validation = false;
         }
         // Vérifie si l'email est déjà pris par un autre utilisateur
         if ($emailExist) {
-            $msgProfil = $msgProfil . "<li>Cette adresse email est déjà utilisée.</li>";
+            $message = $message . "<li>Cette adresse email est déjà utilisée.</li>";
             $validation = false;
         }
         // Vérifie si le mot de passe est correct
         if (!$isPasswordCorrect) {
-            $msgProfil = $msgProfil . "<li>Le mot de passe est incorrect.</li>";
+            $message = $message . "<li>Le mot de passe est incorrect.</li>";
             $validation = false;
         }
         // Vérifie si la confirmation du mot de passe est identique
         if ($pass!=$pass_confirm) {
-            $msgProfil = $msgProfil . "<li>Le mot de passe et la confirmation sont différents.</li>";
+            $message = $message . "<li>Le mot de passe et la confirmation sont différents.</li>";
             $validation = false;
         }
         // Met à jour les informations du profil si validation est vraie
@@ -104,7 +112,7 @@ if (!empty($_POST)) {
                 ));
 
             $_SESSION["userLogin"] = $login;
-            $msgProfil = "Le profil est mis à jour.";
+            $message = "Le profil est mis à jour.";
             $typeAlert = "success";
         }
     }
@@ -117,17 +125,17 @@ if (!empty($_POST)) {
         // Vérifie si l'ancien mot de passe est correct
         $isPasswordCorrect = password_verify($old_pass, $dataUser["pass"]); // Compare le mot de passe envoyé via le formulaire avec la base
         if (!$isPasswordCorrect) {
-            $msgProfil = $msgProfil . "<li>L'ancien mot de passe est incorrect.</li>";
+            $message = $message . "<li>L'ancien mot de passe est incorrect.</li>";
             $validation = false;
         }
         // Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
         if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $new_pass)) {
-            $msgProfil = $msgProfil . "<li>Le nouveau mot de passe n'est pas valide.</li>";
+            $message = $message . "<li>Le nouveau mot de passe n'est pas valide.</li>";
             $validation = false;
         }
         // Vérifie si la confirmation du mot de passe est identique
         if ($new_pass!=$new_pass_confirm) {
-            $msgProfil = $msgProfil . "<li>Le mot de passe et la confirmation sont différents.</li>";
+            $message = $message . "<li>Le mot de passe et la confirmation sont différents.</li>";
             $validation = false;
         }
         // Met à jour le mot de passe si validation est vraie
@@ -139,15 +147,12 @@ if (!empty($_POST)) {
             "ID" => $_SESSION["userID"]
             )); 
 
-        $msgProfil = "Le mot de passe est mis à jour.";
+        $message = "Le mot de passe est mis à jour.";
         $typeAlert = "success";
         }
     }
 
-    $_SESSION["flash"] = array(
-        "msg" => $msgProfil,
-        "type" =>  $typeAlert
-    );
+    $session->setFlash($message, $typeAlert);
 }
 
 ?>
@@ -173,7 +178,8 @@ if (!empty($_POST)) {
 
             <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
 
-            <?php include("msg_session_flash.php") ?>
+                <?php $session->flash(); // Message en session flash ?>      
+                
 
                 <div class="row">
             
