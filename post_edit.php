@@ -22,7 +22,7 @@ if (!empty($_POST)) {
     $title = htmlspecialchars($_POST["title"]);
     $content = htmlspecialchars($_POST["post_content"]);
     $status = htmlspecialchars($_POST["status"]);
-    $post_ID = htmlspecialchars($_POST["post_ID"]);
+    $post_id = htmlspecialchars($_POST["post_id"]);
     $user_id = htmlspecialchars($_SESSION["userID"]);
     $user_login = htmlspecialchars($_SESSION["userLogin"]);
     $validation = true;
@@ -41,8 +41,8 @@ if (!empty($_POST)) {
     // Ajoute ou modifie l'article si le titre n'est pas vide
     if ($validation) {
         // Ajoute l'article si nouvel article
-        if (isset($_POST["save"]) && empty($_POST["post_ID"])) {
-            $post = new Posts ([
+        if (isset($_POST["save"]) && empty($_POST["post_id"])) {
+            $post = new Posts([
                 "title" => $title,
                 "content" => $content,
                 "user_id" => $user_id,
@@ -53,18 +53,18 @@ if (!empty($_POST)) {
             $session->setFlash("L'article a été enregistré.", "success");
             $post = $postsManager->lastcreate($_SESSION["userID"]);
             
-            $post_ID = $post->id();
+            $post_id = $post->id();
             $creation_date = $post->creation_date();
             $update_date = $post->update_date();
         }
 
         // Met à jour l'article si article existant
-        if (isset($_POST["save"]) && !empty($_POST["post_ID"])) {
-            $post = new Posts ([
+        if (isset($_POST["save"]) && !empty($_POST["post_id"])) {
+            $post = new Posts([
                 "title" => $title,
                 "content" => $content,
                 "status" => $status,
-                "id" => $post_ID,
+                "id" => $post_id,
             ]);
             $postsManager->update($post);
             $session->setFlash("Les modifications ont été enregistrées.", "success");
@@ -72,8 +72,8 @@ if (!empty($_POST)) {
     }
 
     // Supprime l'article
-    if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) {
-        $post = $postsManager->get(htmlspecialchars($_POST["post_ID"]));
+    if (isset($_POST["erase"]) && !empty($_POST["post_id"])) {
+        $post = $postsManager->get(htmlspecialchars($_POST["post_id"]));
         $postsManager->delete($post);
         $session->setFlash("L'article \"" . $title . "\" a été supprimé.", "warning");
         header("Location: blog.php");
@@ -84,7 +84,7 @@ if (!empty($_POST)) {
 if (!empty($_GET["post"])) {
     $post = $postsManager->get(htmlspecialchars($_GET["post"]));
 
-    $post_ID = $post->id();
+    $post_id = $post->id();
     $title = $post->title();
     $content = html_entity_decode($post->content());
     $user_login = $post->user_login();
@@ -114,7 +114,7 @@ if (!empty($_GET["post"])) {
     <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent">
                 <li class="breadcrumb-item"><a href="blog.php" class="text-blue">Blog</a></li>
-                <li class="breadcrumb-item"><a href="post_view.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" class="text-blue">Article</a></li>
+                <li class="breadcrumb-item"><a href="post_view.php?post=<?= isset($post_id) ? $post_id : "" ?>" class="text-blue">Article</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Édition</li>
             </ol>
         </nav>
@@ -122,7 +122,7 @@ if (!empty($_GET["post"])) {
         <section id="post_form" class="row">
             <div class="col-sm-12 col-md-12 mx-auto">
 
-                <form action="post_edit.php?post=<?= isset($post_ID) ? $post_ID : "" ?>" method="post" class="">
+                <form action="post_edit.php?post=<?= isset($post_id) ? $post_id : "" ?>" method="post" class="">
 
                     <h2 class="mb-4">Édition d'article</h2>
 
@@ -141,12 +141,12 @@ if (!empty($_GET["post"])) {
                         </div>
                         <div class="col-md-12 col-lg-2">
                             <div class="form-group sr-only">
-                                    <label for="post_ID">ID</label>
-                                    <input type="text" name="post_ID" class="form-control shadow-sm" id="post_ID" readonly value="<?= isset($post_ID) ? $post_ID : "" ?>">
+                                    <label for="post_id">ID</label>
+                                    <input type="text" name="post_id" class="form-control shadow-sm" id="post_id" readonly value="<?= isset($post_id) ? $post_id : "" ?>">
                             </div>
                             <div class="form-group">
-                                <label for="post_user_ID">Auteur</label>
-                                <input type="text" name="post_user_ID" class="form-control shadow-sm" id="post_user_ID" readonly value="<?= isset($user_login) ? $user_login : "" ?>">
+                                <label for="post_user_id">Auteur</label>
+                                <input type="text" name="post_user_id" class="form-control shadow-sm" id="post_user_id" readonly value="<?= isset($user_login) ? $user_login : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="creation_date">Date de création</label>

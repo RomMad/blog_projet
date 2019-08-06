@@ -5,6 +5,7 @@ class Comments {
             $_post_id,
             $_user_id,
             $_user_name,
+            $_login,
             $_content,
             $_status,
             $_report_date,
@@ -16,19 +17,25 @@ class Comments {
         $this->hydrate($datas);
     }
 
+    public function hydrate (array $datas) {
+        foreach($datas as $key => $value) {
+            $method = "set" . ucfirst($key); // récupère le nom du setter correspondant à l'attribut
+            if (method_exists($this, $method)) { // vérifie si le setter correspondant existe
+                $this->$method($value); // si oui, appelle le setter
+            }
+        }
+    }
+
     // Getters
     public function id() {
         return $this->_id;
     }
-
     public function post_id() {
         return $this->_post_id;
     }
-
     public function user_id() {
         return $this->_user_id;
     }
-
     public function user_name() {
         return $this->_user_name;
     }
@@ -38,23 +45,18 @@ class Comments {
     public function content() {
         return $this->_content;
     }
-
     public function status() {
         return $this->_status;
     }
-
     public function report_date() {
         return $this->_report_date;
     }
-
     public function nb_report() {
         return $this->nb_report;
     }
-
     public function creation_date() {
         return $this->_creation_date;
     }
-
     public function update_date() {
         return $this->_update_date;
     }
@@ -66,14 +68,12 @@ class Comments {
             $this->_id = $id;
         }
     }
-
     public function setPost_id($post_id) {
         $post_id = (int) $post_id;
         if ($post_id > 0) {
             $this->_post_id = $post_id;
         }
     }
-
     public function setUser_id($user_id) {
         $user_id = (int) $user_id;
         if ($user_id > 0) {
@@ -85,7 +85,11 @@ class Comments {
             $this->_user_name = $user_name;
         }
     }
-
+    public function setLogin($login) {
+        if (is_string($login)) {
+            $this->_login = $login;
+        }
+    }
     public function setContent($content) {
         if (is_string($content)) {
             $this->_content = $content;
@@ -97,7 +101,6 @@ class Comments {
             $this->_status = $status;
         }
     }
-
     public function setReport_date($report_date) {
         $isDate = $this->validateDate($report_date, "Y-m-d H:i:s");
         if ($isDate) {
@@ -107,14 +110,12 @@ class Comments {
             echo "Erreur dans le format de la date. ";
         }
     }
-
     public function setNb_report($nb_report) {
         $nb_report = (int) $nb_report;
         if ($nb_report >= 0) {
             $this->_b_report = $nb_report;
         }
     }
-
     public function setCreation_date($creation_date) {
         $isDate = $this->validateDate($creation_date, "Y-m-d H:i:s");
         if ($isDate) {
@@ -124,14 +125,12 @@ class Comments {
             echo "Erreur dans le format de la date. ";
         }
     }
-    
     public function setUpdate_date($update_date) {
         $isDate = $this->validateDate($update_date, "Y-m-d H:i:s");
         if ($isDate) {
             $update_date = new DateTime($update_date);
             $this->_update_date = $update_date->format("d/m/Y H:i");
         }
-        echo "Erreur dans le format de la date. ";
     }
 
     // Vérifie si la date est valide
@@ -139,6 +138,5 @@ class Comments {
         $d = DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) == $date;
     }
-    
-}
 
+}
