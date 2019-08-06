@@ -33,8 +33,7 @@ if (!empty($_POST)) {
         // Supprime les commentaires sélectionnés via une boucle
         if ($_POST["action_apply"] == "delete" && isset($_POST["selectedComments"])) {
             foreach ($_POST["selectedComments"] as $selectedComment) {
-                $comment = $commentsManager->get($selectedComment);
-                $commentsManager->delete($comment);
+                $commentsManager->delete($selectedComment);
             }
             // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
             $nbselectedComments = count($_POST["selectedComments"]);

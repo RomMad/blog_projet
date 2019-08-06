@@ -95,13 +95,10 @@ class CommentsManager {
         return "Le commentaire a été signalé.";
     }
     // Méthode de suppresion d'un commentaire
-    public function delete(Comments $comment) {
-        $req = $this->_db->prepare("DELETE FROM comments WHERE id = ? ");
-        $req->execute([
-            $comment->id()
-        ]);
+    public function delete($id) {
+        $req = $this->_db->prepare("DELETE FROM comments WHERE id = $id ");
+        $req->execute();
         return "Le commentaire a été supprimé.";
-
     }
     // Méthode qui compte le nombre de commentaires
     public function count($filter) {

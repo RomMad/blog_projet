@@ -33,8 +33,8 @@ if (!empty($_POST))
     if (!empty($_POST["action_apply"]) && isset($_POST["selectedPosts"])) {
         // Supprime les articles sélectionnés via une boucle
         if ($_POST["action_apply"] == "delete") {
-            foreach ($_POST["selectedPosts"] as $id) {
-                $postManager->delete($id);
+            foreach ($_POST["selectedPosts"] as $selectedPost) {
+                $postManager->delete($selectedPost);
             }
             // Compte le nombre d'articles supprimés pour adaptés l'affichage du message
             $nbSelectedPosts = count($_POST["selectedPosts"]);

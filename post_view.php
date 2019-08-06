@@ -86,8 +86,7 @@ if (!empty($_POST)) {
 
 //
 if (isset($_GET["action"]) && $_GET["action"]=="erase") {
-    $comment = $commentsManager->get(htmlspecialchars($_GET["comment"]));
-    $commentsManager->delete($comment);
+    $commentsManager->delete(htmlspecialchars($_GET["comment"]));
     $session->setFlash("Le commentaire a été supprimé.", "warning");
 }
 // Ajoute le signalement du commentaire
