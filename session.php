@@ -1,10 +1,12 @@
 <?php 
 class Session {
 
+    // Lancement de la session
     public function __construct () {
         session_start();
     }
 
+    // Initialise un message d'alerte
     public function setFlash ($message, $typeAlert) {
         if (!empty($_SESSION["flash"])) {
             $message =  $_SESSION["flash"]["message"] . "<br />" . $message;
@@ -15,6 +17,7 @@ class Session {
         );
     }
 
+    // Affiche le message d'alerte
     public function flash() {
         if (isset($_SESSION["flash"])) {
             ?>
@@ -28,4 +31,10 @@ class Session {
             unset($_SESSION["flash"]);
         }
     }
+    // Déconnection de la session
+    public function disconnect() {
+        session_destroy();
+        header("Location: connection.php"); // Redirige vers page d'accueil
+    }
+
 }
