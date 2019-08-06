@@ -67,7 +67,9 @@ class PostsManager {
         while ($datas = $req->fetch()) {
             $posts[] = new Posts($datas);
         }
-        return $posts;
+        if (isset($posts)) {
+            return $posts;
+        }
     }
     // Méthode de mise à jour d'un article
     public function update(Posts $post) {
