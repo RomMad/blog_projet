@@ -89,11 +89,9 @@ class PostsManager {
         ]);
     }
     // Méthode de suppresion d'un article
-    public function delete(Posts $post) {
-        $req = $this->_db->prepare("DELETE FROM posts WHERE ID = ? ");
-        $req->execute([
-            $post->id()
-        ]);
+    public function delete($id) {
+        $req = $this->_db->prepare("DELETE FROM posts WHERE ID = $id ");
+        $req->execute();
     }
     // Méthode qui compte le nombre d'articles
     public function count($filter) {

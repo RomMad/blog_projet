@@ -73,8 +73,7 @@ if (!empty($_POST)) {
 
     // Supprime l'article
     if (isset($_POST["erase"]) && !empty($_POST["post_id"])) {
-        $post = $postsManager->get(htmlspecialchars($_POST["post_id"]));
-        $postsManager->delete($post);
+        $postsManager->delete(htmlspecialchars($_POST["post_id"]));
         $session->setFlash("L'article \"" . $title . "\" a été supprimé.", "warning");
         header("Location: blog.php");
     }
