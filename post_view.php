@@ -114,22 +114,10 @@ if (!empty($_POST["nbDisplayed"])) {
     $nbDisplayed = 10;
 }
 
-if (!empty($_GET["page"])) {
-    $currentPage = htmlspecialchars($_GET["page"]);
-    // Calcul le nombre de pages par rapport aux nombre d'articles
-    $maxLimit =  $currentPage*$nbDisplayed;
-    $minLimit = $maxLimit-$nbDisplayed;
-} else {
-    $currentPage = 1;
-    $minLimit = 0;
-    $maxLimit = $nbDisplayed;
-}
-
-// Initialisation des variables pour la pagination
+// Initialisation de la pagination
 $linkNbDisplayed= "post_view.php?" . $post_id . "#form-comment";
 $linkPagination= "post_view.php?";
 $anchorPagination= "#comments";
-$nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Vérifie s'il y a des commentaires
@@ -140,9 +128,6 @@ if ($nbItems == 0) {
     $comments = $commentsManager->getList("c.post_id = " . $post_id . " AND " . $filter, "c.creation_date", "DESC", $minLimit, $maxLimit);
 
 }
-
-var_dump($_POST);
-var_dump($_GET);
 
 ?>
 
