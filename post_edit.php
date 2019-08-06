@@ -11,7 +11,7 @@ session_start();
 
 $databaseConnection = new DatabaseConnection();
 
-$manager = new Postsmanager($databaseConnection->db());
+$postsManager = new Postsmanager($databaseConnection->db());
 
 // Redirige vers la page de connexion si l'utilisateur n'a pas les droits
 if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) 
@@ -60,9 +60,9 @@ if (!empty($_POST))
                 "user_login" => $user_login,
                 "status" => $status,
             ]);
-            $manager->add($post);
+            $postsManager->add($post);
             $message = "L'article a été enregistré.";
-            $dataPost = $manager->lastcreate($_SESSION["userID"]);
+            $dataPost = $postsManager->lastcreate($_SESSION["userID"]);
             
             $post_ID = $dataPost->id();
             $creation_date = $dataPost->creation_date();
@@ -78,7 +78,7 @@ if (!empty($_POST))
                 "status" => $status,
                 "id" => $post_ID,
             ]);
-            $manager->update($post);
+            $postsManager->update($post);
             $message = "L'article a été modifié.";
         }
     }
@@ -86,7 +86,7 @@ if (!empty($_POST))
     // Supprime l'article
     if (isset($_POST["erase"]) && !empty($_POST["post_ID"])) 
     {
-        $manager->delete(($post_ID));
+        $postsManager->delete(($post_ID));
         $message = "L'article \"" . $title . "\" a été supprimé.";
         $typeAlert = "warning";
         header("Location: blog.php");
@@ -102,7 +102,7 @@ if (!empty($_POST))
 // Récupère l'article si GET post existe
 if (!empty($_GET["post"])) 
 {
-    $dataPost = $manager->get(htmlspecialchars($_GET["post"]));
+    $dataPost = $postsManager->get(htmlspecialchars($_GET["post"]));
 
     $post_ID = $dataPost->id();
     $title = $dataPost->title();
