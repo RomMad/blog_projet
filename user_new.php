@@ -116,8 +116,8 @@ if (!empty($_POST)) {
         
         mail($to,$subject,$message,$headers);
 
-        $session->setFlash("L'utilisateur a été ajouté. Un email lui a été envoyé.", "danger");
-            // header("Refresh: 2; url=admin_users.php");
+        $session->setFlash("L'utilisateur a été ajouté. Un email lui a été envoyé.", "success");
+            header("Refresh: 2; url=admin_users.php");
         }
 }
 ?>
