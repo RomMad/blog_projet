@@ -105,7 +105,7 @@ class Posts {
 
     // Vérifie si la date est valide
     private function validateDate($date, $format = 'Y-m-d H:i:s') {
-        $date = DateTime::createFromFormat($format, $date);
-        return $date && $date->format($format) == $date;
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
     }
 }

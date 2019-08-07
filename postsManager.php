@@ -103,8 +103,7 @@ class PostsManager {
         return $nbPosts;
     }
 
-    public function setDb(PDO $db)
-    {
+    private function setDb(PDO $db){
       $this->_db = $db;
     }
 
