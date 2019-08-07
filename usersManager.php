@@ -12,6 +12,18 @@ class UsersManager {
 
     }
 
+    // Contrôle l'utilisateur
+    public function verify($login) {
+        $req = $this->_db->prepare("SELECT * FROM users WHERE login = ?");
+        $req->execute([
+            $login
+        ]);
+        $user = $req->fetch();
+        if (!empty($user)) {
+            return new Users($user);
+        }
+    }
+
     // Récupère un utilisateur
     public function get($id) {
         $req = $this->_db->prepare("SELECT * FROM users WHERE id = $id");

@@ -6,9 +6,9 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-
 $databaseConnection = new DatabaseConnection();
 $db = $databaseConnection->db();
+$usersManager = new usersManager($db);
 
 // Redirige vers la page d'accueil si l'utilisateur est déjà connecté
 if (!empty($_SESSION["userID"])) {
@@ -17,42 +17,46 @@ if (!empty($_SESSION["userID"])) {
 
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
-    $login = htmlspecialchars($_POST["login"]);
-    $pass = htmlspecialchars($_POST["pass"]);
+    $validation = true;
 
-    // Récupère l'ID de l'utilisateur et son password haché
-    $req = $db->prepare("SELECT ID, pass, role FROM users WHERE login = ?");
-    $req->execute(array($login));
-    $dataUser = $req->fetch();
+    // Vérifie si le login est vide
+    if (empty($_POST["login"]) || empty($_POST["pass"])) {
+        $validation = false;
+        $session->setFlash("Veuillez saisir votre login <br />et votre mot de passe.", "danger");
+    } else {
+        // Récupère l'ID de l'utilisateur et son password haché
+        $user = $usersManager->verify(htmlspecialchars($_POST["login"]));
+        // Si l'utilisateur existe, vérifie le mot de passe   
+        if ($user) {
+            $isPasswordCorrect = password_verify($_POST["pass"], $user->pass());// Compare le password envoyé via le formulaire avec la base  
+        }
+        if (!$user || !$isPasswordCorrect) {
+            $validation = false;
+            $session->setFlash("Login ou mot de passe incorrect.", "danger");
+        }
+    }
 
-    // Vérifie si login et password existent   
-    $isPasswordCorrect = password_verify($pass, $dataUser["pass"]);// Compare le password envoyé via le formulaire avec la base  
-    if ($dataUser && $isPasswordCorrect) {
-        $_SESSION["userID"] = htmlspecialchars($dataUser["ID"]);
-        $_SESSION["userLogin"] = $login;
-        $_SESSION["userRole"] = htmlspecialchars($dataUser["role"]);
-
+    if ($validation == true) {
+        // Enregistre les informations de l'utilisateurs en session
+        $_SESSION["userID"] = $user->id();
+        $_SESSION["userLogin"] = htmlspecialchars($_POST["login"]);
+        $_SESSION["userRole"] = $user->role();
         // Enregistre le login et le mot de passe en cookie si la case "Se souvenir de moi" est cochée
         if (isset($_POST["remember"])) {
-            setcookie("user[login]", $login, time() + 365*24*3600, null,null, false, true);
-            setcookie("user[pass]", $pass, time() + 365*24*3600, null,null, false, true);
+            setcookie("user[login]", $_SESSION["userLogin"], time() + 365*24*3600, null,null, false, true);
+            setcookie("user[pass]", htmlspecialchars($_POST["pass"]), time() + 365*24*3600, null,null, false, true);
         }
-
         // Ajoute la date de connexion de l'utilisateur dans la table dédiée
         $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
-        $req->execute(array("user_ID" => htmlspecialchars($dataUser["ID"])));
+        $req->execute([
+            "user_ID" => $user->id()
+        ]);
 
         $session->setFlash("Vous êtes connecté.", "success");
-        header("Refresh: 2; url=index.php");
-    } else {
-        $session->setFlash("Login ou mot de passe incorrect.", "danger");
-    }
-
-    // Vérifie si le champ login est vide
-    if (empty($login)) {
-        $session->setFlash("Veuillez saisir un Login.", "danger");
+        header("Refresh: 2; url=blog.php");
     }
 }
+
 ?>
 
 <!DOCTYPE html>
