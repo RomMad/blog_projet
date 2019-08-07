@@ -26,14 +26,27 @@ class UsersManager {
 
     // Récupère un utilisateur
     public function get($id) {
-        $req = $this->_db->prepare("SELECT * FROM users WHERE id = $id");
+        $req = $this->_db->prepare("SELECT u.login, u.name, u.surname, u.birthdate, u.email, u.role, r.role_user
+            FROM users u
+            LEFT JOIN user_role r
+            ON u.role = r.id 
+            WHERE u.id = $id");
         $req->execute([
             $id 
         ]);
         $user = $req->fetch();
         return new Users($user);
     }
-   
+    // Récupère un utilisateur
+    public function getRole($id) {
+        $req = $this->_db->prepare("SELECT role FROM users WHERE id = $id");
+        $req->execute([
+            $id 
+        ]);
+        $user = $req->fetch();
+        return new Users($user);
+    }
+
     // Récupère le dernier utilisateur créé
     public function lastCreate() {
 
@@ -58,9 +71,9 @@ class UsersManager {
         }
     }
 
-    // Met à jour le profil de l'utilisateur
-    public function update(Users $user) {
-        $req = $this->_db->prepare("UPDATE users SET login = :newLogin, pass = :newPass, email = :newEmail, name = :newName, surname = :newSurname, birthdate = :newBirthdate, role = :newRole, update_date = NOW() 
+    // Modifie le profil de l'utilisateur
+    public function updateProfil(Users $user) {
+        $req = $this->_db->prepare("UPDATE users SET login = :newLogin, pass = :newPass, email = :newEmail, name = :newName, surname = :newSurname, birthdate = :newBirthdate, update_date = NOW() 
             WHERE id = :id");
         $req->execute([
             "id" => $user->id(),
@@ -70,23 +83,26 @@ class UsersManager {
             "newName" => $user->name(),
             "newSurname" => $user->surname(),
             "newBirthdate" => $user->birthdate(),
-            "newRole" => $user->role()
         ]);
-        return var_dump($user);
-
-        // $req = $this->_db->prepare("UPDATE users SET role = 1 WHERE id = ? ");
-        // $req->execute(array($selectedUser));
     }
 
-        // Met à jour le mot de passe de l'utilisateur
-        public function updatePass(Users $user) {
-            $req = $this->_db->prepare("UPDATE users SET pass = :newPass, update_date = NOW() WHERE id = :id");
-            $req->execute([
-                "id" => $user->id(),
-                "newPass" => $user->pass()
-            ]);
-            return var_dump($user);
-        }
+    // Modifie le mot de passe de l'utilisateur
+    public function updatePass(Users $user) {
+        $req = $this->_db->prepare("UPDATE users SET pass = :newPass, update_date = NOW() WHERE id = :id");
+        $req->execute([
+            "id" => $user->id(),
+            "newPass" => $user->pass()
+        ]);
+    }
+
+    // Modifie le rôle de l'utilisateur
+    public function updateRole($id, $role) {
+        $req = $this->_db->prepare("UPDATE users SET role = :newRole, update_date = NOW() WHERE id = :id");
+        $req->execute([
+            "id" => $id,
+            "newRole" => $role
+        ]);
+    }
     // Supprime un utilisateur
     public function delete($id) {
         $req = $this->_db->prepare("DELETE FROM users WHERE id = ? ");

@@ -25,9 +25,8 @@ if (!isset($_POST["login"])) {
     $name = $user->name();
     $surname = $user->surname();
     $birthdate = $user->birthdate();
-    $role = $user->role();
+    $roleUser = $user->role_user();
 }
-
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
     $validation = true;
@@ -175,47 +174,42 @@ if (!empty($_POST)) {
                                         <label for="login" class="col-md-4 col-form-label">Login</label>
                                         <div class="col-md-8">
                                             <input type="text" name="login" id="login" class="form-control mb-4" 
-                                                value="<?= isset($login) ? $login : "" ?>">
+                                                value="<?= $login ?>">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <label for="email" class="col-md-4 col-form-label">Adresse email</label>
                                         <div class="col-md-8">
                                             <input type="text" name="email" id="email" class="form-control mb-4" 
-                                                value="<?= isset($email) ? $email : "" ?>">
+                                                value="<?= $email ?>">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <label for="name" class="col-md-4 col-form-label">Nom</label>
                                         <div class="col-md-8">
                                             <input type="text" name="name" id="name" class="form-control mb-4"
-                                                value="<?= isset($name) ? $name : "" ?>">
+                                                value="<?= $name ?>">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <label for="surname" class="col-md-4 col-form-label">Prénom</label>
                                         <div class="col-md-8">
                                             <input type="text" name="surname" id="surname" class="form-control mb-4"
-                                                value="<?= isset($surname) ? $surname : "" ?>">
+                                                value="<?= $surname ?>">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <label for="birthdate" class="col-md-4 col-form-label">Date de naissance</label>
                                         <div class="col-md-5">
                                             <input type="date" name="birthdate" id="birthdate" class="form-control mb-4"
-                                                value="<?= isset($birthdate) ? $birthdate : "" ?>">
+                                                value="<?= $birthdate ?>">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="role" class="col-md-4 col-form-label">Rôle</label>
                                         <div class="col-md-5">
-                                            <select name="role" id="role" class="custom-select form-control shadow-sm">
-                                                <option value="1" <?= isset($role) && $role == 1 ? "selected" : "" ?>>Administrateur</option>
-                                                <option value="2" <?= isset($role) && $role == 2 ? "selected" : "" ?>>Editeur</option>
-                                                <option value="3" <?= isset($role) && $role == 3 ? "selected" : "" ?>>Auteur</option>
-                                                <option value="4" <?= isset($role) && $role == 4 ? "selected" : "" ?>>Contributeur</option>
-                                                <option value="5" <?= isset($role) && $role == 5 ? "selected" : "" ?>>Abonné</option>
-                                            </select>
+                                             <input type="text" name="role" id="role" class="form-control mb-4" readonly
+                                                value="<?= $roleUser ?>">
                                         </div>
                                     </div> 
                                     <div class="row">

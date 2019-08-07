@@ -9,6 +9,7 @@ class Users {
             $_pass,
             $_email,
             $_role,
+            $_roleUser,
             $_registration_date,
             $_update_date;
 
@@ -50,6 +51,9 @@ class Users {
     public function role() {
         return $this->_role;
     }
+    public function role_user() {
+        return $this->_roleUser;
+    }
     public function registration_date() {
         return $this->_registration_date; 
     }
@@ -80,25 +84,27 @@ class Users {
         }
     }
     public function setBirthdate($birthdate) {
-        $isDate = $this->validateDate($birthdate, "Y-m-d");
-        if ($isDate) {
-            $this->_birthdate = date($birthdate);
-        } else {
-            echo "Erreur date de naissance <br />";
+        if (!empty($birthdate)) {
+            $isDate = $this->validateDate($birthdate, "Y-m-d");
+            if ($isDate) {
+                $this->_birthdate = date($birthdate);
+            } else {
+                return "Erreur date de naissance <br />";
+            }
         }
     }
     public function setPass($pass) {
         if (is_string($pass)) {
             $this->_pass = $pass;
         } else {
-            echo "Erreur pass <br />";
+            return "Erreur pass <br />";
         }
     }
     public function setEmail($email) {
         if (is_string($email)) {
             $this->_email = $email;
         } else {
-            echo "Erreur email <br />";
+            return "Erreur email <br />";
         }
     }
     public function setRole($role) {
@@ -106,7 +112,12 @@ class Users {
         if ($role >= 1 && $role <= 5) {
             $this->_role = $role;
         } else {
-            echo "Erreur role <br />";
+            return "Erreur role <br />";
+        }
+    }
+    public function setRole_user($roleUser) {
+        if (is_string($roleUser)) {
+            $this->_roleUser = $roleUser;
         }
     }
     public function setRegistration_date($registration_date) {

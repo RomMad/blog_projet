@@ -8,18 +8,16 @@ spl_autoload_register("loadClass");
 $session = new Session();
 $databaseConnection = new DatabaseConnection();
 $db = $databaseConnection->db();
+$usersManager = new UsersManager($db);
 $postManager = new Postsmanager($databaseConnection->db());
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: index.php");
 } else {
-    // Récupère les informations de l'utilisateur
-    $req = $db->prepare("SELECT role FROM users WHERE ID =?");
-    $req->execute(array($_SESSION["userID"]));
-    $userRole = $req->fetch();
-    
-    if ($userRole["role"]!=1) {
+    // Récupère le rôle de l'utilisateur
+    $user = $usersManager->getRole($_SESSION["userID"]);
+    if ($user->role() != 1) {
         header("Location: index.php");
     }
 }

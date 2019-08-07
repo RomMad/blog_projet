@@ -75,7 +75,7 @@ $posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $
                                 <a class="text-blue" href="post_view.php?post=<?= $post->id() ?>">
                                     <h3 class="mt-1"><?= $post->title() ?></h3>
                                 </a>
-                                <em>Créé le <?= str_replace(' ', ' à ', $post->creation_date() ?> par <a class="text-blue" href=""><?= $post->user_login() ?></a></em>
+                                <em>Créé le <?= str_replace(' ', ' à ', $post->creation_date()) ?> par <a class="text-blue" href=""><?= $post->user_login() ?></a></em>
                                 <?php if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { ?>
                                     <a class="text-blue a-edit-post" href="post_edit.php?post=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                                 <?php } ?>

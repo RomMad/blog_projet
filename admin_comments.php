@@ -9,19 +9,16 @@ $session = new Session();
 
 $databaseConnection = new DatabaseConnection();
 $db = $databaseConnection->db();
-
+$usersManager = new UsersManager($db);
 $commentsManager = new CommentsManager($databaseConnection->db());
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: index.php");
 } else {
-    // Récupère les informations de l'utilisateur
-    $req = $db->prepare("SELECT role FROM users WHERE ID =?");
-    $req->execute(array($_SESSION["userID"]));
-    $userRole = $req->fetch();
-    
-    if ($userRole["role"]!=1) {
+    // Récupère le rôle de l'utilisateur
+    $user = $usersManager->getRole($_SESSION["userID"]);
+    if ($user->role() != 1) {
         header("Location: index.php");
     }
 }
@@ -67,12 +64,12 @@ if (!empty($_POST)) {
 $nbItems = $commentsManager->count($filter);
 
 // Vérifie l'ordre de tri par type
-if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "user_name" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
+if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "user_name" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date")) {
     $orderBy = htmlspecialchars($_GET["orderBy"]);
 } else if (!empty($_COOKIE["orderBy"]["adminComments"])) {
     $orderBy = $_COOKIE["orderBy"]["adminComments"];
 } else {
-    $orderBy = "creation_date_fr";
+    $orderBy = "creation_date";
 }
 // Vérifie l'ordre de tri si ascendant ou descendant
 if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) {
@@ -99,8 +96,6 @@ require("pagination.php");
 
 // Récupère les commentaires
 $comments = $commentsManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit);
-
-var_dump($comments);
 
 ?>
 

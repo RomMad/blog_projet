@@ -14,8 +14,8 @@ $usersManager = new UsersManager($db);
 if (empty($_SESSION["userID"])) {
     header("Location: index.php");
 } else {
-    // Récupère les informations de l'utilisateur
-    $user = $usersManager->get($_SESSION["userID"]);
+    // Récupère le rôle de l'utilisateur
+    $user = $usersManager->getRole($_SESSION["userID"]);
     if ($user->role() != 1) {
         header("Location: index.php");
     }
