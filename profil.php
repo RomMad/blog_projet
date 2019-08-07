@@ -15,39 +15,29 @@ if (empty($_SESSION["userID"])) {
     // Récupère les informations de l'utilisateur
     $user = $usersManager->get($_SESSION["userID"]);
 }
-// Récupère les informations du profil sauf en cas de mise à jour des informations
-if (!isset($_POST["login"])) {
-    $login = $user->login();
-    $email = $user->email();
-    $name = $user->name();
-    $surname = $user->surname();
-    $birthdate = $user->birthdate();
-    $roleUser = $user->role_user();
-}
+
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
     $validation = true;
     
     // Mettre à jour les informations du profil
     if (isset($_POST["login"])) {
-        $login = htmlspecialchars($_POST["login"]);
-        $name = htmlspecialchars($_POST["name"]);
-        $surname = htmlspecialchars($_POST["surname"]);
-        $email = htmlspecialchars($_POST["email"]);
-        $birthdate = !empty($_POST["birthdate"]) ? htmlspecialchars($_POST["birthdate"]) : NULL;
-        $roleUser = htmlspecialchars($_POST["role"]);
-        $pass = htmlspecialchars($_POST["pass"]);
-        $passConfirm = htmlspecialchars($_POST["pass_confirm"]);
-        $isPasswordCorrect = password_verify($pass, $user->pass()); // Compare le pass envoyé via le formulaire avec la base
-
+        $user = new Users([
+            "login" => htmlspecialchars($_POST["login"]),
+            "name" => htmlspecialchars($_POST["name"]),
+            "surname" => htmlspecialchars($_POST["surname"]),
+            "email" => htmlspecialchars($_POST["email"]),
+            "birthdate" => !empty($_POST["birthdate"]) ? htmlspecialchars($_POST["birthdate"]) : NULL,
+            "role_user" => htmlspecialchars($_POST["role"]),
+        ]);
+        // Compare le pass envoyé via le formulaire avec la base
+        $isPasswordCorrect = password_verify($_POST["pass"], $user->pass()); 
         // Vérifie si le login est déjà pris par un autre utilisateur
-        $loginUsed = $usersManager->count("login = '" . $login . "' AND u.id != " . $_SESSION["userID"]);
-
+        $loginUsed = $usersManager->count("login = '" . $user->login() . "' AND u.id != " . $_SESSION["userID"]);
         // Vérifie si l'email est déjà pris par un autre utilisateur
-        $emailUsed = $usersManager->count("email = '" . $email . "' AND u.id != " . $_SESSION["userID"]);
-
+        $emailUsed = $usersManager->count("email = '" . $user->email() . "' AND u.id != " . $_SESSION["userID"]);
         // Vérifie si le champ login est vide
-        if (empty($login)) {
+        if (empty($user->login())) {
             $session->setFlash("Veuillez saisir un login.", "danger");
             $validation = false;
         }
@@ -57,13 +47,13 @@ if (!empty($_POST)) {
             $validation = false;
         }
         // Vérifie si le champ login est vide
-        if (empty($email)) {
+        if (empty($user->email())) {
             $session->setFlash("L'adresse email est obligatoire.", "danger");
             $validation = false;
         }
         // Vérifie si l'email est correct
-        elseif (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
-            $session->setFlash("L'adresse email " . $email . " est incorrecte.", "danger");
+        elseif (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user->email())) {
+            $session->setFlash("L'adresse email " . $user->email() . " est incorrecte.", "danger");
             $validation = false;
         }
         // Vérifie si l'email est déjà pris par un autre utilisateur
@@ -72,7 +62,7 @@ if (!empty($_POST)) {
             $validation = false;
         }
         // Vérifie si le champ mot de passe est vide
-        if (empty($pass)) {
+        if (empty($_POST["pass"])) {
             $session->setFlash("Veuillez saisir votre mot de passe.", "danger");
             $validation = false;
         }
@@ -82,12 +72,12 @@ if (!empty($_POST)) {
             $validation = false;
         }
         // Vérifie si le champ de confirmation du mot de passe est vide
-        if (empty($passConfirm)) {
+        if (empty($_POST["pass_confirm"])) {
             $session->setFlash("Veuillez saisir la confirmation de votre mot de passe.", "danger");
             $validation = false;
         }
         // Vérifie si la confirmation du mot de passe est identique
-        elseif ($pass != $passConfirm) {
+        elseif ($_POST["pass"] != $_POST["pass_confirm"]) {
             $session->setFlash("Le mot de passe et la confirmation sont différents.", "danger");
             $validation = false;
         }
@@ -102,7 +92,7 @@ if (!empty($_POST)) {
                 "birthdate" => $birthdate,
             ]);
             $usersManager->updateProfil($user);
-            $_SESSION["userLogin"] = $login;
+            $_SESSION["userLogin"] = $user->login();
             $session->setFlash("Le profil a été mis à jour.", "success");
         }
     }
@@ -196,42 +186,42 @@ if (!empty($_POST)) {
                                         <label for="login" class="col-md-4 col-form-label">Login</label>
                                         <div class="col-md-8">
                                             <input type="text" name="login" id="login" class="form-control mb-4" 
-                                                value="<?= $login ?>">
+                                                value="<?= $user->login() ?>">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <label for="email" class="col-md-4 col-form-label">Adresse email</label>
                                         <div class="col-md-8">
                                             <input type="text" name="email" id="email" class="form-control mb-4" 
-                                                value="<?= $email ?>">
+                                                value="<?= $user->email() ?>">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <label for="name" class="col-md-4 col-form-label">Nom</label>
                                         <div class="col-md-8">
                                             <input type="text" name="name" id="name" class="form-control mb-4"
-                                                value="<?= $name ?>">
+                                                value="<?= $user->name() ?>">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <label for="surname" class="col-md-4 col-form-label">Prénom</label>
                                         <div class="col-md-8">
                                             <input type="text" name="surname" id="surname" class="form-control mb-4"
-                                                value="<?= $surname ?>">
+                                                value="<?= $user->surname() ?>">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <label for="birthdate" class="col-md-4 col-form-label">Date de naissance</label>
                                         <div class="col-md-5">
                                             <input type="date" name="birthdate" id="birthdate" class="form-control mb-4"
-                                                value="<?= $birthdate ?>">
+                                                value="<?= $user->birthdate() ?>">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="role" class="col-md-4 col-form-label">Rôle</label>
                                         <div class="col-md-5">
                                              <input type="text" name="role" id="role" class="form-control mb-4" readonly
-                                                value="<?= $roleUser ?>">
+                                                value="<?= $user->role_user() ?>">
                                         </div>
                                     </div> 
                                     <div class="row">
