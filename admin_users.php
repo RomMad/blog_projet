@@ -8,17 +8,15 @@ spl_autoload_register("loadClass");
 $session = new Session();
 $databaseConnection = new DatabaseConnection();
 $db = $databaseConnection->db();
+$usersManager = new UsersManager($db);
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: index.php");
 } else {
     // Récupère les informations de l'utilisateur
-    $req = $db->prepare("SELECT role FROM users WHERE ID =?");
-    $req->execute(array($_SESSION["userID"]));
-    $userRole = $req->fetch();
-    
-    if ($userRole["role"]!=1) {
+    $user = $usersManager->get($_SESSION["userID"]);
+    if ($user->role() != 1) {
         header("Location: index.php");
     }
 }
@@ -30,8 +28,7 @@ if (!empty($_POST)) {
         // Supprime les utilisateurs sélectionnés via une boucle
         if ($_POST["action_apply"] == "delete") {
             foreach ($_POST["selectedUsers"] as $selectedUser) {
-                $req = $db->prepare("DELETE FROM users WHERE ID = ? ");
-                $req->execute(array($selectedUser));
+                $usersManager->delete($selectedUser);
             }
             // Compte le nombre d'utilisateurs supprimés pour adaptés l'affichage du message
             $nbselectedUsers = count($_POST["selectedUsers"]);
@@ -44,8 +41,7 @@ if (!empty($_POST)) {
         // Modère les utilisateurs sélectionnés via une boucle
         if ($_POST["action_apply"] == "moderate") {
             foreach ($_POST["selectedUsers"] as $selectedUser) {
-                $req = $db->prepare("UPDATE users SET role = 1 WHERE ID = ? ");
-                $req->execute(array($selectedUser));
+                
             }
             // Compte le nombre d'utilisateurs modérés pour adaptés l'affichage du message
             $nbselectedUsers = count($_POST["selectedUsers"]);
@@ -68,15 +64,7 @@ if (!empty($_POST)) {
 }
 
 // Compte le nombre d'utilisateurs
-$req = $db->prepare("SELECT COUNT(*) AS nb_Users, u.role, r.ID 
-FROM users u
-LEFT JOIN user_role r
-ON u.role = r.ID  
-WHERE $filter
-");
-$req->execute(array());
-$nbUsers = $req->fetch();
-$nbItems = $nbUsers["nb_Users"];
+$nbItems = $usersManager->count($filter);
 
 // Vérifie l'ordre de tri par type
 if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "login" || $_GET["orderBy"] == "name" || $_GET["orderBy"] == "surname" || $_GET["orderBy"] == "email" || $_GET["orderBy"] == "role" | $_GET["orderBy"] == "registration_date_fr")) {
@@ -110,16 +98,7 @@ $anchorPagination = "#table-admin_users";
 require("pagination.php");
 
 // Récupère les utilisateurs
-$req = $db->prepare("SELECT u.ID, u.login, u.name, u.surname, u.email, r.role_user, 
-DATE_FORMAT(u.registration_date, \"%d/%m/%Y %H:%i\") AS registration_date_fr, 
-DATE_FORMAT(u.update_date, \"%d/%m/%Y %H:%i\") AS update_date_fr 
-FROM users u
-LEFT JOIN user_role r
-ON u.role = r.ID
-WHERE $filter 
-ORDER BY $orderBy $order
-LIMIT  $minLimit, $maxLimit");
-$req->execute(array());
+$users = $usersManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit);
 
 ?>
 
@@ -145,7 +124,7 @@ $req->execute(array());
             <section id="table-admin_users" class="col-md-12 mx-auto mt-4 table-admin">
 
                 <h2 class="mb-4">Gestion des utilisateurs
-                    <span class="badge badge-secondary font-weight-normal"><?= $nbUsers["nb_Users"] ?> </span>
+                    <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>
                 </h2>
                 
                 <?php 
@@ -271,19 +250,19 @@ $req->execute(array());
                                 <tbody>
 
                                     <?php
-                                    while ($dataUsers=$req->fetch()) {
+                                foreach ($users as $user) {
                                     ?>
                                         <tr>
                                             <th scope="row">
-                                                <input type="checkbox" name="selectedUsers[]" id="User<?= $dataUsers["ID"] ?>" value="<?= $dataUsers["ID"] ?>" class=""/>
+                                                <input type="checkbox" name="selectedUsers[]" id="User<?= $user->id() ?>" value="<?= $user->id() ?>" class=""/>
                                                 <label for="selectedUsers[]" class="sr-only">Sélectionner</label>
                                             </th>
-                                            <td><?= $dataUsers["login"] ?></td>
-                                            <td><?= $dataUsers["name"] ?></td>
-                                            <td><?= $dataUsers["surname"] ?></td>
-                                            <td><?= $dataUsers["email"] ?></td>
-                                            <td><?= $dataUsers["role_user"] ?></td>
-                                            <td><?= $dataUsers["registration_date_fr"] ?></td>
+                                            <td><?= $user->login() ?></td>
+                                            <td><?= $user->name() ?></td>
+                                            <td><?= $user->surname() ?></td>
+                                            <td><?= $user->email() ?></td>
+                                            <td><?= $user->role() ?></td>
+                                            <td><?= $user->registration_date() ?></td>
                                         </tr>
                                     <?php
                                     }

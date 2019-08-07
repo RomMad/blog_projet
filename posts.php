@@ -21,7 +21,7 @@ class Posts {
         $this->hydrate($datas);
     }
 
-    public function hydrate (array $datas) {
+    public function hydrate(array $datas) {
         foreach($datas as $key => $value) {
             $method = "set" . ucfirst($key); // récupère le nom du setter correspondant à l'attribut
             if (method_exists($this, $method)) { // vérifie si le setter correspondant existe
@@ -52,7 +52,7 @@ class Posts {
 
     }
 
-    public function deletePost (User $user, Posts $post) {
+    public function deletePost(User $user, Posts $post) {
         // Vérifie si l'utilisateur a les droits pour supprimer l'article
         if ($user->id() != $this->_user_id || $user->role() >1) {
             return self::UNAUTHORIZED;

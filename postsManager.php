@@ -53,7 +53,7 @@ class PostsManager {
         return new Posts($post);
     }
     // Méthode de récupération d'une liste d'articles
-    public function getList($filter, $orderBy, $order, $minPost, $maxPost) {
+    public function getList($filter, $orderBy, $order, $minLimit, $maxLimit) {
         $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID, p.user_login, u.login, p.status, p.creation_date, p.update_date, 
             IF(CHAR_LENGTH(p.content) > 1200, CONCAT(SUBSTRING(p.content, 1, 1200), ' [...]'), p.content) AS content
             FROM posts p
@@ -61,7 +61,7 @@ class PostsManager {
             ON p.user_ID = u.ID
             WHERE $filter 
             ORDER BY $orderBy $order
-            LIMIT  $minPost, $maxPost");
+            LIMIT  $minLimit, $maxLimit");
         $req->execute();
 
         while ($datas = $req->fetch()) {

@@ -100,6 +100,8 @@ require("pagination.php");
 // Récupère les commentaires
 $comments = $commentsManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit);
 
+var_dump($comments);
+
 ?>
 
 <!DOCTYPE html>
