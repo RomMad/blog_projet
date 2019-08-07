@@ -67,7 +67,7 @@ if (!empty($_POST)) {
 $nbItems = $usersManager->count($filter);
 
 // Vérifie l'ordre de tri par type
-if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "login" || $_GET["orderBy"] == "name" || $_GET["orderBy"] == "surname" || $_GET["orderBy"] == "email" || $_GET["orderBy"] == "role" | $_GET["orderBy"] == "registration_date_fr")) {
+if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "login" || $_GET["orderBy"] == "name" || $_GET["orderBy"] == "surname" || $_GET["orderBy"] == "email" || $_GET["orderBy"] == "role" | $_GET["orderBy"] == "registration_date")) {
     $orderBy = htmlspecialchars($_GET["orderBy"]);
 } else if (!empty($_COOKIE["orderBy"]["adminUsers"])) {
     $orderBy = $_COOKIE["orderBy"]["adminUsers"];
@@ -235,9 +235,9 @@ $users = $usersManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit)
                                             </a>
                                         </th>
                                         <th scope="col" class="align-middle">
-                                            <a href="admin_users?orderBy=registration_date_fr&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date d'enregistrement
+                                            <a href="admin_users?orderBy=registration_date&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date d'enregistrement
                                             <?php 
-                                            if ($orderBy == "registration_date_fr") {
+                                            if ($orderBy == "registration_date") {
                                             ?>
                                                 <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                             <?php   
