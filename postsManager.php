@@ -1,10 +1,8 @@
 <?php
-class PostsManager {
+class PostsManager extends Manager {
 
-    private $_db; // Instance de PDO
-
-    public function __construct($db) {
-        $this->setDb($db);
+    public function __construct() {
+        $this->_db = $this->databaseConnection();
     }
 
     // Méthode d'ajout d'un article
@@ -102,9 +100,4 @@ class PostsManager {
         $nbPosts = $req->fetchColumn();
         return $nbPosts;
     }
-
-    private function setDb(PDO $db){
-      $this->_db = $db;
-    }
-
 }

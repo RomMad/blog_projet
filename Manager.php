@@ -1,14 +1,21 @@
 <?php
-class DatabaseConnection
+class Manager
 {
-    //informations de connexion
+    //informations de connexion à la base de données
     private $_dbHost,
             $_dbName,
             $_dbUser,
             $_dbPass,
-            $_db;
+            $_db,
+            $_connecte;
    
     public function __construct() {
+        $this->_connecte = false;
+        $this->databaseConnection();
+    }
+
+    public function databaseConnection()
+    {
         // Vérifie si on est local ou en ligne
         if ($_SERVER["HTTP_HOST"] == "localhost") {
             $this->_dbHost = "localhost";
@@ -21,12 +28,6 @@ class DatabaseConnection
             $this->_dbUser = "dbu50459";
             $this->_dbPass = "!J3anF0r730r0ch3*";   
         }
-        $this->_connecte = false;
-        $this->connection();
-    }
-
-    private function connection()
-    {
         // Connexion à la base de données
         try
         {
@@ -37,6 +38,10 @@ class DatabaseConnection
             // En cas d'erreur, on affiche un message et on arrête tout
             die("Erreur : ".$e->getMessage());
         }
+        
+        $this->_connecte = true;
+        return $this->_db;
+
     } 
  
     public function db() 

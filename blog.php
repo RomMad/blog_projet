@@ -6,8 +6,7 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-$databaseConnection = new DatabaseConnection();
-$postsManager = new Postsmanager($databaseConnection->db());
+$postsManager = new Postsmanager();
 
 // Si recherche, filtre les résultats
 $filter = "status = 'Publié'";
