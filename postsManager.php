@@ -36,7 +36,7 @@ class PostsManager extends Manager {
         return new Posts($post);
     }
     // Méthode de lecture d'un article
-    public function lastCreate($user_id) {
+    public function lastCreate($userId) {
         $req = $this->_db->prepare("SELECT p.ID, p.title, p.user_ID, u.login, p.content, p.status, p.creation_date, p.update_date 
         FROM posts p 
         LEFT JOIN users u 
@@ -45,7 +45,7 @@ class PostsManager extends Manager {
         ORDER BY p.ID DESC 
         LIMIT 0, 1");
         $req->execute([
-            $user_id
+            $userId
         ]);
         $post = $req->fetch();
         return new Posts($post);

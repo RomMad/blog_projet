@@ -16,39 +16,36 @@ if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) {
 
 // Vérification si informations dans variable POST
 if (!empty($_POST)) {
-    $title = htmlspecialchars($_POST["title"]);
-    $content = htmlspecialchars($_POST["post_content"]);
-    $status = htmlspecialchars($_POST["status"]);
-    $post_id = htmlspecialchars($_POST["post_id"]);
-    $user_id = htmlspecialchars($_SESSION["userID"]);
-    $user_login = htmlspecialchars($_SESSION["userLogin"]);
+    $post = new Posts([
+        "title" => htmlspecialchars($_POST["title"]),
+        "content" => htmlspecialchars($_POST["post_content"]),
+        "status" => htmlspecialchars($_POST["status"]),
+        "id" => htmlspecialchars($_POST["post_id"]),
+        "user_id" => htmlspecialchars($_SESSION["userID"]),
+        "user_login" => htmlspecialchars($_SESSION["userLogin"]),
+        "creation_date" => htmlspecialchars($_POST["creation_date"]),
+        "update_date" => htmlspecialchars($_POST["update_date"]),
+    ]);
+
     $validation = true;
 
     // Vérifie si le titre est vide
-    if (empty($_POST["title"])) {
+    if (empty($post->title())) {
         $session->setFlash("Le titre de l'article est vide.", "danger");
         $validation = false;
     }
     // Vérifie si le contenu de l'article est vide
-    if (empty($_POST["post_content"]) && $_POST["status"] == "Publié") {
+    if (empty( $post->content()) &&  $post->status() == "Publié") {
         $session->setFlash("L'article ne peut pas être publié si le contenu est vide.", "danger");
         $validation = false;
     }
-
     // Ajoute ou modifie l'article si le titre n'est pas vide
     if ($validation) {
         // Ajoute l'article si nouvel article
         if (isset($_POST["save"]) && empty($_POST["post_id"])) {
-            $post = new Posts([
-                "title" => $title,
-                "content" => $content,
-                "user_id" => $user_id,
-                "user_login" => $user_login,
-                "status" => $status,
-            ]);
             $postsManager->add($post);
             $session->setFlash("L'article a été enregistré.", "success");
-            $post = $postsManager->lastcreate($_SESSION["userID"]);
+            $post = $postsManager->lastCreate($_SESSION["userID"]);
             
             $post_id = $post->id();
             $creation_date = $post->creation_date();
@@ -57,12 +54,6 @@ if (!empty($_POST)) {
 
         // Met à jour l'article si article existant
         if (isset($_POST["save"]) && !empty($_POST["post_id"])) {
-            $post = new Posts([
-                "title" => $title,
-                "content" => $content,
-                "status" => $status,
-                "id" => $post_id,
-            ]);
             $postsManager->update($post);
             $session->setFlash("Les modifications ont été enregistrées.", "success");
         }
@@ -71,7 +62,7 @@ if (!empty($_POST)) {
     // Supprime l'article
     if (isset($_POST["erase"]) && !empty($_POST["post_id"])) {
         $postsManager->delete(htmlspecialchars($_POST["post_id"]));
-        $session->setFlash("L'article \"" . $title . "\" a été supprimé.", "warning");
+        $session->setFlash("L'article \"" . $post->title() . "\" a été supprimé.", "warning");
         header("Location: blog.php");
     }
 }
@@ -79,14 +70,6 @@ if (!empty($_POST)) {
 // Récupère l'article si GET post existe
 if (!empty($_GET["post"])) {
     $post = $postsManager->get(htmlspecialchars($_GET["post"]));
-
-    $post_id = $post->id();
-    $title = $post->title();
-    $content = html_entity_decode($post->content());
-    $user_login = $post->user_login();
-    $status = $post->status();
-    $creation_date = $post->creation_date();
-    $update_date = $post->update_date();
     
     // Vérifie si l'utilisateur est l'auteur de l'article
     if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post->user_id()) {
@@ -128,35 +111,35 @@ if (!empty($_GET["post"])) {
                         <div class="col-md-12 col-lg-10">
                             <div class="form-group">
                                 <label for="title">Titre</label>
-                                <input type="text" name="title" class="form-control shadow-sm" id="title" value="<?= isset($title) ? $title : "" ?>">
+                                <input type="text" name="title" class="form-control shadow-sm" id="title" value="<?= $post->title() ?>">
                             </div>
                             <div class="form-group">
                                 <label for="post_content" class="d-none">Contenu</label>
-                                <textarea name="post_content" class="form-control shadow-sm" id="post_content" rows="12"><?= isset($content) ?$content : "" ?></textarea>
+                                <textarea name="post_content" class="form-control shadow-sm" id="post_content" rows="12"><?= html_entity_decode($post->content()) ?></textarea>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-2">
                             <div class="form-group sr-only">
                                     <label for="post_id">ID</label>
-                                    <input type="text" name="post_id" class="form-control shadow-sm" id="post_id" readonly value="<?= isset($post_id) ? $post_id : "" ?>">
+                                    <input type="text" name="post_id" class="form-control shadow-sm" id="post_id" readonly value="<?= $post->id() ?>">
                             </div>
                             <div class="form-group">
                                 <label for="post_user_id">Auteur</label>
-                                <input type="text" name="post_user_id" class="form-control shadow-sm" id="post_user_id" readonly value="<?= isset($user_login) ? $user_login : "" ?>">
+                                <input type="text" name="post_user_id" class="form-control shadow-sm" id="post_user_id" readonly value="<?= $post->user_login() ?>">
                             </div>
                             <div class="form-group">
                                 <label for="creation_date">Date de création</label>
-                                <input type="text" name="creation_date" class="form-control shadow-sm" id="creation_date" readonly value="<?= isset($creation_date) ? $creation_date : "" ?>">
+                                <input type="text" name="creation_date" class="form-control shadow-sm" id="creation_date" readonly value="<?= $post->creation_date() ?>">
                             </div>
                             <div class="form-group">
                                 <label for="update_date">Date de mise à jour</label>
-                                <input type="text" name="update_date" class="form-control shadow-sm" id="update_date" readonly value="<?= isset($update_date) ? $update_date : "" ?>">
+                                <input type="text" name="update_date" class="form-control shadow-sm" id="update_date" readonly value="<?= $post->update_date() ?>">
                             </div>
                             <div class="form-group">
                                 <label for="status">Statut</label>
                                 <select name="status" class="form-control shadow-sm" id="status">
-                                    <option <?php if (isset($status) && $status=="Publié") { ?> selected <?php } ?>>Publié</option>
-                                    <option <?php if (isset($status) && $status=="Brouillon") { ?> selected <?php } ?>>Brouillon</option>
+                                    <option <?= $post->status()=="Publié" ? "selected" : "" ?>>Publié</option>
+                                    <option <?= $post->status()=="Brouillon" ? "selected" : "" ?>>Brouillon</option>
                                 </select>
                             </div>
                             <div class="form-group float-right">
