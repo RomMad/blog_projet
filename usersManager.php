@@ -1,10 +1,8 @@
 <?php
-class UsersManager {
+class UsersManager extends Manager {
 
-    private $_db;
-
-    public function __construct($db) {
-        $this->setDb($db);
+    public function __construct() {
+        $this->_db = $this->databaseConnection();
     }
 
     // Ajout d'un utilisateur
@@ -122,8 +120,4 @@ class UsersManager {
         $nbUsers = $req->fetchColumn();
         return $nbUsers;
     }
-
-    private function setDb(PDO $db){
-        $this->_db = $db;
-      }
 }

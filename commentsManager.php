@@ -1,10 +1,8 @@
 <?php
-class CommentsManager {
+class CommentsManager extends Manager {
 
-    private $_db; // Instance de PDO
-
-    public function __construct($db) {
-        $this->setDb($db);
+    public function __construct() {
+        $this->_db = $this->databaseConnection();
     }
 
     // Méthode d'ajout d'un commentaire
@@ -107,10 +105,4 @@ class CommentsManager {
         $nbComments = $req->fetchColumn();
         return $nbComments;
     }
-
-    public function setDb(PDO $db)
-    {
-      $this->_db = $db;
-    }
-
 }

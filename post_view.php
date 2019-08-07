@@ -7,12 +7,9 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-
-$databaseConnection = new DatabaseConnection();
-$db = $databaseConnection->db();
-
-$postsManager = new Postsmanager($db);
-$commentsManager = new CommentsManager($db);
+$postsManager = new Postsmanager();
+$commentsManager = new CommentsManager();
+$db = $postsManager->db();
 
 if (!empty($_GET["post"])) {
     $post_id = htmlspecialchars($_GET["post"]);

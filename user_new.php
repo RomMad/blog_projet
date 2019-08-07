@@ -6,9 +6,8 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-
-$databaseConnection = new DatabaseConnection();
-$db = $databaseConnection->db();
+$usersManager = new UsersManager();
+$db = $usersManager->db();
 
 if (!isset($_POST["pass"])) {
     $bytes = random_bytes(8);
