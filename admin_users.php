@@ -6,7 +6,6 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-
 $databaseConnection = new DatabaseConnection();
 $db = $databaseConnection->db();
 
@@ -79,15 +78,6 @@ $req->execute(array());
 $nbUsers = $req->fetch();
 $nbItems = $nbUsers["nb_Users"];
 
-// Vérification si informations dans variable POST
-if (!empty($_POST["nbDisplayed"])) {
-    $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-    setcookie("pagination[adminNbDisplayedUsers]", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-} else if (!empty($_COOKIE["pagination"]["adminNbDisplayedUsers"])) {
-    $nbDisplayed = $_COOKIE["pagination"]["adminNbDisplayedUsers"];
-} else {
-    $nbDisplayed = 20;
-}
 // Vérifie l'ordre de tri par type
 if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "login" || $_GET["orderBy"] == "name" || $_GET["orderBy"] == "surname" || $_GET["orderBy"] == "email" || $_GET["orderBy"] == "role" | $_GET["orderBy"] == "registration_date_fr")) {
     $orderBy = htmlspecialchars($_GET["orderBy"]);
@@ -112,23 +102,11 @@ if (!empty($_COOKIE["order"]["adminUsers"]) && $orderBy != $_COOKIE["orderBy"]["
 setcookie("orderBy[adminUsers]", $orderBy, time() + 365*24*3600, null, null, false, true);
 setcookie("order[adminUsers]", $order, time() + 365*24*3600, null, null, false, true);
 
-// Vérification si informations dans variable GET
-if (!empty($_GET["page"])) {
-    $page = htmlspecialchars($_GET["page"]);
-    // Calcul le nombre de pages par rapport aux nombre d'utilisateurs
-    $maxUser =  $page*$nbDisplayed;
-    $minUser = $maxUser-$nbDisplayed;
-} else  {
-    $page = 1;
-    $minUser = 0;
-    $maxUser = $nbDisplayed;
-}
-
 // Initialisation des variables pour la pagination
+$typeItem = "adminUsers";
 $linkNbDisplayed = "admin_users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-$linkPagination = "admin_users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+$linkPagination = $linkNbDisplayed;
 $anchorPagination = "#table-admin_users";
-$nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Récupère les utilisateurs
@@ -140,7 +118,7 @@ LEFT JOIN user_role r
 ON u.role = r.ID
 WHERE $filter 
 ORDER BY $orderBy $order
-LIMIT  $minUser, $maxUser");
+LIMIT  $minLimit, $maxLimit");
 $req->execute(array());
 
 ?>

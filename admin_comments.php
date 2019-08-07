@@ -66,15 +66,6 @@ if (!empty($_POST)) {
 // Compte le nombre de commentaires
 $nbItems = $commentsManager->count($filter);
 
-// Vérification si informations dans variable comment
-if (!empty($_POST["nbDisplayed"])) {
-    $nbDisplayed = htmlspecialchars($_POST["nbDisplayed"]);
-    setcookie("pagination[adminNbDisplayedComments]", $nbDisplayed, time() + 365*24*3600, null, null, false, false);
-} else if (!empty($_COOKIE["pagination"]["adminNbDisplayedComments"])) {
-    $nbDisplayed = $_COOKIE["pagination"]["adminNbDisplayedComments"];
-} else {
-    $nbDisplayed = 20;
-}
 // Vérifie l'ordre de tri par type
 if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "user_name" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date_fr")) {
     $orderBy = htmlspecialchars($_GET["orderBy"]);
@@ -99,24 +90,13 @@ if (!empty($_COOKIE["order"]["adminComments"]) && $orderBy != $_COOKIE["orderBy"
 setcookie("orderBy[adminComments]", $orderBy, time() + 365*24*3600, null, null, false, false);
 setcookie("order[adminComments]", $order, time() + 365*24*3600, null, null, false, false);
 
-// Vérification si informations dans variable GET
-if (!empty($_GET["page"])) {
-    $page = htmlspecialchars($_GET["page"]);
-    // Calcul le nombre de pages par rapport aux nombre de commentaires
-    $maxLimit = $page*$nbDisplayed;
-    $minLimit = $maxLimit-$nbDisplayed;
-} else  {
-    $page = 1;
-    $minLimit = 0;
-    $maxLimit = $nbDisplayed;
-}
-
 // Initialisation des variables pour la pagination
+$typeItem = "adminComments";
 $linkNbDisplayed = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-$linkPagination = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+$linkPagination = $linkNbDisplayed;
 $anchorPagination = "#table-admin_comments";
-$nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
+
 // Récupère les commentaires
 $comments = $commentsManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit);
 

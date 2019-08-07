@@ -27,13 +27,13 @@ Class Pagination {
 }
 
 // Vérification si informations dans variable POST
-if (!empty($_POST)) {
+if (!empty($_POST["nbDisplayed"])) {
     $nbDisplayed = htmlspecialchars($_POST["nbDisplayed"]);
     setcookie("pagination[nbDisplayed" . $typeItem . "]", $nbDisplayed, time() + 365*24*3600, null, null, false, false);
 } elseif (!empty($_COOKIE["pagination"]["nbDisplayed" . $typeItem])) {
     $nbDisplayed = $_COOKIE["pagination"]["nbDisplayed" . $typeItem];
 } else {
-    $nbDisplayed = 10;
+    $nbDisplayed = 20;
 }
 
 // Vérification si informations dans variable GET

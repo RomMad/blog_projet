@@ -6,10 +6,8 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-
 $databaseConnection = new DatabaseConnection();
 $db = $databaseConnection->db();
-
 $postManager = new Postsmanager($databaseConnection->db());
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
@@ -74,16 +72,6 @@ if (!empty($_POST))
 // Compte le nombre d'articles
 $nbItems = $postManager->count($filter);
 
-// Vérification si informations dans variable POST
-if (!empty($_POST["nbDisplayed"])) {
-    $nbDisplayed =  htmlspecialchars($_POST["nbDisplayed"]);
-    setcookie("pagination[adminNbDisplayedPosts]", $nbDisplayed, time() + 365*24*3600, null, null, false, true);
-} elseif (!empty($_COOKIE["pagination"]["adminNbDisplayedPosts"])) {
-    $nbDisplayed =  $_COOKIE["pagination"]["adminNbDisplayedPosts"];
-} else {
-    $nbDisplayed = 20;
-}
-
 // Vérifie l'ordre de tri par type
 if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date")) {
     $orderBy = htmlspecialchars($_GET["orderBy"]);
@@ -113,29 +101,15 @@ if (!empty($_COOKIE["order"]["adminPosts"]) && $orderBy != $_COOKIE["orderBy"]["
 setcookie("orderBy[adminPosts]", $orderBy, time() + 365*24*3600, null, null, false, true);
 setcookie("order[adminPosts]", $order, time() + 365*24*3600, null, null, false, true);
 
-// Vérification si informations dans variable GET
-if (!empty($_GET["page"])) 
-{
-    $page = htmlspecialchars($_GET["page"]);
-    // Calcul le nombre de pages par rapport aux nombre d'articles
-    $maxPost =  $page*$nbDisplayed;
-    $minPost = $maxPost-$nbDisplayed;
-} else 
-{
-    $page = 1;
-    $minPost = 0;
-    $maxPost = $nbDisplayed;
-}
-
 // Initialisation des variables pour la pagination
+$typeItem = "adminPosts";
 $linkNbDisplayed = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-$linkPagination = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+$linkPagination = $linkNbDisplayed;
 $anchorPagination = "#table_admin_posts";
-$nbPages = ceil($nbItems / $nbDisplayed);
 require("pagination.php");
 
 // Récupère les articles
-$posts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
+$posts = $postManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit);
 
 ?>
 
@@ -221,9 +195,9 @@ $posts = $postManager->getlist($filter, $orderBy, $order, $minPost, $maxPost);
                                     </a>
                                 </th>
                                 <th scope="col" class="align-middle">
-                                    <a href="admin_posts?orderBy=author&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
+                                    <a href="admin_posts?orderBy=user_name&order=<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
                                     <?php 
-                                    if ($orderBy == "author") {
+                                    if ($orderBy == "user_name") {
                                     ?>
                                         <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
                                     <?php   
