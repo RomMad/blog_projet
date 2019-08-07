@@ -66,15 +66,12 @@ class Posts {
     public function id() {
         return $this->_id;
     }
-
     public function title() {
         return $this->_title;
     }
-
     public function user_id() {
         return $this->_user_id;
     }
-
     public function user_login() {
         return $this->_user_login;
     }
@@ -84,15 +81,12 @@ class Posts {
     public function content() {
         return $this->_content;
     }
-
     public function status() {
         return $this->_status;
     }
-
     public function creation_date() {
         return $this->_creation_date;
     }
-
     public function update_date() {
         return $this->_update_date;
     }
@@ -104,13 +98,11 @@ class Posts {
             $this->_id = $id;
         }
     }
-
     public function setTitle($title) {
         if (is_string($title)) {
             $this->_title = $title;
         }
     }
-
     public function setUser_Id($user_id) {
         $user_id = (int) $user_id;
         if ($user_id > 0) {
@@ -127,7 +119,6 @@ class Posts {
             $this->_login = $login;
         }
     }
-
     public function setContent($content) {
         if (is_string($content)) {
             $this->_content = $content;
@@ -138,7 +129,6 @@ class Posts {
             $this->_status = $status;
         }
     }
-
     public function setCreation_date($creation_date) {
         $isDate = $this->validateDate($creation_date, "Y-m-d H:i:s");
         if ($isDate) {
@@ -148,7 +138,6 @@ class Posts {
             echo "Erreur dans le format de la date !";
         }
     }
-    
     public function setUpdate_date($update_date) {
         $isDate = $this->validateDate($update_date, "Y-m-d H:i:s");
         if ($isDate) {
@@ -156,10 +145,9 @@ class Posts {
             $this->_update_date = $update_date->format("d/m/Y H:i");
         }
     }
-
     // Vérifie si la date est valide
     private function validateDate($date, $format = 'Y-m-d H:i:s') {
-        $d = DateTime::createFromFormat($format, $date);
-        return $d && $d->format($format) == $date;
+        $date = DateTime::createFromFormat($format, $date);
+        return $date && $date->format($format) == $date;
     }
 }
