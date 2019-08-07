@@ -30,27 +30,27 @@ if (!empty($_POST)) {
 
     // Vérifie si le champ login est vide
     if (empty($login)) {
-        $session->setFlash ("Veuillez saisir un Login.", "danger");
+        $session->setFlash("Veuillez saisir un Login.", "danger");
         $validation = false;
     }
     // Vérifie si le login est déjà utilisé
     elseif ($loginExist) {
-        $session->setFlash ("Ce login est déjà utilisé. Veuillez en utiliser un autre.", "danger");
+        $session->setFlash("Ce login est déjà utilisé. Veuillez en utiliser un autre.", "danger");
         $validation = false;
     }
     // Vérifie si l'adresse email est vide
     if (empty($email)) {
-        $session->setFlash ("L'adresse email est vide.", "danger");
+        $session->setFlash("L'adresse email est vide.", "danger");
         $validation = false;
     } 
     // Vérifie si l'adresse email est correcte
     elseif (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
-        $session->setFlash ("L'adresse \"" . $email . "\" est incorrecte.", "danger");
+        $session->setFlash("L'adresse \"" . $email . "\" est incorrecte.", "danger");
         $validation = false;
     }
     // Vérifie si l'adresse email est déjà utilisée
     elseif ($emailExist) {
-        $session->setFlash ("L'adresse email est déjà utilisée.", "danger");
+        $session->setFlash("L'adresse email est déjà utilisée.", "danger");
         $validation = false;
     }
     // Vérifie si le mot de passe est correct
@@ -59,17 +59,17 @@ if (!empty($_POST)) {
     // (?=.*[0-9])  : teste la présence d'un chiffre de 0 à 9
     // .{6,}$       : teste si au moins 6 caractères
     if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $pass)) {
-        $session->setFlash ("Le mot de passe n'est pas valide.", "danger");
+        $session->setFlash("Le mot de passe n'est pas valide.", "danger");
         $validation = false;
     }
     // Vérifie si la confirmation du mot de passe est identique
     elseif (empty($_POST["pass_confirm"])) {
-        $session->setFlash ("La confirmation du mot de passe est vide.", "danger");
+        $session->setFlash("La confirmation du mot de passe est vide.", "danger");
         $validation = false;
     }
     // Vérifie si la confirmation du mot de passe est identique
     elseif ($pass!=$_POST["pass_confirm"]) {
-        $session->setFlash ("Le mot de passe et la confirmation sont différents.", "danger");
+        $session->setFlash("Le mot de passe et la confirmation sont différents.", "danger");
         $validation = false;
     }
     // Si validation est vrai, valide l'inscription de l'utilisateur
@@ -93,7 +93,7 @@ if (!empty($_POST)) {
             // Ajoute les infos de l"utilisateurs dans la Session
             $_SESSION["userID"] = $idUser["ID"];
             $_SESSION["userLogin"] = $login;
-            $session->setFlash ("L'inscription est réussie.", "success");
+            $session->setFlash("L'inscription est réussie.", "success");
 
             header("Refresh: 2; url=index.php");
         }
