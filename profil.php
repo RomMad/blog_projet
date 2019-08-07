@@ -9,24 +9,23 @@ $session = new Session();
 
 $databaseConnection = new DatabaseConnection();
 $db = $databaseConnection->db();
+$usersManager = new usersManager($db);
 
 // Redirige vers la page de connexion si non connecté
 if (empty($_SESSION["userID"])) {
     header("Location: connection.php");
 } else {
     // Récupère les informations de l'utilisateur
-    $req = $db->prepare("SELECT * FROM users WHERE ID =?");
-    $req->execute(array($_SESSION["userID"]));
-    $dataUser = $req->fetch();
+    $user = $usersManager->get($_SESSION["userID"]);
 }
 // Récupère les informations du profil sauf en cas de mise à jour des informations
 if (!isset($_POST["login"])) {
-    $login = htmlspecialchars($dataUser["login"]);
-    $email =  htmlspecialchars($dataUser["email"]);
-    $name =  htmlspecialchars($dataUser["name"]);
-    $surname = htmlspecialchars($dataUser["surname"]);
-    $birthdate = htmlspecialchars($dataUser["birthdate"]);
-    $role =  htmlspecialchars($dataUser["role"]);
+    $login = $user->login();
+    $email = $user->email();
+    $name = $user->name();
+    $surname = $user->surname();
+    $birthdate = $user->birthdate();
+    $role = $user->role();
 }
 
 // Vérifie si informations dans variable POST
@@ -43,22 +42,13 @@ if (!empty($_POST)) {
         $role = htmlspecialchars($_POST["role"]);
         $pass = htmlspecialchars($_POST["pass"]);
         $pass_confirm = htmlspecialchars($_POST["pass_confirm"]);
-        $isPasswordCorrect = password_verify($pass, htmlspecialchars($dataUser["pass"])); // Compare le pass envoyé via le formulaire avec la base
+        $isPasswordCorrect = password_verify($pass, $user->pass()); // Compare le pass envoyé via le formulaire avec la base
 
         // Vérifie si le login est déjà pris par un autre utilisateur
-        $req = $db->prepare("SELECT ID FROM users WHERE login = ? AND ID != ? ");
-        $req->execute([
-            $login,
-            $_SESSION["userID"]
-        ]);
-        $loginExist = $req->fetch();
+        $loginUsed = $usersManager->count("login = '" . $login . "' AND u.id != " . $_SESSION["userID"]);
+
         // Vérifie si l'email est déjà pris par un autre utilisateur
-        $req = $db->prepare("SELECT ID FROM users WHERE email = ? AND ID != ? ");
-        $req->execute([
-            $email,
-            $_SESSION["userID"]
-        ]);
-        $emailExist = $req->fetch();
+        $emailUsed = $usersManager->count("email = '" . $email . "' AND u.id != " . $_SESSION["userID"]);
 
         // Vérifie si le champ login est vide
         if (empty($login)) {
@@ -66,7 +56,7 @@ if (!empty($_POST)) {
             $validation = false;
         }
         // Vérifie si le login est déjà pris par un autre utilisateur
-        elseif ($loginExist) {
+        elseif ($loginUsed) {
             $session->setFlash ("Ce login est déjà utilisé. Veuillez en choisir un autre.", "danger");
             $validation = false;
         }
@@ -81,7 +71,7 @@ if (!empty($_POST)) {
             $validation = false;
         }
         // Vérifie si l'email est déjà pris par un autre utilisateur
-        elseif ($emailExist) {
+        elseif ($emailUsed) {
             $session->setFlash ("Cette adresse email est déjà utilisée.", "danger");
             $validation = false;
         }
@@ -91,24 +81,21 @@ if (!empty($_POST)) {
             $validation = false;
         }
         // Vérifie si la confirmation du mot de passe est identique
-        elseif ($pass!=$pass_confirm) {
+        elseif ($pass != $pass_confirm) {
             $session->setFlash ("Le mot de passe et la confirmation sont différents.", "danger");
             $validation = false;
         }
         // Met à jour les informations du profil si validation est vraie
         if ($validation) {
-            $req = $db->prepare("UPDATE users SET login = :new_login, email = :new_email, name = :new_name, surname = :new_surname, birthdate = :new_birthdate, role = :new_role, update_date = NOW() 
-            WHERE ID = :ID");
-            $req->execute(array(
-                "new_login" => $login,
-                "new_email" => $email,
-                "new_name" => $name,
-                "new_surname" => $surname,
-                "new_birthdate" => $birthdate,
-                "new_role" => $role,
-                "ID" => $_SESSION["userID"]
-                ));
-
+            $user = new Users([
+                "id" => $_SESSION["userID"],
+                "login" => $login,
+                "email" => $email,
+                "name" => $name,
+                "surname" => $surname,
+                "birthdate" => $birthdate,
+            ]);
+            $usersManager->updateProfil($user);
             $_SESSION["userLogin"] = $login;
             $session->setFlash ("Le profil a été mis à jour.", "success");
         }
@@ -116,35 +103,34 @@ if (!empty($_POST)) {
 
     // Met à jour le mot de passe
     if (isset($_POST["old_pass"])) {
-        $old_pass = htmlspecialchars($_POST["old_pass"]);
-        $new_pass = htmlspecialchars($_POST["new_pass"]);
-        $new_pass_confirm = htmlspecialchars($_POST["new_pass_confirm"]);
+        $oldPass = htmlspecialchars($_POST["old_pass"]);
+        $newPass = htmlspecialchars($_POST["new_pass"]);
+        $newPassConfirm = htmlspecialchars($_POST["new_pass_confirm"]);
         // Vérifie si l'ancien mot de passe est correct
-        $isPasswordCorrect = password_verify($old_pass, $dataUser["pass"]); // Compare le mot de passe envoyé via le formulaire avec la base
+        $isPasswordCorrect = password_verify($oldPass, $user->pass()); // Compare le mot de passe envoyé via le formulaire avec la base
         if (!$isPasswordCorrect) {
             $session->setFlash ("L'ancien mot de passe est incorrect.", "danger");
             $validation = false;
         }
         // Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
-        if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $new_pass)) {
+        if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $newPass)) {
             $session->setFlash ("Le nouveau mot de passe n'est pas valide.", "danger");
             $validation = false;
         }
         // Vérifie si la confirmation du mot de passe est identique
-        if ($new_pass!=$new_pass_confirm) {
+        if ($newPass != $newPassConfirm) {
             $session->setFlash ("Le mot de passe et la confirmation sont différents.", "danger");
             $validation = false;
         }
         // Met à jour le mot de passe si validation est vraie
-        if ($validation) {        
-        $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
-        $req = $db->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
-        $req->execute(array(
-            "new_pass" => $new_pass_hash,
-            "ID" => $_SESSION["userID"]
-            )); 
-
-        $session->setFlash ("Le mot de passe a été mis à jour.", "success");
+        if ($validation) {
+            $newPassHash = password_hash($newPass, PASSWORD_DEFAULT); // Hachage du mot de passe
+            $user = new Users([
+                "id" => $_SESSION["userID"],
+                "pass" => $newPassHash
+            ]);
+            $usersManager->updatePass($user);
+            $session->setFlash ("Le mot de passe a été mis à jour.", "success");
         }
     }
 }
@@ -172,7 +158,7 @@ if (!empty($_POST)) {
 
             <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
 
-                <?php $session->flash(); // Message en session flash ?>      
+                <?php $session->flash(); // Message en session flash ?>
                 
 
                 <div class="row">
@@ -225,10 +211,10 @@ if (!empty($_POST)) {
                                         <div class="col-md-5">
                                             <select name="role" id="role" class="custom-select form-control shadow-sm">
                                                 <option value="1" <?= isset($role) && $role == 1 ? "selected" : "" ?>>Administrateur</option>
-                                                <option value="2" <?= isset($role) &&  $role == 2 ? "selected" : "" ?>>Editeur</option>
-                                                <option value="3" <?= isset($role) &&  $role == 3 ? "selected" : "" ?>>Auteur</option>
-                                                <option value="4" <?= isset($role) &&  $role == 4 ? "selected" : "" ?>>Contributeur</option>
-                                                <option value="5" <?= isset($role) &&  $role == 5 ? "selected" : "" ?>>Abonné</option>
+                                                <option value="2" <?= isset($role) && $role == 2 ? "selected" : "" ?>>Editeur</option>
+                                                <option value="3" <?= isset($role) && $role == 3 ? "selected" : "" ?>>Auteur</option>
+                                                <option value="4" <?= isset($role) && $role == 4 ? "selected" : "" ?>>Contributeur</option>
+                                                <option value="5" <?= isset($role) && $role == 5 ? "selected" : "" ?>>Abonné</option>
                                             </select>
                                         </div>
                                     </div> 
@@ -265,7 +251,7 @@ if (!empty($_POST)) {
                     <div class="col-md-6 offset-lg-1 col-lg-5 mt-4">
                         <form action="profil.php" method="post" class="col-md-12 card shadow">
                             <div class="form-group row">
-                                <h2 class="card-header  col-md-12 h2 bg-light text-dark">Mot de passe</h2>
+                                <h2 class="card-header col-md-12 h2 bg-light text-dark">Mot de passe</h2>
                             </div>
                             <div class="row">
                                 <label for="old_pass" class="col-md-6 col-form-label">Ancien mot de passe</label>
@@ -281,7 +267,7 @@ if (!empty($_POST)) {
                                             <div class="div-user-pass">
                                                 <input type="password" name="new_pass" id="new_pass" class="form-control mb-4">
                                                 <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
-                                            </div>    
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">

@@ -33,7 +33,7 @@ class Users {
         return $this->_login;
     }
     public function name() {
-        return $this->_surname;
+        return $this->_name;
     }
     public function surname() {
         return $this->_surname;
@@ -80,24 +80,25 @@ class Users {
         }
     }
     public function setBirthdate($birthdate) {
-        $isDate = $this->validateDate($birthdate, "Y-m-d H:i:s");
+        $isDate = $this->validateDate($birthdate, "Y-m-d");
         if ($isDate) {
-            $birthdate = new DateTime($birthdate);
-            $this->_birthdate = $birthdate->format("d/m/Y H:i");
+            $this->_birthdate = date($birthdate);
+        } else {
+            echo "Erreur date de naissance <br />";
         }
     }
     public function setPass($pass) {
         if (is_string($pass)) {
             $this->_pass = $pass;
         } else {
-            echo "erreur pass";
+            echo "Erreur pass <br />";
         }
     }
     public function setEmail($email) {
         if (is_string($email)) {
             $this->_email = $email;
         } else {
-            echo "erreur email";
+            echo "Erreur email <br />";
         }
     }
     public function setRole($role) {
@@ -105,7 +106,7 @@ class Users {
         if ($role >= 1 && $role <= 5) {
             $this->_role = $role;
         } else {
-            echo "erreur role";
+            echo "Erreur role <br />";
         }
     }
     public function setRegistration_date($registration_date) {

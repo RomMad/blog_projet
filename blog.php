@@ -75,21 +75,14 @@ $posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $
                                 <a class="text-blue" href="post_view.php?post=<?= $post->id() ?>">
                                     <h3 class="mt-1"><?= $post->title() ?></h3>
                                 </a>
-                                <em>Créé le <?= str_replace(' ', ' à ', $post->creation_date()) ?> par <a class="text-blue" href=""><?= $post->user_login() ?></a></em>
-                                <?php 
-                                if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { 
-                                ?>
+                                <em>Créé le <?= str_replace(' ', ' à ', $post->creation_date() ?> par <a class="text-blue" href=""><?= $post->user_login() ?></a></em>
+                                <?php if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { ?>
                                     <a class="text-blue a-edit-post" href="post_edit.php?post=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
-                                <?php 
-                                } 
-                                ?>
+                                <?php } ?>
                             </div>
                             <div class="card-body text-body">
                                 <div class="post_content"><?= nl2br(strip_tags(htmlspecialchars_decode($post->content()))) ?>
-                                <?php 
-                                // Si le contenu est > à 1200 caractères, affiche le bouton 'Continuer la lecture' et ajoute un effet fade out
-                                if (strlen($post->content()) > 1200) {
-                                ?>
+                                <?php if (strlen($post->content()) > 1200) { ?> <!-- Si le contenu est > à 1200 caractères, affiche le bouton 'Continuer la lecture' et ajoute un effet fade out -->
                                     <span class="post-fade-out"></span>
                                 </div>
                                 <div>

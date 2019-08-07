@@ -41,10 +41,10 @@ class UsersManager {
 
     // Récupère une liste d'utilisateurs
     public function getList($filter, $orderBy, $order, $minLimit, $maxLimit) {
-        $req = $this->_db->prepare("SELECT u.ID, u.login, u.name, u.surname, u.birthdate, u.email, u.role, u.registration_date, u.update_date
+        $req = $this->_db->prepare("SELECT u.id, u.login, u.name, u.surname, u.birthdate, u.email, u.role, u.registration_date, u.update_date
             FROM users u
             LEFT JOIN user_role r
-            ON u.role = r.ID
+            ON u.role = r.id
             WHERE $filter 
             ORDER BY $orderBy $order
             LIMIT  $minLimit, $maxLimit");
@@ -58,15 +58,38 @@ class UsersManager {
         }
     }
 
-    // Met à jour un utilisateur
+    // Met à jour le profil de l'utilisateur
     public function update(Users $user) {
-        $req = $this->_db->prepare("UPDATE users SET role = 1 WHERE ID = ? ");
-        $req->execute(array($selectedUser));
+        $req = $this->_db->prepare("UPDATE users SET login = :newLogin, pass = :newPass, email = :newEmail, name = :newName, surname = :newSurname, birthdate = :newBirthdate, role = :newRole, update_date = NOW() 
+            WHERE id = :id");
+        $req->execute([
+            "id" => $user->id(),
+            "newLogin" => $user->login(),
+            "newPass" => $user->pass(),
+            "newEmail" => $user->email(),
+            "newName" => $user->name(),
+            "newSurname" => $user->surname(),
+            "newBirthdate" => $user->birthdate(),
+            "newRole" => $user->role()
+        ]);
+        return var_dump($user);
+
+        // $req = $this->_db->prepare("UPDATE users SET role = 1 WHERE id = ? ");
+        // $req->execute(array($selectedUser));
     }
 
+        // Met à jour le mot de passe de l'utilisateur
+        public function updatePass(Users $user) {
+            $req = $this->_db->prepare("UPDATE users SET pass = :newPass, update_date = NOW() WHERE id = :id");
+            $req->execute([
+                "id" => $user->id(),
+                "newPass" => $user->pass()
+            ]);
+            return var_dump($user);
+        }
     // Supprime un utilisateur
     public function delete($id) {
-        $req = $this->_db->prepare("DELETE FROM users WHERE ID = ? ");
+        $req = $this->_db->prepare("DELETE FROM users WHERE id = ? ");
         $req->execute([
             $id
         ]);
@@ -74,10 +97,10 @@ class UsersManager {
 
     //  Compte le nombre d'utilisateurs
     public function count($filter) {
-        $req = $this->_db->prepare("SELECT COUNT(*) AS nb_Users, u.role, r.ID 
+        $req = $this->_db->prepare("SELECT COUNT(*) AS nb_Users, u.role, r.id 
             FROM users u
             LEFT JOIN user_role r
-            ON u.role = r.ID  
+            ON u.role = r.id  
             WHERE $filter");
         $req->execute();
         $nbUsers = $req->fetchColumn();
