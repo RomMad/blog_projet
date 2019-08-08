@@ -1,5 +1,5 @@
 <?php 
-class Posts {
+class Posts extends Session {
 
     private $_id,
             $_title,
@@ -100,7 +100,12 @@ class Posts {
     }
     public function setTitle($title) {
         if (is_string($title)) {
-            $this->_title = $title;
+            if (iconv_strlen($title) <= 255) {
+                $this->_title = $title;
+            } else {
+                $this->_title =substr($title, 0, 255);
+                $this->setFlash("Le titre a été tronqué.", "warning");
+            }
         }
     }
     public function setUser_Id($user_id) {
