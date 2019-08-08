@@ -10,11 +10,17 @@ $postsManager = new Postsmanager();
 $commentsManager = new CommentsManager();
 $db = $postsManager->db();
 
+// Vérifie si l'article exite
 if (!empty($_GET["post_id"])) {
+    $post = $postsManager->getUserId($_GET["post_id"]);
+    if (!$post) {
+        header("Location: blog.php"); 
+        die;
+    }
     $post_id = htmlspecialchars($_GET["post_id"]);
     $_SESSION["postID"] = $post_id;
 } else {
-    $post_id = $_SESSION["postID"];
+    header("Location: blog.php"); 
 }
 
 // Récupère les paramètres de modération
@@ -170,7 +176,7 @@ if ($nbItems) {
                     <h2 class="h3 mb-4">Nouveau commentaire</h2>
                     <div class="row">
                         <div class="col-md-12">
-                            <form action="post_view.php?post=<?= $post_id ?>#form-comment" method="post" class="px-3">
+                            <form action="post_view.php?post_id=<?= $post_id ?>#form-comment" method="post" class="px-3">
                                 <?php 
                                 if (!isset($_SESSION["userID"])) {
                                 ?>
@@ -236,7 +242,7 @@ if ($nbItems) {
                                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$comment->user_id()) {
                                         ?>
                                             <div>
-                                                <a href="post_view.php?post=<?= isset($post_id) ? $post_id : "" ?>&comment=<?= $comment->id() ?>&action=erase#form-comment" 
+                                                <a href="post_view.php?post_id=<?= isset($post_id) ? $post_id : "" ?>&comment=<?= $comment->id() ?>&action=erase#form-comment" 
                                                     onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
                                                     <span class="fas fa-times text-danger"></span>
                                                 </a>
@@ -250,7 +256,7 @@ if ($nbItems) {
                                             } else {
                                         ?>
                                             <div class="report-comment">
-                                                <a href="post_view.php?post=<?= isset($post_id) ? $post_id : "" ?>&comment=<?= $comment->id() ?>&action=report#form-comment" 
+                                                <a href="post_view.php?post_id=<?= isset($post_id) ? $post_id : "" ?>&comment=<?= $comment->id() ?>&action=report#form-comment" 
                                                     onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
                                                     <span class="far fa-flag text-warning"> Signaler</span>
                                                 </a>
@@ -269,7 +275,7 @@ if ($nbItems) {
                                         }
                                         ?>
                                         <div id="form-edit-comment-<?= $comment->id() ?>"class="form-edit-comment d-none">
-                                        <form action="post_view.php?post=<?= $post_id ?>&comment=<?= $comment->id() ?>&action=edit#form-comment" method="post">
+                                        <form action="post_view.php?post_id=<?= $post_id ?>&comment=<?= $comment->id() ?>#form-comment" method="post">
                                             <div class="form-group">
                                                 <label for="content"></label>
                                                 <textarea name="content" class="form-control shadow-sm" id="content" rows="4"><?= $comment->content() ?></textarea>

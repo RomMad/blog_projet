@@ -96,7 +96,7 @@ if (!empty($_GET["post_id"])) {
     <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent">
                 <li class="breadcrumb-item"><a href="blog.php" class="text-blue">Blog</a></li>
-                <li class="breadcrumb-item"><a href="post_view.php?post=<?= isset($_GET["post_id"]) ? $post->id() : "" ?>" class="text-blue">Article</a></li>
+                <li class="breadcrumb-item"><a href="post_view.php?post_id=<?= isset($_GET["post_id"]) ? $post->id() : "" ?>" class="text-blue">Article</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Édition</li>
             </ol>
         </nav>
