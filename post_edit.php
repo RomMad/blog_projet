@@ -1,5 +1,4 @@
 <?php 
-
 function loadClass($classname) {
     require $classname . ".php";
 }

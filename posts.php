@@ -135,13 +135,13 @@ class Posts {
             $creation_date = new DateTime($creation_date);
             $this->_creation_date = date_format($creation_date,"d/m/Y H:i");
         } else {
-            $isDate = $this->validateDate($creation_date, "d/m/Y H:i");
-            if ($isDate) {
-                $creation_date = new DateTime($creation_date);
-                $this->_creation_date =  date_format($creation_date,"d/m/Y H:i");
-            } else {
+            // $isDate = $this->validateDate($creation_date, "d/m/Y H:i");
+            // if ($isDate) {
+            //     $creation_date = new DateTime($creation_date);
+            //     $this->_creation_date =  date_format($creation_date,"d/m/Y H:i");
+            // } else {
             echo "Erreur dans le format de la date !";
-            }
+            // }
         }
     }
     public function setUpdate_date($update_date) {

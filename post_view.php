@@ -1,5 +1,4 @@
 <?php 
-
 function loadClass($classname) {
     require $classname . ".php";
 }
@@ -109,13 +108,9 @@ $linkPagination= "post_view.php?";
 $anchorPagination= "#comments";
 require("pagination.php");
 
-// Vérifie s'il y a des commentaires
-if ($nbItems == 0) {
-    $infoComments = "Aucun commentaire.";
-} else {
-    // Récupère les commentaires
+// Récupère les commentaires si le nombre > 0 
+if ($nbItems) {
     $comments = $commentsManager->getList("c.post_id = " . $post_id . " AND " . $filter, "c.creation_date", "DESC", $minLimit, $maxLimit);
-
 }
 
 ?>
@@ -206,26 +201,26 @@ if ($nbItems == 0) {
                 <div class="col-sm-12 col-md-10 col-lg-6 mt-2">
             
                     <h2 class="h3 mb-4">Commentaires</h2>
-                    <p> <?= isset($infoComments) ? $infoComments : "" ?> </p>
-
-                    <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
-
                     <?php 
+                    if (!isset($comments)) {
+                        echo "Aucun commentaire.";
+                    } else {
+                        include("nav_pagination.php"); // Ajoute la barre de pagination
+                        // Récupère les messages
                         foreach ($comments as $comment) {
-                    ?>
-                            <!--  Affiche le commentaire -->
+                        ?>
                             <div id="comment-<?= $comment->id() ?>" class="comment card shadow">
                                 <div class="card-body">
                                     <?php 
-                                        if (!empty($comment->login())) {
-                                            $user_login = $comment->login();
-                                            } else {
-                                                if (!empty($comment->user_name())) {
-                                                    $user_login = $comment->user_name();
-                                                } else {
-                                                    $user_login = "Anonyme";
-                                                }
-                                            }
+                                    if (!empty($comment->login())) {
+                                        $user_login = $comment->login();
+                                    } else {
+                                        if (!empty($comment->user_name())) {
+                                            $user_login = $comment->user_name();
+                                        } else {
+                                            $user_login = "Anonyme";
+                                        }
+                                    }
                                     ?>
                                     <p><strong><?= $user_login ?></strong>, le <?= str_replace(' ', ' à ', $comment->creation_date()) ?>
                                     <?php
@@ -273,7 +268,7 @@ if ($nbItems == 0) {
                                         <?php
                                         }
                                         ?>
-                                     <div id="form-edit-comment-<?= $comment->id() ?>"class="form-edit-comment d-none">
+                                        <div id="form-edit-comment-<?= $comment->id() ?>"class="form-edit-comment d-none">
                                         <form action="post_view.php?post=<?= $post_id ?>&comment=<?= $comment->id() ?>&action=edit#form-comment" method="post">
                                             <div class="form-group">
                                                 <label for="content"></label>
@@ -286,15 +281,12 @@ if ($nbItems == 0) {
                                         </form>
                                     </div>
                                 </div>
-
-
                             </div>
-                    <?php
+                        <?php
                         }
+                        include("nav_pagination.php"); // Ajoute la barre de pagination
+                    }
                     ?>
-
-                    <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
-
                 </div>
             </div>
         </section>
