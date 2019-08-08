@@ -113,11 +113,11 @@ if (!empty($_GET["post_id"])) {
                     <div class="row">
                         <div class="col-md-12 col-lg-10">
                             <div class="form-group">
-                                <label for="title">Titre</label>
-                                <input type="text" name="title" class="form-control shadow-sm" id="title" value="<?= isset($post) ? $post->title() : "" ?>">
+                                <label for="title" class="sr-only">Titre</label>
+                                <input type="text" name="title" class="form-control font-weight-bolder shadow-sm" id="title" value="<?= isset($post) ? $post->title() : "" ?>" placeholder="Saisissez le titre" autofocus>
                             </div>
                             <div class="form-group">
-                                <label for="post_content" class="d-none">Contenu</label>
+                                <label for="post_content" class="sr-only">Contenu</label>
                                 <textarea name="post_content" class="form-control shadow-sm" id="post_content" rows="12"><?= isset($post) ? html_entity_decode($post->content()) : "" ?></textarea>
                             </div>
                         </div>
