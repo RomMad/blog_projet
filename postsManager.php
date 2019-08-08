@@ -13,7 +13,7 @@ class PostsManager extends Manager {
             "user_id" => $post->user_id(),
             "user_login" => $post->user_login(),
             "title" => $post->title(),
-            "content" => $post->content("html_format"),
+            "content" => $post->content(""),
             "status" => $post->status()
         ]);
         // Hydrate l'article passé en paramètre avec assignation de son identifiant
@@ -80,7 +80,7 @@ class PostsManager extends Manager {
     // Méthode de récupération d'une liste d'articles
     public function getList($filter, $orderBy, $order, $minLimit, $maxLimit) {
         $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.status, p.creation_date, p.update_date, 
-            IF(CHAR_LENGTH(p.content) > 1200, CONCAT(SUBSTRING(p.content, 1, 1200), ' [...]'), p.content) AS content
+            IF(CHAR_LENGTH(p.content) > 1500, CONCAT(SUBSTRING(p.content, 1, 1500), '[...]'), p.content) AS content
             FROM posts p
             LEFT JOIN users u
             ON p.user_id = u.id
@@ -101,7 +101,7 @@ class PostsManager extends Manager {
         $req = $this->_db->prepare("UPDATE posts SET title = :newTitle, content = :newContent, status = :newStatus, update_date = NOW() WHERE id = :postId");
         $req->execute([
             "newTitle" => $post->title(),
-            "newContent" => $post->content("html_format"),
+            "newContent" => $post->content(""),
             "newStatus" => $post->status(),
             "postId" => $post->id()
         ]);

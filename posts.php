@@ -84,10 +84,12 @@ class Posts extends Session {
     }
 
     public function content($format) {
-        if (!empty($format) && $format == "html_format") {
-            return htmlspecialchars_decode($this->_content);
+        if ($format == "html_format") {
+            return htmlspecialchars_decode(htmlspecialchars_decode($this->_content));
+        } elseif ($format == "raw_format") {
+            return nl2br((strip_tags(htmlspecialchars_decode(htmlspecialchars_decode($this->_content)))));
         } else {
-            return nl2br(strip_tags(htmlspecialchars_decode($this->_content)));
+            return $this->_content;
         }
     }
     public function status() {
@@ -125,7 +127,7 @@ class Posts extends Session {
             if (iconv_strlen($title) <= 255) {
                 $this->_title = htmlspecialchars($title);
             } else {
-                $this->_title = substr(htmlspecialchars($title, 0, 255));
+                $this->_title = htmlspecialchars(substr($title, 0, 255));
                 $this->setFlash("Le titre a été tronqué (maximum 255 caractères).", "warning");
             }
         }

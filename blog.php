@@ -81,7 +81,7 @@ $posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $
                             </div>
                             <div class="card-body text-body">
                                 <div class="post_content"><?= $post->content("raw_format") ?>
-                                <?php if (strlen($post->content("raw_format")) > 1200) { ?> <!-- Si le contenu est > à 1200 caractères, affiche le bouton 'Continuer la lecture' et ajoute un effet fade out -->
+                                <?php if (strlen($post->content("raw_format")) > 800) { ?> <!-- Si le contenu est > à 1200 caractères, affiche le bouton 'Continuer la lecture' et ajoute un effet fade out -->
                                     <span class="post-fade-out"></span>
                                 </div>
                                 <div>
