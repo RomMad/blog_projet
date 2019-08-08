@@ -93,6 +93,8 @@ if (!empty($_POST)) {
             // Ajoute les infos de l"utilisateurs dans la Session
             $_SESSION["userID"] = $idUser["ID"];
             $_SESSION["userLogin"] = $login;
+            $_SESSION["userRole"] = $user->role();
+
             $session->setFlash("L'inscription est réussie.", "success");
 
             header("Refresh: 2; url=index.php");

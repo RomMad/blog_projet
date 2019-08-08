@@ -48,7 +48,7 @@ $posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $
             if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
             ?> 
                 <div class="mt-4 mb-4">
-                    <a class="text-blue" href="post_edit.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                    <a class="text-blue" href="post_edit.php"><span class="far fa-file"></span> Rédiger un nouvel article</a>
                 </div>
             <?php
             }
@@ -71,12 +71,12 @@ $posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $
                     <div class="col-md-12">
                         <div class="card shadow">
                             <div class="card-header bg-dark text-light">
-                                <a class="text-blue" href="post_view.php?post=<?= $post->id() ?>">
+                                <a class="text-blue" href="post_view.php?post_id=<?= $post->id() ?>">
                                     <h3 class="mt-1"><?= $post->title() ?></h3>
                                 </a>
                                 <em>Créé le <?= str_replace(' ', ' à ', $post->creation_date()) ?> par <a class="text-blue" href=""><?= $post->user_login() ?></a></em>
                                 <?php if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { ?>
-                                    <a class="text-blue a-edit-post" href="post_edit.php?post=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                                    <a class="text-blue a-edit-post" href="post_edit.php?post_id=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                                 <?php } ?>
                             </div>
                             <div class="card-body text-body">
@@ -85,7 +85,7 @@ $posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $
                                     <span class="post-fade-out"></span>
                                 </div>
                                 <div>
-                                    <a href="post_view.php?post=<?= $post->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
+                                    <a href="post_view.php?post_id=<?= $post->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
                                         <span class="fas fa-angle-right"></span>
                                     </a>
                                 <?php
@@ -105,7 +105,7 @@ $posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $
             <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
 
             <div class="mt-4 mb-4">
-                <a class="text-blue" href="post_edit.php?type=1"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                <a class="text-blue" href="post_edit.php"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
 
             </section>

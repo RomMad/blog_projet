@@ -10,8 +10,8 @@ $postsManager = new Postsmanager();
 $commentsManager = new CommentsManager();
 $db = $postsManager->db();
 
-if (!empty($_GET["post"])) {
-    $post_id = htmlspecialchars($_GET["post"]);
+if (!empty($_GET["post_id"])) {
+    $post_id = htmlspecialchars($_GET["post_id"]);
     $_SESSION["postID"] = $post_id;
 } else {
     $post_id = $_SESSION["postID"];
@@ -141,7 +141,7 @@ if ($nbItems) {
                         <?php
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $post->user_id()) {
                         ?>
-                            <a class="text-blue a-edit-post" href="post_edit.php?post=<?=  $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                            <a class="text-blue a-edit-post" href="post_edit.php?post_id=<?=  $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php 
                         } 
                         ?>
@@ -154,7 +154,7 @@ if ($nbItems) {
                 <?php 
                 if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) {
                 ?>
-                        <a class="text-blue" href="post_edit.php?post=<?= $post_id ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
+                        <a class="text-blue" href="post_edit.php?post_id=<?= $post_id ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
                 <?php 
                 } 
                 ?>
