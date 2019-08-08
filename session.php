@@ -22,7 +22,7 @@ class Session {
         if (isset($_SESSION["flash"])) {
             foreach ($_SESSION["flash"] as $flash) {
                 ?>
-                <div id="msg-profil" class="alert alert-<?=$flash["typeAlert"] ?> alert-dismissible mb-2 fade show" role="alert">                     
+                <div id="msg-profil" class="alert alert-<?=$flash["typeAlert"] ?> alert-dismissible mb-3 fade show" role="alert">                     
                     <?= $flash["message"] ?>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
