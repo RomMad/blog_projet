@@ -65,29 +65,29 @@ class Users {
     public function setId($id) {
         $id = (int) $id;
         if ($id > 0) {
-            $this->_id = $id;
+            $this->_id = htmlspecialchars($id);
         }
     }
     public function setlogin($login) {
         if (is_string($login)) {
-            $this->_login = $login;
+            $this->_login = htmlspecialchars($login);
         }
     }
     public function setName($name) {
         if (is_string($name)) {
-            $this->_name = $name;
+            $this->_name = htmlspecialchars($name);
         }
     }
     public function setSurname($surname) {
         if (is_string($surname)) {
-            $this->_surname = $surname;
+            $this->_surname = htmlspecialchars($surname);
         }
     }
     public function setBirthdate($birthdate) {
         if (!empty($birthdate)) {
             $isDate = $this->validateDate($birthdate, "Y-m-d");
             if ($isDate) {
-                $this->_birthdate = date($birthdate);
+                $this->_birthdate = htmlspecialchars(date($birthdate));
             } else {
                 return "Erreur date de naissance <br />";
             }
@@ -95,14 +95,14 @@ class Users {
     }
     public function setPass($pass) {
         if (is_string($pass)) {
-            $this->_pass = $pass;
+            $this->_pass = htmlspecialchars($pass);
         } else {
             return "Erreur pass <br />";
         }
     }
     public function setEmail($email) {
         if (is_string($email)) {
-            $this->_email = $email;
+            $this->_email = htmlspecialchars($email);
         } else {
             return "Erreur email <br />";
         }
@@ -110,29 +110,21 @@ class Users {
     public function setRole($role) {
         $role = (int) $role;
         if ($role >= 1 && $role <= 5) {
-            $this->_role = $role;
+            $this->_role = htmlspecialchars($role);
         } else {
             return "Erreur role <br />";
         }
     }
     public function setRole_user($roleUser) {
         if (is_string($roleUser)) {
-            $this->_roleUser = $roleUser;
+            $this->_roleUser = htmlspecialchars($roleUser);
         }
     }
     public function setRegistration_date($registration_date) {
-        $isDate = $this->validateDate($registration_date, "Y-m-d H:i:s");
-        if ($isDate) {
-            $registration_date = new DateTime($registration_date);
-            $this->_registration_date = $registration_date->format("d/m/Y H:i");
-        }
+        $this->_registration_date = htmlspecialchars($registration_date);
     }
     public function setUpdate_date($update_date) {
-        $isDate = $this->validateDate($update_date, "Y-m-d H:i:s");
-        if ($isDate) {
-            $update_date = new DateTime($update_date);
-            $this->_update_date = $update_date->format("d/m/Y H:i");
-        }
+        $this->_update_date = htmlspecialchars($update_date);
     }
 
     // Vérifie si la date est valide

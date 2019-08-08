@@ -34,12 +34,12 @@ if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) {
 // Vérification si informations dans variable POST
 if (!empty($_POST)) {
     $post = new Posts([
-        "title" => htmlspecialchars($_POST["title"]),
-        "content" => htmlspecialchars($_POST["post_content"]),
-        "status" => htmlspecialchars($_POST["status"]),
-        "id" => htmlspecialchars($_GET["post_id"]),
-        "user_id" => htmlspecialchars($_SESSION["userID"]),
-        "user_login" => htmlspecialchars($_SESSION["userLogin"]),
+        "title" => $_POST["title"],
+        "content" => $_POST["post_content"],
+        "status" => $_POST["status"],
+        "id" => $_GET["post_id"],
+        "user_id" => $_SESSION["userID"],
+        "user_login" => $_SESSION["userLogin"],
     ]);
 
     // Supprime l'article
@@ -58,7 +58,7 @@ if (!empty($_POST)) {
         $validation = false;
     }
     // Vérifie si le contenu de l'article est vide
-    if (empty($post->content()) && $post->status() == "Publié") {
+    if (empty($post->content("")) && $post->status() == "Publié") {
         $session->setFlash("L'article ne peut pas être publié si le contenu est vide.", "danger");
         $validation = false;
     }

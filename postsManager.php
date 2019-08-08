@@ -13,7 +13,7 @@ class PostsManager extends Manager {
             "user_id" => $post->user_id(),
             "user_login" => $post->user_login(),
             "title" => $post->title(),
-            "content" => $post->content(),
+            "content" => $post->content("html_format"),
             "status" => $post->status()
         ]);
         // Hydrate l'article passé en paramètre avec assignation de son identifiant
@@ -101,7 +101,7 @@ class PostsManager extends Manager {
         $req = $this->_db->prepare("UPDATE posts SET title = :newTitle, content = :newContent, status = :newStatus, update_date = NOW() WHERE id = :postId");
         $req->execute([
             "newTitle" => $post->title(),
-            "newContent" => $post->content(),
+            "newContent" => $post->content("html_format"),
             "newStatus" => $post->status(),
             "postId" => $post->id()
         ]);

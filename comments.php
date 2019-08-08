@@ -80,55 +80,55 @@ class Comments {
     public function setId($id) {
         $id = (int) $id;
         if ($id > 0) {
-            $this->_id = $id;
+            $this->_id = htmlspecialchars($id);
         }
     }
     public function setPost_id($post_id) {
         $post_id = (int) $post_id;
         if ($post_id > 0) {
-            $this->_post_id = $post_id;
+            $this->_post_id = htmlspecialchars($post_id);
         }
     }
     public function setUser_id($user_id) {
         $user_id = (int) $user_id;
         if ($user_id > 0) {
-            $this->_user_id = $user_id;
+            $this->_user_id = htmlspecialchars($user_id);
         }
     }
     public function setUser_name($user_name) {
         if (is_string($user_name)) {
-            $this->_user_name = $user_name;
+            $this->_user_name = htmlspecialchars($user_name);
         }
     }
     public function setLogin($login) {
         if (is_string($login)) {
-            $this->_login = $login;
+            $this->_login = htmlspecialchars($login);
         }
     }
     public function setContent($content) {
         if (is_string($content)) {
-            $this->_content = $content;
+            $this->_content = htmlspecialchars($content);
         }
     }
     public function setStatus($status) {
         $status = (int) $status;
         if ($status >= 0 && $status <=2) {
-            $this->_status = $status;
+            $this->_status =  htmlspecialchars($status);
         }
     }
     public function setReport_date($report_date) {
-            $this->_report_date = $report_date;
+            $this->_report_date =  htmlspecialchars($report_date);
     }
     public function setNb_report($nb_report) {
         $nb_report = (int) $nb_report;
         if ($nb_report >= 0) {
-            $this->_nb_report = $nb_report;
+            $this->_nb_report =  htmlspecialchars($nb_report);
         }
     }
     public function setCreation_date($creation_date) {
-        $this->_creation_date = $creation_date;
+        $this->_creation_date =  htmlspecialchars($creation_date);
     }
     public function setUpdate_date($update_date) {
-        $this->_update_date = $update_date;
+        $this->_update_date =  htmlspecialchars($update_date);
     }
 }

@@ -117,15 +117,15 @@ class Posts extends Session {
     public function setId($id) {
         $id = (int) $id;
         if ($id > 0) {
-            $this->_id = $id;
+            $this->_id = htmlspecialchars($id);
         }
     }
     public function setTitle($title) {
         if (is_string($title)) {
             if (iconv_strlen($title) <= 255) {
-                $this->_title = $title;
+                $this->_title = htmlspecialchars($title);
             } else {
-                $this->_title =substr($title, 0, 255);
+                $this->_title = substr(htmlspecialchars($title, 0, 255));
                 $this->setFlash("Le titre a été tronqué (maximum 255 caractères).", "warning");
             }
         }
@@ -133,37 +133,37 @@ class Posts extends Session {
     public function setUser_Id($user_id) {
         $user_id = (int) $user_id;
         if ($user_id > 0) {
-            $this->_user_id = $user_id;
+            $this->_user_id = htmlspecialchars($user_id);
         }
     }
     public function setUser_login($user_login) {
         if (is_string($user_login)) {
-            $this->_user_login = $user_login;
+            $this->_user_login = htmlspecialchars($user_login);
         }
     }
     public function setLogin($login) {
         if (is_string($login)) {
-            $this->_login = $login;
+            $this->_login = htmlspecialchars($login);
         }
     }
     public function setContent($content) {
         if (is_string($content)) {
-            $this->_content = $content;
+            $this->_content = htmlspecialchars($content);
         }
     }
     public function setStatus($status) {
         if (is_string($status) && ($status == "Publié" || $status == "Brouillon")) {
-            $this->_status = $status;
+            $this->_status = htmlspecialchars($status);
         }
     }
     public function setCreation_date($creation_date) {
         // $isDate = $this->validateDate($creation_date, "Y-m-d H:i:s");
         // if ($isDate) {
-            $this->_creation_date = $creation_date;
+        $this->_creation_date = htmlspecialchars($creation_date);
         // }
     }
     public function setUpdate_date($update_date) {
-            $this->_update_date = $update_date;
+        $this->_update_date = htmlspecialchars($update_date);
     }
     // Vérifie si la date est valide
     // private function validateDate($date, $format = 'Y-m-d H:i:s') {

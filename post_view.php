@@ -63,8 +63,8 @@ if (!empty($_POST)) {
             $comment = new Comments([
                 "post_id" => $_SESSION["postID"],
                 "user_id" => $user_id,
-                "user_name" => htmlspecialchars($_POST["name"]),
-                "content" => htmlspecialchars($_POST["content"]),
+                "user_name" => $_POST["name"],
+                "content" => $_POST["content"],
                 "status" => $status
             ]);
             $commentsManager->add($comment);
@@ -78,8 +78,8 @@ if (!empty($_POST)) {
     // Modifie le commentaire
     if (isset($_POST["edit_comment"])) {
         $comment = new Comments([
-            "id" => htmlspecialchars($_GET["comment"]),
-            "content" => htmlspecialchars($_POST["content"]),
+            "id" => $_GET["comment"],
+            "content" => $_POST["content"],
             "status" => $status,
         ]);
         $commentsManager->update($comment);
@@ -89,13 +89,13 @@ if (!empty($_POST)) {
 
 //
 if (isset($_GET["action"]) && $_GET["action"]=="erase") {
-    $commentsManager->delete(htmlspecialchars($_GET["comment"]));
+    $commentsManager->delete($_GET["comment"]);
     $session->setFlash("Le commentaire a été supprimé.", "warning");
 }
 // Ajoute le signalement du commentaire
 if (isset($_GET["action"]) && $_GET["action"]=="report") {
     $comment = new Comments([
-        "id" => htmlspecialchars($_GET["comment"]),
+        "id" => $_GET["comment"],
         "status" => 2,
     ]);
     $commentsManager->report($comment);
@@ -302,4 +302,4 @@ if ($nbItems) {
 
 </body>
 
-</html
+</html>
