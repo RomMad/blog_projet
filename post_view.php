@@ -144,7 +144,7 @@ if ($nbItems) {
                 <div class="card shadow">
                     <div class="card-header bg-dark text-light">
                         <h1 class="h2 mt-2 mb-3"><?= $post->title() ?></h1>
-                        <em>Créé le <?= str_replace(' ', ' à ', $post->creation_date()) ?> par <a class="text-blue" href=""> <?= $post->login() ?> </a> (Modifié le <?= str_replace(' ', ' à ', $post->update_date()) ?>)</em>
+                        <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" href=""> <?= $post->login() ?> </a> (Modifié le <?= $post->update_date("special_format") ?>)</em>
                         <?php
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $post->user_id()) {
                         ?>
@@ -155,7 +155,7 @@ if ($nbItems) {
                         <a href="#comments" class="badge badge-blue ml-2"> <span class="badge badge-light"><?= $nbItems ?> </span></a>
                     </div>
                     <div class="card-body text-body">
-                    <?= html_entity_decode($post->content()) ?>
+                    <?= $post->content("html_format") ?>
                     </div>
                 </div>
                 <?php 
@@ -229,12 +229,8 @@ if ($nbItems) {
                                         }
                                     }
                                     ?>
-                                    <p><strong><?= $user_login ?></strong>, le <?= str_replace(' ', ' à ', $comment->creation_date()) ?>
-                                    <?php
-                                    if ($comment->update_date() != $comment->creation_date()) {
-                                        echo "(Modifié le " . str_replace(' ', ' à ', $comment->update_date()) . ")";
-                                    }
-                                    ?>
+                                    <p><strong><?= $user_login ?></strong>, le <?= $comment->creation_date("special_format") ?>
+                                    <?php if ($comment->update_date() != $comment->creation_date()) { echo "(Modifié le " . $comment->update_date("special_format") . ")"; } ?>
                                     </p>
                                     <div class="comment-content position relative"><?= nl2br($comment->content()) ?>
                                         <span class="comment-fade-out d-none"></span>

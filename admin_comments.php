@@ -243,7 +243,7 @@ $comments = $commentsManager->getlist($filter, $orderBy, $order, $minLimit, $max
                                             <input type="checkbox" name="selectedComments[]" id="comment<?= $comment->id() ?>" value="<?= $comment->id() ?>" class=""/>
                                             <label for="selectedComments[]" class="sr-only">Sélectionner</label>
                                         </th>
-                                        <td><a href="post_view.php?post=<?= $comment->post_id() ?>" class="text-dark"><?= $comment->content() ?></a></td>
+                                        <td><a href="post_view.php?post_id=<?= $comment->post_id() ?>" class="text-dark"><?= $comment->content() ?></a></td>
                                         <td>
                                         <?php 
                                         if (!empty($comment->user_name())) {
@@ -274,9 +274,9 @@ $comments = $commentsManager->getlist($filter, $orderBy, $order, $minLimit, $max
                                         }
                                         ?>
                                         </td>
-                                        <td><?= $comment->report_date() ?></td>
+                                        <td><?= $comment->report_date("") ?></td>
                                         <td><?= $comment->nb_report() ?></td>
-                                        <td><?= $comment->creation_date() ?></td>
+                                        <td><?= $comment->creation_date("") ?></td>
                                     </tr>
                                 <?php
                                 }

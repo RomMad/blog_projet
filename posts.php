@@ -34,7 +34,7 @@ class Posts extends Session {
         // Vérifie si l'utilisateur a les droits pour créer un article
         if ($user->role() >4) {
             return self::UNAUTHORIZED;
-        }   
+        }
         // Informe l'utilisateur que l'article a été créé
 
     }
@@ -66,30 +66,52 @@ class Posts extends Session {
     public function id() {
         return $this->_id;
     }
+
     public function title() {
         return $this->_title;
     }
+
     public function user_id() {
         return $this->_user_id;
     }
+
     public function user_login() {
         return $this->_user_login;
     }
+
     public function login() {
         return $this->_login;
     }
-    public function content() {
-        return $this->_content;
+
+    public function content($format) {
+        if (!empty($format) && $format == "html_format") {
+            return htmlspecialchars_decode($this->_content);
+        } else {
+            return nl2br(strip_tags(htmlspecialchars_decode($this->_content)));
+        }
     }
     public function status() {
         return $this->_status;
     }
-    public function creation_date() {
-        return $this->_creation_date;
+
+    public function creation_date($format) {
+        $creation_date = new DateTime($this->_creation_date);
+        if (!empty($format) && $format == "special_format") {
+            return date_format($creation_date,"d/m/Y à H:i");
+        } else {
+            return date_format($creation_date,"d/m/Y H:i");
+        }
     }
-    public function update_date() {
-        return $this->_update_date;
+
+    public function update_date($format) {
+        $update_date = new DateTime($this->_update_date);
+        if (!empty($format) && $format == "special_format") {
+            return date_format($update_date,"d/m/Y à H:i");
+        } else {
+            return date_format($update_date,"d/m/Y H:i");
+        }
     }
+
 
     // Setters
     public function setId($id) {
@@ -135,36 +157,17 @@ class Posts extends Session {
         }
     }
     public function setCreation_date($creation_date) {
-        $isDate = $this->validateDate($creation_date, "Y-m-d H:i:s");
-        if ($isDate) {
-            $creation_date = new DateTime($creation_date);
-            $this->_creation_date = date_format($creation_date,"d/m/Y H:i");
-        } else {
-            // $isDate = $this->validateDate($creation_date, "d/m/Y H:i");
-            // if ($isDate) {
-            //     $creation_date = new DateTime($creation_date);
-            //     $this->_creation_date =  date_format($creation_date,"d/m/Y H:i");
-            // } else {
-            echo "Erreur dans le format de la date !";
-            // }
-        }
+        // $isDate = $this->validateDate($creation_date, "Y-m-d H:i:s");
+        // if ($isDate) {
+            $this->_creation_date = $creation_date;
+        // }
     }
     public function setUpdate_date($update_date) {
-        $isDate = $this->validateDate($update_date, "Y-m-d H:i:s");
-        if ($isDate) {
-            $update_date = new DateTime($update_date);
-            $this->_update_date = $update_date->format("d/m/Y H:i");
-        } else {
-            $isDate = $this->validateDate($update_date, "d/m/Y H:i");
-            if ($isDate) {
-                $update_date = new DateTime($update_date);
-                $this->_update_date =  date_format($update_date,"d/m/Y H:i");
-            }
-        }
+            $this->_update_date = $update_date;
     }
     // Vérifie si la date est valide
-    private function validateDate($date, $format = 'Y-m-d H:i:s') {
-        $d = DateTime::createFromFormat($format, $date);
-        return $d && $d->format($format) == $date;
-    }
+    // private function validateDate($date, $format = 'Y-m-d H:i:s') {
+    //     $d = DateTime::createFromFormat($format, $date);
+    //     return $d && $d->format($format) == $date;
+    // }
 }

@@ -52,13 +52,28 @@ class Comments {
         return $this->_report_date;
     }
     public function nb_report() {
-        return $this->_nb_report;
+        $creation_date = new DateTime($this->_creation_date);
+        if (!empty($format) && $format == "special_format") {
+            return date_format($creation_date,"d/m/Y à H:i");
+        } else {
+            return date_format($creation_date,"d/m/Y H:i");
+        }
     }
     public function creation_date() {
-        return $this->_creation_date;
+        $creation_date = new DateTime($this->_creation_date);
+        if (!empty($format) && $format == "special_format") {
+            return date_format($creation_date,"d/m/Y à H:i");
+        } else {
+            return date_format($creation_date,"d/m/Y H:i");
+        }
     }
     public function update_date() {
-        return $this->_update_date;
+        $update_date = new DateTime($this->_update_date);
+        if (!empty($format) && $format == "special_format") {
+            return date_format($update_date,"d/m/Y à H:i");
+        } else {
+            return date_format($update_date,"d/m/Y H:i");
+        }
     }
 
     // Setters
@@ -102,13 +117,7 @@ class Comments {
         }
     }
     public function setReport_date($report_date) {
-        $isDate = $this->validateDate($report_date, "Y-m-d H:i:s");
-        if ($isDate) {
-            $report_date = new DateTime($report_date);
-            $this->_report_date = date_format($report_date,"d/m/Y H:i");
-        } else {
-            $this->_report_date = "";
-        }
+            $this->_report_date = $report_date;
     }
     public function setNb_report($nb_report) {
         $nb_report = (int) $nb_report;
@@ -117,26 +126,9 @@ class Comments {
         }
     }
     public function setCreation_date($creation_date) {
-        $isDate = $this->validateDate($creation_date, "Y-m-d H:i:s");
-        if ($isDate) {
-            $creation_date = new DateTime($creation_date);
-            $this->_creation_date = date_format($creation_date,"d/m/Y H:i");
-        } else {
-            echo "Erreur dans le format de la date. ";
-        }
+        $this->_creation_date = $creation_date;
     }
     public function setUpdate_date($update_date) {
-        $isDate = $this->validateDate($update_date, "Y-m-d H:i:s");
-        if ($isDate) {
-            $update_date = new DateTime($update_date);
-            $this->_update_date = $update_date->format("d/m/Y H:i");
-        }
+        $this->_update_date = $update_date;
     }
-
-    // Vérifie si la date est valide
-    private function validateDate($date, $format = 'Y-m-d H:i:s') {
-        $d = DateTime::createFromFormat($format, $date);
-        return $d && $d->format($format) == $date;
-    }
-
 }

@@ -52,7 +52,7 @@ class CommentsManager extends Manager {
     // }
     // Méthode de récupération d'une liste d'commentaires
     public function getList($filter, $orderBy, $order, $minLimit, $maxLimit) {
-        $req = $this->_db->prepare("SELECT c.id, c.user_id, u.login, c.user_name, c.content, c.status, c.report_date, c.nb_report, c.creation_date, c.update_date
+        $req = $this->_db->prepare("SELECT c.id, c.post_id, c.user_id, u.login, c.user_name, c.content, c.status, c.report_date, c.nb_report, c.creation_date, c.update_date
             FROM comments c
             LEFT JOIN users u
             ON c.user_id = u.id

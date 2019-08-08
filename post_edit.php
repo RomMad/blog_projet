@@ -120,7 +120,7 @@ if (!empty($_GET["post_id"])) {
                             </div>
                             <div class="form-group">
                                 <label for="post_content" class="sr-only">Contenu</label>
-                                <textarea name="post_content" class="form-control shadow-sm" id="post_content" rows="12"><?= isset($post) ? html_entity_decode($post->content()) : "" ?></textarea>
+                                <textarea name="post_content" class="form-control shadow-sm" id="post_content" rows="12"><?= isset($post) ? $post->content("html_format") : "" ?></textarea>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-2">
@@ -130,11 +130,11 @@ if (!empty($_GET["post_id"])) {
                             </div>
                             <div class="form-group">
                                 <label for="creation_date">Date de création</label>
-                                <input type="text" name="creation_date" class="form-control shadow-sm" id="creation_date" readonly value="<?= isset($post) ? $post->creation_date() : "" ?>">
+                                <input type="text" name="creation_date" class="form-control shadow-sm" id="creation_date" readonly value="<?= isset($post) ? $post->creation_date("") : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="update_date">Date de mise à jour</label>
-                                <input type="text" name="update_date" class="form-control shadow-sm" id="update_date" readonly value="<?= isset($post) ? $post->update_date() : "" ?>">
+                                <input type="text" name="update_date" class="form-control shadow-sm" id="update_date" readonly value="<?= isset($post) ? $post->update_date("") : "" ?>">
                             </div>
                             <div class="form-group">
                                 <label for="status">Statut</label>
