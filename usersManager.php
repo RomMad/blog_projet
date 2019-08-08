@@ -7,7 +7,16 @@ class UsersManager extends Manager {
 
     // Ajout d'un utilisateur
     public function add(Users $user) {
-
+        $req =$this->_db->prepare("INSERT INTO users(login, email, name, surname, birthdate, pass) 
+                                VALUES(:login, :email, :name, :surname, :birthdate, :pass)");
+        $req->execute([
+            "login" => $user->login(),
+            "pass" => $user->pass(),
+            "email" => $user->email(),
+            "name" => $user->name(),
+            "surname" => $user->surname(),
+            "birthdate" => $user->birthdate()
+        ]);
     }
 
     // Contrôle l'utilisateur
@@ -120,7 +129,7 @@ class UsersManager extends Manager {
 
     //  Compte le nombre d'utilisateurs
     public function count($filter) {
-        $req = $this->_db->prepare("SELECT COUNT(*) AS nb_Users, u.role, r.id 
+        $req = $this->_db->prepare("SELECT COUNT(*), u.login, u.email, u.role, r.id 
             FROM users u
             LEFT JOIN user_role r
             ON u.role = r.id  
