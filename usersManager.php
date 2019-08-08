@@ -101,6 +101,15 @@ class UsersManager extends Manager {
             "newRole" => $role
         ]);
     }
+
+    // Met le "remember" de la connection en VRAI
+    public function rememberTrue($id) {
+        $req = $this->_db->prepare("UPDATE users SET remember = :remember WHERE id = :id");
+        $req->execute([
+            "id" => $id,
+            "remember" => true
+        ]);
+    }
     // Supprime un utilisateur
     public function delete($id) {
         $req = $this->_db->prepare("DELETE FROM users WHERE id = ? ");

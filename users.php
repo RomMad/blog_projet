@@ -10,6 +10,7 @@ class Users {
             $_email,
             $_role,
             $_roleUser,
+            $_remember_me,
             $_registration_date,
             $_update_date;
 
@@ -54,6 +55,9 @@ class Users {
     public function role_user() {
         return $this->_roleUser;
     }
+    public function remember() {
+        return $this->_remember;
+    }    
     public function registration_date() {
         return $this->_registration_date; 
     }
@@ -120,6 +124,11 @@ class Users {
             $this->_roleUser = htmlspecialchars($roleUser);
         }
     }
+    public function setRemember($remember) {
+        if (is_bool($remember)) {
+            $this->_remember = htmlspecialchars($remember);
+        }
+    }    
     public function setRegistration_date($registration_date) {
         $this->_registration_date = htmlspecialchars($registration_date);
     }
