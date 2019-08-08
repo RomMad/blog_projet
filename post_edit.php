@@ -110,7 +110,7 @@ if (!empty($_GET["post_id"])) {
 
                     <?php $session->flash(); // Message en session flash ?>
 
-                    <div class="row">
+                    <div class="row mt-4">
                         <div class="col-md-12 col-lg-10">
                             <div class="form-group">
                                 <label for="title" class="sr-only">Titre</label>
