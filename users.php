@@ -1,5 +1,5 @@
 <?php 
-class Users {
+class Users extends Session {
     
     private $_id,
             $_login,
@@ -74,8 +74,10 @@ class Users {
         }
     }
     public function setlogin($login) {
-        if (is_string($login)) {
+        if (preg_match("#^[a-zA-Z0-9_.-]{5,20}$#",$login)) {
             $this->_login = $login;
+        } else {
+            $this->setFlash("Le login est incorrect : entre 5 et 20 caractères (lettres ou chiffres).", "danger");       
         }
     }
     public function setEmail($email) {
