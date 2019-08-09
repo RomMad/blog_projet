@@ -73,7 +73,9 @@ if (!empty($_POST)) {
     }
     // Si validation est vrai, valide l'inscription de l'utilisateur
     if ($validation) {
-        $pass_hash = password_hash($user->pass(), PASSWORD_DEFAULT); // Hachage du mot de passe
+        // Hachage du mot de passe
+        $passHash = password_hash($user->pass(), PASSWORD_DEFAULT); 
+        $user->SetPass($passHash);
         // Insert les données dans la table users
         $usersManager->add($user);
         // Récupère l'ID de l'utilisateur
@@ -85,7 +87,6 @@ if (!empty($_POST)) {
         $_SESSION["userRole"] = $user->role();
 
         $session->setFlash("L'inscription est réussie.", "success");
-
         header("Location: index.php");
         exit;
     }

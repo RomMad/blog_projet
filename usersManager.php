@@ -30,9 +30,7 @@ class UsersManager extends Manager {
             $filter = "login = '" . $info . "'";
         }
         $req = $this->_db->prepare("SELECT * FROM users WHERE $filter");
-        $req->execute([
-            $info
-        ]);
+        $req->execute();
         $user = $req->fetch();
         if ($user) {
             return new Users($user);

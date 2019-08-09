@@ -12,18 +12,18 @@ $db = $usersManager->db();
 if (!isset($_POST["pass"])) {
     $bytes = random_bytes(8);
     $token = bin2hex($bytes);
-    $pass = $token ;
+    // $passHash = password_hash($token, PASSWORD_DEFAULT); // Hachage du mot de passe$token ;
 }
 
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
     $user = new Users([
-        "login" => htmlspecialchars($_POST["login"]),
-        "name" => htmlspecialchars($_POST["name"]),
-        "surname" => htmlspecialchars($_POST["surname"]),
-        "email" => htmlspecialchars($_POST["email"]),
-        "role" => htmlspecialchars($_POST["role"]),
-        "pass" => htmlspecialchars($_POST["pass"])
+        "login" => $_POST["login"],
+        "email" => $_POST["email"],
+        "pass" => $_POST["pass"],
+        "name" => $_POST["name"],
+        "surname" => $_POST["surname"],
+        "role" => $_POST["role"]
     ]);
 
     $validation = true;
@@ -35,17 +35,17 @@ if (!empty($_POST)) {
 
     // Vérifie si le champ login est vide
     if (empty($user->login())) {
-        $session->setFlash("Veuillez saisir un Login.", "danger");
+        $session->setFlash("Le login est non renseigné.", "danger");
         $validation = false;
     }
     // Vérifie si le login est déjà utilisé
     elseif ($loginUsed) {
-        $session->setFlash("Ce login est déjà utilisé. Veuillez en utiliser un autre.", "danger");
+        $session->setFlash("Ce login est déjà utilisé.", "danger");
         $validation = false;
     }
     // Vérifie si l'adresse email est déjà utilisée
     if (empty($user->email())) {
-        $session->setFlash("L'adresse email est vide.", "danger");
+        $session->setFlash("L'adresse email est non renseignée.", "danger");
         $validation = false;
     }
     // Vérifie si l'adresse email est correcte
@@ -58,8 +58,16 @@ if (!empty($_POST)) {
         $session->setFlash("L'adresse email est déjà utilisée.", "danger");
         $validation = false;
     }
+    // Vérifie si le champ mot de passe est vide
+    if (empty($_POST["pass"])) {
+        $session->setFlash("Le mot de passe est non renseigné.", "danger");
+        $validation = false;
+    }
     // Si validation est vrai, valide l'inscription de l'utilisateur
     if ($validation) {
+        // Hachage du mot de passe
+        $passHash = password_hash($user->pass(), PASSWORD_DEFAULT); 
+        $user->SetPass($passHash);
         // Insert les données dans la table users
         $usersManager->add($user);
 
@@ -71,7 +79,7 @@ if (!empty($_POST)) {
             "user_id" => $user->id(),
             "token" => $user->pass()
         ));
-
+        // Initialise l'email
         $link = "http://localhost/blog_projet/reset_password.php?token=" . $user->pass();
         $to = $user->email();
         $subject = "Création de compte";
@@ -99,7 +107,7 @@ if (!empty($_POST)) {
             "X-Mailer" => "PHP/" . phpversion()
         );
         
-        // mail($to,$subject,$message,$headers);
+        mail($to,$subject,$message,$headers);
 
         $session->setFlash("L'utilisateur " . $user->login() . " a été ajouté. <br />Un email lui a été envoyé.", "success");
         }
@@ -181,7 +189,7 @@ if (!empty($_POST)) {
                                 <div class="col-md-8">
                                     <div class="div-user-pass">
                                         <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm"
-                                        value="<?= isset($user) ? $user->pass() : $pass ?>">
+                                        value="<?= isset($user) ? $user->pass() : $token ?>">
                                         <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
                                     </div>
                                 </div>
