@@ -61,7 +61,7 @@ if (!empty($_POST)) {
 $nbItems = $commentsManager->count($filter);
 
 // Vérifie l'ordre de tri par type
-if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "user_name" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date")) {
+if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "user_name" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "report_date" || $_GET["orderBy"] == "nb_report" || $_GET["orderBy"] == "creation_date" )) {
     $orderBy = htmlspecialchars($_GET["orderBy"]);
 } else if (!empty($_COOKIE["orderBy"]["adminComments"])) {
     $orderBy = $_COOKIE["orderBy"]["adminComments"];

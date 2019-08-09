@@ -52,12 +52,8 @@ class Comments {
         return $this->_report_date;
     }
     public function nb_report() {
-        $creation_date = new DateTime($this->_creation_date);
-        if (!empty($format) && $format == "special_format") {
-            return date_format($creation_date,"d/m/Y à H:i");
-        } else {
-            return date_format($creation_date,"d/m/Y H:i");
-        }
+        return $this->_nb_report;
+
     }
     public function creation_date() {
         $creation_date = new DateTime($this->_creation_date);
