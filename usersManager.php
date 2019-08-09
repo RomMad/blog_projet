@@ -20,10 +20,18 @@ class UsersManager extends Manager {
     }
 
     // Contrôle l'utilisateur
-    public function verify($login) {
-        $req = $this->_db->prepare("SELECT * FROM users WHERE login = ?");
+    public function verify($info) {
+        // Vérifie si c'est une adresse email
+        if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $info)) {
+            $filter = "email = '" . $info . "'";
+        } 
+        // Sinon c'est le login
+        else {
+            $filter = "login = '" . $info . "'";
+        }
+        $req = $this->_db->prepare("SELECT * FROM users WHERE $filter");
         $req->execute([
-            $login
+            $info
         ]);
         $user = $req->fetch();
         if (!empty($user)) {

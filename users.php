@@ -3,11 +3,11 @@ class Users {
     
     private $_id,
             $_login,
+            $_email,
+            $_pass,
             $_name,
             $_surname,
             $_birthdate,
-            $_pass,
-            $_email,
             $_role,
             $_roleUser,
             $_remember_me,
@@ -34,6 +34,12 @@ class Users {
     public function login() {
         return $this->_login;
     }
+    public function email() {
+        return $this->_email;
+    }
+    public function pass() {
+        return $this->_pass;
+    }
     public function name() {
         return $this->_name;
     }
@@ -43,12 +49,7 @@ class Users {
     public function birthdate() {
         return $this->_birthdate;
     }
-    public function pass() {
-        return $this->_pass;
-    }
-    public function email() {
-        return $this->_email;
-    }
+
     public function role() {
         return $this->_role;
     }
@@ -77,6 +78,20 @@ class Users {
             $this->_login = htmlspecialchars($login);
         }
     }
+    public function setEmail($email) {
+        if (is_string($email)) {
+            $this->_email = htmlspecialchars($email);
+        } else {
+            return "Erreur email <br />";
+        }
+    }
+    public function setPass($pass) {
+        if (is_string($pass)) {
+            $this->_pass = htmlspecialchars($pass);
+        } else {
+            return "Erreur pass <br />";
+        }
+    }
     public function setName($name) {
         if (is_string($name)) {
             $this->_name = htmlspecialchars($name);
@@ -95,20 +110,6 @@ class Users {
             } else {
                 return "Erreur date de naissance <br />";
             }
-        }
-    }
-    public function setPass($pass) {
-        if (is_string($pass)) {
-            $this->_pass = htmlspecialchars($pass);
-        } else {
-            return "Erreur pass <br />";
-        }
-    }
-    public function setEmail($email) {
-        if (is_string($email)) {
-            $this->_email = htmlspecialchars($email);
-        } else {
-            return "Erreur email <br />";
         }
     }
     public function setRole($role) {

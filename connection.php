@@ -38,11 +38,11 @@ if (!empty($_POST)) {
     if ($validation == true) {
         // Enregistre les informations de l'utilisateurs en session
         $_SESSION["userID"] = $user->id();
-        $_SESSION["userLogin"] = htmlspecialchars($_POST["login"]);
+        $_SESSION["userLogin"] = $user->login();
         $_SESSION["userRole"] = $user->role();
         // Enregistre le login et le mot de passe en cookie si la case "Se souvenir de moi" est cochée
         if (isset($_POST["remember"])) {
-            setcookie("user[login]", $_SESSION["userLogin"], time() + 365*24*3600, null,null, false, true);
+            setcookie("user[login]", $user->login(), time() + 365*24*3600, null,null, false, true);
             setcookie("user[pass]", htmlspecialchars($_POST["pass"]), time() + 365*24*3600, null,null, false, true);
         }
         // Ajoute la date de connexion de l'utilisateur dans la table dédiée
@@ -75,8 +75,8 @@ if (!empty($_POST)) {
                 <?php $session->flash(); // Message en session flash ?>      
 
                 <h1 class="h3 mb-4 font-weight-normal">Merci de vous connecter</h1>
-                <label for="login" class="sr-only">Login</label>
-                <input type="text" name="login" id="login" class="form-control mb-2 shadow-sm" placeholder="Login" autofocus="" value="<?= isset($_COOKIE["user"]["login"]) ? $_COOKIE["user"]["login"] : "" ?>">
+                <label for="login" class="sr-only">Login ou adresse email</label>
+                <input type="text" name="login" id="login" class="form-control mb-2 shadow-sm" placeholder="Login ou adresse email" autofocus="" value="<?= isset($_COOKIE["user"]["login"]) ? $_COOKIE["user"]["login"] : "" ?>">
                 <label for="pass" class="sr-only">Mot de passe</label>
                 <div class="div-user-pass">
                     <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm" placeholder="Mot de passe" value="<?= isset($_COOKIE["user"]["pass"]) ? $_COOKIE["user"]["pass"] : "" ?>">
