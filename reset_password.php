@@ -11,12 +11,7 @@ $db = $usersManager->db();
 
 // Vérifie si informations dans variables POST et GET
 if (!empty($_POST) && isset($_GET["token"])) {
-    $token = htmlspecialchars($_GET["token"]);
-    $email = htmlspecialchars($_POST["email"]);
-    $newPass = htmlspecialchars($_POST["new_pass"]);
-    $newPassConfirm = htmlspecialchars($_POST["new_pass_confirm"]);
     $validation = true;
-
     // Vérifie si le token est existe
     $req = $db->prepare("SELECT r.user_ID, r.reset_date, u.email
     FROM reset_passwords r
@@ -25,17 +20,16 @@ if (!empty($_POST) && isset($_GET["token"])) {
     WHERE token = ? AND email = ?
     ");
     $req->execute(array(
-        $token,
-        $email
+        htmlspecialchars($_GET["token"]),
+        htmlspecialchars($_POST["email"])
     ));
     $dataResetPassword = $req->fetch();
     
     // Calcule l'intervalle entre le moment de demande de réinitialisation et maintenant
-    $dateNow = new DateTime("now", timezone_open("Europe/Paris"));
     $dateResetPassword = new DateTime($dataResetPassword["reset_date"], timezone_open("Europe/Paris"));
+    $dateNow = new DateTime("now", timezone_open("Europe/Paris"));
     $interval = date_timestamp_get($dateNow)-date_timestamp_get($dateResetPassword);
-    $delay = 15*60; // 15 minutes x 60 secondes = 900 secondes
-
+    $delay = 15 * 60; // 15 minutes x 60 secondes = 900 secondes
     // Vérifie si le token ou l'adresse email sont corrects
     if (!$dataResetPassword) {
         $session->setFlash ("Le lien de réinitialisation ou l'adresse email sont incorrects.", "danger");
@@ -47,32 +41,32 @@ if (!empty($_POST) && isset($_GET["token"])) {
         $validation = false;
     }
     // Vérifie si le champ nouveau mot de passe est vide
-    if (empty($newPass)) {
+    if (empty($_POST["new_pass"])) {
         $session->setFlash("Veuillez saisir votre nouveau mot de passe.", "danger");
         $validation = false;
     }
     
     // Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
-    elseif (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $newPass)) {
+    elseif (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $_POST["new_pass"])) {
         $session->setFlash ("Le nouveau mot de passe n'est pas valide.", "danger");
         $validation = false;
     }
     // Vérifie si le champ confirmation nouveau mot de passe est vide
-    if (empty($newPassConfirm)) {
+    if (empty($_POST["new_pass_confirm"])) {
         $session->setFlash("Veuillez saisir la confirmation de votre nouveau mot de passe.", "danger");
         $validation = false;
     }  
     // Vérifie si la confirmation du mot de passe est identique
-    elseif ($newPass != $newPassConfirm) {
+    elseif ($_POST["new_pass"] != ($_POST["new_pass_confirm"])) {
         $session->setFlash ("Le mot de passe et la confirmation sont différents.", "danger");
         $validation = false;
     }
     // Si validation est vraie, met à jour le mot de passe 
     if ($validation) {      
         // Récupère l'ID de l'utilisateur
-        $user = $usersManager->get($email);
+        $user = $usersManager->get($_POST["email"]);
         // Hachage du mot de passe
-        $newPassHash = password_hash($newPass, PASSWORD_DEFAULT);
+        $newPassHash = password_hash(htmlspecialchars($_POST["new_pass"]), PASSWORD_DEFAULT);
         // Créé une nouvelle entité user
         $user = new Users([
             "id" => $user->id(),
@@ -99,6 +93,8 @@ if (!empty($_POST) && isset($_GET["token"])) {
     }
 }
 
+var_dump($_POST);
+
 ?>
 
 <!DOCTYPE html>
@@ -112,6 +108,9 @@ if (!empty($_POST) && isset($_GET["token"])) {
     <div class="container">
         <section id="reset-password" class="row">
                 <form action="reset_password.php?token=<?= isset($_GET["token"]) ? htmlspecialchars($_GET["token"]) : "" ?>" method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 mx-auto mt-4 mb-4">
+                
+                    <?php $session->flash(); // Message en session flash ?>      
+                    
                     <h1 class="h3 mb-4 font-weight-normal text-center">Réinitialisation du mot de passe</h1>
                     <label for="email" class="sr-only">Email</label>
                     <input type="email" name="email" id="email" class="form-control mb-4" placeholder="Email"
@@ -127,7 +126,6 @@ if (!empty($_POST) && isset($_GET["token"])) {
                         </div>
                     <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-blue btn-block mb-4 shadow">
 
-                    <?php $session->flash(); // Message en session flash ?>      
                 </form>
             </div>
         </section>

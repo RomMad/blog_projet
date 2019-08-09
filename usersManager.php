@@ -34,7 +34,7 @@ class UsersManager extends Manager {
             $info
         ]);
         $user = $req->fetch();
-        if (!empty($user)) {
+        if ($user) {
             return new Users($user);
         }
     }
@@ -52,11 +52,11 @@ class UsersManager extends Manager {
             LEFT JOIN user_role r
             ON u.role = r.id 
             WHERE $filter");
-        $req->execute([
-            $filter 
-        ]);
+        $req->execute();
         $user = $req->fetch();
-        return new Users($user);
+        if ($user) {
+            return new Users($user);
+        }
     }
     // Récupère le role de l'utilisateur
     public function getRole($id) {

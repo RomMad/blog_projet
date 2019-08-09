@@ -11,26 +11,32 @@ $db = $usersManager->db();
 
 // Vérifie si information dans variable POST
 if (!empty($_POST)) {
-    $email = htmlspecialchars($_POST["email"]);
-
+    $validation = true;
     // Récupère l'ID de l'utilisateur et son password haché
-    $req = $db->prepare("SELECT ID FROM users WHERE email = ?");
-    $req->execute(array($email));
-    $dataUser = $req->fetch();
-
-    // Vérifie si adresse email existe
-    if ($dataUser) {
+    $user = $usersManager->get($_POST["email"]);
+    // Vérifie si le champ email est vide
+    if (empty($_POST["email"])) {
+        $session->setFlash("Veuillez saisir une adresse email", "warning");
+        $validation = false;
+    }
+    // Vérifie si l'adresse email existe
+    elseif (!$user) {
+        $session->setFlash("Cette adresse email est inconnue", "danger");
+        $validation = false;
+    }
+    // Génère un email avec un token si validation est vraie
+    if ($validation) {
         $bytes = random_bytes(8);
         $token = bin2hex($bytes);
 
         $req = $db->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
         $req->execute(array(
-            "user_id" => $dataUser["ID"],
+            "user_id" => $user->id(),
             "token" => $token
         ));
-
+        // Initialise l'email
         $link = "http://localhost/blog_projet/reset_password.php?token=" . $token;
-        $to = $email;
+        $to = $user->email();
         $subject = "Demande de réinitialisation du mot de passe";
         $message = "
         <html>
@@ -56,17 +62,10 @@ if (!empty($_POST)) {
             "Reply-To" => "Admin Blog <romain.madelaine@gmail.com>",
             "X-Mailer" => "PHP/" . phpversion()
         );
-        
+        // Envoie l'email
         mail($to,$subject,$message,$headers);
 
         $session->setFlash("Un email vient de vous être envoyé", "success");
-    } else {
-        $session->setFlash("Cette adresse email est inconnue", "danger");
-    }
-
-    // Vérifie si le champ email est vide
-    if (empty($email)) {
-        $session->setFlash("Veuillez saisir une adresse email", "warning");
     }
 }
 ?>
@@ -82,6 +81,9 @@ if (!empty($_POST)) {
     <div class="container">
         <section id="forgot-password" class="row">
                 <form action="forgotpassword.php" method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 mx-auto text-center">
+                    
+                <?php $session->flash(); // Message en session flash ?>      
+
                     <h1 class="h3 mb-4 font-weight-normal">Mot de passe oublié</h1>
                     <p>Saisissez votre adresse e-mail afin de recevoir un e-mail pour réinitialiser votre mot de
                         passe.</p>
@@ -89,8 +91,6 @@ if (!empty($_POST)) {
                     <input type="text" name="email" id="email" class="form-control mb-4 shadow-sm" placeholder="Email"
                         autofocus="">
                     <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-blue btn-block mb-4 shadow">
-
-                    <?php $session->flash(); // Message en session flash ?>      
 
                 </form>
             </div>
