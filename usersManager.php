@@ -32,14 +32,20 @@ class UsersManager extends Manager {
     }
 
     // Récupère un utilisateur
-    public function get($id) {
-        $req = $this->_db->prepare("SELECT u.login, u.name, u.surname, u.birthdate, u.email, u.role, r.role_user
+    public function get($info) {
+        if (is_numeric($info)) {
+            $info = (int) $info;
+            $filter = "u.id = '" . $info . "'";
+        } else {
+            $filter = "u.email = '" . $info . "'";
+        }
+        $req = $this->_db->prepare("SELECT u.id, u.login, u.email, u.name, u.surname, u.birthdate, u.role, r.role_user
             FROM users u
             LEFT JOIN user_role r
             ON u.role = r.id 
-            WHERE u.id = $id");
+            WHERE $filter");
         $req->execute([
-            $id 
+            $filter 
         ]);
         $user = $req->fetch();
         return new Users($user);

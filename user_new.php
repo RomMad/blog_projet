@@ -15,79 +15,65 @@ if (!isset($_POST["pass"])) {
     $pass = $token ;
 }
 
-$role = 5;
-
 // Vérifie si informations dans variable POST
 if (!empty($_POST)) {
-    $login = htmlspecialchars($_POST["login"]);
-    $email = htmlspecialchars($_POST["email"]);
-    $name = htmlspecialchars($_POST["name"]);
-    $surname = htmlspecialchars($_POST["surname"]);
-    $role = htmlspecialchars($_POST["role"]);
-    $pass = htmlspecialchars($_POST["pass"]);
+    $user = new Users([
+        "login" => htmlspecialchars($_POST["login"]),
+        "name" => htmlspecialchars($_POST["name"]),
+        "surname" => htmlspecialchars($_POST["surname"]),
+        "email" => htmlspecialchars($_POST["email"]),
+        "role" => htmlspecialchars($_POST["role"]),
+        "pass" => htmlspecialchars($_POST["pass"])
+    ]);
+
     $validation = true;
 
     // Vérifie si le login est déjà utilisé
-    $req = $db->prepare("SELECT * FROM users WHERE login = ? ");
-    $req->execute([$login]);
-    $loginExist = $req->fetch();
+    $loginUsed = $usersManager->count(" u.login = '" . $user->login() . "'");
     // Vérifie si l'adresse email est déjà utilisée
-    $req = $db->prepare("SELECT * FROM users WHERE email = ? ");
-    $req->execute([$email]);
-    $emailExist = $req->fetch();
+    $emailUsed = $usersManager->count(" u.email = '" . $user->email() . "'");
 
     // Vérifie si le champ login est vide
-    if (empty($login)) {
+    if (empty($user->login())) {
         $session->setFlash("Veuillez saisir un Login.", "danger");
         $validation = false;
     }
     // Vérifie si le login est déjà utilisé
-    elseif ($loginExist) {
+    elseif ($loginUsed) {
         $session->setFlash("Ce login est déjà utilisé. Veuillez en utiliser un autre.", "danger");
         $validation = false;
     }
     // Vérifie si l'adresse email est déjà utilisée
-    if (empty($email)) {
+    if (empty($user->email())) {
         $session->setFlash("L'adresse email est vide.", "danger");
         $validation = false;
     }
     // Vérifie si l'adresse email est correcte
-    elseif (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)) {
-        $session->setFlash("L'adresse \"" . $email . "\" est incorrecte.", "danger");
+    elseif (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user->email())) {
+        $session->setFlash("L'adresse \"" . $user->email() . "\" est incorrecte.", "danger");
         $validation = false;
     }
     // Vérifie si l'adresse email est déjà utilisée
-    elseif ($emailExist) {
+    elseif ($emailUsed) {
         $session->setFlash("L'adresse email est déjà utilisée.", "danger");
         $validation = false;
     }
     // Si validation est vrai, valide l'inscription de l'utilisateur
     if ($validation) {
         // Insert les données dans la table users
-        $req = $db->prepare("INSERT INTO users(login, email, name, surname, role, pass) 
-                                VALUES(:login, :email, :name, :surname, :role, :pass)");
-        $req->execute(array(
-            "login" => $login,
-            "email" => $email,
-            "name" => $name,
-            "surname" => $surname,
-            "role" => $role,
-            "pass" => $pass
-            ));
+        $usersManager->add($user);
 
         // Récupère l'ID de l'utilisateur et son password haché
-        $req = $db->prepare("SELECT ID FROM users WHERE email = ?");
-        $req->execute(array($email));
-        $dataUser = $req->fetch();
+        $user = $usersManager->verify($user->login());
 
         $req = $db->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
         $req->execute(array(
-            "user_id" => $dataUser["ID"],
-            "token" => $pass
+            "user_id" => $user->id(),
+            "token" => $user->pass()
         ));
 
-        $link = "http://localhost/blog_projet/reset_password.php?token=" . $pass;
-        $to = $email;
+        $link = "http://localhost/blog_projet/reset_password.php?token=" . $user->pass();
+        $to = $user->email();
         $subject = "Création de compte";
         $message = "
             <html>
@@ -113,10 +99,9 @@ if (!empty($_POST)) {
             "X-Mailer" => "PHP/" . phpversion()
         );
         
-        mail($to,$subject,$message,$headers);
+        // mail($to,$subject,$message,$headers);
 
-        $session->setFlash("L'utilisateur a été ajouté. Un email lui a été envoyé.", "success");
-            header("Refresh: 2; url=admin_users.php");
+        $session->setFlash("L'utilisateur " . $user->login() . " a été ajouté. <br />Un email lui a été envoyé.", "success");
         }
 }
 ?>
@@ -142,7 +127,7 @@ if (!empty($_POST)) {
         <section id="inscription" class="row">
             <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
 
-            <?php $session->flash(); // Message en session flash ?>      
+            <?php $session->flash(); // Message en session flash ?>
 
                 <form action="user_new.php" method="post" class="col-md-12 card shadow mt-4">
                     <div class="form-group row">
@@ -154,39 +139,39 @@ if (!empty($_POST)) {
                                 <label for="login" class="col-md-4 col-form-label">Login</label>
                                 <div class="col-md-8">
                                     <input type="text" name="login" id="login" class="form-control mb-4 shadow-sm" 
-                                        value="<?= isset($_POST["login"]) ? htmlspecialchars($_POST["login"]) : "" ?>">
+                                        value="<?= isset($user) ? $user->login() : "" ?>">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="email" class="col-md-4 col-form-label">Adresse email</label>
                                 <div class="col-md-8">
                                     <input type="email" name="email" id="email" class="form-control mb-4 shadow-sm" 
-                                        value="<?= isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "" ?>">
+                                        value="<?= isset($user) ? $user->email() : "" ?>">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label">Nom</label>
                                 <div class="col-md-8">
                                     <input type="text" name="name" id="name" class="form-control mb-4 shadow-sm" 
-                                        value="<?= isset($_POST["name"]) ? htmlspecialchars($_POST["name"]) : "" ?>">
+                                        value="<?= isset($user) ? $user->name() : "" ?>">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="surname" class="col-md-4 col-form-label">Prénom</label>
                                 <div class="col-md-8">
                                     <input type="text" name="surname" id="surname" class="form-control mb-4 shadow-sm" 
-                                        value="<?= isset($_POST["surname"]) ? htmlspecialchars($_POST["surname"]) : "" ?>">
+                                        value="<?= isset($user) ? $user->surname() : "" ?>">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="role" class="col-md-4 col-form-label">Rôle par défaut</label>
                                 <div class="col-md-8">
                                     <select name="role" id="role" class="custom-select form-control shadow-sm">
-                                        <option value="1" <?= $role == 1 ? "selected" : "" ?>>Administrateur</option>
-                                        <option value="2" <?= $role == 2 ? "selected" : "" ?>>Editeur</option>
-                                        <option value="3" <?= $role == 3 ? "selected" : "" ?>>Auteur</option>
-                                        <option value="4" <?= $role == 4 ? "selected" : "" ?>>Contributeur</option>
-                                        <option value="5" <?= $role == 5 ? "selected" : "" ?>>Abonné</option>
+                                        <option value="5" <?= isset($user) && $user->role() == 5 ? "selected" : "" ?>>Abonné</option>
+                                        <option value="4" <?= isset($user) && $user->role() == 4 ? "selected" : "" ?>>Contributeur</option>
+                                        <option value="3" <?= isset($user) && $user->role() == 3 ? "selected" : "" ?>>Auteur</option>
+                                        <option value="2" <?= isset($user) && $user->role() == 2 ? "selected" : "" ?>>Editeur</option>
+                                        <option value="1" <?= isset($user) && $user->role() == 1 ? "selected" : "" ?>>Administrateur</option>
                                     </select>
                                 </div>
                             </div> 
@@ -196,7 +181,7 @@ if (!empty($_POST)) {
                                 <div class="col-md-8">
                                     <div class="div-user-pass">
                                         <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm"
-                                        value="<?= isset($_POST["pass"]) ? htmlspecialchars($_POST["pass"]) : $pass ?>">
+                                        value="<?= isset($user) ? $user->pass() : $pass ?>">
                                         <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
                                     </div>
                                 </div>

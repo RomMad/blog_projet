@@ -13,8 +13,8 @@ $db = $usersManager->db();
 if (!empty($_POST) && isset($_GET["token"])) {
     $token = htmlspecialchars($_GET["token"]);
     $email = htmlspecialchars($_POST["email"]);
-    $new_pass = htmlspecialchars($_POST["new_pass"]);
-    $new_pass_confirm = htmlspecialchars($_POST["new_pass_confirm"]);
+    $newPass = htmlspecialchars($_POST["new_pass"]);
+    $newPassConfirm = htmlspecialchars($_POST["new_pass_confirm"]);
     $validation = true;
 
     // Vérifie si le token est existe
@@ -46,45 +46,56 @@ if (!empty($_POST) && isset($_GET["token"])) {
         $session->setFlash ("Le lien de réinitialisation est périmé.", "danger");
         $validation = false;
     }
+    // Vérifie si le champ nouveau mot de passe est vide
+    if (empty($newPass)) {
+        $session->setFlash("Veuillez saisir votre nouveau mot de passe.", "danger");
+        $validation = false;
+    }
+    
     // Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
-    if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $new_pass)) {
+    elseif (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $newPass)) {
         $session->setFlash ("Le nouveau mot de passe n'est pas valide.", "danger");
         $validation = false;
     }
+    // Vérifie si le champ confirmation nouveau mot de passe est vide
+    if (empty($newPassConfirm)) {
+        $session->setFlash("Veuillez saisir la confirmation de votre nouveau mot de passe.", "danger");
+        $validation = false;
+    }  
     // Vérifie si la confirmation du mot de passe est identique
-    elseif ($new_pass!=$new_pass_confirm) {
+    elseif ($newPass != $newPassConfirm) {
         $session->setFlash ("Le mot de passe et la confirmation sont différents.", "danger");
         $validation = false;
     }
     // Si validation est vraie, met à jour le mot de passe 
     if ($validation) {      
-        // Récupère l'ID de l'utilisateur et son password haché
-        $req = $db->prepare("SELECT * FROM users WHERE email = ?");
-        $req->execute(array(
-            $email
-        ));
-        $dataUser = $req->fetch();
-        // Met à jour le mot de passe
-        $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT); // Hachage du mot de passe
-        $req = $db->prepare("UPDATE users SET pass = :new_pass WHERE ID = :ID");                
-        $req->execute(array(
-            "ID" => $dataUser["ID"],
-            "new_pass" => $new_pass_hash
-            )); 
+        // Récupère l'ID de l'utilisateur
+        $user = $usersManager->get($email);
+        // Hachage du mot de passe
+        $newPassHash = password_hash($newPass, PASSWORD_DEFAULT);
+        // Créé une nouvelle entité user
+        $user = new Users([
+            "id" => $user->id(),
+            "login" => $user->login(),
+            "role" => $user->role(),
+            "pass" => $newPassHash
+        ]);
+        $usersManager->updatePass($user);
 
-        $_SESSION["userID"] = $dataUser["ID"];
-        $_SESSION["userLogin"] =$dataUser["login"];
-        $_SESSION["userRole"] = $dataUser["role"];
+        $_SESSION["userID"] = $user->id();
+        $_SESSION["userLogin"] =$user->login();
+        $_SESSION["userRole"] = $user->role();
 
         // Ajoute la date de connexion de l'utilisateur dans la table dédiée
         $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
         $req->execute(array(
-            "user_ID" => $dataUser["ID"]
+            "user_ID" => $user->id()
         ));
 
         $session->setFlash ("Le mot de passe a été modifié.", "success");
 
-        header("Refresh: 2; url=profil.php");
+        header("Location: index.php");
+        exit;
     }
 }
 

@@ -52,7 +52,9 @@ if (!empty($_POST)) {
         ]);
 
         $session->setFlash("Vous êtes connecté.", "success");
-        header("Refresh: 2; url=blog.php");
+        header("Location: index.php");
+        exit;
+
     }
 }
 
