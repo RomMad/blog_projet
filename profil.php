@@ -23,15 +23,16 @@ if (!empty($_POST)) {
     // Mettre à jour les informations du profil
     if (isset($_POST["login"])) {
         $user = new Users([
-            "login" => htmlspecialchars($_POST["login"]),
-            "name" => htmlspecialchars($_POST["name"]),
-            "surname" => htmlspecialchars($_POST["surname"]),
-            "email" => htmlspecialchars($_POST["email"]),
-            "birthdate" => !empty($_POST["birthdate"]) ? htmlspecialchars($_POST["birthdate"]) : NULL,
-            "role_user" => htmlspecialchars($_POST["role"]),
+            "id" => $_SESSION["userID"],
+            "login" => $_POST["login"],
+            "email" => $_POST["email"],
+            "name" => $_POST["name"],
+            "surname" => $_POST["surname"],
+            "birthdate" => $_POST["birthdate"],
+            "role_user" => $_POST["role"]
         ]);
         // Compare le pass envoyé via le formulaire avec la base
-        $isPasswordCorrect = password_verify($_POST["pass"], $user->pass()); 
+        $isPasswordCorrect = password_verify($_POST["pass"], $usersManager->getPass($_SESSION["userID"])); 
         // Vérifie si le login est déjà pris par un autre utilisateur
         $loginUsed = $usersManager->count("login = '" . $user->login() . "' AND u.id != " . $_SESSION["userID"]);
         // Vérifie si l'email est déjà pris par un autre utilisateur
@@ -83,14 +84,6 @@ if (!empty($_POST)) {
         }
         // Met à jour les informations du profil si validation est vraie
         if ($validation) {
-            $user = new Users([
-                "id" => $_SESSION["userID"],
-                "login" => $login,
-                "email" => $email,
-                "name" => $name,
-                "surname" => $surname,
-                "birthdate" => $birthdate,
-            ]);
             $usersManager->updateProfil($user);
             $_SESSION["userLogin"] = $user->login();
             $session->setFlash("Le profil a été mis à jour.", "success");
@@ -99,12 +92,10 @@ if (!empty($_POST)) {
 
     // Mettre à jour le mot de passe
     if (isset($_POST["old_pass"])) {
-        $oldPass = htmlspecialchars($_POST["old_pass"]);
-        $newPass = htmlspecialchars($_POST["new_pass"]);
-        $newPassConfirm = htmlspecialchars($_POST["new_pass_confirm"]);
-        $isPasswordCorrect = password_verify($oldPass, $user->pass()); // Compare le mot de passe envoyé via le formulaire avec la base
+        // Compare le mot de passe envoyé via le formulaire avec la base
+        $isPasswordCorrect = password_verify($_POST["old_pass"], $usersManager->getPass($_SESSION["userID"])); 
         // Vérifie si le champ ancien mot de passe est vide
-        if (empty($oldPass)) {
+        if (empty(($_POST["old_pass"]))) {
             $session->setFlash("Veuillez saisir votre ancien mot de passe.", "danger");
             $validation = false;
         }
@@ -114,28 +105,28 @@ if (!empty($_POST)) {
             $validation = false;
         }
         // Vérifie si le champ nouveau mot de passe est vide
-        if (empty($newPass)) {
+        if (empty($_POST["new_pass"])) {
             $session->setFlash("Veuillez saisir votre nouveau mot de passe.", "danger");
             $validation = false;
         }
         // Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
-        elseif (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $newPass)) {
+        elseif (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $_POST["new_pass"])) {
             $session->setFlash("Le nouveau mot de passe n'est pas valide.", "danger");
             $validation = false;
         }
         // Vérifie si le champ confirmation nouveau mot de passe est vide
-        if (empty($newPassConfirm)) {
+        if (empty($_POST["new_pass_confirm"])) {
             $session->setFlash("Veuillez saisir la confirmation de votre nouveau mot de passe.", "danger");
             $validation = false;
         }       
         // Vérifie si la confirmation du mot de passe est identique
-        elseif ($newPass != $newPassConfirm) {
+        elseif ($_POST["new_pass"] != $_POST["new_pass_confirm"]) {
             $session->setFlash("Le mot de passe et la confirmation sont différents.", "danger");
             $validation = false;
         }
         // Met à jour le mot de passe si validation est vraie
         if ($validation) {
-            $newPassHash = password_hash($newPass, PASSWORD_DEFAULT); // Hachage du mot de passe
+            $newPassHash = password_hash($_POST["new_pass"], PASSWORD_DEFAULT); // Hachage du mot de passe
             $user = new Users([
                 "id" => $_SESSION["userID"],
                 "pass" => $newPassHash

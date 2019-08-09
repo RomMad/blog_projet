@@ -58,16 +58,26 @@ class UsersManager extends Manager {
         $user = $req->fetch();
         return new Users($user);
     }
-    // Récupère un utilisateur
+    // Récupère le role de l'utilisateur
     public function getRole($id) {
-        $req = $this->_db->prepare("SELECT role FROM users WHERE id = $id");
-        $req->execute([
-            $id 
-        ]);
-        $user = $req->fetch();
-        return new Users($user);
+        if (is_numeric($id)) {
+            $info = (int) $id;
+            $req = $this->_db->prepare("SELECT role FROM users WHERE id = $id");
+            $req->execute();
+            $user = $req->fetch();
+            return  $user["role"];
+        }
     }
-
+    // Récupère le mot de passe haché de l'utilisateur
+    public function getPass($id) {
+        if (is_numeric($id)) {
+            $info = (int) $id;
+            $req = $this->_db->prepare("SELECT pass FROM users WHERE id = $id");
+            $req->execute();
+            $user = $req->fetch();
+            return  $user["pass"];
+        }
+    }
     // Récupère le dernier utilisateur créé
     public function lastCreate() {
 
@@ -94,12 +104,11 @@ class UsersManager extends Manager {
 
     // Modifie le profil de l'utilisateur
     public function updateProfil(Users $user) {
-        $req = $this->_db->prepare("UPDATE users SET login = :newLogin, pass = :newPass, email = :newEmail, name = :newName, surname = :newSurname, birthdate = :newBirthdate, update_date = NOW() 
+        $req = $this->_db->prepare("UPDATE users SET login = :newLogin, email = :newEmail, name = :newName, surname = :newSurname, birthdate = :newBirthdate, update_date = NOW() 
             WHERE id = :id");
         $req->execute([
             "id" => $user->id(),
             "newLogin" => $user->login(),
-            "newPass" => $user->pass(),
             "newEmail" => $user->email(),
             "newName" => $user->name(),
             "newSurname" => $user->surname(),
@@ -118,27 +127,36 @@ class UsersManager extends Manager {
 
     // Modifie le rôle de l'utilisateur
     public function updateRole($id, $role) {
-        $req = $this->_db->prepare("UPDATE users SET role = :newRole, update_date = NOW() WHERE id = :id");
-        $req->execute([
-            "id" => $id,
-            "newRole" => $role
-        ]);
+        if (is_numeric($id)) {
+            $info = (int) $id;       
+            $req = $this->_db->prepare("UPDATE users SET role = :newRole, update_date = NOW() WHERE id = :id");
+            $req->execute([
+                "id" => $id,
+                "newRole" => $role
+            ]);
+        }
     }
 
     // Met le "remember" de la connection en VRAI
     public function rememberTrue($id) {
-        $req = $this->_db->prepare("UPDATE users SET remember = :remember WHERE id = :id");
-        $req->execute([
-            "id" => $id,
-            "remember" => true
-        ]);
+        if (is_numeric($id)) {
+            $info = (int) $id;
+            $req = $this->_db->prepare("UPDATE users SET remember = :remember WHERE id = :id");
+            $req->execute([
+                "id" => $id,
+                "remember" => true
+            ]);
+        }
     }
     // Supprime un utilisateur
     public function delete($id) {
-        $req = $this->_db->prepare("DELETE FROM users WHERE id = ? ");
-        $req->execute([
-            $id
-        ]);
+        if (is_numeric($id)) {
+            $info = (int) $id;
+            $req = $this->_db->prepare("DELETE FROM users WHERE id = ? ");
+            $req->execute([
+                $id
+            ]);
+        }
     }
 
     //  Compte le nombre d'utilisateurs

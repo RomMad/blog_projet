@@ -43,7 +43,7 @@ if (!empty($_POST)) {
         // Enregistre le login et le mot de passe en cookie si la case "Se souvenir de moi" est cochée
         if (isset($_POST["remember"])) {
             setcookie("user[login]", $user->login(), time() + 365*24*3600, null,null, false, true);
-            setcookie("user[pass]", htmlspecialchars($_POST["pass"]), time() + 365*24*3600, null,null, false, true);
+            // setcookie("user[pass]", htmlspecialchars($_POST["pass"]), time() + 365*24*3600, null,null, false, true);
         }
         // Ajoute la date de connexion de l'utilisateur dans la table dédiée
         $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
@@ -79,7 +79,7 @@ if (!empty($_POST)) {
                 <input type="text" name="login" id="login" class="form-control mb-2 shadow-sm" placeholder="Login ou adresse email" autofocus="" value="<?= isset($_COOKIE["user"]["login"]) ? $_COOKIE["user"]["login"] : "" ?>">
                 <label for="pass" class="sr-only">Mot de passe</label>
                 <div class="div-user-pass">
-                    <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm" placeholder="Mot de passe" value="<?= isset($_COOKIE["user"]["pass"]) ? $_COOKIE["user"]["pass"] : "" ?>">
+                    <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm" placeholder="Mot de passe">
                     <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
                 </div>
                 <div class="checkbox mb-3">

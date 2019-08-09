@@ -13,8 +13,8 @@ if (empty($_SESSION["userID"])) {
     header("Location: index.php");
 } else {
     // Récupère le rôle de l'utilisateur
-    $user = $usersManager->getRole($_SESSION["userID"]);
-    if ($user->role() != 1) {
+    $userRole = $usersManager->getRole($_SESSION["userID"]);
+    if ($userRole != 1) {
         header("Location: index.php");
     }
 }
