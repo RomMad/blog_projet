@@ -101,7 +101,7 @@ class PostsManager extends Manager {
         $req = $this->_db->prepare("UPDATE posts SET title = :newTitle, content = :newContent, status = :newStatus, update_date = NOW() WHERE id = :postId");
         $req->execute([
             "newTitle" => $post->title(),
-            "newContent" => $post->content(""),
+            "newContent" => mysql_real_escape_string($post->content("")),
             "newStatus" => $post->status(),
             "postId" => $post->id()
         ]);

@@ -32,19 +32,19 @@ class Users {
         return $this->_id;
     }
     public function login() {
-        return $this->_login;
+        return htmlspecialchars($this->_login);
     }
     public function email() {
-        return $this->_email;
+        return htmlspecialchars($this->_email);
     }
     public function pass() {
-        return $this->_pass;
+        return htmlspecialchars($this->_pass);
     }
     public function name() {
-        return $this->_name;
+        return htmlspecialchars($this->_name);
     }
     public function surname() {
-        return $this->_surname;
+        return htmlspecialchars($this->_surname);
     }
     public function birthdate() {
         return $this->_birthdate;
@@ -70,43 +70,43 @@ class Users {
     public function setId($id) {
         $id = (int) $id;
         if ($id > 0) {
-            $this->_id = htmlspecialchars($id);
+            $this->_id = $id;
         }
     }
     public function setlogin($login) {
         if (is_string($login)) {
-            $this->_login = htmlspecialchars($login);
+            $this->_login = $login;
         }
     }
     public function setEmail($email) {
         if (is_string($email)) {
-            $this->_email = htmlspecialchars($email);
+            $this->_email = $email;
         } else {
             return "Erreur email <br />";
         }
     }
     public function setPass($pass) {
         if (is_string($pass)) {
-            $this->_pass = htmlspecialchars($pass);
+            $this->_pass = $pass;
         } else {
             return "Erreur pass <br />";
         }
     }
     public function setName($name) {
         if (is_string($name)) {
-            $this->_name = htmlspecialchars($name);
+            $this->_name = $name;
         }
     }
     public function setSurname($surname) {
         if (is_string($surname)) {
-            $this->_surname = htmlspecialchars($surname);
+            $this->_surname = $surname;
         }
     }
     public function setBirthdate($birthdate) {
         if (!empty($birthdate)) {
             $isDate = $this->validateDate($birthdate, "Y-m-d");
             if ($isDate) {
-                $this->_birthdate = htmlspecialchars(date($birthdate));
+                $this->_birthdate = date($birthdate);
             } else {
                 return "Erreur date de naissance <br />";
             }
@@ -115,26 +115,26 @@ class Users {
     public function setRole($role) {
         $role = (int) $role;
         if ($role >= 1 && $role <= 5) {
-            $this->_role = htmlspecialchars($role);
+            $this->_role = $role;
         } else {
             return "Erreur role <br />";
         }
     }
     public function setRole_user($roleUser) {
         if (is_string($roleUser)) {
-            $this->_roleUser = htmlspecialchars($roleUser);
+            $this->_roleUser = $roleUser;
         }
     }
     public function setRemember($remember) {
         if (is_bool($remember)) {
-            $this->_remember = htmlspecialchars($remember);
+            $this->_remember = $remember;
         }
     }    
     public function setRegistration_date($registration_date) {
-        $this->_registration_date = htmlspecialchars($registration_date);
+        $this->_registration_date = $registration_date;
     }
     public function setUpdate_date($update_date) {
-        $this->_update_date = htmlspecialchars($update_date);
+        $this->_update_date = $update_date;
     }
 
     // Vérifie si la date est valide
