@@ -163,7 +163,7 @@ if ($nbItems) {
                         } 
                         ?>
                     </div>
-                    <div class="card-body text-body">
+                    <div id="post-content" class="card-body text-body">
                     <?= $post->content("html_format") ?>
                     </div>
                 </div>
