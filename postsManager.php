@@ -1,8 +1,11 @@
 <?php
 class PostsManager extends Manager {
 
-    public function __construct() {
-        $this->_db = $this->databaseConnection();
+    private $_db; // Instance de PDO
+
+    public function __construct($db) {
+        // $this->_db = $this->databaseConnection();
+        $this->setDb($db);
     }
 
     // Méthode d'ajout d'un article
@@ -119,5 +122,10 @@ class PostsManager extends Manager {
     public function delete($id) {
         $req = $this->_db->prepare("DELETE FROM posts WHERE id = $id ");
         $req->execute();
+    }
+
+    public function setDb(PDO $db)
+    {
+        $this->_db = $db;
     }
 }

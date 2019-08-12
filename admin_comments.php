@@ -6,8 +6,10 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-$usersManager = new UsersManager();
-$commentsManager = new CommentsManager();
+$db = new Manager();
+$db = $db->databaseConnection();
+$usersManager = new UsersManager($db);
+$commentsManager = new CommentsManager($db);
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
@@ -97,7 +99,7 @@ require("pagination.php");
 
 // Récupère les commentaires
 $comments = $commentsManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit, $maxLimit);
-var_dump($_SESSION);
+
 ?>
 
 <!DOCTYPE html>

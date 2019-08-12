@@ -6,9 +6,11 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-$postsManager = new PostsManager();
-$commentsManager = new CommentsManager();
-$db = $postsManager->db();
+$db = new Manager();
+$db = $db->databaseConnection();
+$postsManager = new PostsManager($db);
+$commentsManager = new CommentsManager($db);
+
 
 // Vérifie si l'article exite
 if (!empty($_GET["post_id"])) {

@@ -24,7 +24,7 @@ class Manager
             $this->_dbPass = "";
         } else {
             $this->_dbHost = "db5000134112.hosting-data.io";
-            $this->_dbname = "dbs129050";
+            $this->_dbName = "dbs129050";
             $this->_dbUser = "dbu50459";
             $this->_dbPass = "!J3anF0r730r0ch3*";   
         }
@@ -38,10 +38,9 @@ class Manager
             // En cas d'erreur, on affiche un message et on arrête tout
             die("Erreur : ".$e->getMessage());
         }
-        
-        $this->_connecte = true;
-        return $this->_db;
 
+        $this->_connecte = true;
+        return  $this->_db;
     } 
  
     public function db() 
@@ -49,3 +48,11 @@ class Manager
         return $this->_db;
     }
 }
+
+// $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
+// if ($_SERVER["HTTP_HOST"] == "localhost") {
+//     $db = new PDO("mysql:host=localhost;dbname=blog_projet;charset=utf8", "root", "", $pdo_options);
+// } else {
+//     $db = new PDO("mysql:host=db5000134112.hosting-data.io;dbname=dbs129050;charset=utf8", "dbu50459", "!J3anF0r730r0ch3*", $pdo_options);
+
+// }

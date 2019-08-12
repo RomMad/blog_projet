@@ -6,8 +6,9 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-$usersManager = new UsersManager();
-$db = $usersManager->db();
+$db = new Manager();
+$db = $db->databaseConnection();
+$usersManager = new UsersManager($db);
 
 // Vérifie si information dans variable POST
 if (!empty($_POST)) {
