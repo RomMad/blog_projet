@@ -20,8 +20,6 @@ if (empty($_SESSION["userID"])) {
     }
 }
 
-$filter = "c.ID > 0";
-
 if (!empty($_POST)) {
     if (!empty($_POST["action_apply"]) && isset($_POST["selectedComments"])) {
         // Supprime les commentaires sélectionnés via une boucle
@@ -53,12 +51,18 @@ if (!empty($_POST)) {
     }
     // Enregistre le filtre
     if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= "0") {
-        $filter = "status = " . htmlspecialchars($_POST["filter_status"]);
+        $_SESSION["filter_status"] = htmlspecialchars($_POST["filter_status"]);
+        $_SESSION["filter"] = "status = " . $_SESSION["filter_status"];
     }
 }
 
+if (empty($_GET)) {
+    $_SESSION["filter"] = "c.id > 0";
+    $_SESSION["filter_status"] = NULL;
+}
+
 // Compte le nombre de commentaires
-$nbItems = $commentsManager->count($filter);
+$nbItems = $commentsManager->count($_SESSION["filter"]);
 
 // Vérifie l'ordre de tri par type
 if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "user_name" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "report_date" || $_GET["orderBy"] == "nb_report" || $_GET["orderBy"] == "creation_date" )) {
@@ -92,8 +96,8 @@ $anchorPagination = "#table-admin_comments";
 require("pagination.php");
 
 // Récupère les commentaires
-$comments = $commentsManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit);
-
+$comments = $commentsManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit, $maxLimit);
+var_dump($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -148,9 +152,9 @@ $comments = $commentsManager->getlist($filter, $orderBy, $order, $minLimit, $max
                             <label class="sr-only col-form-label ml-4 py-2" for="filter_status">Filtre</label>
                                 <select name="filter_status" id="filter_status" class="custom-select form-control mb-2 shadow" value="Par auteur">
                                     <option value="">-- Statut --</option>
-                                    <option value="0">Non-modéré</option>
-                                    <option value="1">Modéré</option>
-                                    <option value="2">Signalé</option>
+                                    <option <?= $_SESSION["filter_status"] == 0 &&  $_SESSION["filter_status"] != NULL ? "selected" : "" ?> value="0">Non-modéré</option>
+                                    <option <?= $_SESSION["filter_status"] == 1 ? "selected" : "" ?> value="1">Modéré</option>
+                                    <option <?= $_SESSION["filter_status"] == 2 ? "selected" : "" ?> value="2">Signalé</option>
                                 </select>
                             <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-blue mb-2 py-1 shadow" value="Filtrer">
                         </div>
@@ -236,49 +240,51 @@ $comments = $commentsManager->getlist($filter, $orderBy, $order, $minLimit, $max
                             <tbody>
 
                                 <?php
-                                foreach ($comments as $comment) {
-                                    ?>
-                                    <tr>
-                                        <th scope="row">
-                                            <input type="checkbox" name="selectedComments[]" id="comment<?= $comment->id() ?>" value="<?= $comment->id() ?>" class=""/>
-                                            <label for="selectedComments[]" class="sr-only">Sélectionner</label>
-                                        </th>
-                                        <td><a href="post_view.php?post_id=<?= $comment->post_id() ?>" class="text-dark"><?= $comment->content() ?></a></td>
-                                        <td>
-                                        <?php 
-                                        if (!empty($comment->user_name())) {
-                                            echo $comment->user_name();
-                                        } else {
-                                            if (!empty($comment->login())) {
-                                                echo $comment->login();
+                                if ($nbItems) {
+                                    foreach ($comments as $comment) {
+                                        ?>
+                                        <tr>
+                                            <th scope="row">
+                                                <input type="checkbox" name="selectedComments[]" id="comment<?= $comment->id() ?>" value="<?= $comment->id() ?>" class=""/>
+                                                <label for="selectedComments[]" class="sr-only">Sélectionner</label>
+                                            </th>
+                                            <td><a href="post_view.php?post_id=<?= $comment->post_id() ?>" class="text-dark"><?= $comment->content() ?></a></td>
+                                            <td>
+                                            <?php 
+                                            if (!empty($comment->user_name())) {
+                                                echo $comment->user_name();
                                             } else {
-                                                echo "Anonyme";
+                                                if (!empty($comment->login())) {
+                                                    echo $comment->login();
+                                                } else {
+                                                    echo "Anonyme";
+                                                }
                                             }
-                                        }
-                                        ?>
-                                        </td>
-                                        <td>
-                                        <?php 
-                                        switch($comment->status()) {
-                                            case 0:
-                                            echo "Non-modéré";
-                                            break;
-                                            case 1:
-                                            echo "Modéré";
-                                            break;
-                                            case 2:
-                                            echo "Signalé";
-                                            break;
-                                            defaut:
-                                            echo "Non-modéré";
-                                        }
-                                        ?>
-                                        </td>
-                                        <td><?= $comment->report_date("") ?></td>
-                                        <td><?= $comment->nb_report() ?></td>
-                                        <td><?= $comment->creation_date("") ?></td>
-                                    </tr>
+                                            ?>
+                                            </td>
+                                            <td>
+                                            <?php 
+                                            switch($comment->status()) {
+                                                case 0:
+                                                echo "Non-modéré";
+                                                break;
+                                                case 1:
+                                                echo "Modéré";
+                                                break;
+                                                case 2:
+                                                echo "Signalé";
+                                                break;
+                                                defaut:
+                                                echo "Non-modéré";
+                                            }
+                                            ?>
+                                            </td>
+                                            <td><?= $comment->report_date("") ?></td>
+                                            <td><?= $comment->nb_report() ?></td>
+                                            <td><?= $comment->creation_date("") ?></td>
+                                        </tr>
                                 <?php
+                                    }   
                                 }
                                 ?>
                             </tbody>

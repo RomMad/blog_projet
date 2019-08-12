@@ -20,10 +20,7 @@ if (empty($_SESSION["userID"])) {
     }
 }
 
-$filter = "p.id > 0";
-
-if (!empty($_POST)) 
-{
+if (!empty($_POST)) {
     if (!empty($_POST["action_apply"]) && isset($_POST["selectedPosts"])) {
         // Supprime les articles sélectionnés via une boucle
         if ($_POST["action_apply"] == "delete") {
@@ -32,7 +29,7 @@ if (!empty($_POST))
             }
             // Compte le nombre d'articles supprimés pour adaptés l'affichage du message
             $nbSelectedPosts = count($_POST["selectedPosts"]);
-            if ($nbSelectedPosts>1) {
+            if ($nbSelectedPosts > 1) {
                 $session->setFlash($nbSelectedPosts . " articles ont été supprimés.", "warning");
             } else {
                 $session->setFlash("L'article a été supprimé.", "warning");
@@ -41,36 +38,40 @@ if (!empty($_POST))
         // Met en brouillon les articles sélectionnés via une boucle
         if ($_POST["action_apply"] == "Brouillon" || $_POST["action_apply"] == "Publié") {
             foreach ($_POST["selectedPosts"] as $selectedPost) {
-                $postManager->updateStatus($selectedPost, htmlspecialchars($_POST["action_apply"]));
+                $postManager->updateStatus($selectedPost, $_POST["action_apply"]);
             }
             // Compte le nombre d'articles publiés pour adaptés l'affichage du message
             $selectedPosts = count($_POST["selectedPosts"]);
-            if ($selectedPosts>1) {
+            if ($selectedPosts > 1) {
                 $session->setFlash($selectedPosts . " articles ont été modifés.", "success");
             } else {
                 $session->setFlash("L'article a été modifié.", "success");
             }
         }
     }
-}
-
     // Si sélection d'un filtre 'rôle', enregistre le filtre
     if (!empty($_POST["filter_status"])) {
-        $filter = "status = '" . htmlspecialchars($_POST["filter_status"]) . "'";
+        $_SESSION["filter"] =  "status = '" . htmlspecialchars($_POST["filter_status"]) . "'";
     }
     // Si recherche, enregistre le filtre
     if (!empty($_POST["filter_search"])) {
-        $search = htmlspecialchars($_POST["search_post"]);
-        $filter = "title LIKE '%" . $search . "%' OR content LIKE '%" . $search . "%'";
-        echo "RECHERCHE";
+        $_SESSION["filter_search"] = htmlspecialchars($_POST["search_post"]);
+        $_SESSION["filter"] =  "title LIKE '%" .  $_SESSION["filter_search"] . "%' OR content LIKE '%" .  $_SESSION["filter_search"] . "%'";
+
     }
+}
+
+if (empty($_GET)) {
+    $_SESSION["filter"] = "p.id > 0";
+    $_SESSION["filter_search"] = "";
+}
 
 // Compte le nombre d'articles
-$nbItems = $postManager->count($filter);
+$nbItems = $postManager->count($_SESSION["filter"]);
 
 // Vérifie l'ordre de tri par type
 if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date")) {
-    $orderBy = htmlspecialchars($_GET["orderBy"]);
+    $orderBy = $_GET["orderBy"];
 } else if (!empty($_COOKIE["orderBy"]["adminPosts"])) 
 {
     $orderBy = $_COOKIE["orderBy"]["adminPosts"];
@@ -81,7 +82,7 @@ if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"]
 // Vérifie l'ordre de tri si ascendant ou descendant
 if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) 
 {
-    $order = htmlspecialchars($_GET["order"]);
+    $order = $_GET["order"];
 } else if (!empty($_COOKIE["order"]["adminPosts"])) 
 {
     $order = $_COOKIE["order"]["adminPosts"];
@@ -93,19 +94,20 @@ if (!empty($_COOKIE["order"]["adminPosts"]) && $orderBy != $_COOKIE["orderBy"]["
 {
     $order = "asc";
 }
+
 // Enregistre les tris en COOKIES
 setcookie("orderBy[adminPosts]", $orderBy, time() + 365*24*3600, null, null, false, true);
 setcookie("order[adminPosts]", $order, time() + 365*24*3600, null, null, false, true);
 
 // Initialisation des variables pour la pagination
 $typeItem = "adminPosts";
-$linkNbDisplayed = "admin_posts.php?orderBy=" . $orderBy . "&order=" . $order. "&";
+$linkNbDisplayed = "admin_posts.php?&orderBy=" . $orderBy . "&order=" . $order. "&";
 $linkPagination = $linkNbDisplayed;
 $anchorPagination = "#table_admin_posts";
 require("pagination.php");
 
 // Récupère les articles
-$posts = $postManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit);
+$posts = $postManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit, $maxLimit);
 
 ?>
 
@@ -169,7 +171,7 @@ $posts = $postManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit);
                         <div class="col-md-4 form-inline mx-md-0 mb-2 px-md-2">
                                 <label for="search_post"class="sr-only col-form-label px-2 py-2">Recherche</label>
                                 <input type="search" name="search_post" id="search_post" class="form-control px-md-1 shadow" placeholder="Recherche" aria-label="Search" 
-                                    value="<?= isset($_POST["search_post"]) ? htmlspecialchars($_POST["search_post"]) : "" ?>">
+                                    value="<?= $_SESSION["filter_search"] ?>">
                                 <input type="submit" id="filter_search" name="filter_search" alt="filter_search" class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="OK">
                         </div>
                     </div>
@@ -238,23 +240,25 @@ $posts = $postManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit);
                         </thead>
                         <tbody>
 
-                            <?php
-                        foreach ($posts as $post) {
-                            ?>
-                                <tr>
-                                    <th scope="row">
-                                        <input type="checkbox" name="selectedPosts[]" id="post<?= $post->id() ?>" value="<?= $post->id() ?>" class=""/>
-                                        <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
-                                    </th>
-                                    <td><a href="post_view.php?post_id=<?= $post->id() ?>" class="text-blue font-weight-bold"><?= $post->title() ?></a></td>
-                                    <td><?= $post->login() ?></td>
-                                    <td><?= $post->status() ?></td>
-                                    <td><?= $post->creation_date("") ?></td>
-                                    <td><?= $post->update_date("") ?></td>
-                                </tr>
-                            <?php
+                        <?php
+                        if ($nbItems) {
+                            foreach ($posts as $post) {
+                        ?>
+                                    <tr>
+                                        <th scope="row">
+                                            <input type="checkbox" name="selectedPosts[]" id="post<?= $post->id() ?>" value="<?= $post->id() ?>" class=""/>
+                                            <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
+                                        </th>
+                                        <td><a href="post_view.php?post_id=<?= $post->id() ?>" class="text-blue font-weight-bold"><?= $post->title() ?></a></td>
+                                        <td><?= $post->login() ?></td>
+                                        <td><?= $post->status() ?></td>
+                                        <td><?= $post->creation_date("") ?></td>
+                                        <td><?= $post->update_date("") ?></td>
+                                    </tr>
+                        <?php
                             }
-                            ?>
+                        }
+                        ?>
                         </tbody>
                     </table>
                 </div>

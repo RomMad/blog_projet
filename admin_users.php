@@ -19,8 +19,6 @@ if (empty($_SESSION["userID"])) {
     }
 }
 
-$filter = "u.ID > 0";
-
 if (!empty($_POST)) {
     if (!empty($_POST["action_apply"]) && isset($_POST["selectedUsers"])) {
         // Supprime les utilisateurs sélectionnés via une boucle
@@ -52,17 +50,24 @@ if (!empty($_POST)) {
     }
     // Si sélection d'un filtre 'rôle', enregistre le filtre
     if (!empty($_POST["filter_role"])) {
-        $filter = "role = " . htmlspecialchars($_POST["filter_role"]);
+        $_SESSION["filter_role"] = $_POST["filter_role"];
+        $_SESSION["filter"] = "role = " . htmlspecialchars($_POST["filter_role"]);
     }
     // Si recherche, enregistre le filtre
     if (!empty($_POST["filter_search"])) {
-        $search = htmlspecialchars($_POST["search_user"]);
-        $filter = "login LIKE '%" . $search . "%' OR email LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR surname LIKE '%"  . $search . "%'";
+        $_SESSION["filter_search"] = htmlspecialchars($_POST["search_user"]);
+        $_SESSION["filter"] = "login LIKE '%" .  $_SESSION["filter_search"] . "%' OR email LIKE '%" .  $_SESSION["filter_search"] . "%' OR name LIKE '%" . $_SESSION["filter_search"] . "%' OR surname LIKE '%"  . $_SESSION["filter_search"] . "%'";
     }
 }
 
+if (empty($_GET)) {
+    $_SESSION["filter"] = "u.id > 0";
+    $_SESSION["filter_role"] = NULL;
+    $_SESSION["filter_search"] = "";
+}
+
 // Compte le nombre d'utilisateurs
-$nbItems = $usersManager->count($filter);
+$nbItems = $usersManager->count($_SESSION["filter"]);
 
 // Vérifie l'ordre de tri par type
 if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "login" || $_GET["orderBy"] == "name" || $_GET["orderBy"] == "surname" || $_GET["orderBy"] == "email" || $_GET["orderBy"] == "role" | $_GET["orderBy"] == "registration_date")) {
@@ -96,7 +101,7 @@ $anchorPagination = "#table-admin_users";
 require("pagination.php");
 
 // Récupère les utilisateurs
-$users = $usersManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit);
+$users = $usersManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit, $maxLimit);
 
 ?>
 
@@ -150,19 +155,19 @@ $users = $usersManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit)
                         <div class="col-md-4 form-inline mx-md-0 mb-2 pr-md-2">
                             <label class="sr-only col-form-label px-2 py-2" for="filter_role">Filtre</label>
                                 <select name="filter_role" id="filter_role" class="custom-select form-control shadow" value="Par auteur">
-                                    <option value="">-- Rôle --</option>
-                                    <option value="1">Administrateur</option>
-                                    <option value="2">Editeur</option>
-                                    <option value="3">Auteur</option>
-                                    <option value="4">Contributeur</option>
-                                    <option value="5">Abonné</option>
+                                    <option <?= $_SESSION["filter_role"] == NULL ? "selected" : "" ?> value="">-- Rôle --</option>
+                                    <option <?= $_SESSION["filter_role"] == 1 ? "selected" : "" ?> value="1">Administrateur</option>
+                                    <option <?= $_SESSION["filter_role"] == 2 ? "selected" : "" ?> value="2">Editeur</option>
+                                    <option <?= $_SESSION["filter_role"] == 3 ? "selected" : "" ?> value="3">Auteur</option>
+                                    <option <?= $_SESSION["filter_role"] == 4 ? "selected" : "" ?> value="4">Contributeur</option>
+                                    <option <?= $_SESSION["filter_role"] == 5 ? "selected" : "" ?> value="5">Abonné</option>
                                 </select>
                             <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="Filtrer">
                         </div>
                         <div class="col-md-4 form-inline mx-md-0 mb-2 px-md-2">
                                 <label for="search_user"class="sr-only col-form-label px-2 py-2">Recherche</label>
                                 <input type="search" name="search_user" id="search_user" class="form-control px-md-1 shadow" placeholder="Recherche" aria-label="Search" 
-                                    value="<?= isset($_POST["search_user"]) ? htmlspecialchars($_POST["search_user"]) : "" ?>">
+                                    value="<?= $_SESSION["filter_search"] ?>">
                                 <input type="submit" id="filter_search" name="filter_search" alt="filter_search" class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="OK">
                         </div>
                     </div>
@@ -174,7 +179,7 @@ $users = $usersManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit)
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col" class="align-middle">
-                                            <input type="checkbox" name="allselectedUsers" id="all-checkbox" />
+                                            <input type="checkbox" name="allselectedUsers" id="all-checkbox"/>
                                             <label for="allselectedUsers" class="sr-only">Tout sélectionner</label>
                                         </th>
                                         <th scope="col" class="align-middle">
@@ -247,9 +252,10 @@ $users = $usersManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit)
                                 </thead>
                                 <tbody>
 
-                                    <?php
-                                foreach ($users as $user) {
-                                    ?>
+                                <?php
+                                if ($nbItems) {
+                                    foreach ($users as $user) {
+                                ?>
                                         <tr>
                                             <th scope="row">
                                                 <input type="checkbox" name="selectedUsers[]" id="User<?= $user->id() ?>" value="<?= $user->id() ?>" class=""/>
@@ -262,9 +268,10 @@ $users = $usersManager->getlist($filter, $orderBy, $order, $minLimit, $maxLimit)
                                             <td><?= $user->role() ?></td>
                                             <td><?= $user->registration_date() ?></td>
                                         </tr>
-                                    <?php
+                                <?php
                                     }
-                                    ?>
+                                }
+                                ?>
                                 </tbody>
                             </table>
                         </div>    

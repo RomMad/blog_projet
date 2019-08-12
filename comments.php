@@ -1,5 +1,5 @@
 <?php
-class Comments {
+class Comments extends Session {
 
     private $_id,
             $_post_id,
