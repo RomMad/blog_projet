@@ -101,15 +101,12 @@ if (!empty($_COOKIE["order"]["adminPosts"]) && $orderBy != $_COOKIE["orderBy"]["
 setcookie("orderBy[adminPosts]", $orderBy, time() + 365*24*3600, null, null, false, true);
 setcookie("order[adminPosts]", $order, time() + 365*24*3600, null, null, false, true);
 
-// Initialisation des variables pour la pagination
-$typeItem = "adminPosts";
+// Initialise la pagination
 $linkNbDisplayed = "admin_posts.php?&orderBy=" . $orderBy . "&order=" . $order. "&";
-$linkPagination = $linkNbDisplayed;
-$anchorPagination = "#table_admin_posts";
-require("pagination.php");
+$pagination = new Pagination("adminPosts", $nbItems, $linkNbDisplayed, $linkNbDisplayed, "#table_admin_posts");
 
 // Récupère les articles
-$posts = $postManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit, $maxLimit);
+$posts = $postManager->getlist($_SESSION["filter"], $orderBy, $order, $pagination->_minLimit, $pagination->_maxLimit);
 
 ?>
 
@@ -266,7 +263,7 @@ $posts = $postManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit,
                 </div>
                 </form>
 
-                <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+                <?php $pagination->view(); ?> <!-- Ajoute la barre de pagination -->
                 
             </section>
         </div>

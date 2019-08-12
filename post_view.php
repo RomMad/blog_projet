@@ -116,16 +116,13 @@ $post = $postsManager->get($post_id);
 // Compte le nombre de commentaires
 $nbItems = $commentsManager->count("post_id = " . $post_id . " AND " . $filter);
 
-// Initialisation de la pagination
-$typeItem = "posts";
-$linkNbDisplayed= "post_view.php?" . $post_id . "#form-comment";
-$linkPagination= "post_view.php?";
-$anchorPagination= "#comments";
-require("pagination.php");
+// Initialise la pagination
+$linkNbDisplayed = "post_view.php?post_id=" . $post_id . "#form-comment";
+$pagination = new Pagination("comments", $nbItems, $linkNbDisplayed , $linkNbDisplayed, "#comments");
 
 // Récupère les commentaires si le nombre > 0 
 if ($nbItems) {
-    $comments = $commentsManager->getList("c.post_id = " . $post_id . " AND " . $filter, "c.creation_date", "DESC", $minLimit, $maxLimit);
+    $comments = $commentsManager->getList("c.post_id = " . $post_id . " AND " . $filter, "c.creation_date", "DESC", $pagination->_minLimit, $pagination->_maxLimit);
 }
 
 ?>
@@ -221,7 +218,7 @@ if ($nbItems) {
                     if (!isset($comments)) {
                         echo "Aucun commentaire.";
                     } else {
-                        include("nav_pagination.php"); // Ajoute la barre de pagination
+                        $pagination->view(); // Ajoute la barre de pagination
                         // Récupère les messages
                         foreach ($comments as $comment) {
                         ?>
@@ -296,7 +293,7 @@ if ($nbItems) {
                             </div>
                         <?php
                         }
-                        include("nav_pagination.php"); // Ajoute la barre de pagination
+                        $pagination->view(); // Ajoute la barre de pagination
                     }
                     ?>
                 </div>

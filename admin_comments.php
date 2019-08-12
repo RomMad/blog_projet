@@ -90,15 +90,12 @@ if (!empty($_COOKIE["order"]["adminComments"]) && $orderBy != $_COOKIE["orderBy"
 setcookie("orderBy[adminComments]", $orderBy, time() + 365*24*3600, null, null, false, false);
 setcookie("order[adminComments]", $order, time() + 365*24*3600, null, null, false, false);
 
-// Initialisation des variables pour la pagination
-$typeItem = "adminComments";
+// Initialise la pagination
 $linkNbDisplayed = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-$linkPagination = $linkNbDisplayed;
-$anchorPagination = "#table-admin_comments";
-require("pagination.php");
+$pagination = new Pagination("adminComments", $nbItems, $linkNbDisplayed, $linkNbDisplayed, "#table-admin_comments");
 
 // Récupère les commentaires
-$comments = $commentsManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit, $maxLimit);
+$comments = $commentsManager->getlist($_SESSION["filter"], $orderBy, $order,  $pagination->_minLimit, $pagination->_maxLimit);
 
 ?>
 
@@ -295,7 +292,7 @@ $comments = $commentsManager->getlist($_SESSION["filter"], $orderBy, $order, $mi
                     </div>
                 </form>
 
-                <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+                <?php $pagination->view(); ?> <!-- Ajoute la barre de pagination -->
                 
             </section>
         </div>

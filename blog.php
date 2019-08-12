@@ -10,7 +10,6 @@ $db = new Manager();
 $db = $db->databaseConnection();
 $postsManager = new PostsManager($db);
 
-
 // Si recherche, filtre les résultats
 $filter = "status = 'Publié'";
 if (!empty($_GET["search"])) {
@@ -19,16 +18,11 @@ if (!empty($_GET["search"])) {
 // Récupère le nombre d'articles
 $nbItems = $postsManager->count($filter);
 
-// Initialisation des variables pour la pagination
-$typeItem = "posts";
-$linkNbDisplayed = "blog.php#blog";
-$linkPagination = "blog.php?";
-$anchorPagination = "#blog";
-require("pagination.php");
-// $pagination = new Pagination($nbItems, $nbDisplayed, "blog.php#blog", "blog.php?", "#blog");
+// Initialise la pagination
+$pagination = new Pagination("posts", $nbItems, "blog.php#blog", "blog.php?", "#blog");
 
 // Récupère les derniers articles
-$posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $maxLimit);
+$posts = $postsManager->getList($filter, "p.creation_date", "DESC", $pagination->_minLimit, $pagination->_maxLimit);
 
 ?>
 
@@ -62,7 +56,7 @@ $posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $
 
             $session->flash(); // Message en session flash
 
-            include("nav_pagination.php"); // Ajoute la barre de pagination
+            $pagination->view(); // Ajoute la barre de pagination
 
             ?>
             <div class="row">
@@ -105,7 +99,7 @@ $posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $
 
             </div>
 
-            <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+            <?php $pagination->view() ?> <!-- Ajoute la barre de pagination -->
 
             <div class="mt-4 mb-4">
                 <a class="text-blue" href="post_edit.php"><span class="far fa-file"></span> Rédiger un nouvel article</a>

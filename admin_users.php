@@ -95,15 +95,15 @@ if (!empty($_COOKIE["order"]["adminUsers"]) && $orderBy != $_COOKIE["orderBy"]["
 setcookie("orderBy[adminUsers]", $orderBy, time() + 365*24*3600, null, null, false, true);
 setcookie("order[adminUsers]", $order, time() + 365*24*3600, null, null, false, true);
 
-// Initialisation des variables pour la pagination
-$typeItem = "adminUsers";
+// Initialise la pagination
 $linkNbDisplayed = "admin_users.php?orderBy=" . $orderBy . "&order=" . $order. "&";
-$linkPagination = $linkNbDisplayed;
-$anchorPagination = "#table-admin_users";
-require("pagination.php");
+$pagination = new Pagination("adminUsers", $nbItems, $linkNbDisplayed, $linkNbDisplayed, "#table-admin_users");
 
 // Récupère les utilisateurs
-$users = $usersManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit, $maxLimit);
+$users = $usersManager->getlist($_SESSION["filter"], $orderBy, $order,  $pagination->_minLimit, $pagination->_maxLimit);
+var_dump($_POST);
+var_dump($_COOKIE);
+
 
 ?>
 
@@ -280,7 +280,7 @@ $users = $usersManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit
                     </div>
                 </form>
 
-                <?php include("nav_pagination.php"); ?> <!-- Ajoute la barre de pagination -->
+                <?php $pagination->view(); ?> <!-- Ajoute la barre de pagination -->
                 
             </section>
         </div>
