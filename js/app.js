@@ -14,3 +14,9 @@ class NameClass {
 };
 
 let nameClass = new NameClass();
+
+
+// Toolips Bootstrap
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})

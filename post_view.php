@@ -42,6 +42,12 @@ if (!empty($_POST)) {
         $status = 0;
     }
 
+    if (isset($_SESSION["userLogin"])) {
+        $name = $_SESSION["userLogin"];
+    } else {
+        $name = $_POST["name"];
+    }
+
     if (isset($_POST["save_comment"])) {
         
         if (isset($_SESSION["userID"])) {
@@ -63,7 +69,7 @@ if (!empty($_POST)) {
             $comment = new Comments([
                 "post_id" => $_SESSION["postID"],
                 "user_id" => $user_id,
-                "user_name" => $_POST["name"],
+                "user_name" => $name,
                 "content" => $_POST["content"],
                 "status" => $status
             ]);
@@ -138,7 +144,6 @@ if ($nbItems) {
                 <li class="breadcrumb-item active" aria-current="page">Article</li>
             </ol>
         </nav>
-
         <!-- Affichage de l'article -->
         <section id="post">
                 <div class="card shadow">
@@ -152,7 +157,7 @@ if ($nbItems) {
                         <?php 
                         } 
                         ?>
-                        <a href="#comments" class="badge badge-blue ml-2"> <span class="badge badge-light"><?= $nbItems ?> </span></a>
+                        <a href="#comments" class="badge badge-blue ml-2" data-toggle="tooltip" data-placement="bottom" title="Voir les commentaires">Commentaires <span class="badge badge-light"><?= $nbItems ?> </span></a>
                     </div>
                     <div class="card-body text-body">
                     <?= $post->content("html_format") ?>
