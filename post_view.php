@@ -12,16 +12,19 @@ $postsManager = new PostsManager($db);
 $commentsManager = new CommentsManager($db);
 
 
-// Vérifie si l'article exite
+// Vérifie si l'article existe
 if (!empty($_GET["post_id"])) {
     $post = $postsManager->getUserId($_GET["post_id"]);
     if (!$post) {
+        die;
         header("Location: blog.php"); 
         exit;
     }
     $post_id = htmlspecialchars($_GET["post_id"]);
     $_SESSION["postID"] = $post_id;
 } else {
+    die;
+
     header("Location: blog.php"); 
     exit;
 }
@@ -117,8 +120,8 @@ $post = $postsManager->get($post_id);
 $nbItems = $commentsManager->count("post_id = " . $post_id . " AND " . $filter);
 
 // Initialise la pagination
-$linkNbDisplayed = "post_view.php?post_id=" . $post_id . "#form-comment";
-$pagination = new Pagination("comments", $nbItems, $linkNbDisplayed , $linkNbDisplayed, "#comments");
+$linkNbDisplayed = "post_view.php?post_id=" . $post_id . "&";
+$pagination = new Pagination("comments", $nbItems, $linkNbDisplayed . "#comments", $linkNbDisplayed, "#comments");
 
 // Récupère les commentaires si le nombre > 0 
 if ($nbItems) {
