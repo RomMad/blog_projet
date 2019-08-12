@@ -151,7 +151,10 @@ if ($nbItems) {
                 <div class="card shadow">
                     <div class="card-header bg-dark text-light">
                         <h1 class="h2 mt-2 mb-3"><?= $post->title() ?></h1>
-                        <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" href=""> <?= $post->login() ?> </a> (Modifié le <?= $post->update_date("special_format") ?>)</em>
+                        <p class="my-0">
+                            <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" href=""> <?= $post->login() ?> </a> (Modifié le <?= $post->update_date("special_format") ?>)</em>
+                            <a href="#comments" class="badge badge-blue ml-2 my-1 py-1" data-toggle="tooltip" data-placement="bottom" title="Voir les commentaires">Commentaires <span class="badge badge-light"><?= $nbItems ?></span></a>
+                        </p>
                         <?php
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $post->user_id()) {
                         ?>
@@ -159,7 +162,6 @@ if ($nbItems) {
                         <?php 
                         } 
                         ?>
-                        <a href="#comments" class="badge badge-blue ml-2" data-toggle="tooltip" data-placement="bottom" title="Voir les commentaires">Commentaires <span class="badge badge-light"><?= $nbItems ?> </span></a>
                     </div>
                     <div class="card-body text-body">
                     <?= $post->content("html_format") ?>
