@@ -104,73 +104,76 @@ Class Pagination {
     // Affiche la barre de pagination
     public function view() {
 
-        if ($this->_nbItems == 0) {
-            exit;
+        ?><div class="row"><?php
+        // Si le nombre d'élements est supérieur à 5, affiche la liste déroulante avec le nombre d'éléments à afficher
+        if ($this->_nbItems > 5) {
+            $this->selectNumber();
         }
+        // Si le nombre de pages à afficher est supérieur à 1, affiche les liens de paginations
+        if ($this->_nbPages > 1) {
+            $this->selectpage();
+        }
+        ?></div><?php
+    }
+    // Affiche la liste déroulante avec le nombre d'éléments à afficher
+    private function selectNumber() {
         ?>
-
-        <div class="row">
-
-            <div class="col-sm-5 my-1">
-                <form action="<?= $this->_linkNbDisplayed ?>" method="post" class="form-inline">
-                    <label class="col-form-label mr-1" for="nbDisplayed">Affichés</label>
-                    <select name="nbDisplayed" id="nbDisplayed" class="custom-select form-control-sm mr-1 shadow-sm" >
-                        <option value="5" <?= $this->_nbDisplayed  == 5 ? "selected" : "" ?> >5</option>
-                        <option value="10" <?= $this->_nbDisplayed == 10 ? "selected" : "" ?> >10</option>
-                        <option value="15" <?= $this->_nbDisplayed == 15 ? "selected" : "" ?> >15</option>
-                        <option value="20" <?= $this->_nbDisplayed == 20 ? "selected" : "" ?> >20</option>
-                        <option value="50" <?= $this->_nbDisplayed == 50 ? "selected" : "" ?> >50</option>
-                    </select>
-                    <input type="submit" id="pagination" class="btn btn-blue form-control-smcpt-1 px-lg-3 px-md-2 shadow-sm" value="OK">
-                                                            
-                </form>
-            </div>
-
-            <div class="col-sm-7 my-1">
-            <?php 
-                if ($this->_nbPages > 1) {
-                ?>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-end">
-                            <li class="page-item <?= $this->_prevPageLink ?> shadow-sm">
-                            <a class="page-link <?= $this->_prevPageColorLink ?> font-weight-bold"href="<?= $this->_linkPagination ?>page=<?= $this->_prevPage . $this->_anchorPagination ?>" tabindex="-1" aria-disabled="true"><span aria-hidden="true">&laquo;</span></a>
-                            </li>
-                            <?php 
-                                if ($this->_currentPage > 2 && $this->_nbPages > 3) {
-                            ?>
-                                    <li class="page-item"><a class="page-link text-blue px-2 shadow-sm" href="<?= $this->_linkPagination ?>page=1<?= $this->_anchorPagination ?>">1...</a></li>
-                            <?php                                                               
-                                }
-                            ?>
-                            <li class="page-item <?= $this->_activepageLink_1 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_pageLink_1 . $this->_anchorPagination ?>"><?= $this->_pageLink_1 ?></a></li>
-                            <li class="page-item <?= $this->_activepageLink_2 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_pageLink_2 . $this->_anchorPagination ?>"><?= $this->_pageLink_2 ?></a></li>
-
-                            <?php 
-                                if ($this->_nbPages > 2) {
-                            ?>
-                                    <li class="page-item <?= $this->_activepageLink_3 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_pageLink_3 . $this->_anchorPagination ?>"><?= $this->_pageLink_3 ?></a></li>
-                            <?php 
-                                }
-                            ?>
-
-                            <?php 
-                                if ($this->_currentPage < $this->_nbPages -1 && $this->_nbPages > 3) {
-                            ?>
-                                    <li class="page-item shadow-sm"><a class="page-link px-2 text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_nbPages . $this->_anchorPagination ?>">...<?= $this->_nbPages ?></a></li>
-                            <?php 
-                                }
-                            ?>
-                                <li class="page-item <?= $this->_nextPageLink ?> shadow-sm">
-                            <a class="page-link <?= $this->_nextPageColorLink ?> font-weight-bold"" href="<?= $this->_linkPagination ?>page=<?= $this->_nextPage . $this->_anchorPagination ?>"><span aria-hidden="true">&raquo;</span></a>
-                            </li>
-                        </ul>
-                    </nav>
-
-                <?php 
-                }
-                ?>
-            </div>
+        <div class="col-md-6 my-2">
+            <form action="<?= $this->_linkNbDisplayed ?>" method="post" class="form-inline">
+                <label class="col-form-label mr-1" for="nbDisplayed">Affichés</label>
+                <select name="nbDisplayed" id="nbDisplayed" class="custom-select form-control-sm mr-1 shadow-sm" >
+                    <option value="5" <?= $this->_nbDisplayed  == 5 ? "selected" : "" ?> >5</option>
+                    <option value="10" <?= $this->_nbDisplayed == 10 ? "selected" : "" ?> >10</option>
+                    <option value="15" <?= $this->_nbDisplayed == 15 ? "selected" : "" ?> >15</option>
+                    <option value="20" <?= $this->_nbDisplayed == 20 ? "selected" : "" ?> >20</option>
+                    <option value="50" <?= $this->_nbDisplayed == 50 ? "selected" : "" ?> >50</option>
+                </select>
+                <input type="submit" id="pagination" class="btn btn-blue form-control-sm pt-1 px-lg-3 px-md-2 shadow-sm" value="OK">
+                                                        
+            </form>
         </div>
-    <?php   
+        <?php
+    }
+    // Affiche les liens de paginations
+    private function selectPage () {
+        ?>
+        <div class="col-md-6 my-2">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-end mb-0">
+                    <li class="page-item <?= $this->_prevPageLink ?> shadow-sm">
+                    <a class="page-link <?= $this->_prevPageColorLink ?> font-weight-bold"href="<?= $this->_linkPagination ?>page=<?= $this->_prevPage . $this->_anchorPagination ?>" tabindex="-1" aria-disabled="true"><span aria-hidden="true">&laquo;</span></a>
+                    </li>
+                    <?php 
+                    if ($this->_currentPage > 2 && $this->_nbPages > 3) {
+                    ?>
+                        <li class="page-item"><a class="page-link text-blue p-2 px-2 shadow-sm" href="<?= $this->_linkPagination ?>page=1<?= $this->_anchorPagination ?>">1...</a></li>
+                    <?php                                                               
+                    }
+                    ?>
+                    <li class="page-item <?= $this->_activepageLink_1 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_pageLink_1 . $this->_anchorPagination ?>"><?= $this->_pageLink_1 ?></a></li>
+                    <li class="page-item <?= $this->_activepageLink_2 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_pageLink_2 . $this->_anchorPagination ?>"><?= $this->_pageLink_2 ?></a></li>
+
+                    <?php 
+                    if ($this->_nbPages > 2) {
+                    ?>
+                        <li class="page-item <?= $this->_activepageLink_3 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_pageLink_3 . $this->_anchorPagination ?>"><?= $this->_pageLink_3 ?></a></li>
+                    <?php 
+                    }
+                    ?>
+
+                    <?php 
+                    if ($this->_currentPage < $this->_nbPages -1 && $this->_nbPages > 3) {
+                    ?>
+                        <li class="page-item shadow-sm"><a class="page-link px-2 text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_nbPages . $this->_anchorPagination ?>">...<?= $this->_nbPages ?></a></li>
+                    <?php 
+                    }
+                    ?>
+                        <li class="page-item <?= $this->_nextPageLink ?> shadow-sm">
+                    <a class="page-link <?= $this->_nextPageColorLink ?> font-weight-bold"" href="<?= $this->_linkPagination ?>page=<?= $this->_nextPage . $this->_anchorPagination ?>"><span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </div> 
+        <?php
     }   
 }
