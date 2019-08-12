@@ -12,17 +12,24 @@ $postsManager = new PostsManager($db);
 
 // Si recherche, filtre les résultats
 $filter = "status = 'Publié'";
-if (!empty($_GET["search"])) {
-    $filter = $filter . " AND title like '%" . htmlspecialchars($_GET["search"]) . "%' OR content like '%" . htmlspecialchars($_GET["search"]) . "%'";
+if (isset($_GET["search"])) {
+    $_SESSION["filter_search"] =  htmlspecialchars($_GET["search"]);
+    $_SESSION["filter"] = $filter . "AND title like '%". $_SESSION["search"] . "%' OR content like '%" . $_SESSION["search"] . "%'";
 }
+
+if (!isset($_GET)) {
+    $_SESSION["filter"] = "status = 'Publié'";
+    $_SESSION["filter_search"] = "";
+}
+
 // Récupère le nombre d'articles
-$nbItems = $postsManager->count($filter);
+$nbItems = $postsManager->count($_SESSION["filter"]);
 
 // Initialise la pagination
 $pagination = new Pagination("posts", $nbItems, "blog.php#blog", "blog.php?", "#blog");
 
 // Récupère les derniers articles
-$posts = $postsManager->getList($filter, "p.creation_date", "DESC", $pagination->_nbLimit, $pagination->_nbDisplayed);
+$posts = $postsManager->getList($_SESSION["filter"], "p.creation_date", "DESC", $pagination->_nbLimit, $pagination->_nbDisplayed);
 
 ?>
 
