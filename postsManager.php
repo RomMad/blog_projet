@@ -81,7 +81,7 @@ class PostsManager extends Manager {
         return new Posts($post);
     }
     // Méthode de récupération d'une liste d'articles
-    public function getList($filter, $orderBy, $order, $minLimit, $maxLimit) {
+    public function getList($filter, $orderBy, $order, $nbLimit, $nbOffset) {
         $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.status, p.creation_date, p.update_date, 
             IF(CHAR_LENGTH(p.content) > 1500, CONCAT(SUBSTRING(p.content, 1, 1500), '[...]'), p.content) AS content
             FROM posts p
@@ -89,25 +89,21 @@ class PostsManager extends Manager {
             ON p.user_id = u.id
             WHERE $filter 
             ORDER BY $orderBy $order
-            LIMIT $minLimit, $maxLimit");
+            LIMIT $nbLimit, $nbOffset;");
         $req->execute();
-        $datas = $req->fetch();
-        var_dump($datas);
         while ($datas = $req->fetch()) {
             $posts[] = new Posts($datas);
         }
-
         if (isset($posts)) {
             return $posts;
         }
-
     }
     // Méthode de mise à jour d'un article
     public function update(Posts $post) {
         $req = $this->_db->prepare("UPDATE posts SET title = :newTitle, content = :newContent, status = :newStatus, update_date = NOW() WHERE id = :postId");
         $req->execute([
             "newTitle" => $post->title(),
-            "newContent" => mysql_real_escape_string($post->content("")),
+            "newContent" => $post->content(""),
             "newStatus" => $post->status(),
             "postId" => $post->id()
         ]);

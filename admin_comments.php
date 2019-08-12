@@ -95,7 +95,7 @@ $linkNbDisplayed = "admin_comments.php?orderBy=" . $orderBy . "&order=" . $order
 $pagination = new Pagination("adminComments", $nbItems, $linkNbDisplayed, $linkNbDisplayed, "#table-admin_comments");
 
 // Récupère les commentaires
-$comments = $commentsManager->getlist($_SESSION["filter"], $orderBy, $order,  $pagination->_minLimit, $pagination->_maxLimit);
+$comments = $commentsManager->getlist($_SESSION["filter"], $orderBy, $order,  $pagination->_nbLimit, $pagination->_nbDisplayed);
 
 ?>
 

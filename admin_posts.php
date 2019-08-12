@@ -106,7 +106,7 @@ $linkNbDisplayed = "admin_posts.php?&orderBy=" . $orderBy . "&order=" . $order. 
 $pagination = new Pagination("adminPosts", $nbItems, $linkNbDisplayed, $linkNbDisplayed, "#table_admin_posts");
 
 // Récupère les articles
-$posts = $postManager->getlist($_SESSION["filter"], $orderBy, $order, $pagination->_minLimit, $pagination->_maxLimit);
+$posts = $postManager->getlist($_SESSION["filter"], $orderBy, $order, $pagination->_nbLimit, $pagination->_nbDisplayed);
 
 ?>
 

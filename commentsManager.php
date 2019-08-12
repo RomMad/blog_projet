@@ -54,14 +54,14 @@ class CommentsManager extends Manager {
     //     return new Comments($comment);
     // }
     // Méthode de récupération d'une liste d'commentaires
-    public function getList($filter, $orderBy, $order, $minLimit, $maxLimit) {
+    public function getList($filter, $orderBy, $order, $nbLimit, $nbOffset) {
         $req = $this->_db->prepare("SELECT c.id, c.post_id, c.user_id, u.login, c.user_name, c.content, c.status, c.report_date, c.nb_report, c.creation_date, c.update_date
             FROM comments c
             LEFT JOIN users u
             ON c.user_id = u.id
             WHERE $filter 
             ORDER BY $orderBy $order 
-            LIMIT $minLimit, $maxLimit");
+            LIMIT $nbLimit, $nbOffset");
         $req->execute();
         while ($datas = $req->fetch()) {
             $comments[] = new Comments($datas);

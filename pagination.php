@@ -3,7 +3,6 @@ Class Pagination {
 
     private $_typeItem,
             $_nbItems,
-            $_nbDisplayed,
             $_linkNbDisplayed,
             $_linkPagination,
             $_anchorPagination,
@@ -18,8 +17,8 @@ Class Pagination {
             $_activepageLink_2,
             $_activepageLink_3;
 
-    public  $_minLimit,
-            $_maxLimit;
+    public  $_nbLimit,
+            $_nbDisplayed;
             
     function __construct($typeItem, $nbItems, $linkNbDisplayed, $linkPagination, $anchorPagination) {
         $this->_typeItem = $typeItem;
@@ -33,32 +32,25 @@ Class Pagination {
 
     // Adaptation de la pagination en fonction du nombre de pages et du positionnement
     public function init() {
-        echo $this->_typeItem;
         // Vérification si informations dans variable POST
         if (!empty($_POST["nbDisplayed"])) {
-            echo "Via POST";
             $this->_nbDisplayed = htmlspecialchars($_POST["nbDisplayed"]);
             setcookie("pagination[nbDisplayed_" . $this->_typeItem . "]", $this->_nbDisplayed, time() + 365*24*3600, null, null, false, false);
         } elseif (!empty($_COOKIE["pagination"]["nbDisplayed_" . $this->_typeItem])) {
-            echo "Via COOKIE";
             $this->_nbDisplayed = $_COOKIE["pagination"]["nbDisplayed_" . $this->_typeItem];
 
         } else {
-            echo "Par défaut";
             $this->_nbDisplayed = 20;
         }
-        echo $this->_nbDisplayed . "<br />";
 
         // Vérification si informations dans variable GET
         if (!empty($_GET["page"])) {
             $this->_currentPage = htmlspecialchars($_GET["page"]);
             // Calcul le nombre de pages par rapport aux nombre d'articles
-            $this->_maxLimit = $this->_currentPage * $this->_nbDisplayed;
-            $this->_minLimit = $this->_maxLimit - $this->_nbDisplayed;
+            $this->_nbLimit = ($this->_currentPage * $this->_nbDisplayed) - $this->_nbDisplayed;
         } else  {
             $this->_currentPage = 1;
-            $this->_minLimit = 0;
-            $this->_maxLimit = $this->_nbDisplayed;
+            $this->_nbLimit = 0;
         }
         $this->_nbPages = ceil($this->_nbItems / $this->_nbDisplayed);
 

@@ -22,7 +22,7 @@ $nbItems = $postsManager->count($filter);
 $pagination = new Pagination("posts", $nbItems, "blog.php#blog", "blog.php?", "#blog");
 
 // Récupère les derniers articles
-$posts = $postsManager->getList($filter, "p.creation_date", "DESC", $pagination->_minLimit, $pagination->_maxLimit);
+$posts = $postsManager->getList($filter, "p.creation_date", "DESC", $pagination->_nbLimit, $pagination->_nbDisplayed);
 
 ?>
 

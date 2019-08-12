@@ -60,8 +60,14 @@ class Users extends Session {
         return $this->_remember;
     }    
     public function registration_date() {
-        return $this->_registration_date; 
+        $registration_date = new DateTime($this->_registration_date);
+        if (!empty($format) && $format == "special_format") {
+            return date_format($registration_date,"d/m/Y à H:i");
+        } else {
+            return date_format($registration_date,"d/m/Y H:i");
+        }
     }
+
     public function update_date() {
         return $this->_update_date;
     }

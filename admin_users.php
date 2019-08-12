@@ -100,10 +100,7 @@ $linkNbDisplayed = "admin_users.php?orderBy=" . $orderBy . "&order=" . $order. "
 $pagination = new Pagination("adminUsers", $nbItems, $linkNbDisplayed, $linkNbDisplayed, "#table-admin_users");
 
 // Récupère les utilisateurs
-$users = $usersManager->getlist($_SESSION["filter"], $orderBy, $order,  $pagination->_minLimit, $pagination->_maxLimit);
-var_dump($_POST);
-var_dump($_COOKIE);
-
+$users = $usersManager->getlist($_SESSION["filter"], $orderBy, $order,  $pagination->_nbLimit, $pagination->_nbDisplayed);
 
 ?>
 
@@ -267,8 +264,8 @@ var_dump($_COOKIE);
                                             <td><?= $user->name() ?></td>
                                             <td><?= $user->surname() ?></td>
                                             <td><?= $user->email() ?></td>
-                                            <td><?= $user->role() ?></td>
-                                            <td><?= $user->registration_date() ?></td>
+                                            <td><?= $user->role_user() ?></td>
+                                            <td><?= $user->registration_date("") ?></td>
                                         </tr>
                                 <?php
                                     }
