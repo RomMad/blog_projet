@@ -6,7 +6,7 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-$postsManager = new Postsmanager();
+$postsManager = new PostsManager();
 $commentsManager = new CommentsManager();
 $db = $postsManager->db();
 
@@ -153,7 +153,7 @@ if ($nbItems) {
                         <?php
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $post->user_id()) {
                         ?>
-                            <a class="text-blue a-edit-post" href="post_edit.php?post_id=<?=  $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                            <a class="text-blue a-edit-post m-1" href="post_edit.php?post_id=<?=  $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                         <?php 
                         } 
                         ?>

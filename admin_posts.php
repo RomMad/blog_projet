@@ -7,7 +7,7 @@ spl_autoload_register("loadClass");
 
 $session = new Session();
 $usersManager = new UsersManager();
-$postManager = new Postsmanager();
+$postManager = new PostsManager();
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
@@ -130,7 +130,7 @@ $posts = $postManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit,
     </nav>
 
         <div class="row">
-            <section id="table_admin_posts" class="col-md-12 mx-auto mt-4 table-admin">
+            <section id="table_admin_posts" class="col-md-12 mt-4 table-admin">
 
                 <h2 class="mb-4">Gestion des articles
                     <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>
@@ -148,9 +148,9 @@ $posts = $postManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit,
                 <form action="<?= $linkNbDisplayed ?>" method="post">
                     <div class="row">
 
-                        <div class="col-md-4 form-inline mb-2 pr-md-2">
-                            <label class="sr-only col-form-label px-2 py-2" for="action">Action</label>
-                                <select name="action_apply" id="action_apply" class="custom-select form-control shadow" value="Par auteur">
+                        <div class="col-md-4 form-inline mb-2 px-md-1 px-lg-3">
+                            <label class="sr-only col-form-label" for="action">Action</label>
+                                <select name="action_apply" id="action_apply" class="custom-select form-control mr-1 shadow" value="Par auteur">
                                     <option value="">-- Action --</option>
                                     <option value="Brouillon">Mettre en brouillon</option>
                                     <option value="Publié">Publier</option>
@@ -159,18 +159,18 @@ $posts = $postManager->getlist($_SESSION["filter"], $orderBy, $order, $minLimit,
                             <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" 
                                 value="OK" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
                         </div>
-                        <div class="col-md-4 form-inline mx-md-0 mb-2 pr-md-2">
-                            <label class="sr-only col-form-label px-2 py-2" for="filter_status">Filtre</label>
-                                <select name="filter_status" id="filter_status" class="custom-select form-control shadow" value="Par auteur">
+                        <div class="col-md-4 form-inline mb-2 px-md-1 px-lg-3">
+                            <label class="sr-only col-form-label" for="filter_status">Filtre</label>
+                                <select name="filter_status" id="filter_status" class="custom-select form-control mr-1 shadow" value="Par auteur">
                                     <option value="">-- Statut --</option>
                                     <option value="brouillon">Brouillon</option>
                                     <option value="publié">Publié</option>
                                 </select>
                             <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="Filtrer">
                         </div>
-                        <div class="col-md-4 form-inline mx-md-0 mb-2 px-md-2">
-                                <label for="search_post"class="sr-only col-form-label px-2 py-2">Recherche</label>
-                                <input type="search" name="search_post" id="search_post" class="form-control px-md-1 shadow" placeholder="Recherche" aria-label="Search" 
+                        <div class="col-md-4 form-inline mb-2 px-md-1 px-lg-3">
+                                <label for="search_post"class="sr-only col-form-label">Recherche</label>
+                                <input type="search" name="search_post" id="search_post" class="form-control mr-1 px-md-1 shadow" placeholder="Recherche" aria-label="Search" 
                                     value="<?= $_SESSION["filter_search"] ?>">
                                 <input type="submit" id="filter_search" name="filter_search" alt="filter_search" class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="OK">
                         </div>

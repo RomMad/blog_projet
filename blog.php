@@ -6,7 +6,7 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-$postsManager = new Postsmanager();
+$postsManager = new PostsManager();
 
 // Si recherche, filtre les résultats
 $filter = "status = 'Publié'";
@@ -76,7 +76,7 @@ $posts = $postsManager->getList($filter, "p.creation_date", "DESC", $minLimit, $
                                 </a>
                                 <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" href=""><?= $post->user_login() ?></a></em>
                                 <?php if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { ?>
-                                    <a class="text-blue a-edit-post" href="post_edit.php?post_id=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                                    <a class="text-blue a-edit-post m-1" href="post_edit.php?post_id=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                                 <?php } ?>
                             </div>
                             <div class="card-body text-body">

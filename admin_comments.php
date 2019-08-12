@@ -119,7 +119,7 @@ var_dump($_SESSION);
     </nav>
 
         <div class="row">
-            <section id="table-admin_comments" class="col-md-12 mx-auto mt-4 table-admin">
+            <section id="table-admin_comments" class="col-md-12 mt-4 table-admin">
 
                 <h2 class="mb-4">Gestion des commentaires
                     <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>
@@ -137,26 +137,26 @@ var_dump($_SESSION);
                 <form action="<?= $linkNbDisplayed ?>" method="post">
                     <div class="row">
 
-                        <div class="col-md-6">
-                            <label class="sr-only col-form-label ml-2 mb-2 py-2" for="action">Action</label>
-                                <select name="action_apply" id="action_apply" class="custom-select form-control mb-2 shadow" value="Par auteur">
+                        <div class="col-md-6 mb-2">
+                            <label class="sr-only col-form-label" for="action">Action</label>
+                                <select name="action_apply" id="action_apply" class="custom-select form-control mr-1 shadow" value="Par auteur">
                                     <option value="">-- Action --</option>
                                     <option value="moderate">Modérer</option>
                                     <option value="delete">Supprimer</option>
                                 </select>
-                            <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-blue mb-2 py-1 shadow" 
+                            <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-blue py-1 shadow" 
                                 value="Appliquer" onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="sr-only col-form-label ml-4 py-2" for="filter_status">Filtre</label>
-                                <select name="filter_status" id="filter_status" class="custom-select form-control mb-2 shadow" value="Par auteur">
+                        <div class="col-md-6 mb-2">
+                            <label class="sr-only col-form-label" for="filter_status">Filtre</label>
+                                <select name="filter_status" id="filter_status" class="custom-select form-control mr-1 shadow" value="Par auteur">
                                     <option value="">-- Statut --</option>
                                     <option <?= $_SESSION["filter_status"] == 0 &&  $_SESSION["filter_status"] != NULL ? "selected" : "" ?> value="0">Non-modéré</option>
                                     <option <?= $_SESSION["filter_status"] == 1 ? "selected" : "" ?> value="1">Modéré</option>
                                     <option <?= $_SESSION["filter_status"] == 2 ? "selected" : "" ?> value="2">Signalé</option>
                                 </select>
-                            <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-blue mb-2 py-1 shadow" value="Filtrer">
+                            <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-blue py-1 shadow" value="Filtrer">
                         </div>
                     </div>
 
