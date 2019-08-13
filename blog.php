@@ -77,7 +77,7 @@ $posts = $postsManager->getList($_SESSION["filter"], "p.creation_date", "DESC", 
                 if ($nbItems) {
                     foreach ($posts as $post) {
                     ?>
-                    <div class="col-md-12">
+                    <div class="col-md-<?=  12 / $settings->posts_by_row() ?>">
                         <div class="card shadow">
                             <div class="card-header bg-dark text-light">
                                 <a class="text-blue" href="post_view.php?post_id=<?= $post->id() ?>">

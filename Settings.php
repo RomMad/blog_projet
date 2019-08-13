@@ -4,7 +4,8 @@ class Settings {
     private $_blog_name,
             $_admin_email,
             $_default_role,
-            $_moderation;
+            $_moderation,
+            $_posts_by_row;
 
     public function __construct(array $datas) {
         $this->hydrate($datas);
@@ -31,6 +32,9 @@ class Settings {
     }
     public function moderation() {
         return $this->_moderation;
+    }
+    public function posts_by_row() {
+        return $this->_posts_by_row;
     }
 
     // Setters 
@@ -62,6 +66,12 @@ class Settings {
             $this->_moderation = $moderation;
         } else {
             echo "Erreur modération <br />";
+        }
+    }
+    public function setPosts_by_row($posts_by_row) {
+        $posts_by_row = (int) $posts_by_row;
+        if ($posts_by_row >= 1 && $posts_by_row <= 4) {
+            $this->_posts_by_row = $posts_by_row;
         }
     }
 

@@ -31,7 +31,8 @@ if (!empty($_POST)) {
         "blog_name" => $_POST["blog_name"],
         "admin_email" => $_POST["admin_email"],
         "default_role" => $_POST["default_role"],
-        "moderation" =>  isset($_POST["moderation"]) ? true : false
+        "moderation" =>  isset($_POST["moderation"]) ? true : false,
+        "posts_by_row" => $_POST["posts_by_row"],
     ]);
     // Vérifie si le nom du blog ne fait pas plus de 50 caractères
     if (iconv_strlen($settings->blog_name()) > 50) {
@@ -107,11 +108,22 @@ $settings = $settingsManager->get();
                         <label for="default_role" class="col-md-4 col-form-label">Rôle par défaut des utilisateurs</label>
                         <div class="col-md-8">
                             <select name="default_role" id="default_role" class="custom-select form-control shadow-sm">
-                                <option value="1" <?=$settings->default_role() == 1 ? "selected" : "" ?>>Administrateur</option>
-                                <option value="2" <?=$settings->default_role() == 2 ? "selected" : "" ?>>Editeur</option>
-                                <option value="3" <?=$settings->default_role() == 3 ? "selected" : "" ?>>Auteur</option>
-                                <option value="4" <?=$settings->default_role() == 4 ? "selected" : "" ?>>Contributeur</option>
-                                <option value="5" <?=$settings->default_role() == 5 ? "selected" : "" ?>>Abonné</option>
+                                <option value="1" <?= $settings->default_role() == 1 ? "selected" : "" ?>>Administrateur</option>
+                                <option value="2" <?= $settings->default_role() == 2 ? "selected" : "" ?>>Editeur</option>
+                                <option value="3" <?= $settings->default_role() == 3 ? "selected" : "" ?>>Auteur</option>
+                                <option value="4" <?= $settings->default_role() == 4 ? "selected" : "" ?>>Contributeur</option>
+                                <option value="5" <?= $settings->default_role() == 5 ? "selected" : "" ?>>Abonné</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="posts_by_row" class="col-md-4 col-form-label">Nombre d'articles par rangée</label>
+                        <div class="col-md-8">
+                            <select name="posts_by_row" id="posts_by_row" class="custom-select form-control shadow-sm">
+                                <option value="1" <?= $settings->posts_by_row() == 1 ? "selected" : "" ?>>1</option>
+                                <option value="2" <?= $settings->posts_by_row() == 2 ? "selected" : "" ?>>2</option>
+                                <option value="3" <?= $settings->posts_by_row() == 3 ? "selected" : "" ?>>3</option>
+                                <option value="4" <?= $settings->posts_by_row() == 4 ? "selected" : "" ?>>4</option>
                             </select>
                         </div>
                     </div>
