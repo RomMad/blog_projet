@@ -61,7 +61,7 @@ if (!empty($_POST)) {
     </nav>
 
         <div class="row">
-            <div class="col-md-12 mx-auto mt-4">
+            <div class="col-md-12 mt-4">
 
                 <h2 class="mb-4">Administration du site</h2>
 
@@ -72,7 +72,7 @@ if (!empty($_POST)) {
 
         <div class="row">
             
-            <div class="col-md-6 mt-4">
+            <div class="col-md-8 col-lg-6 mt-4">
                 <form action="admin.php" method="post" class="col-md-12 card shadow">
                     <div class="form-group row">
                         <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Paramètres</h3>
@@ -104,12 +104,15 @@ if (!empty($_POST)) {
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="moderation" class="col-md-4 col-form-label">Modération</label>
-                        <div class="col-md-1">
-                            <input type="checkbox" name="moderation" id="moderation" class="form-control mb-4" 
-                                value="true" <?= $dataSettings["moderation"] == 1 ? "checked" : "" ?>>
+                        <div class="col-md-4">Modération</div>
+                        <div class="col-md-8">
+                        <div class="form-check">
+                            <input type="checkbox" name="moderation" id="moderation" class="form-check-input" value="true" <?= $dataSettings["moderation"] == 1 ? "checked" : "" ?>>
+                            <label for="moderation" class="form-check-label sr-only">Modération</label>
+                        </div>
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <div class="col-md-12">
                             <div class="float-right">
@@ -120,7 +123,7 @@ if (!empty($_POST)) {
                 </form>
             </div>
 
-            <div class="offset-md-2 col-md-4 offset-lg-3 col-lg-3 mt-4">
+            <div class="col-md-4 offset-lg-2 col-lg-4 mt-4">
                 <div class="list-group shadow">
                 <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Navigation</h3>
                     <a href="admin_posts.php" class="list-group-item list-group-item-action text-blue">Gestion des articles</a>
