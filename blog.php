@@ -14,10 +14,10 @@ $postsManager = new PostsManager($db);
 $filter = "status = 'Publié'";
 if (isset($_GET["search"])) {
     $_SESSION["filter_search"] =  htmlspecialchars($_GET["search"]);
-    $_SESSION["filter"] = $filter . "AND title like '%". $_SESSION["search"] . "%' OR content like '%" . $_SESSION["search"] . "%'";
+    $_SESSION["filter"] = "status = 'Publié' AND title like '%". $_SESSION["filter_search"] . "%' OR content like '%" . $_SESSION["filter_search"] . "%'";
 }
 
-if (!isset($_GET)) {
+if (empty($_GET)) {
     $_SESSION["filter"] = "status = 'Publié'";
     $_SESSION["filter_search"] = "";
 }
