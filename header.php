@@ -1,3 +1,7 @@
+<div id="loader">
+        <span class="fas fa-circle-notch"></span>
+    </div>
+
 <header id="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3 py-3 shadow">
         <a class="navbar-brand text-blue" href="index.php">Jean Forteroche | Le blog</a>

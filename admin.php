@@ -9,37 +9,49 @@ $session = new Session();
 $db = new Manager();
 $db = $db->databaseConnection();
 $usersManager = new UsersManager($db);
+$settingsManager = new SettingsManager($db);
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: connection.php");
-} else {
-    // Récupère le rôle de l'utilisateur
-    $userRole = $usersManager->getRole($_SESSION["userID"]);
-    if ($userRole != 1) {
-        header("Location: index.php");
-    }
+    exit;
+} 
+
+// Récupère le rôle de l'utilisateur
+$userRole = $usersManager->getRole($_SESSION["userID"]);
+
+if ($userRole != 1) {
+    header("Location: index.php");
+    exit;
 }
 
 if (!empty($_POST)) {
-    if (isset($_POST["moderation"])) {
-       $moderation = 1; 
-    } else {
-        $moderation = 0; 
+    $validation = true;
+    $settings = new settings([
+        "blog_name" => $_POST["blog_name"],
+        "admin_email" => $_POST["admin_email"],
+        "default_role" => $_POST["default_role"],
+        "moderation" =>  isset($_POST["moderation"]) ? true : false
+    ]);
+    // Vérifie si le nom du blog ne fait pas plus de 50 caractères
+    if (iconv_strlen($settings->blog_name()) > 50) {
+        $session->setFlash("Le nom du blog est trop long (maximum 50 caractères)", "danger");
+        $validation = false;
     }
-    $req = $db->prepare("UPDATE settings SET blog_name = :blog_name, admin_email = :admin_email, default_role = :default_role, moderation = :moderation WHERE ID = 1 ");
-    $req->execute(array(
-        "blog_name" => htmlspecialchars($_POST["blog_name"]),
-        "admin_email" => htmlspecialchars($_POST["admin_email"]),
-        "default_role" => htmlspecialchars($_POST["default_role"]),
-        "moderation" =>  $moderation
-    ));
-    $session->setFlash("Les paramètres ont été mis à jour.", "success");
+    // Vérifie si l'adresse email est correcte
+    if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $settings->admin_email())) {
+        $session->setFlash("L'adresse \"" .$settings->admin_email() . "\" est incorrecte.", "danger");
+        $validation = false;
+    }
+    // Met à jour les données si validation est vrai
+    if ($validation == true) {
+        $settingsManager->update($settings);
+        $session->setFlash("Les paramètres ont été mis à jour.", "success");
+    }  
+} else  {
+// Récupère les paramètres
+$settings = $settingsManager->get();
 }
-    // Récupère les paramètres
-    $req = $db->prepare("SELECT * FROM settings");
-    $req->execute(array());
-    $dataSettings = $req->fetch();   
 
 ?>
 
@@ -81,25 +93,25 @@ if (!empty($_POST)) {
                         <label for="blog_name" class="col-md-4 col-form-label">Titre du blog</label>
                         <div class="col-md-8">
                             <input type="text" name="blog_name" id="blog_name" class="form-control mb-4 shadow-sm" 
-                                value="<?= $dataSettings["blog_name"] ?>">
+                                value="<?= $settings->blog_name() ?>">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="admin_email" class="col-md-4 col-form-label">Adresse email</label>
                         <div class="col-md-8">
                             <input type="text" name="admin_email" id="admin_email" class="form-control mb-4 shadow-sm" 
-                                value="<?= $dataSettings["admin_email"] ?>">
+                                value="<?= $settings->admin_email() ?>">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="default_role" class="col-md-4 col-form-label">Rôle par défaut des utilisateurs</label>
                         <div class="col-md-8">
                             <select name="default_role" id="default_role" class="custom-select form-control shadow-sm">
-                                <option value="1" <?= $dataSettings["default_role"] == 1 ? "selected" : "" ?>>Administrateur</option>
-                                <option value="2" <?= $dataSettings["default_role"] == 2 ? "selected" : "" ?>>Editeur</option>
-                                <option value="3" <?= $dataSettings["default_role"] == 3 ? "selected" : "" ?>>Auteur</option>
-                                <option value="4" <?= $dataSettings["default_role"] == 4 ? "selected" : "" ?>>Contributeur</option>
-                                <option value="5" <?= $dataSettings["default_role"] == 5 ? "selected" : "" ?>>Abonné</option>
+                                <option value="1" <?=$settings->default_role() == 1 ? "selected" : "" ?>>Administrateur</option>
+                                <option value="2" <?=$settings->default_role() == 2 ? "selected" : "" ?>>Editeur</option>
+                                <option value="3" <?=$settings->default_role() == 3 ? "selected" : "" ?>>Auteur</option>
+                                <option value="4" <?=$settings->default_role() == 4 ? "selected" : "" ?>>Contributeur</option>
+                                <option value="5" <?=$settings->default_role() == 5 ? "selected" : "" ?>>Abonné</option>
                             </select>
                         </div>
                     </div>
@@ -107,7 +119,7 @@ if (!empty($_POST)) {
                         <div class="col-md-4">Modération</div>
                         <div class="col-md-8">
                         <div class="form-check">
-                            <input type="checkbox" name="moderation" id="moderation" class="form-check-input" value="true" <?= $dataSettings["moderation"] == 1 ? "checked" : "" ?>>
+                            <input type="checkbox" name="moderation" id="moderation" class="form-check-input" value="true" <?= $settings->moderation() == 1 ? "checked" : "" ?>>
                             <label for="moderation" class="form-check-label sr-only">Modération</label>
                         </div>
                         </div>

@@ -8,32 +8,27 @@ spl_autoload_register("loadClass");
 $session = new Session();
 $db = new Manager();
 $db = $db->databaseConnection();
+$settingsManager = new SettingsManager($db);
 $postsManager = new PostsManager($db);
 $commentsManager = new CommentsManager($db);
-
 
 // Vérifie si l'article existe
 if (!empty($_GET["post_id"])) {
     $post = $postsManager->getUserId($_GET["post_id"]);
     if (!$post) {
-        die;
         header("Location: blog.php"); 
         exit;
     }
     $post_id = htmlspecialchars($_GET["post_id"]);
     $_SESSION["postID"] = $post_id;
 } else {
-    die;
-
     header("Location: blog.php"); 
     exit;
 }
 
-// Récupère les paramètres de modération
-$req = $db->prepare("SELECT moderation FROM settings");
-$req->execute(array());
-$dataSettings = $req->fetch();
-if ($dataSettings["moderation"] == 0) {
+// Vérifie les paramètres de modération
+$settings = $settingsManager->get();
+if ($settings->moderation() == 0) {
     $filter = "status >= 0";
 } else {
     $filter = "status > 0";
