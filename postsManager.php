@@ -42,13 +42,13 @@ class PostsManager extends Manager {
     // Méthode de lecture d'un article
     public function getUserId($id) {
         if (is_numeric($id) && ((int) $id > 0)) { 
-            $req = $this->_db->prepare("SELECT user_id FROM posts WHERE id = ? ");
+            $req = $this->_db->prepare("SELECT user_id FROM posts WHERE id = ?");
             $req->execute([
                 $id
             ]);
             $post = $req->fetch();
             if (isset($post)) {
-                return $post;
+                return new Posts($post);
             }
         }
     }    
@@ -58,7 +58,7 @@ class PostsManager extends Manager {
             FROM posts p
             LEFT JOIN users u
             ON p.user_id = u.id
-            WHERE p.id = ? ");
+            WHERE p.id = ?");
         $req->execute([
             $id
         ]);
@@ -111,16 +111,20 @@ class PostsManager extends Manager {
     }
     // Méthode de mise à jour du statut d'un article
     public function updateStatus($id, $status) {
-        $req = $this->_db->prepare("UPDATE posts SET status = :newStatus WHERE id = :id ");
-        $req->execute([
-            "id" => $id,
-            "newStatus" => $status
-        ]);
+        if (is_numeric($id) && ((int) $id > 0)) { 
+            $req = $this->_db->prepare("UPDATE posts SET status = :newStatus WHERE id = :id");
+            $req->execute([
+                "id" => $id,
+                "newStatus" => $status
+            ]);
+        }
     }
     // Méthode de suppresion d'un article
     public function delete($id) {
-        $req = $this->_db->prepare("DELETE FROM posts WHERE id = $id ");
-        $req->execute();
+        if (is_numeric($id) && ((int) $id > 0)) { 
+            $req = $this->_db->prepare("DELETE FROM posts WHERE id = $id");
+            $req->execute();
+        }
     }
 
     public function setDb(PDO $db)

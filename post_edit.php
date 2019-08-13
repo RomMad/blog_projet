@@ -19,8 +19,8 @@ if (!empty($_GET["post_id"])) {
         exit;
     }
     // Vérifie si l'utilisateur a les droit d'accès ou si il est l'auteur de l'article
-    if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post["user_id"]) {
-        $session->setFlash("Vous n'avez pas les droits pour accéder à cet article", "warning");
+    if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post->user_id()) {
+        $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
         header("Location: blog.php"); 
         exit;
     }
@@ -28,7 +28,7 @@ if (!empty($_GET["post_id"])) {
 
 // Redirige vers la page de connexion si l'utilisateur n'a pas les droits
 if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) {
-    $session->setFlash("Vous n'avez pas les droits pour accéder à cet article", "warning");
+    $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
     header("Location: connection.php"); 
     exit;
 }
@@ -43,10 +43,10 @@ if (!empty($_POST)) {
         "user_id" => $_SESSION["userID"],
         "user_login" => $_SESSION["userLogin"],
     ]);
-
+  
     // Supprime l'article
     if (isset($_POST["erase"]) && !empty($post->id())) {
-        $postsManager->delete(htmlspecialchars($_GET["post_id"]));
+        $postsManager->delete($_GET["post_id"]);
         $session->setFlash("L'article \"" . $post->title() . "\" a été supprimé.", "warning");
         header("Location: blog.php");
         exit;
