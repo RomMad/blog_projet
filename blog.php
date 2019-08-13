@@ -8,7 +8,12 @@ spl_autoload_register("loadClass");
 $session = new Session();
 $db = new Manager();
 $db = $db->databaseConnection();
+$settingsManager = new SettingsManager($db);
 $postsManager = new PostsManager($db);
+
+// Récupère les paramètres du site
+$settings = $settingsManager->get();
+$_SESSION["settings"] = $settings;
 
 // Si recherche, filtre les résultats
 $filter = "status = 'Publié'";

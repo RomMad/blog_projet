@@ -1,5 +1,5 @@
 <?php 
-class Settings extends Manager {
+class Settings {
 
     private $_blog_name,
             $_admin_email,
