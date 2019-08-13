@@ -41,11 +41,25 @@ if (!empty($_POST)) {
         $_SESSION["userID"] = $user->id();
         $_SESSION["userLogin"] = $user->login();
         $_SESSION["userRole"] = $user->role();
+        $_SESSION["userProfil"] = $user->role_user();
+        $_SESSION["userName"] = $user->name();
+        $_SESSION["userSurname"] = $user->surname();
+        $_SESSION["userProfil"] = $user->role_user();
+
         // Enregistre le login et le mot de passe en cookie si la case "Se souvenir de moi" est cochée
         if (isset($_POST["remember"])) {
             setcookie("user[login]", $user->login(), time() + 365*24*3600, null,null, false, true);
             // setcookie("user[pass]", htmlspecialchars($_POST["pass"]), time() + 365*24*3600, null,null, false, true);
         }
+
+        // Récupère la date de dernière connexion de l'utilisateur
+        $req = $db->prepare("SELECT DATE_FORMAT(connection_date, \"%d/%m/%Y à %H:%i\") AS connection_date_fr FROM connections WHERE user_id = ? ORDER BY id DESC LIMIT 0, 1");
+        $req->execute([
+            $user->id()
+        ]);
+        $connection = $req->fetch();
+        $_SESSION["lastConnection"] = $connection["connection_date_fr"];
+
         // Ajoute la date de connexion de l'utilisateur dans la table dédiée
         $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
         $req->execute([

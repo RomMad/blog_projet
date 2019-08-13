@@ -16,7 +16,18 @@ class NameClass {
 let nameClass = new NameClass();
 
 
-// Toolips Bootstrap
+// Active Toolips Bootstrap
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
+
+// Active Popover Bootstrap
+$(function () {
+    $('[data-toggle="popover"]').popover()
+})
+
+// $(function () {
+//     $('.example-popover').popover({
+//         container: 'header'
+//     })
+// }

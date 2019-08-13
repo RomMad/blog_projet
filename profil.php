@@ -13,6 +13,7 @@ $usersManager = new UsersManager($db);
 // Redirige vers la page de connexion si non connecté
 if (empty($_SESSION["userID"])) {
     header("Location: connection.php");
+    exit;
 } else {
     // Récupère les informations de l'utilisateur
     $user = $usersManager->get($_SESSION["userID"]);
