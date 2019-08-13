@@ -154,14 +154,11 @@ class UsersManager extends Manager {
         }
     }
     // Supprime un utilisateur
-    public function delete($id) {
-        if (is_numeric($id)) {
-            $info = (int) $id;
+    public function delete(Users $user) {
             $req = $this->_db->prepare("DELETE FROM users WHERE id = ? ");
             $req->execute([
-                $id
+                $user->id()
             ]);
-        }
     }
 
     //  Compte le nombre d'utilisateurs

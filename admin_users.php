@@ -26,27 +26,9 @@ if (!empty($_POST)) {
         // Supprime les utilisateurs sélectionnés via une boucle
         if ($_POST["action_apply"] == "delete") {
             foreach ($_POST["selectedUsers"] as $selectedUser) {
-                $usersManager->delete($selectedUser);
-            }
-            // Compte le nombre d'utilisateurs supprimés pour adaptés l'affichage du message
-            $nbselectedUsers = count($_POST["selectedUsers"]);
-            if ($nbselectedUsers>1) {
-                $session->setFlash($nbselectedUsers . " utilisateurs ont été supprimés.", "warning");
-            } else {
-                $session->setFlash("L'utilisateur a été supprimé.", "warning");
-            }
-        }
-        // Modère les utilisateurs sélectionnés via une boucle
-        if ($_POST["action_apply"] == "moderate") {
-            foreach ($_POST["selectedUsers"] as $selectedUser) {
-                
-            }
-            // Compte le nombre d'utilisateurs modérés pour adaptés l'affichage du message
-            $nbselectedUsers = count($_POST["selectedUsers"]);
-            if ($nbselectedUsers>1) {
-                $session->setFlash($nbselectedUsers . " utilisateurs ont été modérés.", "success");
-            } else {
-                $session->setFlash("L'utilisateur a été modéré.", "success");
+                $user = $usersManager->get($selectedUser);
+                $usersManager->delete($user);
+                $session->setFlash("L'utilisateur <b>" . $user->login() . "</b> a été supprimé.", "warning");
             }
         }
     }
