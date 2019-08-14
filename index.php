@@ -36,6 +36,10 @@ if (isset($_GET["action"])) {
         $session = new Session();
         $session->disconnect();
     }
+    elseif ($_GET["action"] == "forgotPassword") {
+        require "controller/frontend/forgotPassword.php";
+        forgotPassword();
+    }    
     elseif ($_GET["action"] == "addComment") {
         if (isset($_GET["id"]) && $_GET["id"] > 0) {
             if (!empty($_POST["author"]) && !empty($_POST["comment"])) {
