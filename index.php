@@ -23,6 +23,10 @@ if (isset($_GET["action"])) {
         require "controller/frontend/profil.php";
         profil();
     }   
+    elseif ($_GET["action"] == "inscription") {
+        require "controller/frontend/inscription.php";
+        inscription();
+    }
     elseif ($_GET["action"] == "connection") {
         require "controller/frontend/connection.php";
         connection();

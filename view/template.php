@@ -119,7 +119,7 @@
                         ?>
                         <a class="text-blue" href="index.php?action=connection">Se connecter</a>
                         <br />
-                        <a class="text-blue" href="inscription.php">S'inscrire</a>
+                        <a class="text-blue" href="index.php?action=inscription">S'inscrire</a>
                     <?php
                     }
                     ?>

@@ -23,7 +23,7 @@
                     </label>
                 </div>
                 <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-blue btn-block mb-4 shadow">
-                <a href="inscription.php" class="btn btn-lg btn-blue btn-block mb-4 shadow">S'inscrire</a>
+                <a href="index.php?action=inscription" class="btn btn-lg btn-blue btn-block mb-4 shadow">S'inscrire</a>
 
                 <a href="forgotpassword.php" class="text-blue mb-4">Login ou mot de passe oublié ?</a>
 
