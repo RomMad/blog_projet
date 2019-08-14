@@ -1,15 +1,15 @@
 <?php 
 class Posts extends Session {
 
-    private $_id,
-            $_title,
-            $_user_id,
-            $_user_login,
-            $_login,
-            $_content,
-            $_status,
-            $_creation_date,
-            $_update_date;
+    protected   $_id,
+                $_title,
+                $_user_id,
+                $_user_login,
+                $_login,
+                $_content,
+                $_status,
+                $_creation_date,
+                $_update_date;
             
     const UNAUTHORIZED = 1;
     const CREATE_POST = 2;
@@ -168,7 +168,7 @@ class Posts extends Session {
         $this->_update_date = $update_date;
     }
     // Vérifie si la date est valide
-    // private function validateDate($date, $format = 'Y-m-d H:i:s') {
+    // protected function validateDate($date, $format = 'Y-m-d H:i:s') {
     //     $d = DateTime::createFromFormat($format, $date);
     //     return $d && $d->format($format) == $date;
     // }

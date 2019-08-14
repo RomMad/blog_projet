@@ -1,21 +1,21 @@
 <?php 
 Class Pagination {
 
-    private $_typeItem,
-            $_nbItems,
-            $_linkNbDisplayed,
-            $_linkPagination,
-            $_anchorPagination,
-            $_nbPages,
-            $_currentPage,
-            $_pageLink_1,
-            $_pageLink_2,
-            $_pageLink_3,
-            $_prevPageLink,
-            $_nextPageLink,
-            $_activepageLink_1,
-            $_activepageLink_2,
-            $_activepageLink_3;
+    protected   $_typeItem,
+                $_nbItems,
+                $_linkNbDisplayed,
+                $_linkPagination,
+                $_anchorPagination,
+                $_nbPages,
+                $_currentPage,
+                $_pageLink_1,
+                $_pageLink_2,
+                $_pageLink_3,
+                $_prevPageLink,
+                $_nextPageLink,
+                $_activepageLink_1,
+                $_activepageLink_2,
+                $_activepageLink_3;
 
     public  $_nbLimit,
             $_nbDisplayed;
@@ -116,7 +116,7 @@ Class Pagination {
         ?></div><?php
     }
     // Affiche la liste déroulante avec le nombre d'éléments à afficher
-    private function selectNumber() {
+    protected function selectNumber() {
         ?>
         <div class="col-md-6 my-2">
             <form action="<?= $this->_linkNbDisplayed ?>" method="post" class="form-inline">
@@ -135,7 +135,7 @@ Class Pagination {
         <?php
     }
     // Affiche les liens de paginations
-    private function selectPage () {
+    protected function selectPage () {
         ?>
         <div class="col-md-6 my-2">
             <nav aria-label="Page navigation">

@@ -2,12 +2,12 @@
 class Manager
 {
     //informations de connexion à la base de données
-    protected $_dbHost,
-            $_dbName,
-            $_dbUser,
-            $_dbPass,
-            $_db,
-            $_connecte;
+    protected   $_dbHost,
+                $_dbName,
+                $_dbUser,
+                $_dbPass,
+                $_db,
+                $_connecte;
    
     public function __construct() {
         $this->_connecte = false;

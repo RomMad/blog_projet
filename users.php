@@ -1,18 +1,18 @@
 <?php 
 class Users extends Session {
     
-    private $_id,
-            $_login,
-            $_email,
-            $_pass,
-            $_name,
-            $_surname,
-            $_birthdate,
-            $_role,
-            $_roleUser,
-            $_remember_me,
-            $_registration_date,
-            $_update_date;
+    protected   $_id,
+                $_login,
+                $_email,
+                $_pass,
+                $_name,
+                $_surname,
+                $_birthdate,
+                $_role,
+                $_roleUser,
+                $_remember_me,
+                $_registration_date,
+                $_update_date;
 
     public function __construct(array $datas) {
         $this->hydrate($datas);
@@ -146,7 +146,7 @@ class Users extends Session {
     }
 
     // Vérifie si la date est valide
-    private function validateDate($date, $format = 'Y-m-d H:i:s') {
+    protected function validateDate($date, $format = 'Y-m-d H:i:s') {
         $d = DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) == $date;
     }

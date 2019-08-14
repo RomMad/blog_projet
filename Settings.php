@@ -1,11 +1,11 @@
 <?php 
 class Settings {
 
-    private $_blog_name,
-            $_admin_email,
-            $_default_role,
-            $_moderation,
-            $_posts_by_row;
+    protected   $_blog_name,
+                $_admin_email,
+                $_default_role,
+                $_moderation,
+                $_posts_by_row;
 
     public function __construct(array $datas) {
         $this->hydrate($datas);

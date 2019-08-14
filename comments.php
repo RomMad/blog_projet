@@ -1,17 +1,17 @@
 <?php
 class Comments extends Session {
 
-    private $_id,
-            $_post_id,
-            $_user_id,
-            $_user_name,
-            $_login,
-            $_content,
-            $_status,
-            $_report_date,
-            $_nb_report,
-            $_creation_date,
-            $_update_date;
+    protected   $_id,
+                $_post_id,
+                $_user_id,
+                $_user_name,
+                $_login,
+                $_content,
+                $_status,
+                $_report_date,
+                $_nb_report,
+                $_creation_date,
+                $_update_date;
 
     public function __construct(array $datas) {
         $this->hydrate($datas);
