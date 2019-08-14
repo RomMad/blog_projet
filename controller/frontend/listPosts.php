@@ -1,4 +1,5 @@
 <?php 
+
 function listPosts() {
     spl_autoload_register("loadClass");
 
@@ -32,10 +33,4 @@ function listPosts() {
     $posts = $postsManager->getList($_SESSION["filter"], "p.creation_date", "DESC", $pagination->_nbLimit, $pagination->_nbDisplayed);
 
     require "view/frontend/listPostsView.php";
-
 }
-
-function loadClass($classname) {
-    require "model/" . $classname . ".php";
-}
-

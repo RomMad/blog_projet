@@ -36,12 +36,12 @@
                 <div class="col-md-<?=  12 / $settings->posts_by_row() ?>">
                     <div class="card shadow">
                         <div class="card-header bg-dark text-light">
-                            <a class="text-blue" href="post_view.php?post_id=<?= $post->id() ?>">
+                            <a class="text-blue" href="index.php?action=post&id=<?= $post->id() ?>">
                                 <h3 class="mt-1"><?= $post->title() ?></h3>
                             </a>
                             <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" href=""><?= $post->user_login() ?></a></em>
                             <?php if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { ?>
-                                <a class="text-blue a-edit-post m-1" href="post_edit.php?post_id=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                                <a class="text-blue a-edit-post m-1" href="index.php?action=editpost&id=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                             <?php } ?>
                         </div>
                         <div class="card-body text-body">
@@ -50,7 +50,7 @@
                                 <span class="post-fade-out"></span>
                             </div>
                             <div>
-                                <a href="post_view.php?post_id=<?= $post->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
+                                <a href="index.php?action=post&id=<?= $post->id() ?>" class="btn btn-outline-blue mt-2">Continuer la lecture 
                                     <span class="fas fa-angle-right"></span>
                                 </a>
                             <?php

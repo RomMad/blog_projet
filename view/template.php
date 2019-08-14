@@ -26,7 +26,7 @@
             tinymce.init({
                 selector: "textarea#post_content",
                 height: 500,
-                language_url: "languages/fr_FR.js",
+                language_url: "vendor/tinymce/languages/fr_FR.js",
                 language: "fr_FR",
                 menubar: true,
                 plugins: [
