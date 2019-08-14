@@ -7,7 +7,7 @@
     <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent mb-0">
                 <li class="breadcrumb-item"><a href="index.php" class="text-blue">Accueil</a></li>
-                <li class="breadcrumb-item"><a href="admin.php" class="text-blue">Administration</a></li>
+                <li class="breadcrumb-item"><a href="index.php?action=settings" class="text-blue">Administration</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Gestion des articles</li>
             </ol>
     </nav>

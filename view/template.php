@@ -75,12 +75,12 @@
                         if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]==1) {
                         ?> 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="admin.php" id="navbarDropdown" role="button"
+                            <a class="nav-link dropdown-toggle" href="index.php?action=settings" id="navbarDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Admin
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="admin.php">Administration générale</a>
+                                <a class="dropdown-item" href="index.php?action=settings">Administration générale</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="index.php?action=posts">Gestion des articles</a>
                                 <a class="dropdown-item" href="index.php?action=comments">Gestion des commentaires</a>
