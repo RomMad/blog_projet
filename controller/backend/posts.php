@@ -57,7 +57,7 @@ function posts() {
         }
     }
 
-    if (empty($_GET)) {
+    if (!isset($_POST["filter_search"]) && !isset($_POST["filter_role"]) || (isset($_POST["filter_role"]) && empty($_POST["filter_role"]))) {
         $_SESSION["filter"] = "p.id > 0";
         $_SESSION["filter_search"] = "";
     }
