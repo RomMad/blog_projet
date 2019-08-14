@@ -13,7 +13,7 @@
         if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
         ?> 
             <div class="mt-4 mb-4">
-                <a class="text-blue" href="post_edit.php"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                <a class="text-blue" href="index.php?action=editPost"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
         <?php
         }
@@ -41,7 +41,7 @@
                             </a>
                             <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" href=""><?= $post->user_login() ?></a></em>
                             <?php if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { ?>
-                                <a class="text-blue a-edit-post m-1" href="index.php?action=editpost&id=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                                <a class="text-blue a-edit-post m-1" href="index.php?action=editPost&id=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                             <?php } ?>
                         </div>
                         <div class="card-body text-body">
@@ -70,7 +70,7 @@
         <?php $pagination->view() ?> <!-- Ajoute la barre de pagination -->
 
         <div class="mt-4 mb-4">
-            <a class="text-blue" href="post_edit.php"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+            <a class="text-blue" href="index.php?action=editPost"><span class="far fa-file"></span> Rédiger un nouvel article</a>
         </div>
 
         </section>

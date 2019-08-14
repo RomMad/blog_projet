@@ -1,6 +1,8 @@
 <?php
 require "controller/frontend/listPosts.php";
 require "controller/frontend/post.php";
+require "controller/backend/postEdit.php";
+
 
 if (isset($_GET["action"])) {
     if ($_GET["action"] == "listPosts") {
@@ -13,6 +15,14 @@ if (isset($_GET["action"])) {
         else {
             echo "Erreur : aucun identifiant de billet envoyé";
         }
+    }
+    elseif ($_GET["action"] == "editPost") {
+        // if (isset($_GET["id"]) && $_GET["id"] > 0) {
+            postEdit();
+        // }
+        // else {
+        //     echo "Erreur : aucun identifiant de billet envoyé";
+        // }
     }
     elseif ($_GET["action"] == "addComment") {
         if (isset($_GET["id"]) && $_GET["id"] > 0) {

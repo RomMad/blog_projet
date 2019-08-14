@@ -67,7 +67,7 @@
                         if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
                         ?> 
                         <li class="nav-item">
-                            <a class="nav-link" href="post_edit.php">Nouvel article</a>
+                            <a class="nav-link" href="index.php?action=editPost">Nouvel article</a>
                         </li>
                         <?php 
                         }

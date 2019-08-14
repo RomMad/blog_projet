@@ -22,7 +22,7 @@
                     <?php
                     if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $post->user_id()) {
                     ?>
-                        <a class="text-blue a-edit-post m-1" href="post_edit.php?post_id=<?=  $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                        <a class="text-blue a-edit-post m-1" href="index.php?action=editPost&id=<?=  $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                     <?php 
                     } 
                     ?>
@@ -34,7 +34,7 @@
             <?php 
             if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) {
             ?>
-                    <a class="text-blue" href="post_edit.php?post_id=<?= $post_id ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
+                    <a class="text-blue" href="index.php?action=editPost&id=<?= $post_id ?>"><span class="far fa-edit"></span> Modifier l'article</a> 
             <?php 
             } 
             ?>
@@ -50,7 +50,7 @@
                 <h2 class="h3 mb-4">Nouveau commentaire</h2>
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="post_view.php?post_id=<?= $post_id ?>#form-comment" method="post" class="px-3">
+                        <form action="index.php?action=post&id=<?= $post_id ?>#form-comment" method="post" class="px-3">
                             <?php 
                             if (!isset($_SESSION["userID"])) {
                             ?>
@@ -112,7 +112,7 @@
                                     if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$comment->user_id()) {
                                     ?>
                                         <div>
-                                            <a href="post_view.php?post_id=<?= isset($post_id) ? $post_id : "" ?>&comment=<?= $comment->id() ?>&action=erase#form-comment" 
+                                            <a href="index.php?action=post&id=<?= isset($post_id) ? $post_id : "" ?>&comment=<?= $comment->id() ?>&action=erase#form-comment" 
                                                 onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
                                                 <span class="fas fa-times text-danger"></span>
                                             </a>
@@ -126,7 +126,7 @@
                                         } else {
                                     ?>
                                         <div class="report-comment">
-                                            <a href="post_view.php?post_id=<?= isset($post_id) ? $post_id : "" ?>&comment=<?= $comment->id() ?>&action=report#form-comment" 
+                                            <a href="index.php?action=post&id=<?= isset($post_id) ? $post_id : "" ?>&comment=<?= $comment->id() ?>&action=report#form-comment" 
                                                 onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
                                                 <span class="far fa-flag text-warning"> Signaler</span>
                                             </a>
@@ -145,7 +145,7 @@
                                     }
                                     ?>
                                     <div id="form-edit-comment-<?= $comment->id() ?>"class="form-edit-comment d-none">
-                                    <form action="post_view.php?post_id=<?= $post_id ?>&comment=<?= $comment->id() ?>#form-comment" method="post">
+                                    <form action="index.php?action=post&id=<?= $post_id ?>&comment=<?= $comment->id() ?>#form-comment" method="post">
                                         <div class="form-group">
                                             <label for="content"></label>
                                             <textarea name="content" class="form-control shadow-sm" id="content" rows="4"><?= $comment->content() ?></textarea>
