@@ -9,7 +9,7 @@ $session = new Session();
 $db = new Manager();
 $db = $db->databaseConnection();
 $usersManager = new UsersManager($db);
-$postManager = new PostsManager($db);
+$postsManager = new PostsManager($db);
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
@@ -27,20 +27,15 @@ if (!empty($_POST)) {
         // Supprime les articles sélectionnés via une boucle
         if ($_POST["action_apply"] == "delete") {
             foreach ($_POST["selectedPosts"] as $selectedPost) {
-                $postManager->delete($selectedPost);
-            }
-            // Compte le nombre d'articles supprimés pour adaptés l'affichage du message
-            $nbSelectedPosts = count($_POST["selectedPosts"]);
-            if ($nbSelectedPosts > 1) {
-                $session->setFlash($nbSelectedPosts . " articles ont été supprimés.", "warning");
-            } else {
-                $session->setFlash("L'article a été supprimé.", "warning");
+                $post = $postsManager->get($selectedPost);
+                $postsManager->delete($post);
+                $session->setFlash("L'article <b>" . $post->title() . "</b> a été supprimé.", "warning");
             }
         }
         // Met en brouillon les articles sélectionnés via une boucle
         if ($_POST["action_apply"] == "Brouillon" || $_POST["action_apply"] == "Publié") {
             foreach ($_POST["selectedPosts"] as $selectedPost) {
-                $postManager->updateStatus($selectedPost, $_POST["action_apply"]);
+                $postsManager->updateStatus($selectedPost, $_POST["action_apply"]);
             }
             // Compte le nombre d'articles publiés pour adaptés l'affichage du message
             $selectedPosts = count($_POST["selectedPosts"]);
@@ -69,7 +64,7 @@ if (empty($_GET)) {
 }
 
 // Compte le nombre d'articles
-$nbItems = $postManager->count($_SESSION["filter"]);
+$nbItems = $postsManager->count($_SESSION["filter"]);
 
 // Vérifie l'ordre de tri par type
 if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date")) {
@@ -106,7 +101,7 @@ $linkNbDisplayed = "admin_posts.php?&orderBy=" . $orderBy . "&order=" . $order. 
 $pagination = new Pagination("adminPosts", $nbItems, $linkNbDisplayed, $linkNbDisplayed, "#table_admin_posts");
 
 // Récupère les articles
-$posts = $postManager->getlist($_SESSION["filter"], $orderBy, $order, $pagination->_nbLimit, $pagination->_nbDisplayed);
+$posts = $postsManager->getlist($_SESSION["filter"], $orderBy, $order, $pagination->_nbLimit, $pagination->_nbDisplayed);
 
 ?>
 

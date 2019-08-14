@@ -17,13 +17,13 @@ if (!empty($_GET["post_id"])) {
     $post = $postsManager->getUserId($_GET["post_id"]);
     if (!$post) {
         header("Location: blog.php"); 
-        exit;
+        exit();
     }
     $post_id = htmlspecialchars($_GET["post_id"]);
     $_SESSION["postID"] = $post_id;
 } else {
     header("Location: blog.php"); 
-    exit;
+    exit();
 }
 
 // Vérifie les paramètres de modération

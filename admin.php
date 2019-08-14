@@ -14,7 +14,7 @@ $settingsManager = new SettingsManager($db);
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
     header("Location: connection.php");
-    exit;
+    exit();
 } 
 
 // Récupère le rôle de l'utilisateur
@@ -22,7 +22,7 @@ $userRole = $usersManager->getRole($_SESSION["userID"]);
 
 if ($userRole != 1) {
     header("Location: index.php");
-    exit;
+    exit();
 }
 
 if (!empty($_POST)) {

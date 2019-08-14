@@ -68,7 +68,7 @@ if (!empty($_POST)) {
 
         $session->setFlash("Vous êtes connecté.", "success");
         header("Location: index.php");
-        exit;
+        exit();
 
     }
 }

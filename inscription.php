@@ -89,7 +89,7 @@ if (!empty($_POST)) {
 
         $session->setFlash("L'inscription est réussie.", "success");
         header("Location: index.php");
-        exit;
+        exit();
     }
 }
 ?>

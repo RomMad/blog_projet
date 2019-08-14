@@ -90,7 +90,7 @@ if (!empty($_POST) && isset($_GET["token"])) {
         $session->setFlash ("Le mot de passe a été modifié.", "success");
 
         header("Location: index.php");
-        exit;
+        exit();
     }
 }
 

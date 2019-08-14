@@ -16,13 +16,13 @@ if (!empty($_GET["post_id"])) {
     if (!$post) {
         $session->setFlash("Cet article n'existe pas.", "warning");
         header("Location: blog.php"); 
-        exit;
+        exit();
     }
     // Vérifie si l'utilisateur a les droit d'accès ou si il est l'auteur de l'article
     if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post->user_id()) {
         $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
         header("Location: blog.php"); 
-        exit;
+        exit();
     }
 }
 
@@ -30,7 +30,7 @@ if (!empty($_GET["post_id"])) {
 if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) {
     $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
     header("Location: connection.php"); 
-    exit;
+    exit();
 }
 
 // Vérification si informations dans variable POST
@@ -47,9 +47,9 @@ if (!empty($_POST)) {
     // Supprime l'article
     if (isset($_POST["erase"]) && !empty($post->id())) {
         $postsManager->delete($_GET["post_id"]);
-        $session->setFlash("L'article \"" . $post->title() . "\" a été supprimé.", "warning");
+        $session->setFlash("L'article <b>". $post->title() . "</b> a été supprimé.", "warning");
         header("Location: blog.php");
-        exit;
+        exit();
     }
 
     $validation = true;
