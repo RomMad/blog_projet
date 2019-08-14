@@ -1,6 +1,9 @@
 <?php 
+
 function resetPassword() {
+    
     spl_autoload_register("loadClass");
+
     $session = new Session();
     $db = new Manager();
     $db = $db->databaseConnection();

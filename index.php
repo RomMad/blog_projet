@@ -43,6 +43,26 @@ if (isset($_GET["action"])) {
         require "controller/frontend/resetPassword.php";
         resetPassword();
     }     
+    elseif ($_GET["action"] == "comments") {
+        require "controller/backend/comments.php";
+        comments();
+    }  
+    elseif ($_GET["action"] == "posts") {
+        require "controller/backend/posts.php";
+        posts();
+    }
+    elseif ($_GET["action"] == "settings") {
+        require "controller/backend/settings.php";
+        settings();
+    }  
+    elseif ($_GET["action"] == "users") {
+        require "controller/backend/users.php";
+        users();
+    }
+    elseif ($_GET["action"] == "newUser") {
+        require "controller/backend/newUser.php";
+        newUser();
+    }  
     elseif ($_GET["action"] == "addComment") {
         if (isset($_GET["id"]) && $_GET["id"] > 0) {
             if (!empty($_POST["author"]) && !empty($_POST["comment"])) {

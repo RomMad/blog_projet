@@ -149,7 +149,7 @@ $settings = $settingsManager->get();
                 <div class="list-group shadow">
                 <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Navigation</h3>
                     <a href="admin_posts.php" class="list-group-item list-group-item-action text-blue">Gestion des articles</a>
-                    <a href="admin_comments.php" class="list-group-item list-group-item-action text-blue">Gestion des commentaires</a>
+                    <a href="index.php?action=comments" class="list-group-item list-group-item-action text-blue">Gestion des commentaires</a>
                     <a href="admin_users.php" class="list-group-item list-group-item-action text-blue">Gestion des utilisateurs</a>
                     <a href="user_new.php" class="list-group-item list-group-item-action text-blue">Ajouter un utilisateur</a>
                 </div>
