@@ -91,7 +91,7 @@
                 <a href="index.php?action=posts" class="list-group-item list-group-item-action text-blue">Gestion des articles</a>
                 <a href="index.php?action=comments" class="list-group-item list-group-item-action text-blue">Gestion des commentaires</a>
                 <a href="index.php?action=users" class="list-group-item list-group-item-action text-blue">Gestion des utilisateurs</a>
-                <a href="user_new.php" class="list-group-item list-group-item-action text-blue">Ajouter un utilisateur</a>
+                <a href="index.php?action=newUser" class="list-group-item list-group-item-action text-blue">Ajouter un utilisateur</a>
             </div>
         </div>
 
