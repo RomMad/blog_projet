@@ -1,0 +1,277 @@
+body {
+    background-color: #f5f5f5;
+}
+
+section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#connection,
+#forgot-password {
+    display: flex;
+    height: 85vh;
+}
+
+
+.form-signin {
+    margin: auto;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.a-edit-post {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0.9rem;
+}
+
+.report-comment {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.report-comment a {
+    font-size: 0.9em;
+}
+
+.fas.fa-times {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.div-user-pass {
+    position: relative;
+}
+
+.icon-eye {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    opacity: 0.5;
+}
+
+.icon-eye:hover {
+    cursor: pointer;
+    opacity: 1;
+    transition: all 0.5s ease;
+}
+
+/* Gestion de dépassement des articles sur la page Blog */
+.post_content,
+.comment-content {
+    position: relative;
+    max-height: 300px;
+    overflow: hidden;
+}
+
+/* Effet fade out pour le contenu des articles et des commentaires  */
+.post-fade-out,
+.comment-fade-out {
+    content: "";
+    position: absolute;
+    top: 60%;
+    left: 0;
+    height: 40%;
+    width: 100%;
+    background: linear-gradient(rgba(255, 255, 255, 0), white);
+}
+
+.page-item.active a {
+    color: #fff !important;
+}
+
+#scroll-top {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 50px;
+    height: 40px;
+    line-height: 35px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    z-index: 100;
+}
+
+#scroll-top .fa.fa-chevron-up {
+    position: absolute;
+    right: 50%;
+    top: 50%;
+    transform: translate(50%, -50%);
+    font-size: 30px;
+    color: #fff;
+}
+
+#scroll-top:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    transition: all 0.5s ease;
+}
+
+#post-content {
+    overflow-x: auto;
+}
+
+/* Tableaux d'administration */
+table {
+    font-size: 0.9rem;
+}
+
+.table-admin .badge {
+    font-size: 0.4em;
+}
+
+.table-admin form input,
+.table-admin form select,
+.custom-select {
+    width: auto;
+}
+
+/* Loader /Spinner */
+#loader {
+    position: fixed;
+    z-index: 9999;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#loader .fas {
+    font-size: 5em;
+    color: #00aeef;
+    opacity: 0.5;
+    -webkit-animation: spin 1s linear infinite;
+    -moz-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    34% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+
+
+
+
+
+
+
+.bg-blue,
+.badge-blue {
+    background-color: #00aeef;
+    color: white;
+}
+
+/* Pagination de la page des articles du blog */
+.page-item.active .page-link {
+    background-color: #00aeef;
+    border-color: #00aeef;
+}
+
+.btn-outline-blue {
+    border-color: #00aeef;
+}
+
+
+.text-blue {
+    color: #00aeef !important;
+}
+
+a.text-blue:hover,
+a.text-blue:focus {
+    color: #008FC4 !important;
+}
+
+.btn-blue {
+    color: #fff;
+    background-color: #00aeef;
+    border-color: #00aeef;
+}
+
+.btn-blue:hover {
+    color: #fff;
+    background-color: #008FC4;
+    border-color: #008FC4;
+}
+
+.btn-blue:focus,
+.btn-blue.focus {
+    box-shadow: 0 0 0 0.2rem rgba(58, 176, 195, 0.5);
+}
+
+.btn-blue.disabled,
+.btn-blue:disabled {
+    color: #fff;
+    background-color: #00aeef;
+    border-color: #00aeef;
+}
+
+.btn-blue:not(:disabled):not(.disabled):active,
+.btn-blue:not(:disabled):not(.disabled).active,
+.show>.btn-blue.dropdown-toggle {
+    color: #fff;
+    background-color: #008FC4;
+    border-color: #008FC4;
+}
+
+.btn-blue:not(:disabled):not(.disabled):active:focus,
+.btn-blue:not(:disabled):not(.disabled).active:focus,
+.show>.btn-blue.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(58, 176, 195, 0.5);
+}
+
+.btn-outline-blue {
+    color: #00aeef;
+    border-color: #00aeef;
+}
+
+.btn-outline-blue:hover {
+    color: #fff;
+    background-color: #00aeef;
+    border-color: #00aeef;
+}
+
+.btn-outline-blue:focus,
+.btn-outline-blue.focus {
+    box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.5);
+}
+
+.btn-outline-blue.disabled,
+.btn-outline-blue:disabled {
+    color: #00aeef;
+    background-color: transparent;
+}
+
+.btn-outline-blue:not(:disabled):not(.disabled):active,
+.btn-outline-blue:not(:disabled):not(.disabled).active,
+.show>.btn-outline-blue.dropdown-toggle {
+    color: #fff;
+    background-color: #00aeef;
+    border-color: #00aeef;
+}
+
+.btn-outline-blue:not(:disabled):not(.disabled):active:focus,
+.btn-outline-blue:not(:disabled):not(.disabled).active:focus,
+.show>.btn-outline-blue.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.5);
+}
+
+/* Notification TinyMCE */
+.tox-notification {
+    display: none !important;
+}
