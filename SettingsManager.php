@@ -1,11 +1,8 @@
 <?php
-class SettingsManager {
+class SettingsManager extends Manager {
 
-    private $_db; // Instance de PDO
-
-    public function __construct($db) {
-        // $this->_db = $this->databaseConnection();
-        $this->setDb($db);
+    public function __construct() {
+        $this->_db = $this->databaseConnection();
     }
     // Récupère les paramètres
     public function get() {
@@ -26,9 +23,4 @@ class SettingsManager {
             "posts_by_row" => $settings->posts_by_row()
         ]);
     }
-    
-    private function setDb(PDO $db)
-    {
-        $this->_db = $db;
-    }   
 }

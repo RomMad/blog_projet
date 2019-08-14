@@ -6,9 +6,7 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-$db = new Manager();
-$db = $db->databaseConnection();
-$usersManager = new UsersManager($db);
+$usersManager = new UsersManager();
 
 // Redirige vers la page de connexion si non connecté
 if (empty($_SESSION["userID"])) {

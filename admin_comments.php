@@ -6,10 +6,8 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-$db = new Manager();
-$db = $db->databaseConnection();
-$usersManager = new UsersManager($db);
-$commentsManager = new CommentsManager($db);
+$usersManager = new UsersManager();
+$commentsManager = new CommentsManager();
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {

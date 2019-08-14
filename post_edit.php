@@ -6,9 +6,7 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-$db = new Manager();
-$db = $db->databaseConnection();
-$postsManager = new PostsManager($db);
+$postsManager = new PostsManager();
 
 // Vérifie si l'article exite
 if (!empty($_GET["post_id"])) {

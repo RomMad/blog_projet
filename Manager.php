@@ -2,7 +2,7 @@
 class Manager
 {
     //informations de connexion à la base de données
-    private $_dbHost,
+    protected $_dbHost,
             $_dbName,
             $_dbUser,
             $_dbPass,
@@ -43,7 +43,7 @@ class Manager
         return  $this->_db;
     } 
  
-    private function db() 
+    protected function db() 
     {
         return $this->_db;
     }

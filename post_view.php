@@ -6,11 +6,9 @@ function loadClass($classname) {
 spl_autoload_register("loadClass");
 
 $session = new Session();
-$db = new Manager();
-$db = $db->databaseConnection();
-$settingsManager = new SettingsManager($db);
-$postsManager = new PostsManager($db);
-$commentsManager = new CommentsManager($db);
+$settingsManager = new SettingsManager();
+$postsManager = new PostsManager();
+$commentsManager = new CommentsManager();
 
 // Vérifie si l'article existe
 if (!empty($_GET["post_id"])) {

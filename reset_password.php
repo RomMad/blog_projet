@@ -8,7 +8,7 @@ spl_autoload_register("loadClass");
 $session = new Session();
 $db = new Manager();
 $db = $db->databaseConnection();
-$usersManager = new UsersManager($db);
+$usersManager = new UsersManager();
 
 // Vérifie si informations dans variables POST et GET
 if (!empty($_POST) && isset($_GET["token"])) {
