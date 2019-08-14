@@ -20,7 +20,7 @@ if (isset($_GET["id"])) {
     <section id="post_form" class="row">
         <div class="col-sm-12 col-md-12 mx-auto">
 
-            <form action="index.php?action=editPost.php?id=<?= isset($_GET["id"]) ? $post->id() : "" ?>" method="post" class="">
+            <form action="index.php?action=editPost&id=<?= isset($_GET["id"]) ? $post->id() : "" ?>" method="post" class="">
 
                 <h2 class="mb-4">Édition d'article</h2>
 

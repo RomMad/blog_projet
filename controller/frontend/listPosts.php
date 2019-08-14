@@ -26,7 +26,7 @@ function listPosts() {
     $nbItems = $postsManager->count($_SESSION["filter"]);
 
     // Initialise la pagination
-    $pagination = new Pagination("posts", $nbItems, "blog.php#blog", "blog.php?", "#blog");
+    $pagination = new Pagination("posts", $nbItems, "index.php#blog", "index.php?", "#blog");
 
     // Récupère les derniers articles
     $posts = $postsManager->getList($_SESSION["filter"], "p.creation_date", "DESC", $pagination->_nbLimit, $pagination->_nbDisplayed);

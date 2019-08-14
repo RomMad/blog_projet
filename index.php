@@ -3,6 +3,7 @@ require "controller/frontend/listPosts.php";
 require "controller/frontend/post.php";
 require "controller/backend/postEdit.php";
 require "controller/frontend/connection.php";
+require "controller/frontend/profil.php";
 
 
 if (isset($_GET["action"])) {
@@ -20,8 +21,11 @@ if (isset($_GET["action"])) {
     elseif ($_GET["action"] == "editPost") {
             postEdit();
     }
+    elseif ($_GET["action"] == "profil") {
+        profil();
+    }   
     elseif ($_GET["action"] == "connection") {
-            connection();
+        connection();
     }
     elseif ($_GET["action"] == "disconnection") {
         require "model/session.php";

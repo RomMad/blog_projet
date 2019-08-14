@@ -117,6 +117,5 @@ function post() {
     if ($nbItems) {
         $comments = $commentsManager->getList("c.post_id = " . $post_id . " AND " . $filter, "c.creation_date", "DESC", $pagination->_nbLimit, $pagination->_nbDisplayed);
     }
-
     require "view/frontend/postView.php";
 }

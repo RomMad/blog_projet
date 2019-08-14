@@ -107,7 +107,7 @@
                     <?php 
                     if (isset($_SESSION["userID"])) {
                     ?>           
-                        <a class="text-blue font-weight-bold" href="profil.php"  data-toggle="popover" data-trigger="hover" data-placement="bottom" data-html="true" 
+                        <a class="text-blue font-weight-bold" href="index.php?action=profil"  data-toggle="popover" data-trigger="hover" data-placement="bottom" data-html="true" 
                             title="<?= htmlspecialchars($_SESSION["userSurname"]) ?> <?= htmlspecialchars($_SESSION["userName"]) ?>" 
                             data-content="Dernière connexion : <br /><?= htmlspecialchars($_SESSION["lastConnection"]) ?><br /> Profil : <?= htmlspecialchars($_SESSION["userProfil"]) ?>">
                             <span class="fas fa-user"></span> <?= $_SESSION["userLogin"] ?>
