@@ -43,7 +43,7 @@ class Manager
         return  $this->_db;
     } 
  
-    public function db() 
+    private function db() 
     {
         return $this->_db;
     }

@@ -173,7 +173,7 @@ class UsersManager extends Manager {
         return $nbUsers;
     }
 
-    public function setDb(PDO $db)
+    private function setDb(PDO $db)
     {
         $this->_db = $db;
     }    
