@@ -1,9 +1,4 @@
-<?php 
-$title = "Jean Forteroche | Le blog";
-if (isset($_GET["id"])) { 
-    $title = $title  . " - " . $post->title(); 
-}
-?>
+<?php  $title = "Jean Forteroche | Le blog"; ?>
 
 <?php ob_start(); ?>
 

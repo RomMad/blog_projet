@@ -81,7 +81,7 @@ if (!empty($_POST)) {
             "token" => $user->pass()
         ));
         // Initialise l'email
-        $link = "http://localhost/blog_projet/reset_password.php?token=" . $user->pass();
+        $link = "http://localhost/blog_projet/index.php?action=resetPassword&token=" . $user->pass();
         $to = $user->email();
         $subject = "Création de compte";
         $message = "
