@@ -96,7 +96,7 @@
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Page 3</a>
                         </li> -->
                     </ul>
-                    <form action="blog.php" method="get" class="form-inline my-2 my-lg-0">
+                    <form action="index.php?action=listPosts" method="get" class="form-inline my-2 my-lg-0">
                         <label for="search" class="sr-only col-form-label">Recherche</label>
                         <input name="search" id="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search" 
                             value="<?= isset($_SESSION["filter_search"]) ? htmlspecialchars($_SESSION["filter_search"]) : "" ?>">
@@ -113,11 +113,11 @@
                             <span class="fas fa-user"></span> <?= $_SESSION["userLogin"] ?>
                         </a>
                         <br />
-                        <a class="text-blue" href="disconnection.php">Vous déconnecter</a>
+                        <a class="text-blue" href="index.php?action=disconnection">Vous déconnecter</a>
                     <?php 
                     } else {
                         ?>
-                        <a class="text-blue" href="connection.php">Se connecter</a>
+                        <a class="text-blue" href="index.php?action=connection">Se connecter</a>
                         <br />
                         <a class="text-blue" href="inscription.php">S'inscrire</a>
                     <?php

@@ -1,5 +1,4 @@
 <?php 
-
 function postEdit() {
     spl_autoload_register("loadClass");
 
@@ -25,7 +24,7 @@ function postEdit() {
     // Redirige vers la page de connexion si l'utilisateur n'a pas les droits
     if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) {
         $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
-        header("Location: connection.php"); 
+        header("Location: index.php?action=connection"); 
         exit();
     }
 

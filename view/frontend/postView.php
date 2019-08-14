@@ -6,7 +6,7 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent">
-            <li class="breadcrumb-item"><a href="blog.php" class="text-blue">Blog</a></li>
+            <li class="breadcrumb-item"><a href="index.php" class="text-blue">Blog</a></li>
             <li class="breadcrumb-item active" aria-current="page">Article</li>
         </ol>
     </nav>

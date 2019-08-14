@@ -2,6 +2,7 @@
 require "controller/frontend/listPosts.php";
 require "controller/frontend/post.php";
 require "controller/backend/postEdit.php";
+require "controller/frontend/connection.php";
 
 
 if (isset($_GET["action"])) {
@@ -13,16 +14,19 @@ if (isset($_GET["action"])) {
             post();
         }
         else {
-            echo "Erreur : aucun identifiant de billet envoyé";
+            echo "Erreur : Aucun identifiant d'article envoyé.";
         }
     }
     elseif ($_GET["action"] == "editPost") {
-        // if (isset($_GET["id"]) && $_GET["id"] > 0) {
             postEdit();
-        // }
-        // else {
-        //     echo "Erreur : aucun identifiant de billet envoyé";
-        // }
+    }
+    elseif ($_GET["action"] == "connection") {
+            connection();
+    }
+    elseif ($_GET["action"] == "disconnection") {
+        require "model/session.php";
+        $session = new Session();
+        $session->disconnect();
     }
     elseif ($_GET["action"] == "addComment") {
         if (isset($_GET["id"]) && $_GET["id"] > 0) {
@@ -34,7 +38,7 @@ if (isset($_GET["action"])) {
             }
         }
         else {
-            echo "Erreur : aucun identifiant de billet envoyé";
+            echo "Erreur : Aucun identifiant d'article envoyé.";
         }
     }
 }

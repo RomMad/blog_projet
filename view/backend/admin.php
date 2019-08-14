@@ -11,7 +11,7 @@ $settingsManager = new SettingsManager();
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
-    header("Location: connection.php");
+    header("Location: index.php?action=connection");
     exit();
 } 
 

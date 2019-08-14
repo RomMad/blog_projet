@@ -1,5 +1,4 @@
 <?php 
-
 function listPosts() {
     spl_autoload_register("loadClass");
 
