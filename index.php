@@ -1,10 +1,6 @@
 <?php
-require "controller/frontend/listPosts.php";
-require "controller/frontend/post.php";
-require "controller/backend/postEdit.php";
-require "controller/frontend/connection.php";
-require "controller/frontend/profil.php";
 
+require "controller/frontend/listPosts.php";
 
 if (isset($_GET["action"])) {
     if ($_GET["action"] == "listPosts") {
@@ -12,6 +8,7 @@ if (isset($_GET["action"])) {
     }
     elseif ($_GET["action"] == "post") {
         if (isset($_GET["id"]) && $_GET["id"] > 0) {
+            require "controller/frontend/post.php";
             post();
         }
         else {
@@ -19,12 +16,15 @@ if (isset($_GET["action"])) {
         }
     }
     elseif ($_GET["action"] == "editPost") {
-            postEdit();
+        require "controller/backend/postEdit.php";
+        postEdit();
     }
     elseif ($_GET["action"] == "profil") {
+        require "controller/frontend/profil.php";
         profil();
     }   
     elseif ($_GET["action"] == "connection") {
+        require "controller/frontend/connection.php";
         connection();
     }
     elseif ($_GET["action"] == "disconnection") {

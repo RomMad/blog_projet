@@ -12,7 +12,7 @@ if (isset($_GET["id"])) {
 <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent">
             <li class="breadcrumb-item"><a href="index.php" class="text-blue">Blog</a></li>
-            <li class="breadcrumb-item"><a href="index.php?action=edit_post&id=<?= isset($_GET["id"]) ? $post->id() : "" ?>" class="text-blue">Article</a></li>
+            <li class="breadcrumb-item"><a href="index.php?action=post&id=<?= isset($_GET["id"]) ? $post->id() : "" ?>" class="text-blue">Article</a></li>
             <li class="breadcrumb-item active" aria-current="page">Édition</li>
         </ol>
     </nav>
