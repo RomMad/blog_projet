@@ -69,7 +69,7 @@ function post() {
                     "status" => $status
                 ]);
                 $commentsManager->add($comment);
-                if ($dataSettings["moderation"] == 0 || (isset($_SESSION["userRole"]) && $_SESSION["userRole"] == 1 )) {
+                if ($settings->moderation() == 0 || (isset($_SESSION["userRole"]) && $_SESSION["userRole"] == 1 )) {
                     $session->setFlash("Le commentaire a été ajouté.", "success");
                 } else {
                     $session->setFlash("Le commentaire est en attente de modération.", "info");
