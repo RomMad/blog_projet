@@ -25,3 +25,5 @@
 <?php $content = ob_get_clean(); ?>
 
 <?php require "view/template.php"; ?>
+
+<script> seePassword = new SeePassword(); </script>

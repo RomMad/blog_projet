@@ -141,6 +141,7 @@
         <script src="public/js/jquery.js"></script>
         <script src="public/js/scroll_to.js"></script>
         <script src="public/js/app.js"></script>
+        <script src="public/js/seePassword.js"></script>
         <script src="public/js/comments.js"></script>
         <!-- Les fichiers Javascript pour Bootstrap -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
