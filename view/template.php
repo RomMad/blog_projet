@@ -100,7 +100,7 @@
                         <label for="search" class="sr-only col-form-label">Recherche</label>
                         <input name="search" id="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search" 
                             value="<?= isset($_SESSION["filter_search"]) ? htmlspecialchars($_SESSION["filter_search"]) : "" ?>">
-                        <button id="search" class="btn btn-outline-blue my-2 my-sm-0" type="submit"><span class="fas fa-search"></span></button>
+                        <button id="send-search" class="btn btn-outline-blue my-2 my-sm-0" type="submit"><span class="fas fa-search"></span></button>
                     </form>
 
                     <div class="ml-3 text-light">
