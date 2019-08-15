@@ -107,20 +107,18 @@ class PostsManager extends Manager {
         return "L'article a été modifié.";
     }
     // Méthode de mise à jour du statut d'un article
-    public function updateStatus($id, $status) {
-        if (is_numeric($id) && ((int) $id > 0)) { 
-            $req = $this->_db->prepare("UPDATE posts SET status = :newStatus WHERE id = :id");
-            $req->execute([
-                "id" => $id,
-                "newStatus" => $status
-            ]);
-        }
+    public function updateStatus(Posts $post) {
+        $req = $this->_db->prepare("UPDATE posts SET status = :newStatus WHERE id = :id");
+        $req->execute([
+            "id" => $post->id(),
+            "newStatus" => $post->status(),
+        ]);
     }
     // Méthode de suppresion d'un article
-    public function delete($id) {
-        if (is_numeric($id) && ((int) $id > 0)) { 
-            $req = $this->_db->prepare("DELETE FROM posts WHERE id = $id");
-            $req->execute();
-        }
+    public function delete(Posts $post) {
+        $req = $this->_db->prepare("DELETE FROM posts WHERE id = :id");
+        $req->execute([
+            "id" => $post->id()
+        ]);    
     }
 }

@@ -132,7 +132,7 @@
                                         <input type="checkbox" name="selectedPosts[]" id="post<?= $post->id() ?>" value="<?= $post->id() ?>" class=""/>
                                         <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
                                     </th>
-                                    <td><a href="post_view.php?post_id=<?= $post->id() ?>" class="text-blue font-weight-bold"><?= $post->title() ?></a></td>
+                                    <td><a href="index.php?action=post&id=<?= $post->id() ?>" class="text-blue font-weight-bold"><?= $post->title() ?></a></td>
                                     <td><?= $post->login() ?></td>
                                     <td><?= $post->status() ?></td>
                                     <td><?= $post->creation_date("") ?></td>

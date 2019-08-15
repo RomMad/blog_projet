@@ -55,7 +55,6 @@ class Posts extends Model {
                 $this->_title = $title;
             } else {
                 $this->_title = substr($title, 0, 255);
-                // $this->setFlash("Le titre a été tronqué (maximum 255 caractères).", "warning");
             }
         }
     }

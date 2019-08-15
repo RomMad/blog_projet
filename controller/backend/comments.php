@@ -24,20 +24,27 @@ function comments() {
             // Supprime les commentaires sélectionnés via une boucle
             if ($_POST["action_apply"] == "delete" && isset($_POST["selectedComments"])) {
                 foreach ($_POST["selectedComments"] as $selectedComment) {
-                    $commentsManager->delete($selectedComment);
+                    $comment = new Comments([
+                        "id" => $selectedComment,
+                    ]);
+                    $commentsManager->delete($comment);
                 }
                 // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
                 $nbselectedComments = count($_POST["selectedComments"]);
                 if ($nbselectedComments>1) {
                     $session->setFlash($nbselectedComments . " commentaires ont été supprimés.", "warning");
                 } else {
-                    $session->setFlash("Le commentaire a été supprimé", "warning");
+                    $session->setFlash("Le commentaire a été supprimé.", "warning");
                 }
             }
             // Modère les commentaires sélectionnés via une boucle
             if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedComments"])) {
                 foreach ($_POST["selectedComments"] as $selectedComment) {
-                    $commentsManager->updateStatus($selectedComment, 1);
+                    $comment = new Comments([
+                        "id" => $selectedComment,
+                        "status" => 2,
+                        ]);
+                    $commentsManager->updateStatus($comment);
                 }
                 // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
                 $nbselectedComments = count($_POST["selectedComments"]);
@@ -48,8 +55,10 @@ function comments() {
                 }
             }
         }
+        var_dump($_POST);
+
         // Enregistre le filtre
-        if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= "0") {
+        if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= 1) {
             $_SESSION["filter_status"] = htmlspecialchars($_POST["filter_status"]);
             $_SESSION["filter"] = "status = " . $_SESSION["filter_status"];
         }

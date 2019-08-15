@@ -46,9 +46,9 @@
                         <label class="sr-only col-form-label" for="filter_status">Filtre</label>
                             <select name="filter_status" id="filter_status" class="custom-select form-control mr-1 shadow" value="Par auteur">
                                 <option value="">-- Statut --</option>
-                                <option <?= $_SESSION["filter_status"] == 0 &&  $_SESSION["filter_status"] != NULL ? "selected" : "" ?> value="0">Non-modéré</option>
-                                <option <?= $_SESSION["filter_status"] == 1 ? "selected" : "" ?> value="1">Modéré</option>
-                                <option <?= $_SESSION["filter_status"] == 2 ? "selected" : "" ?> value="2">Signalé</option>
+                                <option <?= $_SESSION["filter_status"] == 1 ? "selected" : "" ?> value="1">Non-modéré</option>
+                                <option <?= $_SESSION["filter_status"] == 2 ? "selected" : "" ?> value="2">Modéré</option>
+                                <option <?= $_SESSION["filter_status"] == 3 ? "selected" : "" ?> value="3">Signalé</option>
                             </select>
                         <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-blue py-1 shadow" value="Filtrer">
                     </div>
@@ -142,7 +142,7 @@
                                             <input type="checkbox" name="selectedComments[]" id="comment<?= $comment->id() ?>" value="<?= $comment->id() ?>" class=""/>
                                             <label for="selectedComments[]" class="sr-only">Sélectionner</label>
                                         </th>
-                                        <td><a href="post_view.php?post_id=<?= $comment->post_id() ?>" class="text-dark"><?= $comment->content() ?></a></td>
+                                        <td><a href="index.php?action=post&id=<?= $comment->post_id() ?>" class="text-dark"><?= $comment->content() ?></a></td>
                                         <td>
                                         <?php 
                                         if (!empty($comment->user_name())) {
@@ -159,13 +159,13 @@
                                         <td>
                                         <?php 
                                         switch($comment->status()) {
-                                            case 0:
+                                            case 1:
                                             echo "Non-modéré";
                                             break;
-                                            case 1:
+                                            case 2:
                                             echo "Modéré";
                                             break;
-                                            case 2:
+                                            case 3:
                                             echo "Signalé";
                                             break;
                                             defaut:

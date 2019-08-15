@@ -22,6 +22,7 @@ class CommentsManager extends Manager {
         ]);
         return "Le commentaire a été enregistré.";
     }
+
     // Méthode de lecture d'un commentaire
     public function get($id) {
         $req = $this->_db->prepare("SELECT c.id, c.user_id, c.user_name, u.login, c.content, c.status, c.creation_date, c.update_date 
@@ -35,21 +36,7 @@ class CommentsManager extends Manager {
         $comment = $req->fetch();
         return new Comments($comment);
     }
-    // Méthode de lecture d'un commentaire
-    // public function lastCreate($user_id) {
-    //     $req = $this->_db->prepare("SELECT c.id, c.user_ID, u.login, c.content, c.status, c.creation_date, c.update_date 
-    //         FROM comments c 
-    //         LEFT JOIN users u 
-    //         ON c.user_ID = u.id 
-    //         WHERE c.user_ID = ? 
-    //         ORDER BY c.id DESC 
-    //         LIMIT 0, 1");
-    //     $req->execute([
-    //         $user_id
-    //     ]);
-    //     $comment = $req->fetch();
-    //     return new Comments($comment);
-    // }
+
     // Méthode de récupération d'une liste d'commentaires
     public function getList($filter, $orderBy, $order, $nbLimit, $nbOffset) {
         $req = $this->_db->prepare("SELECT c.id, c.post_id, c.user_id, u.login, c.user_name, c.content, c.status, c.report_date, c.nb_report, c.creation_date, c.update_date
@@ -63,8 +50,11 @@ class CommentsManager extends Manager {
         while ($datas = $req->fetch()) {
             $comments[] = new Comments($datas);
         }
-        return $comments;
+        if (isset($comments)) {
+            return $comments;
+        }
     }
+
     // Méthode de mise à jour d'un commentaire
     public function update(Comments $comment) {
         $req = $this->_db->prepare("UPDATE comments SET content = :newContent, status = :newStatus, update_date = NOW() WHERE id = :id");
@@ -75,14 +65,16 @@ class CommentsManager extends Manager {
         ]);
         return "Le commentaire a été modifié.";
     }
+
     // Méthode de mise à jour du statut d'un commentaire
-    public function updateStatus($id, $status) {
+    public function updateStatus(Comments $comment) {
         $req = $this->_db->prepare("UPDATE comments SET status = :newStatus WHERE id = :id ");
         $req->execute([
-            "id" => $id,
-            "newStatus" => $status
+            "id" =>  $comment->id(),
+            "newStatus" => $comment->status()
         ]);
     }
+
     // Méthode pour signaler un commentaire
     public function report(Comments $comment) {
         $req = $this->_db->prepare("UPDATE comments SET status = :newStatus, nb_report = nb_report + 1, report_date = NOW() WHERE id = :id");
@@ -92,12 +84,16 @@ class CommentsManager extends Manager {
         ]);
         return "Le commentaire a été signalé.";
     }
+
     // Méthode de suppresion d'un commentaire
-    public function delete($id) {
-        $req = $this->_db->prepare("DELETE FROM comments WHERE id = $id ");
-        $req->execute();
+    public function delete(Comments $comment) {
+        $req = $this->_db->prepare("DELETE FROM comments WHERE id = :id ");
+        $req->execute([
+            "id" =>  $comment->id(),
+        ]);
         return "Le commentaire a été supprimé.";
     }
+
     // Méthode qui compte le nombre de commentaires
     public function count($filter) {
         $req = $this->_db->prepare("SELECT COUNT(*) FROM comments c WHERE $filter");

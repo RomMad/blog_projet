@@ -70,7 +70,7 @@ class Comments extends Model {
     }
     public function setStatus($status) {
         $status = (int) $status;
-        if ($status >= 0 && $status <=2) {
+        if ($status >= 1 && $status <=3) {
             $this->_status =  $status;
         }
     }

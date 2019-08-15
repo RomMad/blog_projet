@@ -34,14 +34,10 @@ function posts() {
             // Met en brouillon les articles sélectionnés via une boucle
             if ($_POST["action_apply"] == "Brouillon" || $_POST["action_apply"] == "Publié") {
                 foreach ($_POST["selectedPosts"] as $selectedPost) {
-                    $postsManager->updateStatus($selectedPost, $_POST["action_apply"]);
-                }
-                // Compte le nombre d'articles publiés pour adaptés l'affichage du message
-                $selectedPosts = count($_POST["selectedPosts"]);
-                if ($selectedPosts > 1) {
-                    $session->setFlash($selectedPosts . " articles ont été modifés.", "success");
-                } else {
-                    $session->setFlash("L'article a été modifié.", "success");
+                    $post = $postsManager->get($selectedPost);
+                    $post->setStatus($_POST["action_apply"]);
+                    $postsManager->updateStatus($post);
+                    $session->setFlash("L'article <b>" . $post->title() . "</b> a été modifié (" . $_POST["action_apply"] . ").", "warning");
                 }
             }
         }
@@ -53,7 +49,6 @@ function posts() {
         if (!empty($_POST["filter_search"])) {
             $_SESSION["filter_search"] = htmlspecialchars($_POST["search_post"]);
             $_SESSION["filter"] =  "title LIKE '%" .  $_SESSION["filter_search"] . "%' OR content LIKE '%" .  $_SESSION["filter_search"] . "%'";
-
         }
     }
 

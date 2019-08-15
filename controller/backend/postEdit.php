@@ -41,7 +41,7 @@ function postEdit() {
     
         // Supprime l'article
         if (isset($_POST["erase"]) && !empty($post->id())) {
-            $postsManager->delete($_GET["id"]);
+            $postsManager->delete($post);
             $session->setFlash("L'article <b>". $post->title() . "</b> a été supprimé.", "warning");
             header("Location: index.php");
             exit();

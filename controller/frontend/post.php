@@ -24,17 +24,17 @@ function post() {
     // Vérifie les paramètres de modération
     $settings = $settingsManager->get();
     if ($settings->moderation() == 0) {
-        $filter = "status >= 0";
+        $filter = "status >= 1";
     } else {
-        $filter = "status > 0";
+        $filter = "status >= 2";
     }
         
     // Vérifie si informations dans variable POST
     if (!empty($_POST)) {
         if (isset($_SESSION["userRole"]) && $_SESSION["userRole"] == 1 ) {
-            $status = 1;
+            $status = 2;
         } else {
-            $status = 0;
+            $status = 1;
         }
 
         if (isset($_SESSION["userLogin"])) {
@@ -90,14 +90,17 @@ function post() {
 
     //
     if (isset($_GET["erase"]) && $_GET["erase"]=="true") {
-        $commentsManager->delete($_GET["comment"]);
+        $comment = new Comments([
+            "id" => $_GET["comment"],
+        ]);
+        $commentsManager->delete($comment);
         $session->setFlash("Le commentaire a été supprimé.", "warning");
     }
     // Ajoute le signalement du commentaire
     if (isset($_GET["report"]) && $_GET["report"]=="true") {
         $comment = new Comments([
             "id" => $_GET["comment"],
-            "status" => 2,
+            "status" => 3,
         ]);
         $commentsManager->report($comment);
         $session->setFlash("Le commentaire a été signalé.", "warning");
@@ -110,7 +113,7 @@ function post() {
     $nbItems = $commentsManager->count("post_id = " . $post_id . " AND " . $filter);
 
     // Initialise la pagination
-    $linkNbDisplayed = "post_view.php?post_id=" . $post_id . "&";
+    $linkNbDisplayed = "index.php?action=post&id=" . $post_id . "&";
     $pagination = new Pagination("comments", $nbItems, $linkNbDisplayed . "#comments", $linkNbDisplayed, "#comments");
 
     // Récupère les commentaires si le nombre > 0 
