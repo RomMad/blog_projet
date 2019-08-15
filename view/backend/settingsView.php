@@ -1,28 +1,28 @@
-<?php  $title = "Jean Forteroche | Le blog"; ?>
+<?php  $title = "Jean Forteroche | Le blog - Administration"; ?>
 
 <?php ob_start(); ?>
 
 <div class="container">
 
     <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-transparent">
-                <li class="breadcrumb-item"><a href="index.php" class="text-blue">Accueil</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Administration</li>
-            </ol>
+        <ol class="breadcrumb bg-transparent">
+            <li class="breadcrumb-item"><a href="index.php" class="text-blue">Accueil</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Administration</li>
+        </ol>
     </nav>
 
     <div class="row">
         <div class="col-md-12 mt-4">
 
-            <h2 class="mb-4">Administration du site</h2>
+            <h2 class="mb-4">Administration</h2>
 
         </div>
     </div>
 
-    <?php $session->flash(); // Message en session flash ?>      
+    <?php $session->flash(); // Message en session flash ?>
 
     <div class="row">
-        
+
         <div class="col-md-8 col-lg-6 mt-4">
             <form action="index.php?action=settings" method="post" class="col-md-12 card shadow">
                 <div class="form-group row">
@@ -31,14 +31,14 @@
                 <div class="form-group row">
                     <label for="blog_name" class="col-md-4 col-form-label">Titre du blog</label>
                     <div class="col-md-8">
-                        <input type="text" name="blog_name" id="blog_name" class="form-control mb-4 shadow-sm" 
+                        <input type="text" name="blog_name" id="blog_name" class="form-control mb-4 shadow-sm"
                             value="<?= $settings->blog_name() ?>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="admin_email" class="col-md-4 col-form-label">Adresse email</label>
                     <div class="col-md-8">
-                        <input type="text" name="admin_email" id="admin_email" class="form-control mb-4 shadow-sm" 
+                        <input type="text" name="admin_email" id="admin_email" class="form-control mb-4 shadow-sm"
                             value="<?= $settings->admin_email() ?>">
                     </div>
                 </div>
@@ -68,10 +68,11 @@
                 <div class="form-group row">
                     <div class="col-md-4">Modération</div>
                     <div class="col-md-8">
-                    <div class="form-check">
-                        <input type="checkbox" name="moderation" id="moderation" class="form-check-input" value="true" <?= $settings->moderation() == 1 ? "checked" : "" ?>>
-                        <label for="moderation" class="form-check-label sr-only">Modération</label>
-                    </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="moderation" id="moderation" class="form-check-input"
+                                value="true" <?= $settings->moderation() == 1 ? "checked" : "" ?>>
+                            <label for="moderation" class="form-check-label sr-only">Modération</label>
+                        </div>
                     </div>
                 </div>
 
@@ -87,7 +88,7 @@
 
         <div class="col-md-4 offset-lg-2 col-lg-4 mt-4">
             <div class="list-group shadow">
-            <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Navigation</h3>
+                <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Navigation</h3>
                 <a href="index.php?action=posts" class="list-group-item list-group-item-action text-blue">Gestion des articles</a>
                 <a href="index.php?action=comments" class="list-group-item list-group-item-action text-blue">Gestion des commentaires</a>
                 <a href="index.php?action=users" class="list-group-item list-group-item-action text-blue">Gestion des utilisateurs</a>
