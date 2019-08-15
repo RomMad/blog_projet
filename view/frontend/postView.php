@@ -171,3 +171,5 @@
 <?php $content = ob_get_clean(); ?>
 
 <?php require "view/template.php"; ?>
+
+<script> comments = new Comments() </script>

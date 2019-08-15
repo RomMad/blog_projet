@@ -138,11 +138,10 @@
             <p>© Romain MADELAINE | <a href="https://romain-mad.fr" target="_blank" class="text-blue">romain-mad.fr</a></p>
         </footer>
 
-        <script src="public/js/jquery.js"> </script>
+        <script src="public/js/jquery.js"></script>
         <script src="public/js/scroll_to.js"></script>
-        <script src="public/js/app.js"> </script>
-        <script src="public/js/see_more_comment.js"> </script>
-
+        <script src="public/js/app.js"></script>
+        <script src="public/js/comments.js"></script>
         <!-- Les fichiers Javascript pour Bootstrap -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
