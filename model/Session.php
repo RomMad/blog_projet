@@ -3,8 +3,13 @@ class Session {
 
     // Lancement de la session
     public function __construct () {
+    }
+
+    // Connection de la session
+    public function connect() {
         session_start();
     }
+
     // Initialise un message d'alerte
     public function setFlash($message, $typeAlert) {
         if (!isset($_SESSION["flash"])) {

@@ -1,86 +1,104 @@
 <?php
+spl_autoload_register("loadClass", "model/");
+
+$session = new Session();
+$session->connect();
+
 require "controller/frontend/listPosts.php";
+require "controller/frontend/post.php";
+require "controller/frontend/profil.php";
+require "controller/frontend/inscription.php";
+require "controller/frontend/connection.php";
+require "controller/frontend/forgotPassword.php";
+require "controller/frontend/resetPassword.php";
+require "controller/backend/postEdit.php";
+require "controller/backend/comments.php";
+require "controller/backend/posts.php";
+require "controller/backend/settings.php";
+require "controller/backend/users.php";
+require "controller/backend/newUser.php";
 
 if (isset($_GET["action"])) {
-    if ($_GET["action"] == "listPosts") {
-        listPosts();
-    }
-    elseif ($_GET["action"] == "post") {
-        if (isset($_GET["id"]) && $_GET["id"] > 0) {
-            require "controller/frontend/post.php";
-            post();
-        }
-        else {
-            echo "Erreur : Aucun identifiant d'article envoyé.";
-        }
-    }
-    elseif ($_GET["action"] == "editPost") {
-        require "controller/backend/postEdit.php";
-        postEdit();
-    }
-    elseif ($_GET["action"] == "profil") {
-        require "controller/frontend/profil.php";
-        profil();
-    }   
-    elseif ($_GET["action"] == "inscription") {
-        require "controller/frontend/inscription.php";
-        inscription();
-    }
-    elseif ($_GET["action"] == "connection") {
-        require "controller/frontend/connection.php";
-        connection();
-    }
-    elseif ($_GET["action"] == "disconnection") {
-        require "model/session.php";
-        $session = new Session();
-        $session->disconnect();
-    }
-    elseif ($_GET["action"] == "forgotPassword") {
-        require "controller/frontend/forgotPassword.php";
-        forgotPassword();
-    }   
-    elseif ($_GET["action"] == "resetPassword") {
-        require "controller/frontend/resetPassword.php";
-        resetPassword();
-    }     
-    elseif ($_GET["action"] == "comments") {
-        require "controller/backend/comments.php";
-        comments();
-    }  
-    elseif ($_GET["action"] == "posts") {
-        require "controller/backend/posts.php";
-        posts();
-    }
-    elseif ($_GET["action"] == "settings") {
-        require "controller/backend/settings.php";
-        settings();
-    }  
-    elseif ($_GET["action"] == "users") {
-        require "controller/backend/users.php";
-        users();
-    }
-    elseif ($_GET["action"] == "newUser") {
-        require "controller/backend/newUser.php";
-        newUser();
-    }  
-    elseif ($_GET["action"] == "addComment") {
-        if (isset($_GET["id"]) && $_GET["id"] > 0) {
-            if (!empty($_POST["author"]) && !empty($_POST["comment"])) {
-                addComment($_GET["id"], $_POST["author"], $_POST["comment"]);
+    switch ($_GET["action"]) {
+        case "listPosts":
+            listPosts();
+            break;
+        case "post":
+            if (isset($_GET["id"]) && $_GET["id"] > 0) {
+                post();
             }
-            else {
-                echo "Erreur : tous les champs ne sont pas remplis !";
-            }
-        }
-        else {
-            echo "Erreur : Aucun identifiant d'article envoyé.";
-        }
-    }
-}
-else {
+            break;
+        case "editPost":
+            postEdit();
+            break;
+        case "profil":
+            profil();
+            break;
+        case "inscription":
+            inscription();
+            break;
+        case "connection":
+            connection();
+            break;
+        case "disconnection":
+            $session->disconnect();
+            break;
+        case "forgotPassword":
+            forgotPassword();
+            break;
+        case "resetPassword":
+            resetPassword();
+            break;  
+        case "comments":
+            comments();
+            break;
+        case "posts":
+            posts();
+            break;
+        case "settings":
+            settings();
+            break;
+        case "users":
+            users();
+            break;
+        case "newUser":
+            newUser();
+            break;           
+        default:
+            listPosts();
+    } 
+} else {
     listPosts();
 }
 
 function loadClass($classname) {
     require "model/" . $classname . ".php";
 }
+
+// $controllers = [
+//     "listPosts" => "frontend",
+//     "post",
+//     "profil",
+//     "inscription",
+//     "connection",
+//     "forgotPassword",
+//     "resetPassword",
+//     "postEdit",
+//     "comments",
+//     "posts",
+//     "settings",
+//     "users",
+//     "newUser"
+// ];
+
+// var_dump($controllers);
+
+// if (isset($_GET["action"])) {
+//     foreach($controllers as $controller) {
+//         if ($_GET["action"] == $controller) {
+//             $controller();
+//         }
+//     }
+// } else {
+//     listPosts();
+// }
