@@ -1,4 +1,4 @@
-<?php  $title = "Jean Forteroche | Le blog - Réinitialisation du mot de passe"; ?>
+<?php  $title = $_SESSION["blog_name"] . " - Réinitialisation du mot de passe"; ?>
 
 <?php ob_start(); ?>
 

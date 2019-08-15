@@ -1,4 +1,4 @@
-<?php  $title = "Jean Forteroche | Le blog - Gestion des utilisateurs"; ?>
+<?php  $title = $_SESSION["blog_name"] . " - Gestion des utilisateurs"; ?>
 
 <?php ob_start(); ?>
 

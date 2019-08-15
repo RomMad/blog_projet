@@ -55,8 +55,7 @@ function comments() {
                 }
             }
         }
-        var_dump($_POST);
-
+        
         // Enregistre le filtre
         if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= 1) {
             $_SESSION["filter_status"] = htmlspecialchars($_POST["filter_status"]);

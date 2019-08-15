@@ -44,6 +44,7 @@ function settings() {
         // Met à jour les données si validation est vrai
         if ($validation == true) {
             $settingsManager->update($settings);
+            $_SESSION["blog_name"] = $settings->blog_name();
             $session->setFlash("Les paramètres ont été mis à jour.", "success");
         }  
     } else  {

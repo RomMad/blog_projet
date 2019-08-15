@@ -34,8 +34,6 @@ function user() {
                 "id" => $_GET["id"],
                 "role" => $_POST["role"]
             ]);
-            var_dump($_POST);
-            // die;
             $usersManager->updateRole($user);
             $session->setFlash("Le profil a été mis à jour.", "success");
         }

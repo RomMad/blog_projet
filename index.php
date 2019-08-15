@@ -1,8 +1,14 @@
 <?php
-spl_autoload_register("loadClass", "model/");
+spl_autoload_register("loadClass");
 
 $session = new Session();
 $session->connect();
+
+$settingsManager = new SettingsManager();
+if(!isset($_SESSION["blog_name"])) {
+    $settings = $settingsManager->get();
+    $_SESSION["blog_name"] = $settings->blog_name();
+}
 
 require "controller/frontend/listPosts.php";
 require "controller/frontend/post.php";

@@ -1,4 +1,4 @@
-<?php $title = "Jean Forteroche | Le blog"; ?>
+<?php  $title = $_SESSION["blog_name"]; ?>
 
 <?php ob_start(); ?>
 
@@ -78,6 +78,7 @@
             <div class="mt-4 mb-4">
                 <a class="text-blue" href="index.php?action=editPost"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
+
     </section>
 </div>
 

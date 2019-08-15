@@ -1,5 +1,5 @@
-<?php 
-$title = "Jean Forteroche | Le blog - Édition d'article";
+<?php  $title = $_SESSION["blog_name"] . " - Édition d'article";
+
 if (isset($_GET["id"])) { 
     $title = $title  . " - " . $post->title(); 
 }
