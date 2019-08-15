@@ -89,12 +89,12 @@ function post() {
     }
 
     //
-    if (isset($_GET["action"]) && $_GET["action"]=="erase") {
+    if (isset($_GET["erase"]) && $_GET["erase"]=="true") {
         $commentsManager->delete($_GET["comment"]);
         $session->setFlash("Le commentaire a été supprimé.", "warning");
     }
     // Ajoute le signalement du commentaire
-    if (isset($_GET["action"]) && $_GET["action"]=="report") {
+    if (isset($_GET["report"]) && $_GET["report"]=="true") {
         $comment = new Comments([
             "id" => $_GET["comment"],
             "status" => 2,
