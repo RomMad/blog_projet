@@ -103,7 +103,7 @@
                                 }
                                 ?>
                                 <p><strong><?= $user_login ?></strong>, le <?= $comment->creation_date("special_format") ?>
-                                <?php if ($comment->update_date() != $comment->creation_date()) { echo "(Modifié le " . $comment->update_date("special_format") . ")"; } ?>
+                                <?php if ($comment->update_date("") != $comment->creation_date("")) { echo "(Modifié le " . $comment->update_date("special_format") . ")"; } ?>
                                 </p>
                                 <div class="comment-content position relative"><?= nl2br($comment->content()) ?>
                                     <span class="comment-fade-out d-none"></span>

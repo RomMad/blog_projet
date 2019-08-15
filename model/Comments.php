@@ -1,35 +1,20 @@
 <?php
-class Comments extends Session {
+class Comments extends Model {
 
-    protected   $_id,
-                $_post_id,
+    protected   $_post_id,
                 $_user_id,
                 $_user_name,
                 $_login,
                 $_content,
                 $_status,
                 $_report_date,
-                $_nb_report,
-                $_creation_date,
-                $_update_date;
+                $_nb_report;
 
     public function __construct(array $datas) {
         $this->hydrate($datas);
     }
 
-    public function hydrate (array $datas) {
-        foreach($datas as $key => $value) {
-            $method = "set" . ucfirst($key); // récupère le nom du setter correspondant à l'attribut
-            if (method_exists($this, $method)) { // vérifie si le setter correspondant existe
-                $this->$method($value); // si oui, appelle le setter
-            }
-        }
-    }
-
     // Getters
-    public function id() {
-        return $this->_id;
-    }
     public function post_id() {
         return $this->_post_id;
     }
@@ -53,32 +38,9 @@ class Comments extends Session {
     }
     public function nb_report() {
         return $this->_nb_report;
-
-    }
-    public function creation_date() {
-        $creation_date = new DateTime($this->_creation_date);
-        if (!empty($format) && $format == "special_format") {
-            return date_format($creation_date,"d/m/Y à H:i");
-        } else {
-            return date_format($creation_date,"d/m/Y H:i");
-        }
-    }
-    public function update_date() {
-        $update_date = new DateTime($this->_update_date);
-        if (!empty($format) && $format == "special_format") {
-            return date_format($update_date,"d/m/Y à H:i");
-        } else {
-            return date_format($update_date,"d/m/Y H:i");
-        }
     }
 
     // Setters
-    public function setId($id) {
-        $id = (int) $id;
-        if ($id > 0) {
-            $this->_id = $id;
-        }
-    }
     public function setPost_id($post_id) {
         $post_id = (int) $post_id;
         if ($post_id > 0) {
@@ -120,11 +82,5 @@ class Comments extends Session {
         if ($nb_report >= 0) {
             $this->_nb_report =  $nb_report;
         }
-    }
-    public function setCreation_date($creation_date) {
-        $this->_creation_date =  $creation_date;
-    }
-    public function setUpdate_date($update_date) {
-        $this->_update_date =  $update_date;
     }
 }

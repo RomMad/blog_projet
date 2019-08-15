@@ -1,8 +1,7 @@
 <?php 
-class Users extends Session {
+class Users extends Model {
     
-    protected   $_id,
-                $_login,
+    protected   $_login,
                 $_email,
                 $_pass,
                 $_name,
@@ -11,26 +10,13 @@ class Users extends Session {
                 $_role,
                 $_roleUser,
                 $_remember_me,
-                $_registration_date,
-                $_update_date;
+                $_registration_date;
 
     public function __construct(array $datas) {
         $this->hydrate($datas);
     }
 
-    public function hydrate(array $datas) {
-        foreach($datas as $key => $value) {
-            $method = "set" . ucfirst($key); // récupère le nom du setter correspondant à l'attribut
-            if (method_exists($this, $method)) { // vérifie si le setter correspondant existe
-                $this->$method($value); // si oui, appelle le setter
-            }
-        }
-    }
-
     // Getters
-    public function id() {
-        return $this->_id;
-    }
     public function login() {
         return htmlspecialchars($this->_login);
     }
@@ -68,17 +54,7 @@ class Users extends Session {
         }
     }
 
-    public function update_date() {
-        return $this->_update_date;
-    }
-
     // Setters
-    public function setId($id) {
-        $id = (int) $id;
-        if ($id > 0) {
-            $this->_id = $id;
-        }
-    }
     public function setlogin($login) {
         if (preg_match("#^[a-zA-Z0-9_.-]{5,20}$#",$login)) {
             $this->_login = $login;
@@ -140,14 +116,5 @@ class Users extends Session {
     }    
     public function setRegistration_date($registration_date) {
         $this->_registration_date = $registration_date;
-    }
-    public function setUpdate_date($update_date) {
-        $this->_update_date = $update_date;
-    }
-
-    // Vérifie si la date est valide
-    protected function validateDate($date, $format = 'Y-m-d H:i:s') {
-        $d = DateTime::createFromFormat($format, $date);
-        return $d && $d->format($format) == $date;
     }
 }
