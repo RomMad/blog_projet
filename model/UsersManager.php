@@ -128,15 +128,12 @@ class UsersManager extends Manager {
     }
 
     // Modifie le rôle de l'utilisateur
-    public function updateRole($id, $role) {
-        if (is_numeric($id)) {
-            $info = (int) $id;       
+    public function updateRole(Users $user) {
             $req = $this->_db->prepare("UPDATE users SET role = :newRole, update_date = NOW() WHERE id = :id");
             $req->execute([
-                "id" => $id,
-                "newRole" => $role
+                "id" => $user->id(),
+                "newRole" => $user->role()
             ]);
-        }
     }
 
     // Met le "remember" de la connection en VRAI

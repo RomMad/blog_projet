@@ -150,7 +150,7 @@
                                             <input type="checkbox" name="selectedUsers[]" id="User<?= $user->id() ?>" value="<?= $user->id() ?>" class=""/>
                                             <label for="selectedUsers[]" class="sr-only">Sélectionner</label>
                                         </th>
-                                        <td><?= $user->login() ?></td>
+                                        <td><a href="index.php?action=user&id=<?= $user->id() ?>" class="text-blue"><?= $user->login() ?></a></td>
                                         <td><?= $user->name() ?></td>
                                         <td><?= $user->surname() ?></td>
                                         <td><?= $user->email() ?></td>

@@ -39,7 +39,7 @@
                             <a class="text-blue" href="index.php?action=post&id=<?= $post->id() ?>">
                                 <h3 class="mt-1"><?= $post->title() ?></h3>
                             </a>
-                            <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" href=""><?= $post->user_login() ?></a></em>
+                            <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" href="index.php?action=user&id=<?= $post->user_id() ?>"><?= $post->user_login() ?></a></em>
                             <?php if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { ?>
                                 <a class="text-blue a-edit-post m-1" href="index.php?action=editPost&id=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                             <?php } ?>

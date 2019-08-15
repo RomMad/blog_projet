@@ -17,6 +17,7 @@ require "controller/backend/posts.php";
 require "controller/backend/settings.php";
 require "controller/backend/users.php";
 require "controller/backend/newUser.php";
+require "controller/backend/user.php";
 
 if (isset($_GET["action"])) {
     switch ($_GET["action"]) {
@@ -63,7 +64,10 @@ if (isset($_GET["action"])) {
             break;
         case "newUser":
             newUser();
-            break;           
+            break;
+        case "user":
+            user();
+            break;             
         default:
             listPosts();
     } 

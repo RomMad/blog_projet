@@ -16,13 +16,13 @@
                 <div class="card-header bg-dark text-light">
                     <h1 class="h2 mt-2 mb-3"><?= $post->title() ?></h1>
                     <p class="my-0">
-                        <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" href=""> <?= $post->login() ?> </a> (Modifié le <?= $post->update_date("special_format") ?>)</em>
+                        <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" href="index.php?action=user&id=<?= $post->user_id() ?>"><?= $post->login() ?></a> (Modifié le <?= $post->update_date("special_format") ?>)</em>
                         <a href="#comments" class="badge badge-blue ml-2 my-1 py-1" data-toggle="tooltip" data-placement="bottom" title="Voir les commentaires">Commentaires <span class="badge badge-light"><?= $nbItems ?></span></a>
                     </p>
                     <?php
                     if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $post->user_id()) {
                     ?>
-                        <a class="text-blue a-edit-post m-1" href="index.php?action=editPost&id=<?=  $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
+                        <a class="text-blue a-edit-post m-1" href="index.php?action=editPost&id=<?= $post->id() ?>"><span class="far fa-edit"></span> Modifier</a>
                     <?php 
                     } 
                     ?>
@@ -43,7 +43,7 @@
     <!-- Formulaire d'ajout d'un commentaire -->
     <section id="form-comment" class="mt-4">
 
-        <?php $session->flash(); // Message en session flash ?>      
+        <?php $session->flash(); // Message en session flash ?>
 
         <div class="row">
             <div class="col-sm-12 col-md-10 col-lg-6">
