@@ -26,7 +26,7 @@ class SeePassword {
                 this.passConfirmElt.type = "text";
             }.bind(this));
             // Masque le mot de passe au relachement de la souris
-            this.document.addEventListener("mouseup", function () {
+            document.addEventListener("mouseup", function () {
                 this.passConfirmElt.type = "password";
             }.bind(this));
         }
