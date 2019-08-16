@@ -13,6 +13,10 @@ section {
     height: 85vh;
 }
 
+.height-full {
+    min-height: 80vh;
+    display: flex;
+}
 
 .form-signin {
     margin: auto;

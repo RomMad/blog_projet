@@ -120,4 +120,4 @@ RewriteRule ^([a-z]{5,8})-orderBy-([a-zA-Z_]+)-order-(asc|desc)$  /blog_projet/i
 RewriteRule ^([a-z]{5,8})-orderBy-([a-zA-Z_]+)-order-(asc|desc)-page-([0-9]+)$  /blog_projet/index.php?action=$1&orderBy=$2&order=$3&page=$4 [QSA,L]
 
 # Redirection vers la page d'accueil
-RewriteRule ^([a-zA-Z0-9-_?!/+,;]+)$  /blog_projet/index.php [L]
+RewriteRule ^([a-zA-Z0-9-_?!/+,;]+)$  /blog_projet/index.php?action=error404 [L]
