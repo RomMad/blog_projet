@@ -5,7 +5,7 @@
 <div class="container">
 
     <section id="forgot-password" class="row">
-        <form action="index.php?action=forgotPassword" method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 mx-auto text-center">
+        <form action="forgotPassword" method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 mx-auto text-center">
 
             <?php $session->flash(); // Message en session flash ?>
 

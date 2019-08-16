@@ -5,7 +5,7 @@
 <div class="container">
 
     <section id="connection" class="row">
-        <form action="index.php?action=connection" method="post" class="form-signin mx-auto text-center">
+        <form action="connection" method="post" class="form-signin mx-auto text-center">
 
             <?php $session->flash(); // Message en session flash ?>
 
@@ -24,9 +24,9 @@
                 </label>
             </div>
             <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-blue btn-block mb-4 shadow">
-            <a href="index.php?action=inscription" class="btn btn-lg btn-blue btn-block mb-4 shadow">S'inscrire</a>
+            <a href="inscription-" class="btn btn-lg btn-blue btn-block mb-4 shadow">S'inscrire</a>
 
-            <a href="index.php?action=forgotPassword" class="text-blue mb-4">Login ou mot de passe oublié ?</a>
+            <a href="forgotPassword" class="text-blue mb-4">Login ou mot de passe oublié ?</a>
 
             <p class="mt-4 text-muted">© 2019</p>
         </form>

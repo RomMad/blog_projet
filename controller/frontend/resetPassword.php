@@ -88,7 +88,7 @@ function resetPassword() {
 
             $session->setFlash ("Le mot de passe a été modifié.", "success");
 
-            header("Location: index.php");
+            header("Location: blog");
             exit();
         }
     }

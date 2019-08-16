@@ -6,7 +6,7 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent">
-            <li class="breadcrumb-item"><a href="index.php" class="text-blue">Blog</a></li>
+            <li class="breadcrumb-item"><a href="blog" class="text-blue">Blog</a></li>
             <li class="breadcrumb-item active" aria-current="page">Article</li>
         </ol>
     </nav>
@@ -17,7 +17,7 @@
                 <h1 class="h2 mt-2 mb-3"><?= $post->title() ?></h1>
                 <p class="my-0">
                     <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" 
-                        href="index.php?action=user&id=<?= $post->user_id() ?>"><?= $post->login() ?></a> 
+                        href="user-<?= $post->user_id() ?>"><?= $post->login() ?></a> 
                         (Modifié le <?= $post->update_date("special_format") ?>)</em>
                     <a href="#comments" class="badge badge-blue ml-2 my-1 py-1" data-toggle="tooltip"
                         data-placement="bottom" title="Voir les commentaires">Commentaires 
@@ -26,7 +26,7 @@
                 <?php
                 if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $post->user_id()) {
                 ?>
-                <a class="text-blue a-edit-post m-1" href="index.php?action=editPost&id=<?= $post->id() ?>">
+                <a class="text-blue a-edit-post m-1" href="edit-post-<?= $post->id() ?>">
                     <span class="far fa-edit"></span> Modifier</a>
                 <?php 
                 } 
@@ -39,7 +39,7 @@
         <?php 
         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) {
         ?>
-        <a class="text-blue" href="index.php?action=editPost&id=<?= $post_id ?>"><span class="far fa-edit"></span>Modifier l'article</a>
+        <a class="text-blue" href="edit-post-<?= $post_id ?>"><span class="far fa-edit"></span>Modifier l'article</a>
         <?php 
         } 
         ?>
@@ -55,7 +55,7 @@
                 <h2 class="h3 mb-4">Nouveau commentaire</h2>
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="index.php?action=post&id=<?= $post_id ?>#form-comment" method="post" class="px-3">
+                        <form action="post-<?= $post_id ?>#form-comment" method="post" class="px-3">
                             <?php 
                             if (!isset($_SESSION["userID"])) {
                             ?>
@@ -120,7 +120,7 @@
                         if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$comment->user_id()) {
                         ?>
                         <div>
-                            <a href="index.php?action=post&id=<?= isset($post_id) ? $post_id : "" ?>&comment=<?= $comment->id() ?>&erase=true#form-comment"
+                            <a href="post-<?= isset($post_id) ? $post_id : "" ?>-comment-<?= $comment->id() ?>-delete#form-comment"
                                 onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
                                 <span class="fas fa-times text-danger"></span>
                             </a>
@@ -134,9 +134,9 @@
                             } else {
                         ?>
                         <div class="report-comment">
-                            <a href="index.php?action=post&id=<?= isset($post_id) ? $post_id : "" ?>&comment=<?= $comment->id() ?>&report=true#form-comment"
+                            <a href="post-<?= isset($post_id) ? $post_id : "" ?>-comment-<?= $comment->id() ?>-report#form-comment"
                                 onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
-                                <span class="far fa-flag text-warning"> Signaler</span>
+                                <span class="far fa-flag text-warning"> Signaler</span> <!-- #form-comment -->
                             </a>
                         </div>
                         <?php
@@ -155,7 +155,7 @@
                         ?>
                         <div id="form-edit-comment-<?= $comment->id() ?>" class="form-edit-comment d-none">
                             <form
-                                action="index.php?action=post&id=<?= $post_id ?>&comment=<?= $comment->id() ?>#form-comment"
+                                action="post-<?= $post_id ?>-comment-<?= $comment->id() ?>#form-comment"
                                 method="post">
                                 <div class="form-group">
                                     <label for="content"></label>
@@ -163,7 +163,7 @@
                                         rows="4"><?= $comment->content() ?></textarea>
                                 </div>
                                 <div class="form-group float-right">
-                                    <input type="submit" value="Modifier" name="edit_comment"
+                                    <input type="submit" value="Modifier" name="editComment"
                                         id="edit-<?= $comment->id() ?>" class="btn btn-blue shadow">
                                     <button value="Annuler" id="cancel_edit-comment-<?= $comment->id() ?>"
                                         class="cancel-edit-comment btn btn-secondary shadow">Annuler</button>

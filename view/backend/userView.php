@@ -6,7 +6,7 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent">
-            <li class="breadcrumb-item"><a href="index.php" class="text-blue">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
             <li class="breadcrumb-item active" aria-current="page">Utilisateur</li>
         </ol>
     </nav>
@@ -17,7 +17,7 @@
 
             <?php $session->flash(); // Message en session flash ?>
 
-            <form action="index.php?action=user&id=<?= $user->id() ?>" method="post" class="col-md-12 card shadow">
+            <form action="user-<?= $user->id() ?>" method="post" class="col-md-12 card shadow">
                 <div class="form-group row">
                     <h2 class="card-header col-md-12 h2 bg-light text-dark">Utilisateur</h2>
                 </div>
@@ -51,7 +51,7 @@
                         <div class="row">
                             <label for="birthdate" class="col-md-4 col-form-label">Date de naissance</label>
                             <div class="col-md-6">
-                                <input type="date" name="birthdate" id="birthdate" class="form-control mb-4" readonlyvalue="<?= $user->birthdate() ?>">
+                                <input type="date" name="birthdate" id="birthdate" class="form-control mb-4" readonly value="<?= $user->birthdate() ?>">
                             </div>
                         </div>
                         <div class="form-group row">

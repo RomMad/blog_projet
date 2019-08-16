@@ -10,13 +10,13 @@ function posts() {
 
     // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
     if (empty($_SESSION["userID"])) {
-        header("Location: index.php");
+        header("Location: blog");
         exit();
     } else {
         // Récupère le rôle de l'utilisateur
         $userRole = $usersManager->getRole($_SESSION["userID"]);
         if ($userRole != 1) {
-            header("Location: index.php");
+            header("Location: blog");
             exit();
         }
     }
@@ -91,8 +91,8 @@ function posts() {
     setcookie("order[adminPosts]", $order, time() + 365*24*3600, null, null, false, true);
 
     // Initialise la pagination
-    $linkNbDisplayed = "index.php?action=posts&&orderBy=" . $orderBy . "&order=" . $order. "&";
-    $pagination = new Pagination("adminPosts", $nbItems, $linkNbDisplayed, $linkNbDisplayed, "#table_admin_posts");
+    $linkNbDisplayed = "posts-orderBy-" . $orderBy . "-order-" . $order;
+    $pagination = new Pagination("adminPosts", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table_admin_posts");
 
     // Récupère les articles
     $posts = $postsManager->getlist($_SESSION["filter"], $orderBy, $order, $pagination->_nbLimit, $pagination->_nbDisplayed);

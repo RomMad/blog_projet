@@ -41,6 +41,6 @@ class Session {
     // Déconnection de la session
     public function disconnect() {
         session_destroy();
-        header("Location: index.php?action=connection"); // Redirige vers page d'accueil
+        header("Location: connection"); // Redirige vers page d'accueil
     }
 }

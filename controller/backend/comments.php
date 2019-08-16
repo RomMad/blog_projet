@@ -10,12 +10,12 @@ function comments() {
 
     // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
     if (empty($_SESSION["userID"])) {
-        header("Location: index.php");
+        header("Location: blog");
     } else {
         // Récupère le rôle de l'utilisateur
         $userRole = $usersManager->getRole($_SESSION["userID"]);
         if ($userRole != 1) {
-            header("Location: index.php");
+            header("Location: blog");
         }
     }
 
@@ -96,8 +96,8 @@ function comments() {
     setcookie("order[adminComments]", $order, time() + 365*24*3600, null, null, false, false);
 
     // Initialise la pagination
-    $linkNbDisplayed = "index.php?action=comments&orderBy=" . $orderBy . "&order=" . $order. "&";
-    $pagination = new Pagination("adminComments", $nbItems, $linkNbDisplayed, $linkNbDisplayed, "#table-admin_comments");
+    $linkNbDisplayed = "comments-orderBy-" . $orderBy . "-order-" . $order;
+    $pagination = new Pagination("adminComments", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table-admin_comments");
 
     // Récupère les commentaires
     $comments = $commentsManager->getlist($_SESSION["filter"], $orderBy, $order,  $pagination->_nbLimit, $pagination->_nbDisplayed);

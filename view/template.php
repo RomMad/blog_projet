@@ -53,7 +53,7 @@
     <header id="header">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3 py-3 shadow">
             <a class="navbar-brand text-blue"
-                href="index.php"><?= isset($_SESSION["settings"]) ? $_SESSION["settings"]->blog_name() : "Jean Forteroche | Le blog" ?></a>
+                href="blog"><?= isset($_SESSION["settings"]) ? $_SESSION["settings"]->blog_name() : "Jean Forteroche | Le blog" ?></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -62,7 +62,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="index.php"><span class="fas fa-home"></span> Accueil <span
+                        <a class="nav-link" href="blog"><span class="fas fa-home"></span> Accueil <span
                                 class="sr-only">(current)</span></a>
                     </li>
                     <?php 
@@ -70,7 +70,7 @@
                     if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
                     ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php?action=editPost">Nouvel article</a>
+                        <a class="nav-link" href="edit-post">Nouvel article</a>
                     </li>
                     <?php 
                     }
@@ -78,23 +78,23 @@
                     if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]==1) {
                     ?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="index.php?action=settings" id="navbarDropdown"
+                        <a class="nav-link dropdown-toggle" href="settings" id="navbarDropdown"
                             role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="index.php?action=settings">Administration générale</a>
+                            <a class="dropdown-item" href="settings">Administration générale</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="index.php?action=posts">Gestion des articles</a>
-                            <a class="dropdown-item" href="index.php?action=comments">Gestion des commentaires</a>
+                            <a class="dropdown-item" href="posts">Gestion des articles</a>
+                            <a class="dropdown-item" href="comments">Gestion des commentaires</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="index.php?action=users">Gestion des utilisateurs</a>
-                            <a class="dropdown-item" href="index.php?action=newUser">Ajouter un utilisateur</a>
+                            <a class="dropdown-item" href="users">Gestion des utilisateurs</a>
+                            <a class="dropdown-item" href="newUser">Ajouter un utilisateur</a>
                         </div>
                     </li>
                     <?php 
                     }
                     ?>
                 </ul>
-                <form action="index.php?action=listPosts" method="get" class="form-inline my-2 my-lg-0">
+                <form action="blog" method="get" class="form-inline my-2 my-lg-0">
                     <label for="search" class="sr-only col-form-label">Recherche</label>
                     <input name="search" id="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search"
                         value="<?= isset($_SESSION["filter_search"]) ? htmlspecialchars($_SESSION["filter_search"]) : "" ?>">
@@ -106,20 +106,20 @@
                 <?php 
                 if (isset($_SESSION["userID"])) {
                 ?>
-                    <a class="text-blue font-weight-bold" href="index.php?action=profil" data-toggle="popover"
+                    <a class="text-blue font-weight-bold" href="profil" data-toggle="popover"
                         data-trigger="hover" data-placement="bottom" data-html="true"
                         title="<?= htmlspecialchars($_SESSION["userSurname"]) ?> <?= htmlspecialchars($_SESSION["userName"]) ?>"
                         data-content="Dernière connexion : <br /><?= htmlspecialchars($_SESSION["lastConnection"]) ?><br /> Profil : <?= htmlspecialchars($_SESSION["userProfil"]) ?>">
                         <span class="fas fa-user"></span> <?= $_SESSION["userLogin"] ?>
                     </a>
                     <br />
-                    <a class="text-blue" href="index.php?action=disconnection">Vous déconnecter</a>
+                    <a class="text-blue" href="disconnection">Vous déconnecter</a>
                     <?php 
                     } else {
                     ?>
-                    <a class="text-blue" href="index.php?action=connection">Se connecter</a>
+                    <a class="text-blue" href="connection">Se connecter</a>
                     <br />
-                    <a class="text-blue" href="index.php?action=inscription">S'inscrire</a>
+                    <a class="text-blue" href="inscription-">S'inscrire</a>
                     <?php
                     }
                     ?>

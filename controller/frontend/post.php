@@ -11,13 +11,13 @@ function post() {
     if (!empty($_GET["id"])) {
         $post = $postsManager->getUserId($_GET["id"]);
         if (!$post) {
-            header("Location: index.php"); 
+            header("Location: blog"); 
             exit();
         }
         $post_id = htmlspecialchars($_GET["id"]);
         $_SESSION["postID"] = $post_id;
     } else {
-        header("Location: index.php"); 
+        header("Location: blog"); 
         exit();
     }
 
@@ -77,7 +77,7 @@ function post() {
             }
         }
         // Modifie le commentaire
-        if (isset($_POST["edit_comment"])) {
+        if (isset($_POST["editComment"])) {
             $comment = new Comments([
                 "id" => $_GET["comment"],
                 "content" => $_POST["content"],
@@ -89,7 +89,7 @@ function post() {
     }
 
     //
-    if (isset($_GET["erase"]) && $_GET["erase"]=="true") {
+    if (isset($_GET["delete"]) && $_GET["delete"]=="true") {
         $comment = new Comments([
             "id" => $_GET["comment"],
         ]);
@@ -100,7 +100,7 @@ function post() {
     if (isset($_GET["report"]) && $_GET["report"]=="true") {
         $comment = new Comments([
             "id" => $_GET["comment"],
-            "status" => 3,
+            "status" => 2,
         ]);
         $commentsManager->report($comment);
         $session->setFlash("Le commentaire a été signalé.", "warning");
@@ -113,8 +113,8 @@ function post() {
     $nbItems = $commentsManager->count("post_id = " . $post_id . " AND " . $filter);
 
     // Initialise la pagination
-    $linkNbDisplayed = "index.php?action=post&id=" . $post_id . "&";
-    $pagination = new Pagination("comments", $nbItems, $linkNbDisplayed . "#comments", $linkNbDisplayed, "#comments");
+    $linkNbDisplayed = "post-" . $post_id;
+    $pagination = new Pagination("comments", $nbItems, "post-" . $post_id . "#comments", "post-" . $post_id . "-", "#comments");
 
     // Récupère les commentaires si le nombre > 0 
     if ($nbItems) {

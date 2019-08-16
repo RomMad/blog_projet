@@ -9,12 +9,12 @@ $usersManager = new UsersManager();
 
 // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
 if (empty($_SESSION["userID"])) {
-    header("Location: index.php");
+    header("Location: blog");
 } else {
     // Récupère le rôle de l'utilisateur
     $userRole = $usersManager->getRole($_SESSION["userID"]);
     if ($userRole != 1) {
-        header("Location: index.php");
+        header("Location: blog");
     }
 }
 
@@ -75,8 +75,8 @@ setcookie("orderBy[adminUsers]", $orderBy, time() + 365*24*3600, null, null, fal
 setcookie("order[adminUsers]", $order, time() + 365*24*3600, null, null, false, true);
 
 // Initialise la pagination
-$linkNbDisplayed = "index.php?action=users&orderBy=" . $orderBy . "&order=" . $order. "&";
-$pagination = new Pagination("adminUsers", $nbItems, $linkNbDisplayed, $linkNbDisplayed, "#table-admin_users");
+$linkNbDisplayed = "users-orderBy-" . $orderBy . "-order-" . $order;
+$pagination = new Pagination("adminUsers", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table-admin_users");
 
 // Récupère les utilisateurs
 $users = $usersManager->getlist($_SESSION["filter"], $orderBy, $order,  $pagination->_nbLimit, $pagination->_nbDisplayed);

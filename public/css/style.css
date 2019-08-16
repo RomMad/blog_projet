@@ -273,5 +273,5 @@ a.text-blue:focus {
 
 /* Notification TinyMCE */
 .tox-notification {
-    display: none !important;
+    /* display: none !important; */
 }

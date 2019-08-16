@@ -10,7 +10,7 @@ function settings() {
 
     // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
     if (empty($_SESSION["userID"])) {
-        header("Location: index.php?action=connection");
+        header("Location: connection");
         exit();
     } 
 
@@ -18,7 +18,7 @@ function settings() {
     $userRole = $usersManager->getRole($_SESSION["userID"]);
 
     if ($userRole != 1) {
-        header("Location: index.php");
+        header("Location: blog");
         exit();
     }
 

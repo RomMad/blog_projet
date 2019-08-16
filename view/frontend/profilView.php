@@ -6,7 +6,7 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent">
-            <li class="breadcrumb-item"><a href="index.php" class="text-blue">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
             <li class="breadcrumb-item active" aria-current="page">Profil</li>
         </ol>
     </nav>
@@ -20,7 +20,7 @@
             <div class="row">
 
                 <div class="col-md-6 mt-4">
-                    <form action="index.php?action=profil" method="post" class="col-md-12 card shadow">
+                    <form action="profil" method="post" class="col-md-12 card shadow">
                         <div class="form-group row">
                             <h2 class="card-header col-md-12 h2 bg-light text-dark">Profil</h2>
                         </div>
@@ -94,7 +94,7 @@
                 </div>
 
                 <div class="col-md-6 offset-lg-1 col-lg-5 mt-4">
-                    <form action="index.php?action=profil" method="post" class="col-md-12 card shadow">
+                    <form action="profil" method="post" class="col-md-12 card shadow">
                         <div class="form-group row">
                             <h2 class="card-header col-md-12 h2 bg-light text-dark">Mot de passe</h2>
                         </div>

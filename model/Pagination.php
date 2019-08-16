@@ -141,22 +141,22 @@ Class Pagination {
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-end mb-0">
                     <li class="page-item <?= $this->_prevPageLink ?> shadow-sm">
-                    <a class="page-link <?= $this->_prevPageColorLink ?> font-weight-bold"href="<?= $this->_linkPagination ?>page=<?= $this->_prevPage . $this->_anchorPagination ?>" tabindex="-1" aria-disabled="true"><span aria-hidden="true">&laquo;</span></a>
+                    <a class="page-link <?= $this->_prevPageColorLink ?> font-weight-bold"href="<?= $this->_linkPagination ?>page-<?= $this->_prevPage . $this->_anchorPagination ?>" tabindex="-1" aria-disabled="true"><span aria-hidden="true">&laquo;</span></a>
                     </li>
                     <?php 
                     if ($this->_currentPage > 2 && $this->_nbPages > 3) {
                     ?>
-                        <li class="page-item"><a class="page-link text-blue p-2 px-2 shadow-sm" href="<?= $this->_linkPagination ?>page=1<?= $this->_anchorPagination ?>">1...</a></li>
+                        <li class="page-item"><a class="page-link text-blue p-2 px-2 shadow-sm" href="<?= $this->_linkPagination ?>page-1<?= $this->_anchorPagination ?>">1...</a></li>
                     <?php                                                               
                     }
                     ?>
-                    <li class="page-item <?= $this->_activepageLink_1 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_pageLink_1 . $this->_anchorPagination ?>"><?= $this->_pageLink_1 ?></a></li>
-                    <li class="page-item <?= $this->_activepageLink_2 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_pageLink_2 . $this->_anchorPagination ?>"><?= $this->_pageLink_2 ?></a></li>
+                    <li class="page-item <?= $this->_activepageLink_1 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page-<?= $this->_pageLink_1 . $this->_anchorPagination ?>"><?= $this->_pageLink_1 ?></a></li>
+                    <li class="page-item <?= $this->_activepageLink_2 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page-<?= $this->_pageLink_2 . $this->_anchorPagination ?>"><?= $this->_pageLink_2 ?></a></li>
 
                     <?php 
                     if ($this->_nbPages > 2) {
                     ?>
-                        <li class="page-item <?= $this->_activepageLink_3 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_pageLink_3 . $this->_anchorPagination ?>"><?= $this->_pageLink_3 ?></a></li>
+                        <li class="page-item <?= $this->_activepageLink_3 ?> shadow-sm"><a class="page-link text-blue" href="<?= $this->_linkPagination ?>page-<?= $this->_pageLink_3 . $this->_anchorPagination ?>"><?= $this->_pageLink_3 ?></a></li>
                     <?php 
                     }
                     ?>
@@ -164,12 +164,12 @@ Class Pagination {
                     <?php 
                     if ($this->_currentPage < $this->_nbPages -1 && $this->_nbPages > 3) {
                     ?>
-                        <li class="page-item shadow-sm"><a class="page-link px-2 text-blue" href="<?= $this->_linkPagination ?>page=<?= $this->_nbPages . $this->_anchorPagination ?>">...<?= $this->_nbPages ?></a></li>
+                        <li class="page-item shadow-sm"><a class="page-link px-2 text-blue" href="<?= $this->_linkPagination ?>page-<?= $this->_nbPages . $this->_anchorPagination ?>">...<?= $this->_nbPages ?></a></li>
                     <?php 
                     }
                     ?>
                         <li class="page-item <?= $this->_nextPageLink ?> shadow-sm">
-                    <a class="page-link <?= $this->_nextPageColorLink ?> font-weight-bold"" href="<?= $this->_linkPagination ?>page=<?= $this->_nextPage . $this->_anchorPagination ?>"><span aria-hidden="true">&raquo;</span></a>
+                    <a class="page-link <?= $this->_nextPageColorLink ?> font-weight-bold"" href="<?= $this->_linkPagination ?>page-<?= $this->_nextPage . $this->_anchorPagination ?>"><span aria-hidden="true">&raquo;</span></a>
                     </li>
                 </ul>
             </nav>

@@ -9,18 +9,18 @@ function user() {
 
     // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
     if (empty($_SESSION["userID"])) {
-        header("Location: index.php");
+        header("Location: blog");
         exit();
     } else {
         // Récupère le rôle de l'utilisateur
         $userRole = $usersManager->getRole($_SESSION["userID"]);
         if ($userRole != 1) {
-            header("Location: index.php");
+            header("Location: blog");
             exit();
         }
         // Récupère le rôle de l'utilisateur
         if ($_GET["id"] == $_SESSION["userID"]) {
-            header("Location: index.php?action=profil");
+            header("Location: profil");
             exit();
         }
     }

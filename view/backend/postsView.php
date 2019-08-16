@@ -6,8 +6,8 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0">
-            <li class="breadcrumb-item"><a href="index.php" class="text-blue">Accueil</a></li>
-            <li class="breadcrumb-item"><a href="index.php?action=settings" class="text-blue">Administration</a></li>
+            <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="settings" class="text-blue">Administration</a></li>
             <li class="breadcrumb-item active" aria-current="page">Gestion des articles</li>
         </ol>
     </nav>
@@ -71,7 +71,7 @@
                                 <th scope="col" class="align-middle"><input type="checkbox" name="allSelectedPosts"
                                         id="all-checkbox" /><label for="allSelectedPosts"></label></th>
                                 <th scope="col" class="align-middle">
-                                    <a href="index.php?action=posts&orderBy=title&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                    <a href="posts-orderBy-title-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                         class="sorting-indicator text-white">Titre
                                         <?php 
                                 if ($orderBy == "title") {
@@ -83,7 +83,7 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="align-middle">
-                                    <a href="index.php?action=posts&orderBy=user_name&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                    <a href="posts-orderBy-user_name-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                         class="sorting-indicator text-white">Auteur
                                         <?php 
                                 if ($orderBy == "user_name") {
@@ -95,7 +95,7 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="align-middle">
-                                    <a href="index.php?action=posts&orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                    <a href="posts-orderBy-status-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                         class="sorting-indicator text-white">Statut
                                         <?php 
                                 if ($orderBy == "status") {
@@ -107,7 +107,7 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="align-middle">
-                                    <a href="index.php?action=posts&orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                    <a href="posts-orderBy-creation_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                         class="sorting-indicator text-white">Date de création
                                         <?php 
                                 if ($orderBy == "creation_date") {
@@ -119,7 +119,7 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="align-middle">
-                                    <a href="index.php?action=posts&orderBy=update_date&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                    <a href="posts-orderBy-update_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                         class="sorting-indicator text-white">Date de mise à jour
                                 <?php 
                                 if ($orderBy == "update_date") {
@@ -144,7 +144,7 @@
                                         value="<?= $post->id() ?>" class="" />
                                     <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
                                 </th>
-                                <td><a href="index.php?action=post&id=<?= $post->id() ?>"
+                                <td><a href="post-<?= $post->id() ?>"
                                         class="text-blue font-weight-bold"><?= $post->title() ?></a></td>
                                 <td><?= $post->login() ?></td>
                                 <td><?= $post->status() ?></td>

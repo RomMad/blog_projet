@@ -11,8 +11,8 @@ if (isset($_GET["id"])) {
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent">
-            <li class="breadcrumb-item"><a href="index.php" class="text-blue">Blog</a></li>
-            <li class="breadcrumb-item"><a href="index.php?action=post&id=<?= isset($_GET["id"]) ? $post->id() : "" ?>"class="text-blue">Article</a></li>
+            <li class="breadcrumb-item"><a href="blog" class="text-blue">Blog</a></li>
+            <li class="breadcrumb-item"><a href="post-<?= isset($_GET["id"]) ? $post->id() : "" ?>"class="text-blue">Article</a></li>
             <li class="breadcrumb-item active" aria-current="page">Édition</li>
         </ol>
     </nav>
@@ -20,7 +20,7 @@ if (isset($_GET["id"])) {
     <section id="post_form" class="row">
         <div class="col-sm-12 col-md-12 mx-auto">
 
-            <form action="index.php?action=editPost&id=<?= isset($_GET["id"]) ? $post->id() : "" ?>" method="post"class="">
+            <form action="edit-post-<?= isset($_GET["id"]) ? $post->id() : "" ?>" method="post"class="">
                 <h2 class="mb-4">Édition d'article</h2>
 
                 <?php $session->flash(); // Message en session flash ?>
@@ -66,7 +66,7 @@ if (isset($_GET["id"])) {
                             <?php 
                             if (isset($_GET["id"])) { 
                             ?>
-                            <input type="submit" id="erase" name="erase" alt="Supprimer l'article" class="btn btn-block btn-danger mb-2 shadow" value="Supprimer"
+                            <input type="submit" id="delete" name="delete" alt="Supprimer l'article" class="btn btn-block btn-danger mb-2 shadow" value="Supprimer"
                                 onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;} else{return false;}">
                             <?php 
                             } 

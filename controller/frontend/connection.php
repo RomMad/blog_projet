@@ -9,7 +9,7 @@ function connection() {
 
     // Redirige vers la page d'accueil si l'utilisateur est déjà connecté
     if (!empty($_SESSION["userID"])) {
-        header("Location: index.php");
+        header("Location: blog");
     }
 
     // Vérifie si informations dans variable POST
@@ -64,7 +64,7 @@ function connection() {
             ]);
 
             $session->setFlash("Vous êtes connecté.", "success");
-            header("Location: index.php");
+            header("Location: blog");
             exit();
         }
     }

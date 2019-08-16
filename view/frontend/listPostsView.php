@@ -13,7 +13,7 @@
         if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
         ?>
             <div class="mt-4 mb-4">
-                <a class="text-blue" href="index.php?action=editPost"><span class="far fa-file"></span> Rédiger un
+                <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un
                     nouvel article</a>
             </div>
         <?php
@@ -34,17 +34,17 @@
             if ($nbItems) {
                 foreach ($posts as $post) {
                 ?>
-                <div class="col-md-<?=  12 / $settings->posts_by_row() ?>">
+                <div class="col-md-<?=  isset($settings) ? 12 / $settings->posts_by_row() : 12 ?>">
                     <div class="card shadow">
                         <div class="card-header bg-dark text-light">
-                            <a class="text-blue" href="index.php?action=post&id=<?= $post->id() ?>">
+                            <a class="text-blue" href="post-<?= $post->id() ?>">
                                 <h3 class="mt-1"><?= $post->title() ?></h3>
                             </a>
                             <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue"
-                                    href="index.php?action=user&id=<?= $post->user_id() ?>"><?= $post->user_login() ?></a></em>
+                                    href="user-<?= $post->user_id() ?>"><?= $post->user_login() ?></a></em>
                             <?php if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { ?>
                             <a class="text-blue a-edit-post m-1"
-                                href="index.php?action=editPost&id=<?= $post->id() ?>"><span class="far fa-edit"></span>
+                                href="edit-post-<?= $post->id() ?>"><span class="far fa-edit"></span>
                                 Modifier</a>
                             <?php } ?>
                         </div>
@@ -55,7 +55,7 @@
                                 <span class="post-fade-out"></span>
                             </div>
                             <div>
-                                <a href="index.php?action=post&id=<?= $post->id() ?>"
+                                <a href="post-"<?= $post->id() ?>"
                                     class="btn btn-outline-blue mt-2">Continuer la lecture
                                     <span class="fas fa-angle-right"></span>
                                 </a>
@@ -76,7 +76,7 @@
             <?php $pagination->view() ?>
 
             <div class="mt-4 mb-4">
-                <a class="text-blue" href="index.php?action=editPost"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
 
     </section>

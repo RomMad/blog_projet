@@ -7,7 +7,7 @@ function profil() {
 
     // Redirige vers la page de connexion si non connecté
     if (empty($_SESSION["userID"])) {
-        header("Location: index.php?action=connection");
+        header("Location: connection");
         exit();
     } else {
         // Récupère les informations de l'utilisateur

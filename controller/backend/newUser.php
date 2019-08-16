@@ -80,7 +80,7 @@ function newuser() {
                 "token" => $user->pass()
             ));
             // Initialise l'email
-            $link = "http://localhost/blog_projet/index.php?action=resetPassword&token=" . $user->pass();
+            $link = "http://localhost/blog_projet/reset-password-" . $user->pass();
             $to = $user->email();
             $subject = "Création de compte";
             $message = "

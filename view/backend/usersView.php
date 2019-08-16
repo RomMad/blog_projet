@@ -6,8 +6,8 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0">
-            <li class="breadcrumb-item"><a href="index.php" class="text-blue">Accueil</a></li>
-            <li class="breadcrumb-item"><a href="index.php?action=settings" class="text-blue">Administration</a></li>
+            <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="settings" class="text-blue">Administration</a></li>
             <li class="breadcrumb-item active" aria-current="page">Gestion des utilisateurs</li>
         </ol>
     </nav>
@@ -74,7 +74,7 @@
                                         <label for="allselectedUsers" class="sr-only">Tout sélectionner</label>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=users&orderBy=login&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="users-orderBy-login-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Login
                                         <?php 
                                         if ($orderBy == "login") {
@@ -86,7 +86,7 @@
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=users&orderBy=name&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="users-orderBy-name-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Nom
                                         <?php 
                                         if ($orderBy == "name") {
@@ -98,7 +98,7 @@
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=users&orderBy=surname&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="users-orderBy-surname-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Prénom
                                         <?php 
                                         if ($orderBy == "surname") {
@@ -110,7 +110,7 @@
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=users&orderBy=email&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="users-orderBy-email-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Email
                                         <?php 
                                         if ($orderBy == "email") {
@@ -122,7 +122,7 @@
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=users&orderBy=role&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="users-orderBy-role-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Rôle
                                         <?php 
                                         if ($orderBy == "role") {
@@ -134,7 +134,7 @@
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=users&orderBy=registration_date&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="users-orderBy-registration_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Date d'enregistrement
                                         <?php 
                                         if ($orderBy == "registration_date") {
@@ -158,7 +158,7 @@
                                         <input type="checkbox" name="selectedUsers[]" id="User<?= $user->id() ?>" value="<?= $user->id() ?>" class="" />
                                         <label for="selectedUsers[]" class="sr-only">Sélectionner</label>
                                     </th>
-                                    <td><a href="index.php?action=user&id=<?= $user->id() ?>" class="text-blue"><?= $user->login() ?></a></td>
+                                    <td><a href="user-<?= $user->id() ?>" class="text-blue"><?= $user->login() ?></a></td>
                                     <td><?= $user->name() ?></td>
                                     <td><?= $user->surname() ?></td>
                                     <td><?= $user->email() ?></td>

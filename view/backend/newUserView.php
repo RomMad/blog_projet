@@ -6,8 +6,8 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0">
-            <li class="breadcrumb-item"><a href="index.php" class="text-blue">Accueil</a></li>
-            <li class="breadcrumb-item"><a href="index.php?action=settings" class="text-blue">Administration</a></li>
+            <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="settings" class="text-blue">Administration</a></li>
             <li class="breadcrumb-item active" aria-current="page">Ajout d'un utilisateur</li>
         </ol>
     </nav>
@@ -17,7 +17,7 @@
 
             <?php $session->flash(); // Message en session flash ?>
 
-            <form action="index.php?action=newUser" method="post" class="col-md-12 card shadow mt-4">
+            <form action="newUser" method="post" class="col-md-12 card shadow mt-4">
                 <div class="form-group row">
                     <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Nouvel utilisateur</h3>
                 </div>

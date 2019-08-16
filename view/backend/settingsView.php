@@ -6,7 +6,7 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent">
-            <li class="breadcrumb-item"><a href="index.php" class="text-blue">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
             <li class="breadcrumb-item active" aria-current="page">Administration</li>
         </ol>
     </nav>
@@ -24,7 +24,7 @@
     <div class="row">
 
         <div class="col-md-8 col-lg-6 mt-4">
-            <form action="index.php?action=settings" method="post" class="col-md-12 card shadow">
+            <form action="settings" method="post" class="col-md-12 card shadow">
                 <div class="form-group row">
                     <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Paramètres</h3>
                 </div>
@@ -89,10 +89,10 @@
         <div class="col-md-4 offset-lg-2 col-lg-4 mt-4">
             <div class="list-group shadow">
                 <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Navigation</h3>
-                <a href="index.php?action=posts" class="list-group-item list-group-item-action text-blue">Gestion des articles</a>
-                <a href="index.php?action=comments" class="list-group-item list-group-item-action text-blue">Gestion des commentaires</a>
-                <a href="index.php?action=users" class="list-group-item list-group-item-action text-blue">Gestion des utilisateurs</a>
-                <a href="index.php?action=newUser" class="list-group-item list-group-item-action text-blue">Ajouter un utilisateur</a>
+                <a href="posts" class="list-group-item list-group-item-action text-blue">Gestion des articles</a>
+                <a href="comments" class="list-group-item list-group-item-action text-blue">Gestion des commentaires</a>
+                <a href="users" class="list-group-item list-group-item-action text-blue">Gestion des utilisateurs</a>
+                <a href="newUser" class="list-group-item list-group-item-action text-blue">Ajouter un utilisateur</a>
             </div>
         </div>
 

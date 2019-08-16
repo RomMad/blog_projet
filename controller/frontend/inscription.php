@@ -83,7 +83,7 @@ function inscription() {
             $_SESSION["userRole"] = $user->role();
 
             $session->setFlash("L'inscription est réussie.", "success");
-            header("Location: index.php");
+            header("Location: blog");
             exit();
         }
     }

@@ -33,7 +33,7 @@ function forgotPassword() {
                 "token" => $token
             ));
             // Initialise l'email
-            $link = "http://localhost/blog_projet/index.php?action=resetPassword&token=" . $token;
+            $link = "http://localhost/blog_projet/reset-password-" . $token;
             $to = $user->email();
             $subject = "Demande de réinitialisation du mot de passe";
             $message = "

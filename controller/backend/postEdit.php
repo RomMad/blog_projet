@@ -10,13 +10,13 @@ function postEdit() {
         $post = $postsManager->getUserId($_GET["id"]);
         if (!$post) {
             $session->setFlash("Cet article n'existe pas.", "warning");
-            header("Location: index.php"); 
+            header("Location: blog"); 
             exit();
         }
         // Vérifie si l'utilisateur a les droit d'accès ou si il est l'auteur de l'article
         if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post->user_id()) {
             $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
-            header("Location: index.php"); 
+            header("Location: blog"); 
             exit();
         }
     }
@@ -24,7 +24,7 @@ function postEdit() {
     // Redirige vers la page de connexion si l'utilisateur n'a pas les droits
     if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) {
         $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
-        header("Location: index.php?action=connection"); 
+        header("Location: connection"); 
         exit();
     }
 
@@ -40,10 +40,10 @@ function postEdit() {
         ]);
     
         // Supprime l'article
-        if (isset($_POST["erase"]) && !empty($post->id())) {
+        if (isset($_POST["delete"]) && !empty($post->id())) {
             $postsManager->delete($post);
             $session->setFlash("L'article <b>". $post->title() . "</b> a été supprimé.", "warning");
-            header("Location: index.php");
+            header("Location: blog");
             exit();
         }
 

@@ -9,7 +9,7 @@
 
             <?php $session->flash(); ?>
 
-            <form action="index.php?action=inscription" method="post" class="col-md-12 card shadow mt-4">
+            <form action="inscription-" method="post" class="col-md-12 card shadow mt-4">
                 <div class="form-group row">
                     <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Inscription</h3>
                 </div>

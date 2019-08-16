@@ -6,8 +6,8 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0">
-            <li class="breadcrumb-item"><a href="index.php" class="text-blue">Accueil</a></li>
-            <li class="breadcrumb-item"><a href="index.php?action=settings" class="text-blue">Administration</a></li>
+            <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="settings" class="text-blue">Administration</a></li>
             <li class="breadcrumb-item active" aria-current="page">Gestion des commentaires</li>
         </ol>
     </nav>
@@ -69,7 +69,7 @@
                                         <label for="allselectedComments" class="sr-only">Tout sélectionner</label>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=comments&orderBy=content&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="comments-orderBy-content-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Contenu du commentaire
                                             <?php 
                                     if ($orderBy == "content") {
@@ -81,7 +81,7 @@
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=comments&orderBy=user_name&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="comments-orderBy-user_name-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Auteur
                                             <?php 
                                     if ($orderBy == "user_name") {
@@ -93,7 +93,7 @@
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=comments&orderBy=status&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="comments-orderBy-status-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Statut
                                             <?php 
                                     if ($orderBy == "status") {
@@ -105,7 +105,7 @@
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=comments&orderBy=report_date&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="comments-orderBy-report_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Date de signalement
                                             <?php 
                                     if ($orderBy == "report_date") {
@@ -117,7 +117,7 @@
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=comments&orderBy=nb_report&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="comments-orderBy-nb_report-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Nb de signalements
                                             <?php 
                                     if ($orderBy == "nb_report") {
@@ -129,7 +129,7 @@
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="index.php?action=comments&orderBy=creation_date&order=<?= $order == "desc" ? "asc" : "desc" ?>"
+                                        <a href="comments-orderBy-creation_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Date de création
                                             <?php 
                                     if ($orderBy == "creation_date") {
@@ -154,7 +154,7 @@
                                             id="comment<?= $comment->id() ?>" value="<?= $comment->id() ?>" class="" />
                                         <label for="selectedComments[]" class="sr-only">Sélectionner</label>
                                     </th>
-                                    <td><a href="index.php?action=post&id=<?= $comment->post_id() ?>"
+                                    <td><a href="post-<?= $comment->post_id() ?>"
                                             class="text-dark"><?= $comment->content() ?></a></td>
                                     <td>
                                         <?php 
