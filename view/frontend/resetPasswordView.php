@@ -4,9 +4,9 @@
 
 <div class="container">
 
-    <section id="reset-password" class="row">
+    <section class="row height-full">
         <form action="resetPassword-<?= isset($_GET["token"]) ? htmlspecialchars($_GET["token"]) : "" ?>"
-            method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 mx-auto mt-4 mb-4">
+            method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 m-auto">
 
             <?php $session->flash(); // Message en session flash ?>
 

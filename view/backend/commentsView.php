@@ -12,8 +12,8 @@
         </ol>
     </nav>
 
-    <div class="row">
-        <section id="table-admin_comments" class="col-md-12 mt-4 table-admin">
+    <div class="row height-full">
+        <section id="table-admin_comments" class="col-md-12 table-admin">
 
             <h2 class="mb-4">Gestion des commentaires
                 <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>

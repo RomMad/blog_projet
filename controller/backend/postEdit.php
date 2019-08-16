@@ -34,11 +34,10 @@ function postEdit() {
             "title" => $_POST["title"],
             "content" => $_POST["post_content"],
             "status" => $_POST["status"],
-            "id" => $_GET["id"],
+            "id" => isset($_GET["id"]) ? $_GET["id"] : "",
             "user_id" => $_SESSION["userID"],
             "user_login" => $_SESSION["userLogin"],
         ]);
-    
         // Supprime l'article
         if (isset($_POST["delete"]) && !empty($post->id())) {
             $postsManager->delete($post);

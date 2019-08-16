@@ -12,8 +12,8 @@
         </ol>
     </nav>
 
-    <div class="row">
-        <section id="table_admin_posts" class="col-md-12 mt-4 table-admin">
+    <div class="row height-full">
+        <section id="table_admin_posts" class="col-md-12 table-admin">
 
             <h2 class="mb-4">Gestion des articles
                 <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>

@@ -3,11 +3,10 @@
 <?php ob_start(); ?>
 
 <div class="container">
+    <section id="connection" class="row height-full">
+        <form action="connection" method="post" class="form-signin m-auto text-center">
 
-    <section id="connection" class="row">
-        <form action="connection" method="post" class="form-signin mx-auto text-center">
-
-            <?php $session->flash(); // Message en session flash ?>
+            <?php $session->flash(); ?>
 
             <h1 class="h3 mb-4 font-weight-normal">Merci de vous connecter</h1>
             <label for="login" class="sr-only">Login ou adresse email</label>
@@ -15,7 +14,7 @@
                 autofocus="" value="<?= isset($_COOKIE["user"]["login"]) ? $_COOKIE["user"]["login"] : "" ?>">
             <label for="pass" class="sr-only">Mot de passe</label>
             <div class="div-user-pass">
-                <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm" placeholder="Mot de passe">
+                <input type="password" name="pass" id="pass" class="form-control mb-3 shadow-sm" placeholder="Mot de passe">
                 <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
             </div>
             <div class="checkbox mb-3">
@@ -28,10 +27,9 @@
 
             <a href="forgotPassword" class="text-blue mb-4">Login ou mot de passe oublié ?</a>
 
-            <p class="mt-4 text-muted">© 2019</p>
+            <p class="mt-3 mb-0 text-muted">© 2019</p>
         </form>
     </section>
-
 </div>
 
 <?php $content = ob_get_clean(); ?>

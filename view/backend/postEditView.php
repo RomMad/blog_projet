@@ -17,13 +17,13 @@ if (isset($_GET["id"])) {
         </ol>
     </nav>
 
-    <section id="post_form" class="row">
-        <div class="col-sm-12 col-md-12 mx-auto">
+    <section id="post_form" class="row height-full">
+        <div class="col-sm-12 col-md-12 m-auto">
 
-            <form action="edit-post-<?= isset($_GET["id"]) ? $post->id() : "" ?>" method="post"class="">
+            <form action="edit-post<?= isset($post) ? "-" . $post->id() : "" ?>" method="post">
                 <h2 class="mb-4">Édition d'article</h2>
 
-                <?php $session->flash(); // Message en session flash ?>
+                <?php $session->flash(); ?>
 
                 <div class="row">
                     <div class="col-md-12 col-lg-10">

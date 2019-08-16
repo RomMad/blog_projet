@@ -7,12 +7,6 @@ section {
     margin-bottom: 20px;
 }
 
-#connection,
-#forgot-password {
-    display: flex;
-    height: 85vh;
-}
-
 .height-full {
     min-height: 80vh;
     display: flex;
