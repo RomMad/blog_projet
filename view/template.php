@@ -113,7 +113,7 @@
                         <span class="fas fa-user"></span> <?= $_SESSION["userLogin"] ?>
                     </a>
                     <br />
-                    <a class="text-blue" href="disconnection">Vous déconnecter</a>
+                    <a class="text-blue" href="disconnection">Se déconnecter</a>
                     <?php 
                     } else {
                     ?>

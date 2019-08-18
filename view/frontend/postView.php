@@ -26,7 +26,8 @@
                 <?php
                 if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $post->user_id()) {
                 ?>
-                <a class="text-blue a-edit-post m-1" href="edit-post-<?= $post->id() ?>">
+                <a class="text-blue a-edit-post m-1" href="edit-post-<?= $post->id() ?>" 
+                    data-toggle="tooltip" data-placement="bottom" title="Modifier l'article">
                     <span class="far fa-edit"></span> Modifier</a>
                 <?php 
                 } 
@@ -122,7 +123,7 @@
                         <div>
                             <a href="post-<?= isset($post_id) ? $post_id : "" ?>-comment-<?= $comment->id() ?>-delete#form-comment"
                                 onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
-                                <span class="fas fa-times text-danger"></span>
+                                <span class="fas fa-times text-danger" data-toggle="tooltip" data-placement="bottom" title="Supprimer le commentaire"></span>
                             </a>
                         </div>
                         <?php
@@ -136,7 +137,7 @@
                         <div class="report-comment">
                             <a href="post-<?= isset($post_id) ? $post_id : "" ?>-comment-<?= $comment->id() ?>-report#form-comment"
                                 onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
-                                <span class="far fa-flag text-warning"> Signaler</span> <!-- #form-comment -->
+                                <span class="far fa-flag text-warning" data-toggle="tooltip" data-placement="bottom" title="Signaler le commentaire"></span>
                             </a>
                         </div>
                         <?php
@@ -163,7 +164,7 @@
                                         rows="4"><?= $comment->content() ?></textarea>
                                 </div>
                                 <div class="form-group float-right">
-                                    <input type="submit" value="Modifier" name="editComment"
+                                    <input type="submit" value="Envoyer" name="editComment"
                                         id="edit-<?= $comment->id() ?>" class="btn btn-blue shadow">
                                     <button value="Annuler" id="cancel_edit-comment-<?= $comment->id() ?>"
                                         class="cancel-edit-comment btn btn-secondary shadow">Annuler</button>
