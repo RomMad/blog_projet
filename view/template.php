@@ -44,6 +44,13 @@
     </script>
 </head>
 
+<?php
+// echo "GET :";
+// var_dump($_GET);
+// echo "POST :";
+// var_dump($_POST);
+?>
+
 <body>
 
     <div id="loader">
@@ -62,8 +69,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="blog"><span class="fas fa-home"></span> Accueil <span
-                                class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="blog"><span class="fas fa-home"></span> Accueil</a>
                     </li>
                     <?php 
                         

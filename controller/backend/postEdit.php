@@ -5,26 +5,19 @@ function postEdit() {
     $session = new Session();
     $postsManager = new PostsManager();
 
-    // Vérifie si l'article exite
-    if (!empty($_GET["id"])) {
-        $post = $postsManager->getUserId($_GET["id"]);
+    // Vérifie si l'article existe
+    if (isset($_GET["id"])) {
+        $post = $postsManager->get($_GET["id"]);
         if (!$post) {
             $session->setFlash("Cet article n'existe pas.", "warning");
             header("Location: blog"); 
             exit();
         }
-        // Vérifie si l'utilisateur a les droit d'accès ou si il est l'auteur de l'article
-        if ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post->user_id()) {
-            $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
-            header("Location: blog"); 
-            exit();
-        }
     }
-
-    // Redirige vers la page de connexion si l'utilisateur n'a pas les droits
-    if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"]>4) {
+    // Vérifie si l'utilisateur a les droit d'accès ou si il est l'auteur de l'article
+    if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"] > 4 || ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post->user_id())) {
         $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
-        header("Location: connection"); 
+        header("Location: blog"); 
         exit();
     }
 

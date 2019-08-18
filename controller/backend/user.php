@@ -1,6 +1,4 @@
 <?php 
-
-
 function user() {
     spl_autoload_register("loadClass");
 
@@ -9,7 +7,7 @@ function user() {
 
     // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
     if (empty($_SESSION["userID"])) {
-        header("Location: blog");
+        header("Location: connection");
         exit();
     } else {
         // Récupère le rôle de l'utilisateur
@@ -24,6 +22,15 @@ function user() {
             exit();
         }
     }
+
+    // Vérifie si l'utilisateur existe
+    $user = $usersManager->get($_GET["id"]);
+    if (!$user) {
+        $session->setFlash("Cet utilisateur n'existe pas.", "warning");
+        header("Location: blog"); 
+        exit();
+    }
+
     // Mettre à jour les informations du profil
     if (!empty($_POST) && !empty($_POST["role"])) {
         $validation = true;  
@@ -38,9 +45,6 @@ function user() {
             $session->setFlash("Le profil a été mis à jour.", "success");
         }
     }
-
-    // Récupère l'utilisateur
-    $user = $usersManager->get($_GET["id"]); 
 
     require "view/backend/userView.php";
 }

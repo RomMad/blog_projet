@@ -8,18 +8,14 @@ function post() {
     $commentsManager = new CommentsManager();
 
     // Vérifie si l'article existe
-    if (!empty($_GET["id"])) {
-        $post = $postsManager->getUserId($_GET["id"]);
-        if (!$post) {
-            header("Location: blog"); 
-            exit();
-        }
-        $post_id = htmlspecialchars($_GET["id"]);
-        $_SESSION["postID"] = $post_id;
-    } else {
+    $post = $postsManager->get($_GET["id"]);
+    if (!$post) {
+        $session->setFlash("Cet article n'existe pas.", "warning");
         header("Location: blog"); 
         exit();
     }
+    $post_id = htmlspecialchars($_GET["id"]);
+    $_SESSION["postID"] = $post_id;
 
     // Vérifie les paramètres de modération
     $settings = $settingsManager->get();

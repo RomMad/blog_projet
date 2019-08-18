@@ -4,11 +4,6 @@ spl_autoload_register("loadClass");
 $session = new Session();
 $session->connect();
 
-echo "GET :";
-var_dump($_GET);
-echo "POST :";
-var_dump($_POST);
-
 $settingsManager = new SettingsManager();
 if(!isset($_SESSION["blog_name"])) {
     $settings = $settingsManager->get();
@@ -38,14 +33,21 @@ if (isset($_GET["action"])) {
         case "post":
             if (isset($_GET["id"]) && $_GET["id"] > 0) {
                 post();
+            } else {
+                error404();
             }
             break;
         case "editPost":
-            postEdit();
+            if (!isset($_GET["id"]) || (isset($_GET["id"]) && $_GET["id"] > 0)) {
+                postEdit();
+            } else {
+                error404();
+            }
             break;
         case "profil":
             profil();
             break;
+
         case "inscription":
             inscription();
             break;
@@ -77,10 +79,14 @@ if (isset($_GET["action"])) {
             newUser();
             break;
         case "user":
-            user();
+            if (isset($_GET["id"]) && $_GET["id"] > 0) {
+                user();
+            } else {
+                error404();
+            }
             break;       
         case "error404":
-            require "view/frontend/error404.php";
+            error404();
             break;                  
         default:
             listPosts();
@@ -88,6 +94,11 @@ if (isset($_GET["action"])) {
 } else {
     listPosts();
 }
+
+function error404() {
+    require "view/frontend/error404.php";
+}
+
 
 function loadClass($classname) {
     require "model/" . $classname . ".php";

@@ -31,10 +31,8 @@ class PostsManager extends Manager {
     }
     // Vérifie si l'article existe
     public function exists($id) {
-        if (is_numeric($id) && ((int) $id > 0)) { 
             $isPostExists = $this->_db->query("SELECT COUNT(*) FROM posts WHERE id = " . $id)->fetchColumn();
             return $isPostExists;
-        }
     }
     // Méthode de lecture d'un article
     public function getUserId($id) {
@@ -60,7 +58,11 @@ class PostsManager extends Manager {
             $id
         ]);
         $post = $req->fetch();
+        if (!empty($post)) {
         return new Posts($post);
+        } else {
+            return FALSE;
+        }
     }
     // Méthode de lecture d'un article
     public function lastCreate($userId) {
