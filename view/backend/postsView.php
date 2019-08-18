@@ -47,9 +47,9 @@
                         <label class="sr-only col-form-label" for="filter_status">Filtre</label>
                         <select name="filter_status" id="filter_status" class="custom-select form-control mr-1 shadow"
                             value="Par auteur">
-                            <option value="">-- Statut --</option>
-                            <option value="brouillon">Brouillon</option>
-                            <option value="publié">Publié</option>
+                            <option <?= empty($_SESSION["filter_status"]) ? "selected" : "" ?> value="">-- Statut --</option>
+                            <option <?= $_SESSION["filter_status"] == "brouillon" ? "selected" : "" ?> value="brouillon">Brouillon</option>
+                            <option <?= $_SESSION["filter_status"] == "publié" ? "selected" : "" ?> value="publié">Publié</option>
                         </select>
                         <input type="submit" id="filter" name="filter" alt="Filtrer"
                             class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="Filtrer">
@@ -58,7 +58,7 @@
                         <label for="search_post" class="sr-only col-form-label">Recherche</label>
                         <input type="search" name="search_post" id="search_post"
                             class="form-control mr-1 px-md-1 shadow" placeholder="Recherche" aria-label="Search"
-                            value="<?= $_SESSION["filter_search"] ?>">
+                            value="<?= $_SESSION["search_post"] ?>">
                         <input type="submit" id="filter_search" name="filter_search" alt="filter_search"
                             class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="OK">
                     </div>

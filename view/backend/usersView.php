@@ -58,7 +58,7 @@
                     <div class="col-md-4 form-inline mb-2 px-md-1 px-lg-3">
                         <label for="search_user" class="sr-only col-form-label">Recherche</label>
                         <input type="search" name="search_user" id="search_user" class="form-control px-md-1 mr-1 shadow" 
-                            placeholder="Recherche" aria-label="Search" value="<?= $_SESSION["filter_search"] ?>">
+                            placeholder="Recherche" aria-label="Search" value="<?= $_SESSION["search_user"] ?>">
                         <input type="submit" id="filter_search" name="filter_search" alt="filter_search"
                             class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="OK">
                     </div>

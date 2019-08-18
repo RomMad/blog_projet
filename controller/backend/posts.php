@@ -41,20 +41,26 @@ function posts() {
                 }
             }
         }
+
+        $_SESSION["filter"] = "p.id > 0";
         // Si sélection d'un filtre 'rôle', enregistre le filtre
         if (!empty($_POST["filter_status"])) {
+            $_SESSION["filter_status"] = htmlspecialchars($_POST["filter_status"]);
             $_SESSION["filter"] =  "status = '" . htmlspecialchars($_POST["filter_status"]) . "'";
+        } else {
+            $_SESSION["filter_status"] = NULL;
         }
         // Si recherche, enregistre le filtre
-        if (!empty($_POST["filter_search"])) {
-            $_SESSION["filter_search"] = htmlspecialchars($_POST["search_post"]);
-            $_SESSION["filter"] =  "title LIKE '%" .  $_SESSION["filter_search"] . "%' OR content LIKE '%" .  $_SESSION["filter_search"] . "%'";
+        if (!empty($_POST["search_post"])) {
+            $_SESSION["search_post"] = htmlspecialchars($_POST["search_post"]);
+            $_SESSION["filter"] = $_SESSION["filter"] . " AND (title LIKE '%" .  $_SESSION["search_post"] . "%' OR content LIKE '%" .  $_SESSION["search_post"] . "%')";
         }
     }
 
-    if (!isset($_POST["filter_search"]) && !isset($_POST["filter_role"]) || (isset($_POST["filter_role"]) && empty($_POST["filter_role"]))) {
+    if (empty($_POST) && !isset($_GET["order"])) {
+        $_SESSION["filter_status"] = NULL;
+        $_SESSION["search_post"] = "";
         $_SESSION["filter"] = "p.id > 0";
-        $_SESSION["filter_search"] = "";
     }
 
     // Compte le nombre d'articles
@@ -96,6 +102,5 @@ function posts() {
 
     // Récupère les articles
     $posts = $postsManager->getlist($_SESSION["filter"], $orderBy, $order, $pagination->_nbLimit, $pagination->_nbDisplayed);
-    
     require "view/backend/postsView.php";
 }

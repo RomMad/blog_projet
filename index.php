@@ -4,10 +4,10 @@ spl_autoload_register("loadClass");
 $session = new Session();
 $session->connect();
 
-// echo "GET :";
-// var_dump($_GET);
-// echo "POST :";
-// var_dump($_POST);
+echo "GET :";
+var_dump($_GET);
+echo "POST :";
+var_dump($_POST);
 
 $settingsManager = new SettingsManager();
 if(!isset($_SESSION["blog_name"])) {

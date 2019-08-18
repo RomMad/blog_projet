@@ -49,8 +49,7 @@
                         <select name="filter_status" id="filter_status" class="custom-select form-control mr-1 shadow"
                             value="Par auteur">
                             <option value="">-- Statut --</option>
-                            <option <?= $_SESSION["filter_status"] == 1 ? "selected" : "" ?> value="1">Non-modéré
-                            </option>
+                            <option <?= $_SESSION["filter_status"] == 1 ? "selected" : "" ?> value="1">Non-modéré</option>
                             <option <?= $_SESSION["filter_status"] == 2 ? "selected" : "" ?> value="2">Modéré</option>
                             <option <?= $_SESSION["filter_status"] == 3 ? "selected" : "" ?> value="3">Signalé</option>
                         </select>

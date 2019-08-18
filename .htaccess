@@ -86,7 +86,7 @@ RewriteRule ([^.]+)\.html$ /page.php?page=$1 [L]
 #--------------------------------------------------
 
 # Réécriture pages
-RewriteRule ^([a-zA-Z]+)$  /blog_projet/index.php?action=$1 [L]
+RewriteRule ^([a-zA-Z]+)$  /blog_projet/index.php?action=$1 [QSA,L]
 
 # Réécriture page d'accueil (blog)
 RewriteRule ^blog$  /blog_projet/index.php?action=listPosts [QSA,L]

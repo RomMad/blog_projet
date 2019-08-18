@@ -60,12 +60,13 @@ function comments() {
         if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= 1) {
             $_SESSION["filter_status"] = htmlspecialchars($_POST["filter_status"]);
             $_SESSION["filter"] = "status = " . $_SESSION["filter_status"];
+
         }
     }
 
-    if (!isset($_POST["filter_status"]) || (isset($_POST["filter_status"]) && empty($_POST["filter_status"]))) {
-        $_SESSION["filter"] = "c.id > 0";
+    if (empty($_POST) && !isset($_GET["order"])) {
         $_SESSION["filter_status"] = NULL;
+        $_SESSION["filter"] = "c.id > 0";
     }
 
     // Compte le nombre de commentaires
@@ -101,6 +102,6 @@ function comments() {
 
     // Récupère les commentaires
     $comments = $commentsManager->getlist($_SESSION["filter"], $orderBy, $order,  $pagination->_nbLimit, $pagination->_nbDisplayed);
-    
+
     require "view/backend/commentsView.php";
 }
