@@ -15,7 +15,7 @@ function postEdit() {
         }
     }
     // Vérifie si l'utilisateur a les droit d'accès ou si il est l'auteur de l'article
-    if (!isset($_SESSION["userRole"]) || $_SESSION["userRole"] > 4 || ($_SESSION["userRole"] > 2 && $_SESSION["userID"] != $post->user_id())) {
+    if (!isset($_SESSION["user"]["role"]) || $_SESSION["user"]["role"] > 4 || ($_SESSION["user"]["role"] > 2 && $_SESSION["user"]["id"] != $post->user_id())) {
         $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
         header("Location: blog"); 
         exit();
@@ -28,8 +28,8 @@ function postEdit() {
             "content" => $_POST["post_content"],
             "status" => $_POST["status"],
             "id" => isset($_GET["id"]) ? $_GET["id"] : "",
-            "user_id" => $_SESSION["userID"],
-            "user_login" => $_SESSION["userLogin"],
+            "user_id" => $_SESSION["user"]["id"],
+            "user_login" => $_SESSION["user"]["login"],
         ]);
         // Supprime l'article
         if (isset($_POST["delete"]) && !empty($post->id())) {
@@ -62,7 +62,7 @@ function postEdit() {
             if (isset($_POST["save"]) && empty($post->id())) {
                 $postsManager->add($post);
                 $session->setFlash("L'article a été enregistré.", "success");
-                $post = $postsManager->lastCreate($_SESSION["userID"]);
+                $post = $postsManager->lastCreate($_SESSION["user"]["id"]);
             }
         }
     }

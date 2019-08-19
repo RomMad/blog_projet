@@ -42,5 +42,6 @@ class Session {
     public function disconnect() {
         session_destroy();
         header("Location: connection"); // Redirige vers page d'accueil
+        exit;
     }
 }

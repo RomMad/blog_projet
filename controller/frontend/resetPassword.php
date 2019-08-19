@@ -76,9 +76,9 @@ function resetPassword() {
             ]);
             $usersManager->updatePass($user);
 
-            $_SESSION["userID"] = $user->id();
-            $_SESSION["userLogin"] =$user->login();
-            $_SESSION["userRole"] = $user->role();
+            $_SESSION["user"]["id"] = $user->id();
+            $_SESSION["user"]["login"] =$user->login();
+            $_SESSION["user"]["role"] = $user->role();
 
             // Ajoute la date de connexion de l'utilisateur dans la table dédiée
             $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");

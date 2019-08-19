@@ -3,6 +3,8 @@ function inscription() {
     spl_autoload_register("loadClass");
 
     $session = new Session();
+    $db = new Manager();
+    $db = $db->databaseConnection();
     $usersManager = new UsersManager();
 
     // Vérifie si informations dans variable POST
@@ -76,11 +78,28 @@ function inscription() {
             $usersManager->add($user);
             // Récupère l'ID de l'utilisateur
             $user = $usersManager->verify($user->login());
-
+            
             // Ajoute les infos de l"utilisateurs dans la Session
-            $_SESSION["userID"] =  $user->id();
-            $_SESSION["userLogin"] = $user->login();
-            $_SESSION["userRole"] = $user->role();
+            $_SESSION["user"]["id"] = $user->id();
+            $_SESSION["user"]["login"] = $user->login();
+            $_SESSION["user"]["role"] = $user->role();
+            $_SESSION["user"]["profil"] = $user->role_user();
+            $_SESSION["user"]["name"] = $user->name();
+            $_SESSION["user"]["surname"] = $user->surname();
+
+            // Ajoute la date de connexion de l'utilisateur dans la table dédiée
+            $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
+            $req->execute([
+                "user_ID" => $user->id()
+            ]);
+
+            // Récupère la date de dernière connexion de l'utilisateur
+            $req = $db->prepare("SELECT DATE_FORMAT(connection_date, \"%d/%m/%Y à %H:%i\") AS connection_date_fr FROM connections WHERE user_id = ? ORDER BY id DESC LIMIT 0, 1");
+            $req->execute([
+                $user->id()
+            ]);
+            $connection = $req->fetch();
+            $_SESSION["lastConnection"] = $connection["connection_date_fr"];
 
             $session->setFlash("L'inscription est réussie.", "success");
             header("Location: blog");

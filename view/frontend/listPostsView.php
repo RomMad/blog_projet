@@ -9,7 +9,7 @@
         <div class="col-md-12">
         <?php 
         // Vérifie si l'utilisateur a les droits pour écrire un article
-        if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
+        if (isset($_SESSION["user"]["role"]) && $_SESSION["user"]["role"]<5) {
         ?>
             <div class="mt-4 mb-4">
                 <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un
@@ -41,7 +41,7 @@
                             </a>
                             <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue"
                                     href="user-<?= $post->user_id() ?>"><?= $post->user_login() ?></a></em>
-                            <?php if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { ?>
+                            <?php if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"]==$post->user_id()) { ?>
                             <a class="text-blue a-edit-post m-1"
                                 href="edit-post-<?= $post->id() ?>"><span class="far fa-edit" 
                                 data-toggle="tooltip" data-placement="bottom" title="Modifier l'article">

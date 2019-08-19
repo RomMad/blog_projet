@@ -24,7 +24,7 @@
                         <span class="badge badge-light"><?= $nbItems ?></span></a>
                 </p>
                 <?php
-                if (isset($_SESSION["userID"]) && $_SESSION["userID"]== $post->user_id()) {
+                if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"]== $post->user_id()) {
                 ?>
                 <a class="text-blue a-edit-post m-1" href="edit-post-<?= $post->id() ?>" 
                     data-toggle="tooltip" data-placement="bottom" title="Modifier l'article">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <?php 
-        if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) {
+        if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"]==$post->user_id()) {
         ?>
         <a class="text-blue" href="edit-post-<?= $post_id ?>"><span class="far fa-edit"></span>Modifier l'article</a>
         <?php 
@@ -58,7 +58,7 @@
                     <div class="col-md-12">
                         <form action="post-<?= $post_id ?>#form-comment" method="post" class="px-3">
                             <?php 
-                            if (!isset($_SESSION["userID"])) {
+                            if (!isset($_SESSION["user"]["id"])) {
                             ?>
                             <div class="row">
                                 <label for="name" class="col-md-4 col-form-label">Nom</label>
@@ -118,7 +118,7 @@
                             <span class="comment-fade-out d-none"></span>
                         </div>
                         <?php
-                        if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$comment->user_id()) {
+                        if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"]==$comment->user_id()) {
                         ?>
                         <div>
                             <a href="post-<?= isset($post_id) ? $post_id : "" ?>-comment-<?= $comment->id() ?>-delete#form-comment"
@@ -145,7 +145,7 @@
                         }
                         ?>
                         <?php
-                        if (isset($_SESSION["userID"]) && $_SESSION["userID"] == $comment->user_id()) {
+                        if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"] == $comment->user_id()) {
                         ?>
                         <div class="edit-comment mt-3">
                             <a href="#comment-<?= $comment->id() ?>"><span class="far fa-edit text-blue">

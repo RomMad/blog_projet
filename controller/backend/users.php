@@ -8,13 +8,15 @@ function users() {
     $usersManager = new UsersManager();
 
     // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
-    if (empty($_SESSION["userID"])) {
+    if (empty($_SESSION["user"]["id"])) {
         header("Location: blog");
+        exit;
     } else {
         // Récupère le rôle de l'utilisateur
-        $userRole = $usersManager->getRole($_SESSION["userID"]);
+        $userRole = $usersManager->getRole($_SESSION["user"]["id"]);
         if ($userRole != 1) {
             header("Location: blog");
+            exit;
         }
     }
 

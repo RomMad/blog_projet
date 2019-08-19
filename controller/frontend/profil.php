@@ -6,12 +6,12 @@ function profil() {
     $usersManager = new UsersManager();
 
     // Redirige vers la page de connexion si non connecté
-    if (empty($_SESSION["userID"])) {
+    if (empty($_SESSION["user"]["id"])) {
         header("Location: connection");
         exit();
     } else {
         // Récupère les informations de l'utilisateur
-        $user = $usersManager->get($_SESSION["userID"]);
+        $user = $usersManager->get($_SESSION["user"]["id"]);
     }
 
     // Vérifie si informations dans variable POST
@@ -21,7 +21,7 @@ function profil() {
         // Mettre à jour les informations du profil
         if (isset($_POST["login"])) {
             $user = new Users([
-                "id" => $_SESSION["userID"],
+                "id" => $_SESSION["user"]["id"],
                 "login" => $_POST["login"],
                 "email" => $_POST["email"],
                 "name" => $_POST["name"],
@@ -30,11 +30,11 @@ function profil() {
                 "role_user" => $_POST["role"]
             ]);
             // Compare le pass envoyé via le formulaire avec la base
-            $isPasswordCorrect = password_verify($_POST["pass"], $usersManager->getPass($_SESSION["userID"])); 
+            $isPasswordCorrect = password_verify($_POST["pass"], $usersManager->getPass($_SESSION["user"]["id"])); 
             // Vérifie si le login est déjà pris par un autre utilisateur
-            $loginUsed = $usersManager->count("login = '" . $user->login() . "' AND u.id != " . $_SESSION["userID"]);
+            $loginUsed = $usersManager->count("login = '" . $user->login() . "' AND u.id != " . $_SESSION["user"]["id"]);
             // Vérifie si l'email est déjà pris par un autre utilisateur
-            $emailUsed = $usersManager->count("email = '" . $user->email() . "' AND u.id != " . $_SESSION["userID"]);
+            $emailUsed = $usersManager->count("email = '" . $user->email() . "' AND u.id != " . $_SESSION["user"]["id"]);
             // Vérifie si le champ login est vide
             if (empty($user->login())) {
                 $session->setFlash("Veuillez saisir un login.", "danger");
@@ -83,7 +83,7 @@ function profil() {
             // Met à jour les informations du profil si validation est vraie
             if ($validation) {
                 $usersManager->updateProfil($user);
-                $_SESSION["userLogin"] = $user->login();
+                $_SESSION["user"]["login"] = $user->login();
                 $session->setFlash("Le profil a été mis à jour.", "success");
             }
         }
@@ -91,7 +91,7 @@ function profil() {
         // Mettre à jour le mot de passe
         if (isset($_POST["old_pass"])) {
             // Compare le mot de passe envoyé via le formulaire avec la base
-            $isPasswordCorrect = password_verify($_POST["old_pass"], $usersManager->getPass($_SESSION["userID"])); 
+            $isPasswordCorrect = password_verify($_POST["old_pass"], $usersManager->getPass($_SESSION["user"]["id"])); 
             // Vérifie si le champ ancien mot de passe est vide
             if (empty(($_POST["old_pass"]))) {
                 $session->setFlash("Veuillez saisir votre ancien mot de passe.", "danger");
@@ -126,7 +126,7 @@ function profil() {
             if ($validation) {
                 $newPassHash = password_hash($_POST["new_pass"], PASSWORD_DEFAULT); // Hachage du mot de passe
                 $user = new Users([
-                    "id" => $_SESSION["userID"],
+                    "id" => $_SESSION["user"]["id"],
                     "pass" => $newPassHash
                 ]);
                 $usersManager->updatePass($user);

@@ -8,8 +8,9 @@ function connection() {
     $usersManager = new UsersManager();
 
     // Redirige vers la page d'accueil si l'utilisateur est déjà connecté
-    if (!empty($_SESSION["userID"])) {
+    if (!empty($_SESSION["user"])) {
         header("Location: blog");
+        exit;
     }
 
     // Vérifie si informations dans variable POST
@@ -35,13 +36,12 @@ function connection() {
 
         if ($validation == true) {
             // Enregistre les informations de l'utilisateurs en session
-            $_SESSION["userID"] = $user->id();
-            $_SESSION["userLogin"] = $user->login();
-            $_SESSION["userRole"] = $user->role();
-            $_SESSION["userProfil"] = $user->role_user();
-            $_SESSION["userName"] = $user->name();
-            $_SESSION["userSurname"] = $user->surname();
-            $_SESSION["userProfil"] = $user->role_user();
+            $_SESSION["user"]["id"] = $user->id();
+            $_SESSION["user"]["login"] = $user->login();
+            $_SESSION["user"]["role"] = $user->role();
+            $_SESSION["user"]["profil"] = $user->role_user();
+            $_SESSION["user"]["name"] = $user->name();
+            $_SESSION["user"]["surname"] = $user->surname();
 
             // Enregistre le login et le mot de passe en cookie si la case "Se souvenir de moi" est cochée
             if (isset($_POST["remember"])) {

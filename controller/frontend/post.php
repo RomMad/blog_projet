@@ -27,22 +27,22 @@ function post() {
         
     // Vérifie si informations dans variable POST
     if (!empty($_POST)) {
-        if (isset($_SESSION["userRole"]) && $_SESSION["userRole"] == 1 ) {
+        if (isset($_SESSION["user"]["role"]) && $_SESSION["user"]["role"] == 1 ) {
             $status = 2;
         } else {
             $status = 1;
         }
 
-        if (isset($_SESSION["userLogin"])) {
-            $name = $_SESSION["userLogin"];
+        if (isset($_SESSION["user"]["login"])) {
+            $name = $_SESSION["user"]["login"];
         } else {
             $name = $_POST["name"];
         }
 
         if (isset($_POST["save_comment"])) {
             
-            if (isset($_SESSION["userID"])) {
-                $user_id = $_SESSION["userID"];
+            if (isset($_SESSION["user"]["id"])) {
+                $user_id = $_SESSION["user"]["id"];
             } else {
                 $user_id = NULL;
             }
@@ -65,7 +65,7 @@ function post() {
                     "status" => $status
                 ]);
                 $commentsManager->add($comment);
-                if ($settings->moderation() == 0 || (isset($_SESSION["userRole"]) && $_SESSION["userRole"] == 1 )) {
+                if ($settings->moderation() == 0 || (isset($_SESSION["user"]["role"]) && $_SESSION["user"]["role"] == 1 )) {
                     $session->setFlash("Le commentaire a été ajouté.", "success");
                 } else {
                     $session->setFlash("Le commentaire est en attente de modération.", "info");

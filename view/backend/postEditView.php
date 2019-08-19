@@ -42,7 +42,7 @@ if (isset($_GET["id"])) {
                         <div class="form-group">
                             <label for="post_user_id">Auteur</label>
                             <input type="text" name="post_user_id" class="form-control shadow-sm" id="post_user_id"
-                                readonly value="<?= isset($post) ? $post->login() : $_SESSION["userLogin"] ?>">
+                                readonly value="<?= isset($post) ? $post->login() : $_SESSION["user"]["login"] ?>">
                         </div>
                         <div class="form-group">
                             <label for="creation_date">Date de création</label>

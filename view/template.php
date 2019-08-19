@@ -49,6 +49,7 @@
 // var_dump($_GET);
 // echo "POST :";
 // var_dump($_POST);
+// var_dump($_SESSION);
 ?>
 
 <body>
@@ -74,7 +75,7 @@
                         </li>
                         <?php 
                             
-                        if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
+                        if (isset($_SESSION["user"]) && $_SESSION["user"]["role"]<5) {
                         ?>
                         <li class="nav-item">
                             <a class="nav-link" href="edit-post">Nouvel article</a>
@@ -82,7 +83,7 @@
                         <?php 
                         }
 
-                        if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]==1) {
+                        if (isset($_SESSION["user"]) && $_SESSION["user"]["role"]==1) {
                         ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="settings" id="navbarDropdown"
@@ -111,13 +112,13 @@
 
                     <div class="ml-3 text-light">
                     <?php 
-                    if (isset($_SESSION["userID"])) {
+                    if (isset($_SESSION["user"])) {
                     ?>
                         <a class="text-blue font-weight-bold" href="profil" data-toggle="popover"
                             data-trigger="hover" data-placement="bottom" data-html="true"
-                            title="<?= htmlspecialchars($_SESSION["userSurname"]) ?> <?= htmlspecialchars($_SESSION["userName"]) ?>"
-                            data-content="Dernière connexion : <br /><?= htmlspecialchars($_SESSION["lastConnection"]) ?><br /> Profil : <?= htmlspecialchars($_SESSION["userProfil"]) ?>">
-                            <span class="fas fa-user"></span> <?= $_SESSION["userLogin"] ?>
+                            title="<?= htmlspecialchars($_SESSION["user"]["surname"]) ?> <?= htmlspecialchars($_SESSION["user"]["name"]) ?>"
+                            data-content="Dernière connexion : <br /><?= htmlspecialchars($_SESSION["lastConnection"]) ?><br /> Profil : <?= htmlspecialchars($_SESSION["user"]["profil"]) ?>">
+                            <span class="fas fa-user"></span> <?= $_SESSION["user"]["login"] ?>
                         </a>
                         <br />
                         <a class="text-blue" href="disconnection">Se déconnecter</a>
@@ -141,7 +142,7 @@
         
     </main>
 
-    <footer class="bg-dark py-4 px-4 text-white shadow">
+    <footer class="bg-dark mt-3 py-4 px-4 text-white shadow">
         <p>Ce site web est un blog réalisé dans le cadre d'une formation de développeur Web.</p>
         <p>© Romain MADELAINE | <a href="https://romain-mad.fr" target="_blank" class="text-blue">romain-mad.fr</a></p>
     </footer>
