@@ -68,7 +68,7 @@
                     <table class="table table-bordered table-striped table-hover shadow">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col" class="align-middle"><input type="checkbox" name="allSelectedPosts"
+                                <th scope="col" class="align-middle th-width-20px"><input type="checkbox" name="allSelectedPosts"
                                         id="all-checkbox" /><label for="allSelectedPosts"></label></th>
                                 <th scope="col" class="align-middle">
                                     <a href="posts-orderBy-title-order-<?= $order == "desc" ? "asc" : "desc" ?>"
@@ -82,7 +82,7 @@
                                 ?>
                                     </a>
                                 </th>
-                                <th scope="col" class="align-middle">
+                                <th scope="col" class="align-middle th-width-150px">
                                     <a href="posts-orderBy-user_name-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                         class="sorting-indicator text-white">Auteur
                                         <?php 
@@ -94,7 +94,7 @@
                                 ?>
                                     </a>
                                 </th>
-                                <th scope="col" class="align-middle">
+                                <th scope="col" class="align-middle th-width-100px">
                                     <a href="posts-orderBy-status-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                         class="sorting-indicator text-white">Statut
                                         <?php 
@@ -106,7 +106,7 @@
                                 ?>
                                     </a>
                                 </th>
-                                <th scope="col" class="align-middle">
+                                <th scope="col" class="align-middle th-width-100px">
                                     <a href="posts-orderBy-creation_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                         class="sorting-indicator text-white">Date de création
                                         <?php 
@@ -118,7 +118,7 @@
                                 ?>
                                     </a>
                                 </th>
-                                <th scope="col" class="align-middle">
+                                <th scope="col" class="align-middle th-width-120px">
                                     <a href="posts-orderBy-update_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                         class="sorting-indicator text-white">Date de mise à jour
                                 <?php 

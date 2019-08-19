@@ -63,7 +63,7 @@
                         <table class="table table-bordered table-striped table-hover shadow">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-20px">
                                         <input type="checkbox" name="allselectedComments" id="all-checkbox" />
                                         <label for="allselectedComments" class="sr-only">Tout sélectionner</label>
                                     </th>
@@ -79,7 +79,7 @@
                                     ?>
                                         </a>
                                     </th>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-120px">
                                         <a href="comments-orderBy-user_name-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Auteur
                                             <?php 
@@ -91,7 +91,7 @@
                                     ?>
                                         </a>
                                     </th>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-100px">
                                         <a href="comments-orderBy-status-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Statut
                                             <?php 
@@ -103,7 +103,7 @@
                                     ?>
                                         </a>
                                     </th>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-130px">
                                         <a href="comments-orderBy-report_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Date de signalement
                                             <?php 
@@ -115,7 +115,7 @@
                                     ?>
                                         </a>
                                     </th>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-130px">
                                         <a href="comments-orderBy-nb_report-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Nb de signalements
                                             <?php 
@@ -127,7 +127,7 @@
                                     ?>
                                         </a>
                                     </th>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-100px">
                                         <a href="comments-orderBy-creation_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Date de création
                                             <?php 

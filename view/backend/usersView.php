@@ -69,11 +69,11 @@
                         <table class="table table-bordered table-striped table-hover shadow">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-20px">
                                         <input type="checkbox" name="allselectedUsers" id="all-checkbox" />
                                         <label for="allselectedUsers" class="sr-only">Tout sélectionner</label>
                                     </th>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-150px">
                                         <a href="users-orderBy-login-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Login
                                         <?php 
@@ -85,7 +85,7 @@
                                         ?>
                                         </a>
                                     </th>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-150px">
                                         <a href="users-orderBy-name-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Nom
                                         <?php 
@@ -97,7 +97,7 @@
                                         ?>
                                         </a>
                                     </th>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-120px">
                                         <a href="users-orderBy-surname-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Prénom
                                         <?php 
@@ -121,7 +121,7 @@
                                         ?>
                                         </a>
                                     </th>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-120px">
                                         <a href="users-orderBy-role-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Rôle
                                         <?php 
@@ -133,9 +133,9 @@
                                         ?>
                                         </a>
                                     </th>
-                                    <th scope="col" class="align-middle">
+                                    <th scope="col" class="align-middle th-width-100px">
                                         <a href="users-orderBy-registration_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Date d'enregistrement
+                                            class="sorting-indicator text-white">Date de création
                                         <?php 
                                         if ($orderBy == "registration_date") {
                                         ?>
