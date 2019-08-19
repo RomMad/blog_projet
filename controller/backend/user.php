@@ -24,8 +24,8 @@ function user() {
     }
 
     // Vérifie si l'utilisateur existe
-    $user = $usersManager->get($_GET["id"]);
-    if (!$user) {
+    $isUserExists = $usersManager->exists($_GET["id"]);
+    if (!$isUserExists) {
         $session->setFlash("Cet utilisateur n'existe pas.", "warning");
         header("Location: blog"); 
         exit();
@@ -45,6 +45,8 @@ function user() {
             $session->setFlash("Le profil a été mis à jour.", "success");
         }
     }
+
+    $user = $usersManager->get($_GET["id"]);
 
     require "view/backend/userView.php";
 }

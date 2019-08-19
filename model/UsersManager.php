@@ -41,6 +41,12 @@ class UsersManager extends Manager {
         }
     }
 
+    // Vérifie si l'utilisateur
+    public function exists($id) {
+        $isUserExists = $this->_db->query("SELECT COUNT(*) FROM users WHERE id = " . $id)->fetchColumn();
+        return $isUserExists;
+    }
+
     // Récupère un utilisateur
     public function get($info) {
         if (is_numeric($info)) {
