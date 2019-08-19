@@ -28,7 +28,7 @@
                 ?>
                 <a class="text-blue a-edit-post m-1" href="edit-post-<?= $post->id() ?>" 
                     data-toggle="tooltip" data-placement="bottom" title="Modifier l'article">
-                    <span class="far fa-edit"></span> Modifier</a>
+                    <span class="far fa-edit"></span></a>
                 <?php 
                 } 
                 ?>
@@ -38,9 +38,9 @@
             </div>
         </div>
         <?php 
-        if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"]==$post->user_id()) {
+        if (isset($_SESSION["user"]) && ($_SESSION["user"]["role"] <= 2 || $_SESSION["user"]["id"] == $post->user_id())) {
         ?>
-        <a class="text-blue" href="edit-post-<?= $post_id ?>"><span class="far fa-edit"></span>Modifier l'article</a>
+        <a class="text-blue" href="edit-post-<?= $post_id ?>"><span class="far fa-edit"></span> Modifier l'article</a>
         <?php 
         } 
         ?>
@@ -114,8 +114,8 @@
                         <p><strong><?= $user_login ?></strong>, le <?= $comment->creation_date("special_format") ?>
                             <?php if ($comment->update_date("") != $comment->creation_date("")) { echo "(Modifié le " . $comment->update_date("special_format") . ")"; } ?>
                         </p>
-                        <div class="comment-content position relative"><?= nl2br($comment->content()) ?>
-                            <span class="comment-fade-out d-none"></span>
+                        <div id="comment-content-<?= $comment->id() ?>" class="comment-content position relative"><?= nl2br($comment->content()) ?>
+                            <span id="comment-fadeout-<?= $comment->id() ?>" class="comment-fadeout d-none"></span>
                         </div>
                         <?php
                         if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"]==$comment->user_id()) {
@@ -148,26 +148,26 @@
                         if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"] == $comment->user_id()) {
                         ?>
                         <div class="edit-comment mt-3">
-                            <a href="#comment-<?= $comment->id() ?>"><span class="far fa-edit text-blue">
+                            <a id="comment-edit-<?= $comment->id() ?>" href="#comment-<?= $comment->id() ?>"><span class="far fa-edit text-blue">
                                     Modifier</span></a>
                         </div>
                         <?php
                         }
                         ?>
-                        <div id="form-edit-comment-<?= $comment->id() ?>" class="form-edit-comment d-none">
+                        <div id="comment-form-<?= $comment->id() ?>" class="comment-form d-none">
                             <form
                                 action="post-<?= $post_id ?>-comment-<?= $comment->id() ?>#form-comment"
                                 method="post">
                                 <div class="form-group">
-                                    <label for="comment-content-<?= $comment->id() ?>" class="sr-only">Contenu du message</label>
-                                    <textarea name="comment-content-<?= $comment->id() ?>" class="form-control shadow-sm" id="comment-content-<?= $comment->id() ?>"
+                                    <label for="comment-form-content-<?= $comment->id() ?>" class="sr-only">Contenu du message</label>
+                                    <textarea name="comment-form-content-<?= $comment->id() ?>" class="form-control shadow-sm" id="comment-form-content-<?= $comment->id() ?>"
                                         rows="4"><?= $comment->content() ?></textarea>
                                 </div>
                                 <div class="form-group float-right">
                                     <input type="submit" value="Envoyer" name="editComment"
-                                        id="edit-<?= $comment->id() ?>" class="btn btn-blue shadow">
-                                    <button value="Annuler" id="cancel_edit-comment-<?= $comment->id() ?>"
-                                        class="cancel-edit-comment btn btn-secondary shadow">Annuler</button>
+                                        id="comment-form-edit-<?= $comment->id() ?>" class="btn btn-blue shadow">
+                                    <button value="Annuler" id="comment-form-cancel-<?= $comment->id() ?>"
+                                        class="comment-form-cancel btn btn-secondary shadow">Annuler</button>
                                 </div>
                             </form>
                         </div>

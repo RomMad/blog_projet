@@ -21,8 +21,8 @@ section {
 
 .a-edit-post {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 2px;
+    right: 4px;
 }
 
 .report-comment {
@@ -64,8 +64,8 @@ section {
 }
 
 /* Effet fade out pour le contenu des articles et des commentaires  */
-.post-fade-out,
-.comment-fade-out {
+.post-fadeout,
+.comment-fadeout {
     content: "";
     position: absolute;
     top: 60%;

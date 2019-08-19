@@ -76,7 +76,7 @@ function post() {
         if (isset($_POST["editComment"])) {
             $comment = new Comments([
                 "id" => $_GET["comment"],
-                "content" => $_POST["content"],
+                "content" => $_POST["comment-form-content-" . $_GET["comment"]],
                 "status" => $status,
             ]);
             $commentsManager->update($comment);
