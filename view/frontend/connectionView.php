@@ -3,7 +3,7 @@
 <?php ob_start(); ?>
 
 <div class="container">
-    <section id="connection" class="row height-full">
+    <section id="connection" class="row min-vh-80">
         <form action="connection" method="post" class="form-signin m-auto text-center">
 
             <?php $session->flash(); ?>
@@ -32,7 +32,7 @@
     </section>
 </div>
 
-<script> seePassword = new SeePassword(); </script>
+<?php $script ="<script> seePassword = new SeePassword(); </script>"; ?>
 
 <?php $content = ob_get_clean(); ?>
 

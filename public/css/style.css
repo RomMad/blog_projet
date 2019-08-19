@@ -7,9 +7,8 @@ section {
     margin-bottom: 20px;
 }
 
-.height-full {
+.min-vh-80 {
     min-height: 80vh;
-    display: flex;
 }
 
 .form-signin {
@@ -24,17 +23,12 @@ section {
     position: absolute;
     top: 0;
     right: 0;
-    font-size: 0.9rem;
 }
 
 .report-comment {
     position: absolute;
     top: 10px;
     right: 10px;
-}
-
-.report-comment a {
-    font-size: 0.9em;
 }
 
 .fas.fa-times {

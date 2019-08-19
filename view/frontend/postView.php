@@ -183,8 +183,8 @@
     </section>
 </div>
 
-<?php $content = ob_get_clean(); ?>
+<?php $script ="<script> comments = new Comments() </script>"; ?>
 
-<script> comments = new Comments() </script>
+<?php $content = ob_get_clean(); ?>
 
 <?php require "view/template.php"; ?>

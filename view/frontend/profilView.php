@@ -155,7 +155,7 @@
     </section>
 </div>
 
-<script> seePassword = new SeePassword(); </script>
+<?php $script ="<script> seePassword = new SeePassword(); </script>"; ?>
 
 <?php $content = ob_get_clean(); ?>
 

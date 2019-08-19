@@ -57,89 +57,91 @@
         <span class="fas fa-circle-notch"></span>
     </div>
 
-    <header id="header">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3 py-3 shadow">
-            <a class="navbar-brand text-blue"
-                href="blog"><?= isset($_SESSION["settings"]) ? $_SESSION["settings"]->blog_name() : "Jean Forteroche | Le blog" ?></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <main class="min-vh-100">
+        <header id="header">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3 py-3 shadow">
+                <a class="navbar-brand text-blue"
+                    href="blog"><?= isset($_SESSION["settings"]) ? $_SESSION["settings"]->blog_name() : "Jean Forteroche | Le blog" ?></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="blog"><span class="fas fa-home"></span> Accueil</a>
-                    </li>
-                    <?php 
-                        
-                    if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
-                    ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="edit-post">Nouvel article</a>
-                    </li>
-                    <?php 
-                    }
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="blog"><span class="fas fa-home"></span> Accueil</a>
+                        </li>
+                        <?php 
+                            
+                        if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
+                        ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="edit-post">Nouvel article</a>
+                        </li>
+                        <?php 
+                        }
 
-                    if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]==1) {
-                    ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="settings" id="navbarDropdown"
-                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="settings">Administration générale</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="posts">Gestion des articles</a>
-                            <a class="dropdown-item" href="comments">Gestion des commentaires</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="users">Gestion des utilisateurs</a>
-                            <a class="dropdown-item" href="newUser">Ajouter un utilisateur</a>
-                        </div>
-                    </li>
-                    <?php 
-                    }
-                    ?>
-                </ul>
-                <form action="blog" method="get" class="form-inline my-2 my-lg-0">
-                    <label for="search" class="sr-only col-form-label">Recherche</label>
-                    <input name="search" id="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search"
-                        value="<?= isset($_SESSION["filter_search"]) ? htmlspecialchars($_SESSION["filter_search"]) : "" ?>">
-                    <button id="send-search" class="btn btn-outline-blue my-2 my-sm-0" type="submit">
-                        <span class="fas fa-search"></span></button>
-                </form>
+                        if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]==1) {
+                        ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="settings" id="navbarDropdown"
+                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="settings">Administration générale</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="posts">Gestion des articles</a>
+                                <a class="dropdown-item" href="comments">Gestion des commentaires</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="users">Gestion des utilisateurs</a>
+                                <a class="dropdown-item" href="newUser">Ajouter un utilisateur</a>
+                            </div>
+                        </li>
+                        <?php 
+                        }
+                        ?>
+                    </ul>
+                    <form action="blog" method="get" class="form-inline my-2 my-lg-0">
+                        <label for="search" class="sr-only col-form-label">Recherche</label>
+                        <input name="search" id="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search"
+                            value="<?= isset($_SESSION["filter_search"]) ? htmlspecialchars($_SESSION["filter_search"]) : "" ?>">
+                        <button id="send-search" class="btn btn-outline-blue my-2 my-sm-0" type="submit">
+                            <span class="fas fa-search"></span></button>
+                    </form>
 
-                <div class="ml-3 text-light">
-                <?php 
-                if (isset($_SESSION["userID"])) {
-                ?>
-                    <a class="text-blue font-weight-bold" href="profil" data-toggle="popover"
-                        data-trigger="hover" data-placement="bottom" data-html="true"
-                        title="<?= htmlspecialchars($_SESSION["userSurname"]) ?> <?= htmlspecialchars($_SESSION["userName"]) ?>"
-                        data-content="Dernière connexion : <br /><?= htmlspecialchars($_SESSION["lastConnection"]) ?><br /> Profil : <?= htmlspecialchars($_SESSION["userProfil"]) ?>">
-                        <span class="fas fa-user"></span> <?= $_SESSION["userLogin"] ?>
-                    </a>
-                    <br />
-                    <a class="text-blue" href="disconnection">Se déconnecter</a>
+                    <div class="ml-3 text-light">
                     <?php 
-                    } else {
+                    if (isset($_SESSION["userID"])) {
                     ?>
-                    <a class="text-blue" href="connection">Se connecter</a>
-                    <br />
-                    <a class="text-blue" href="inscription">S'inscrire</a>
-                    <?php
-                    }
-                    ?>
+                        <a class="text-blue font-weight-bold" href="profil" data-toggle="popover"
+                            data-trigger="hover" data-placement="bottom" data-html="true"
+                            title="<?= htmlspecialchars($_SESSION["userSurname"]) ?> <?= htmlspecialchars($_SESSION["userName"]) ?>"
+                            data-content="Dernière connexion : <br /><?= htmlspecialchars($_SESSION["lastConnection"]) ?><br /> Profil : <?= htmlspecialchars($_SESSION["userProfil"]) ?>">
+                            <span class="fas fa-user"></span> <?= $_SESSION["userLogin"] ?>
+                        </a>
+                        <br />
+                        <a class="text-blue" href="disconnection">Se déconnecter</a>
+                        <?php 
+                        } else {
+                        ?>
+                        <a class="text-blue" href="connection">Se connecter</a>
+                        <br />
+                        <a class="text-blue" href="inscription">S'inscrire</a>
+                        <?php
+                        }
+                        ?>
+                    </div>
                 </div>
+            </nav>
+        </header>
 
-            </div>
-        </nav>
-    </header>
+        <?= $content ?>
 
-    <?= $content ?>
+        <a id="scroll-top" class="scroll-top" href="#header"><span class="fa fa-chevron-up"></span></a>
+        
+    </main>
 
-    <a id="scroll-top" class="scroll-top" href="#header"><span class="fa fa-chevron-up"></span></a>
-
-    <footer class="bg-dark mt-5 py-4 px-4 text-white shadow">
+    <footer class="bg-dark py-4 px-4 text-white shadow">
         <p>Ce site web est un blog réalisé dans le cadre d'une formation de développeur Web.</p>
         <p>© Romain MADELAINE | <a href="https://romain-mad.fr" target="_blank" class="text-blue">romain-mad.fr</a></p>
     </footer>

@@ -17,7 +17,7 @@ if (isset($_GET["id"])) {
         </ol>
     </nav>
 
-    <section id="post_form" class="row height-full">
+    <section id="post_form" class="row min-vh-80">
         <div class="col-sm-12 col-md-12 m-auto">
 
             <form action="edit-post<?= isset($post) ? "-" . $post->id() : "" ?>" method="post">

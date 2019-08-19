@@ -11,7 +11,7 @@
         </ol>
     </nav>
 
-    <section id="profil" class="row justify-content-md-center">
+    <section id="profil" class="row height-full justify-content-md-center">
 
         <div class="col-sm-10 col-md-8 col-lg-6 mx-auto mt-4">
 

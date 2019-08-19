@@ -4,7 +4,7 @@
 
 <div class="container">
 
-    <section class="row height-full">
+    <section class="row min-vh-80">
         <form action="forgotPassword" method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 m-auto text-center">
 
             <?php $session->flash(); // Message en session flash ?>
@@ -18,7 +18,7 @@
     </section>
 </div>
 
-<script> seePassword = new SeePassword(); </script>
+<?php $script ="<script> seePassword = new SeePassword(); </script>"; ?>
 
 <?php $content = ob_get_clean(); ?>
 

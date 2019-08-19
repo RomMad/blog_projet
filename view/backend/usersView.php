@@ -12,7 +12,7 @@
         </ol>
     </nav>
 
-    <div class="row height-full">
+    <div class="row min-vh-80">
         <section id="table-admin_users" class="col-md-12 table-admin">
 
             <h2 class="mb-4">Gestion des utilisateurs

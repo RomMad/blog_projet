@@ -33,8 +33,8 @@
             if ($nbItems) {
                 foreach ($posts as $post) {
                 ?>
-                <div class="col-md-<?=  isset($settings) ? 12 / $settings->posts_by_row() : 12 ?>">
-                    <div class="card shadow">
+                <div class="col-md-<?=  isset($settings) ? 12 / $settings->posts_by_row() : 12 ?> mb-4">
+                    <div class="card h-100 mb-0 shadow">
                         <div class="card-header bg-dark text-light">
                             <a class="text-blue" href="post-<?= $post->id() ?>">
                                 <h3 class="mt-1"><?= $post->title() ?></h3>
@@ -43,8 +43,9 @@
                                     href="user-<?= $post->user_id() ?>"><?= $post->user_login() ?></a></em>
                             <?php if (isset($_SESSION["userID"]) && $_SESSION["userID"]==$post->user_id()) { ?>
                             <a class="text-blue a-edit-post m-1"
-                                href="edit-post-<?= $post->id() ?>"><span class="far fa-edit"></span>
-                                Modifier</a>
+                                href="edit-post-<?= $post->id() ?>"><span class="far fa-edit" 
+                                data-toggle="tooltip" data-placement="bottom" title="Modifier l'article">
+                                </span></a>
                             <?php } ?>
                         </div>
                         <div class="card-body text-body">
