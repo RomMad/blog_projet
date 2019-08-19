@@ -69,7 +69,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12 small">
                                 <div class="text-muted">Le mot de passe doit contenir au minimum :
                                     <ul>
                                         <li>6 caractères</li>
