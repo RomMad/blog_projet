@@ -89,7 +89,7 @@ if (isset($_GET["action"])) {
             error404();
             break;                  
         default:
-            listPosts();
+            error404();
     } 
 } else {
     listPosts();
