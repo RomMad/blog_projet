@@ -96,7 +96,7 @@ if (isset($_GET["action"])) {
 }
 
 function error404() {
-    require "view/frontend/error404.php";
+    require "error/404.php";
 }
 
 

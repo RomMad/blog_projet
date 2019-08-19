@@ -160,7 +160,7 @@
                 </div>
             </form>
 
-            <?php $pagination->view(); ?> <!-- Ajoute la barre de pagination -->
+            <?php $pagination->view(TRUE, TRUE); ?> <!-- Ajoute la barre de pagination -->
 
         </section>
     </div>

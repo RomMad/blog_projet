@@ -33,7 +33,7 @@ if (isset($_GET["id"])) {
                                 value="<?= isset($post) ? $post->title() : "" ?>" placeholder="Saisissez le titre" autofocus>
                         </div>
                         <div class="form-group">
-                            <label for="post_content" class="sr-only">Contenu</label>
+                            <label for="post_content" class="sr-only">Contenu de l'article</label>
                             <textarea name="post_content" class="form-control shadow-sm" id="post_content"
                                 rows="12"><?= isset($post) ? $post->content("html_format") : "" ?></textarea>
                         </div>

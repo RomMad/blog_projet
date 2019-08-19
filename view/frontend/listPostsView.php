@@ -4,10 +4,9 @@
 
 <div class="container">
 
-    <section id="blog" class="row">
+    <div id="blog" class="row">
 
         <div class="col-md-12">
-
         <?php 
         // Vérifie si l'utilisateur a les droits pour écrire un article
         if (isset($_SESSION["userRole"]) && $_SESSION["userRole"]<5) {
@@ -25,7 +24,7 @@
 
         $session->flash(); // Message en session flash
 
-        $pagination->view(); // Ajoute la barre de pagination
+        $pagination->view(TRUE, TRUE); // Ajoute la barre de pagination
 
         ?>
             <div class="row">
@@ -55,7 +54,7 @@
                                 <span class="post-fade-out"></span>
                             </div>
                             <div>
-                                <a href="post-"<?= $post->id() ?>"
+                                <a href="post-<?= $post->id() ?>"
                                     class="btn btn-outline-blue mt-2">Continuer la lecture
                                     <span class="fas fa-angle-right"></span>
                                 </a>
@@ -73,13 +72,13 @@
 
             </div>
 
-            <?php $pagination->view() ?>
+            <?php $pagination->view(FALSE, TRUE); ?>
 
             <div class="mt-4 mb-4">
                 <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
-
-    </section>
+        </div>
+    </div>
 </div>
 
 <?php $content = ob_get_clean(); ?>

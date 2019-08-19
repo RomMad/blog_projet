@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
         integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="public/css/style.css" />
-    <link rel="icon" href="" />
+    <!-- <link rel="icon" href="" /> -->
     <title><?= $title ?></title>
     <meta property="og:title" content="<?= $title ?>" />
     <meta property="og:type" content="blog" />
     <meta property="og:url" content="" />
-    <meta property="og:image" content="" />
+    <!-- <meta property="og:image" content="" /> -->
     <meta name="description" content="..." />
 
     <!-- Scripts TinyMCE -->
@@ -125,7 +125,7 @@
                     ?>
                     <a class="text-blue" href="connection">Se connecter</a>
                     <br />
-                    <a class="text-blue" href="inscription-">S'inscrire</a>
+                    <a class="text-blue" href="inscription">S'inscrire</a>
                     <?php
                     }
                     ?>
@@ -149,6 +149,7 @@
     <script src="public/js/app.js"></script>
     <script src="public/js/seePassword.js"></script>
     <script src="public/js/comments.js"></script>
+    <?= isset($script) ? $script : "" ?>
     <!-- Les fichiers Javascript pour Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">

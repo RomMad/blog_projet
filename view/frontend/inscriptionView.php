@@ -9,7 +9,7 @@
 
             <?php $session->flash(); ?>
 
-            <form action="inscription-" method="post" class="col-md-12 card shadow mt-4">
+            <form action="inscription" method="post" class="col-md-12 card shadow mt-4">
                 <div class="form-group row">
                     <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Inscription</h3>
                 </div>
@@ -70,14 +70,14 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <small class="text-muted">Le mot de passe doit contenir au minimum :
+                                <div class="text-muted">Le mot de passe doit contenir au minimum :
                                     <ul>
                                         <li>6 caractères</li>
                                         <li>1 lettre minuscule</li>
                                         <li>1 lettre majuscule</li>
                                         <li>1 chiffre</li>
                                     </ul>
-                                </small>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -87,8 +87,8 @@
     </section>
 </div>
 
+<script> seePassword = new SeePassword(); </script>
+
 <?php $content = ob_get_clean(); ?>
 
 <?php require "view/template.php"; ?>
-
-<script> seePassword = new SeePassword(); </script>

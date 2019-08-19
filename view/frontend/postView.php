@@ -14,7 +14,7 @@
     <section id="post">
         <div class="card shadow">
             <div class="card-header bg-dark text-light">
-                <h1 class="h2 mt-2 mb-3"><?= $post->title() ?></h1>
+                <h2 class="mt-2 mb-3"><?= $post->title() ?></h2>
                 <p class="my-0">
                     <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" 
                         href="user-<?= $post->user_id() ?>"><?= $post->login() ?></a> 
@@ -53,7 +53,7 @@
 
         <div class="row">
             <div class="col-sm-12 col-md-10 col-lg-6">
-                <h2 class="h3 mb-4">Nouveau commentaire</h2>
+                <h3 class="mb-4">Nouveau commentaire</h3>
                 <div class="row">
                     <div class="col-md-12">
                         <form action="post-<?= $post_id ?>#form-comment" method="post" class="px-3">
@@ -89,12 +89,12 @@
         <div class="row">
             <div class="col-sm-12 col-md-10 col-lg-6 mt-2">
 
-                <h2 class="h3 mb-4">Commentaires</h2>
+                <h3 class="mb-4">Commentaires</h3>
                 <?php 
                 if (!isset($comments)) {
                     echo "Aucun commentaire.";
                 } else {
-                    $pagination->view(); // Ajoute la barre de pagination
+                    $pagination->view(TRUE, TRUE); // Ajoute la barre de pagination
                     // Récupère les messages
                     foreach ($comments as $comment) {
                     ?>
@@ -159,8 +159,8 @@
                                 action="post-<?= $post_id ?>-comment-<?= $comment->id() ?>#form-comment"
                                 method="post">
                                 <div class="form-group">
-                                    <label for="content"></label>
-                                    <textarea name="content" class="form-control shadow-sm" id="content"
+                                    <label for="comment-content-<?= $comment->id() ?>" class="sr-only">Contenu du message</label>
+                                    <textarea name="comment-content-<?= $comment->id() ?>" class="form-control shadow-sm" id="comment-content-<?= $comment->id() ?>"
                                         rows="4"><?= $comment->content() ?></textarea>
                                 </div>
                                 <div class="form-group float-right">
@@ -175,7 +175,7 @@
                 </div>
                 <?php
                     }
-                    $pagination->view(); // Ajoute la barre de pagination
+                    $pagination->view(FALSE, TRUE); // Ajoute la barre de pagination
                 }
                 ?>
             </div>
@@ -185,6 +185,6 @@
 
 <?php $content = ob_get_clean(); ?>
 
-<?php require "view/template.php"; ?>
-
 <script> comments = new Comments() </script>
+
+<?php require "view/template.php"; ?>

@@ -175,7 +175,7 @@
                 </div>
             </form>
 
-            <?php $pagination->view(); ?>
+            <?php $pagination->view(TRUE, TRUE); ?>
 
         </section>
     </div>

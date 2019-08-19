@@ -199,7 +199,7 @@
                 </div>
             </form>
 
-            <?php $pagination->view(); ?>
+            <?php $pagination->view(TRUE, TRUE); ?>
             <!-- Ajoute la barre de pagination -->
 
         </section>
