@@ -3,7 +3,7 @@
 <?php ob_start(); ?>
 
 <div class="container">
-    <div class="min-vh-80">
+    <div class="row min-vh-80">
         <div class="col-sm-10 col-md-8 col-lg-6 m-auto text-center">
             <h1 class="">Erreur 404<br />Cette page n'existe pas</h1>
             <p class="my-4">La page que vous recherchez est introuvable.</p>
