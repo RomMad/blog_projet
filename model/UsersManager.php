@@ -29,7 +29,7 @@ class UsersManager extends Manager {
         else {
             $filter = "login = '" . $info . "'";
         }
-        $req = $this->_db->prepare("SELECT u.id, u.login, u.email, u.pass,  u.name, u.surname, u.role, r.role_user
+        $req = $this->_db->prepare("SELECT u.id, u.login, u.email, u.pass, u.name, u.surname, u.role, r.role_user
             FROM users u
             LEFT JOIN user_role r
             ON u.role = r.id 

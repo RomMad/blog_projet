@@ -75,7 +75,7 @@
                         </li>
                         <?php 
                             
-                        if (isset($_SESSION["user"]) && $_SESSION["user"]["role"]<5) {
+                        if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] < 5) {
                         ?>
                         <li class="nav-item">
                             <a class="nav-link" href="edit-post">Nouvel article</a>
@@ -83,19 +83,27 @@
                         <?php 
                         }
 
-                        if (isset($_SESSION["user"]) && $_SESSION["user"]["role"]==1) {
+                        if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] <= 4) {
                         ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="settings" id="navbarDropdown"
                                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <?php if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] == 1) { ?> 
                                 <a class="dropdown-item" href="settings">Administration générale</a>
                                 <div class="dropdown-divider"></div>
+                            <?php }
+                            if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] <= 4) { ?> 
                                 <a class="dropdown-item" href="posts">Gestion des articles</a>
+                            <?php } ?>
+                            <?php if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] <= 2) { ?> 
                                 <a class="dropdown-item" href="comments">Gestion des commentaires</a>
+                            <?php }
+                            if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] == 1) { ?> 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="users">Gestion des utilisateurs</a>
                                 <a class="dropdown-item" href="newUser">Ajouter un utilisateur</a>
+                            <?php } ?>
                             </div>
                         </li>
                         <?php 

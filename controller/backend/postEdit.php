@@ -13,12 +13,12 @@ function postEdit() {
             header("Location: blog"); 
             exit();
         }
-    }
-    // Vérifie si l'utilisateur a les droit d'accès ou si il est l'auteur de l'article
-    if (!isset($_SESSION["user"]["role"]) || $_SESSION["user"]["role"] > 4 || ($_SESSION["user"]["role"] > 2 && $_SESSION["user"]["id"] != $post->user_id())) {
-        $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
-        header("Location: blog"); 
-        exit();
+        // Vérifie si l'utilisateur a les droit d'accès ou s'il est l'auteur de l'article
+        if (!isset($_SESSION["user"]) || $_SESSION["user"]["role"] == 5 || ($_SESSION["user"]["role"] >= 3 && $_SESSION["user"]["id"] != $post->user_id())) {
+            $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
+            header("Location: blog"); 
+            exit();
+        }
     }
 
     // Vérification si informations dans variable POST
@@ -26,13 +26,13 @@ function postEdit() {
         $post = new Posts([
             "title" => $_POST["title"],
             "content" => $_POST["post_content"],
-            "status" => $_POST["status"],
+            "status" => $_SESSION["user"]["role"] <= 3 ? $_POST["status"] : "Brouillon",
             "id" => isset($_GET["id"]) ? $_GET["id"] : "",
             "user_id" => $_SESSION["user"]["id"],
             "user_login" => $_SESSION["user"]["login"],
         ]);
         // Supprime l'article
-        if (isset($_POST["delete"]) && !empty($post->id())) {
+        if (isset($_POST["delete"]) && !empty($post->id() && $_SESSION["user"]["role"] <= 3)) {
             $postsManager->delete($post);
             $session->setFlash("L'article <b>". $post->title() . "</b> a été supprimé.", "warning");
             header("Location: blog");

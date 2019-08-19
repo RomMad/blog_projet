@@ -15,7 +15,7 @@ function comments() {
     } else {
         // Récupère le rôle de l'utilisateur
         $userRole = $usersManager->getRole($_SESSION["user"]["id"]);
-        if ($userRole != 1) {
+        if ($userRole >= 3) {
             header("Location: blog");
             exit;
         }
@@ -33,7 +33,7 @@ function comments() {
                 }
                 // Compte le nombre de commentaires supprimés pour adaptés l'affichage du message
                 $nbselectedComments = count($_POST["selectedComments"]);
-                if ($nbselectedComments>1) {
+                if ($nbselectedComments > 1) {
                     $session->setFlash($nbselectedComments . " commentaires ont été supprimés.", "warning");
                 } else {
                     $session->setFlash("Le commentaire a été supprimé.", "warning");
@@ -50,7 +50,7 @@ function comments() {
                 }
                 // Compte le nombre de commentaires modérés pour adaptés l'affichage du message
                 $nbselectedComments = count($_POST["selectedComments"]);
-                if ($nbselectedComments>1) {
+                if ($nbselectedComments > 1) {
                     $session->setFlash($nbselectedComments . " commentaires ont été modérés.", "success");
                 } else {
                     $session->setFlash("Le commentaire a été modéré.", "success");

@@ -24,7 +24,7 @@
                         <span class="badge badge-light"><?= $nbItems ?></span></a>
                 </p>
                 <?php
-                if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"]== $post->user_id()) {
+                if (isset($_SESSION["user"]) && ($_SESSION["user"]["role"] <= 2 || $_SESSION["user"]["id"] == $post->user_id())) {
                 ?>
                 <a class="text-blue a-edit-post m-1" href="edit-post-<?= $post->id() ?>" 
                     data-toggle="tooltip" data-placement="bottom" title="Modifier l'article">

@@ -56,7 +56,7 @@ class Users extends Model {
 
     // Setters
     public function setlogin($login) {
-        if (preg_match("#^[a-zA-Z0-9_.-]{5,20}$#",$login)) {
+        if (preg_match("#^[a-zA-Zéèçà0-9_.-]{5,20}$#",$login)) {
             $this->_login = $login;
         }
     }

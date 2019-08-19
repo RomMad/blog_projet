@@ -30,6 +30,7 @@
 
             <form action="<?= $linkNbDisplayed ?>" method="post">
                 <div class="row">
+                    <?php if ($_SESSION["user"]["role"] < 3) { ?>
                     <div class="col-md-4 form-inline mb-2 px-md-1 px-lg-3">
                         <label class="sr-only col-form-label" for="action">Action</label>
                         <select name="action_apply" id="action_apply" class="custom-select form-control mr-1 shadow"
@@ -43,6 +44,7 @@
                             class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="OK"
                             onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
                     </div>
+                    <?php } ?>
                     <div class="col-md-4 form-inline mb-2 px-md-1 px-lg-3">
                         <label class="sr-only col-form-label" for="filter_status">Filtre</label>
                         <select name="filter_status" id="filter_status" class="custom-select form-control mr-1 shadow"

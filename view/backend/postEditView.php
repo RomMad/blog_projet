@@ -56,15 +56,20 @@ if (isset($_GET["id"])) {
                         </div>
                         <div class="form-group">
                             <label for="status">Statut</label>
+                            <?php if ($_SESSION["user"]["role"] < 4) { ?>
                             <select name="status" class="form-control shadow-sm" id="status">
                                 <option <?= isset($post) && $post->status()=="Brouillon" ? "selected" : "" ?>>Brouillon</option>
                                 <option <?= isset($post) && $post->status()=="Publié" ? "selected" : "" ?>>Publié</option>
                             </select>
+                            <?php } else { ?>
+                            <input type="text" name="status" class="form-control shadow-sm" id="status"
+                                readonly value="<?= isset($post) ? $post->status() : "" ?>">
+                            <?php } ?> 
                         </div>
                         <div class="form-group float-right">
                             <input type="submit" id="save" name="save" value="Enregistrer" class="btn btn-block btn-blue mb-2 shadow">
                             <?php 
-                            if (isset($_GET["id"])) { 
+                            if (isset($_GET["id"]) && $_SESSION["user"]["role"] < 4) { 
                             ?>
                             <input type="submit" id="delete" name="delete" alt="Supprimer l'article" class="btn btn-block btn-danger mb-2 shadow" value="Supprimer"
                                 onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;} else{return false;}">

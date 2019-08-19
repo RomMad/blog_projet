@@ -9,20 +9,20 @@ function posts() {
     $postsManager = new PostsManager();
 
     // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
-    if (empty($_SESSION["user"]["id"])) {
+    if (empty($_SESSION["user"])) {
         header("Location: blog");
         exit();
     } else {
         // Récupère le rôle de l'utilisateur
         $userRole = $usersManager->getRole($_SESSION["user"]["id"]);
-        if ($userRole != 1) {
+        if ($userRole >= 5) {
             header("Location: blog");
             exit();
         }
     }
 
     if (!empty($_POST)) {
-        if (!empty($_POST["action_apply"]) && isset($_POST["selectedPosts"])) {
+        if ($_SESSION["user"]["role"] <= 2 && !empty($_POST["action_apply"]) && isset($_POST["selectedPosts"])) {
             // Supprime les articles sélectionnés via une boucle
             if ($_POST["action_apply"] == "delete") {
                 foreach ($_POST["selectedPosts"] as $selectedPost) {
@@ -42,7 +42,11 @@ function posts() {
             }
         }
 
-        $_SESSION["filter"] = "p.id > 0";
+        if ($_SESSION["user"]["role"] >= 3) {
+            $_SESSION["filter"] = "user_id = " . $_SESSION["user"]["id"];
+        } else {
+            $_SESSION["filter"] = "p.id > 0";
+        }
         // Si sélection d'un filtre 'rôle', enregistre le filtre
         if (!empty($_POST["filter_status"])) {
             $_SESSION["filter_status"] = htmlspecialchars($_POST["filter_status"]);
@@ -60,8 +64,11 @@ function posts() {
     if (empty($_POST) && !isset($_GET["order"])) {
         $_SESSION["filter_status"] = NULL;
         $_SESSION["search_post"] = "";
-        $_SESSION["filter"] = "p.id > 0";
-    }
+        if ($_SESSION["user"]["role"] >= 3) {
+            $_SESSION["filter"] = "user_id = " . $_SESSION["user"]["id"];
+        } else {
+            $_SESSION["filter"] = "p.id > 0";
+        }    }
 
     // Compte le nombre d'articles
     $nbItems = $postsManager->count($_SESSION["filter"]);

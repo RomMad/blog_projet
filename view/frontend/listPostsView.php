@@ -41,7 +41,7 @@
                             </a>
                             <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue"
                                     href="user-<?= $post->user_id() ?>"><?= $post->user_login() ?></a></em>
-                            <?php if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"]==$post->user_id()) { ?>
+                            <?php if (isset($_SESSION["user"]) && ($_SESSION["user"]["role"] <= 2 || $_SESSION["user"]["id"] == $post->user_id())) { ?>
                             <a class="text-blue a-edit-post m-1"
                                 href="edit-post-<?= $post->id() ?>"><span class="far fa-edit" 
                                 data-toggle="tooltip" data-placement="bottom" title="Modifier l'article">
