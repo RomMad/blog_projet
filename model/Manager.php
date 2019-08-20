@@ -48,11 +48,3 @@ class Manager
         return $this->_db;
     }
 }
-
-// $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-// if ($_SERVER["HTTP_HOST"] == "localhost") {
-//     $db = new PDO("mysql:host=localhost;dbname=blog_projet;charset=utf8", "root", "", $pdo_options);
-// } else {
-//     $db = new PDO("mysql:host=db5000134112.hosting-data.io;dbname=dbs129050;charset=utf8", "dbu50459", "!J3anF0r730r0ch3*", $pdo_options);
-
-// }

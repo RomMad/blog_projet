@@ -1,12 +1,9 @@
 <?php 
-
 function newuser() {
     
     spl_autoload_register("loadClass");
 
     $session = new Session();
-    $db = new Manager();
-    $db = $db->databaseConnection();
     $usersManager = new UsersManager();
 
     if (!isset($_POST["pass"])) {
@@ -74,11 +71,7 @@ function newuser() {
             // Récupère l'ID de l'utilisateur et son password haché
             $user = $usersManager->verify($user->login());
 
-            $req = $db->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
-            $req->execute(array(
-                "user_id" => $user->id(),
-                "token" => $user->pass()
-            ));
+            $usersManager->addToken($user, $token);
             // Initialise l'email
             $link = "http://localhost/blog_projet/reset-password-" . $user->pass();
             $to = $user->email();

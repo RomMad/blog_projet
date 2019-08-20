@@ -3,8 +3,6 @@ function forgotPassword() {
     spl_autoload_register("loadClass");
 
     $session = new Session();
-    $db = new Manager();
-    $db = $db->databaseConnection();
     $usersManager = new UsersManager();
 
     // Vérifie si information dans variable POST
@@ -27,11 +25,8 @@ function forgotPassword() {
             $bytes = random_bytes(8);
             $token = bin2hex($bytes);
 
-            $req = $db->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
-            $req->execute(array(
-                "user_id" => $user->id(),
-                "token" => $token
-            ));
+            // Ajout d'un tokkne pour la réinitialisation
+            $usersManager->addToken($user, $token);
             // Initialise l'email
             $link = "http://localhost/blog_projet/reset-password-" . $token;
             $to = $user->email();

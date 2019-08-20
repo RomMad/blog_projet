@@ -1,37 +1,25 @@
 <?php 
-
 function resetPassword() {
     
     spl_autoload_register("loadClass");
 
     $session = new Session();
-    $db = new Manager();
-    $db = $db->databaseConnection();
     $usersManager = new UsersManager();
 
     // Vérifie si informations dans variables POST et GET
     if (!empty($_POST) && isset($_GET["token"])) {
         $validation = true;
+    
         // Vérifie si le token est existe
-        $req = $db->prepare("SELECT r.user_ID, r.reset_date, u.email
-        FROM reset_passwords r
-        LEFT JOIN users u
-        ON r.user_ID = u.ID
-        WHERE token = ? AND email = ?
-        ");
-        $req->execute(array(
-            htmlspecialchars($_GET["token"]),
-            htmlspecialchars($_POST["email"])
-        ));
-        $dataResetPassword = $req->fetch();
+        $resetDate = $usersManager->verifyToken($_GET["token"], $_POST["email"]);
         
         // Calcule l'intervalle entre le moment de demande de réinitialisation et maintenant
-        $dateResetPassword = new DateTime($dataResetPassword["reset_date"], timezone_open("Europe/Paris"));
+        $dateResetPassword = new DateTime($resetDate, timezone_open("Europe/Paris"));
         $dateNow = new DateTime("now", timezone_open("Europe/Paris"));
         $interval = date_timestamp_get($dateNow)-date_timestamp_get($dateResetPassword);
         $delay = 15 * 60; // 15 minutes x 60 secondes = 900 secondes
         // Vérifie si le token ou l'adresse email sont corrects
-        if (!$dataResetPassword) {
+        if (!$resetDate) {
             $session->setFlash ("Le lien de réinitialisation ou l'adresse email sont incorrects.", "danger");
             $validation = false;
         }
@@ -65,26 +53,27 @@ function resetPassword() {
         if ($validation) {      
             // Récupère l'ID de l'utilisateur
             $user = $usersManager->get($_POST["email"]);
+            // Enregistre les informations de l'utilisateurs en session
+            $_SESSION["user"]["id"] = $user->id();
+            $_SESSION["user"]["login"] = $user->login();
+            $_SESSION["user"]["role"] = $user->role();
+            $_SESSION["user"]["profil"] = $user->role_user();
+            $_SESSION["user"]["name"] = $user->name();
+            $_SESSION["user"]["surname"] = $user->surname();
             // Hachage du mot de passe
             $newPassHash = password_hash(htmlspecialchars($_POST["new_pass"]), PASSWORD_DEFAULT);
             // Créé une nouvelle entité user
             $user = new Users([
                 "id" => $user->id(),
-                "login" => $user->login(),
-                "role" => $user->role(),
                 "pass" => $newPassHash
             ]);
             $usersManager->updatePass($user);
 
-            $_SESSION["user"]["id"] = $user->id();
-            $_SESSION["user"]["login"] =$user->login();
-            $_SESSION["user"]["role"] = $user->role();
+            // Récupère la date de dernière connexion de l'utilisateur
+            $_SESSION["lastConnection"] = $usersManager->getLastConnection($user);
 
-            // Ajoute la date de connexion de l'utilisateur dans la table dédiée
-            $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
-            $req->execute(array(
-                "user_ID" => $user->id()
-            ));
+            // Ajoute la date de connexion de l'utilisateur
+            $usersManager->addConnectionDate($user);
 
             $session->setFlash ("Le mot de passe a été modifié.", "success");
 

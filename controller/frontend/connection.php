@@ -3,8 +3,6 @@ function connection() {
     spl_autoload_register("loadClass");
 
     $session = new Session();
-    $db = new Manager();
-    $db = $db->databaseConnection();
     $usersManager = new UsersManager();
 
     // Redirige vers la page d'accueil si l'utilisateur est déjà connecté
@@ -50,18 +48,10 @@ function connection() {
             }
 
             // Récupère la date de dernière connexion de l'utilisateur
-            $req = $db->prepare("SELECT DATE_FORMAT(connection_date, \"%d/%m/%Y à %H:%i\") AS connection_date_fr FROM connections WHERE user_id = ? ORDER BY id DESC LIMIT 0, 1");
-            $req->execute([
-                $user->id()
-            ]);
-            $connection = $req->fetch();
-            $_SESSION["lastConnection"] = $connection["connection_date_fr"];
+            $_SESSION["lastConnection"] = $usersManager->getLastConnection($user);
 
-            // Ajoute la date de connexion de l'utilisateur dans la table dédiée
-            $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
-            $req->execute([
-                "user_ID" => $user->id()
-            ]);
+            // Ajoute la date de connexion de l'utilisateur
+            $usersManager->addConnectionDate($user);
 
             $session->setFlash("Vous êtes connecté.", "success");
             header("Location: blog");

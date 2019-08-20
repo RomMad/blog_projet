@@ -172,4 +172,45 @@ class UsersManager extends Manager {
         $nbUsers = $req->fetchColumn();
         return $nbUsers;
     }
+    
+    // Ajoute la date de connexion de l'utilisateur
+    public function addConnectionDate($user) {
+        $req = $this->_db->prepare("INSERT INTO connections (user_id) values(:id)");
+        $req->execute([
+            "id" => $user->id()
+        ]);
+    }
+
+    // Récupère la date de dernière connexion de l'utilisateur
+    public function getLastConnection($user) {
+        $req = $this->_db->prepare("SELECT DATE_FORMAT(connection_date, \"%d/%m/%Y %H:%i\") AS connection_date_fr 
+            FROM connections WHERE user_id = :user_id ORDER BY id DESC LIMIT 0, 1");
+        $req->execute([
+            "user_id" => $user->id()
+        ]);
+        $lastConnection = $req->fetch();
+        return $lastConnection["connection_date_fr"];
+    }
+    
+    // Ajoute un token pour la réinitialisation
+    public function addToken($user, $token) {
+        $req = $this->_db->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
+        $req->execute([
+            "user_id" => $user->id(),
+            "token" => $token
+        ]);
+    }
+
+    // Vérifie si le token est existe
+    public function verifyToken($token, $email) {
+        $req = $this->_db->prepare("SELECT r.reset_date
+            FROM reset_passwords r LEFT JOIN users u ON r.user_ID = u.ID
+            WHERE token = :token AND email = :email");
+        $req->execute([
+            "token" => $token,
+            "email" => $email
+            ]);
+        $data = $req->fetch();
+        return $data["reset_date"];
+    }
 }

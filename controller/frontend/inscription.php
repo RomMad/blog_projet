@@ -3,8 +3,6 @@ function inscription() {
     spl_autoload_register("loadClass");
 
     $session = new Session();
-    $db = new Manager();
-    $db = $db->databaseConnection();
     $usersManager = new UsersManager();
 
     // Vérifie si informations dans variable POST
@@ -87,21 +85,13 @@ function inscription() {
             $_SESSION["user"]["name"] = $user->name();
             $_SESSION["user"]["surname"] = $user->surname();
 
-            // Ajoute la date de connexion de l'utilisateur dans la table dédiée
-            $req = $db->prepare("INSERT INTO connections (user_ID) values(:user_ID)");
-            $req->execute([
-                "user_ID" => $user->id()
-            ]);
+            // Ajoute la date de connexion de l'utilisateur
+            $usersManager->addConnectionDate($user);
 
             // Récupère la date de dernière connexion de l'utilisateur
-            $req = $db->prepare("SELECT DATE_FORMAT(connection_date, \"%d/%m/%Y à %H:%i\") AS connection_date_fr FROM connections WHERE user_id = ? ORDER BY id DESC LIMIT 0, 1");
-            $req->execute([
-                $user->id()
-            ]);
-            $connection = $req->fetch();
-            $_SESSION["lastConnection"] = $connection["connection_date_fr"];
+            $_SESSION["lastConnection"] = $usersManager->getLastConnection($user);
 
-            $session->setFlash("L'inscription est réussie.", "success");
+            $session->setFlash("Bienvenue sur le site !", "success");
             header("Location: blog");
             exit();
         }
