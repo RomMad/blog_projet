@@ -120,6 +120,10 @@ table {
     font-size: 0.4em;
 }
 
+table th {
+    padding-right: 6px !important;
+}
+
 table .th-width-20px {
     width: 20px;
 }

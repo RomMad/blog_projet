@@ -74,7 +74,7 @@ function posts() {
     $nbItems = $postsManager->count($_SESSION["filter"]);
 
     // Vérifie l'ordre de tri par type
-    if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "author" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date")) {
+    if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "user_login" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date")) {
         $orderBy = $_GET["orderBy"];
     } else if (!empty($_COOKIE["orderBy"]["adminPosts"])) 
     {

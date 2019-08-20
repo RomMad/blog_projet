@@ -3,7 +3,7 @@
 <?php ob_start(); ?>
 
 <div class="container">
-
+    <!-- Fil d'Ariane -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0">
             <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
@@ -14,18 +14,14 @@
 
     <div class="row min-vh-80">
         <section id="table_admin_posts" class="col-md-12 table-admin">
-
             <h2 class="mb-4">Gestion des articles
                 <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>
             </h2>
 
             <?php 
-            $session->flash(); // Message en session flash
-
+            $session->flash();
             // Affiche les résultats si recherche
-            if (isset($_POST["filter"]) || isset($_POST["filter_search"])) {
-                echo "<p> " . $nbItems . " résultat(s).</p>";
-            }    
+            if (isset($_POST["filter"]) || isset($_POST["filter_search"])) { echo "<p> " . $nbItems . " résultat(s).</p>";}    
             ?>
 
             <form action="<?= $linkNbDisplayed ?>" method="post">
@@ -33,8 +29,7 @@
                     <?php if ($_SESSION["user"]["role"] < 3) { ?>
                     <div class="col-md-4 form-inline mb-2 px-md-1 px-lg-3">
                         <label class="sr-only col-form-label" for="action">Action</label>
-                        <select name="action_apply" id="action_apply" class="custom-select form-control mr-1 shadow"
-                            value="Par auteur">
+                        <select name="action_apply" id="action_apply" class="custom-select form-control mr-1 shadow" value="Par auteur">
                             <option value="">-- Action --</option>
                             <option value="Brouillon">Mettre en brouillon</option>
                             <option value="Publié">Publier</option>
@@ -54,7 +49,7 @@
                             <option <?= $_SESSION["filter_status"] == "publié" ? "selected" : "" ?> value="publié">Publié</option>
                         </select>
                         <input type="submit" id="filter" name="filter" alt="Filtrer"
-                            class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="Filtrer">
+                            class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="OK">
                     </div>
                     <div class="col-md-4 form-inline mb-2 px-md-1 px-lg-3">
                         <label for="search_post" class="sr-only col-form-label">Recherche</label>
@@ -73,73 +68,38 @@
                                 <th scope="col" class="align-middle th-width-20px"><input type="checkbox" name="allSelectedPosts"
                                         id="all-checkbox" /><label for="allSelectedPosts"></label></th>
                                 <th scope="col" class="align-middle">
-                                    <a href="posts-orderBy-title-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                        class="sorting-indicator text-white">Titre
-                                        <?php 
-                                if ($orderBy == "title") {
-                                ?>
-                                        <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
-                                }
-                                ?>
+                                    <a href="posts-orderBy-title-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Titre
+                                        <?php if ($orderBy == "title") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                     </a>
                                 </th>
                                 <th scope="col" class="align-middle th-width-150px">
-                                    <a href="posts-orderBy-user_name-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                        class="sorting-indicator text-white">Auteur
-                                        <?php 
-                                if ($orderBy == "user_name") {
-                                ?>
-                                        <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
-                                }
-                                ?>
+                                    <a href="posts-orderBy-user_login-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
+                                        <?php if ($orderBy == "user_login") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                     </a>
                                 </th>
                                 <th scope="col" class="align-middle th-width-100px">
-                                    <a href="posts-orderBy-status-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                        class="sorting-indicator text-white">Statut
-                                        <?php 
-                                if ($orderBy == "status") {
-                                ?>
-                                        <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
-                                }
-                                ?>
+                                    <a href="posts-orderBy-status-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Statut
+                                        <?php if ($orderBy == "status") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                     </a>
                                 </th>
                                 <th scope="col" class="align-middle th-width-100px">
-                                    <a href="posts-orderBy-creation_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                        class="sorting-indicator text-white">Date de création
-                                        <?php 
-                                if ($orderBy == "creation_date") {
-                                ?>
-                                        <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
-                                }
-                                ?>
+                                    <a href="posts-orderBy-creation_date-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
+                                        <?php if ($orderBy == "creation_date") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                     </a>
                                 </th>
                                 <th scope="col" class="align-middle th-width-120px">
-                                    <a href="posts-orderBy-update_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                        class="sorting-indicator text-white">Date de mise à jour
-                                <?php 
-                                if ($orderBy == "update_date") {
-                                ?>
-                                        <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
-                                }
-                                ?>
+                                    <a href="posts-orderBy-update_date-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise<br />à jour
+                                        <?php if ($orderBy == "update_date") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                     </a>
                                 </th>
                             </tr>
                         </thead>
 
                         <tbody>
-                    <?php
-                    if ($nbItems) {
-                        foreach ($posts as $post) {
-                    ?>
+                        <?php
+                        if ($nbItems) {
+                            foreach ($posts as $post) {
+                            ?>
                             <tr>
                                 <th scope="row">
                                     <input type="checkbox" name="selectedPosts[]" id="post<?= $post->id() ?>"
@@ -153,17 +113,15 @@
                                 <td><?= $post->creation_date("") ?></td>
                                 <td><?= $post->update_date("") ?></td>
                             </tr>
-                    <?php
+                        <?php
+                            }
                         }
-                    }
-                    ?>
+                        ?>
                         </tbody>
                     </table>
                 </div>
             </form>
-
             <?php $pagination->view(TRUE, TRUE); ?> <!-- Ajoute la barre de pagination -->
-
         </section>
     </div>
 </div>

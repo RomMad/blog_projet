@@ -20,13 +20,9 @@
             </h2>
 
             <?php 
-            $session->flash(); // Message en session flash
-
+            $session->flash();
             // Affiche les résultats si recherche
-            if (isset($_POST["filter"])) {
-                echo "<p> " . $nbItems . " résultat(s).</p>";
-            }
-            ?>
+            if (isset($_POST["filter"])) {  echo "<p> " . $nbItems . " résultat(s).</p>"; } ?>
 
             <form action="<?= $linkNbDisplayed ?>" method="post">
                 <div class="row">
@@ -68,75 +64,34 @@
                                         <label for="allselectedComments" class="sr-only">Tout sélectionner</label>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="comments-orderBy-content-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Contenu du commentaire
-                                            <?php 
-                                    if ($orderBy == "content") {
-                                    ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                            <?php
-                                    }
-                                    ?>
+                                        <a href="comments-orderBy-content-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Contenu du commentaire
+                                            <?php if ($orderBy == "content") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle th-width-120px">
-                                        <a href="comments-orderBy-user_name-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Auteur
-                                            <?php 
-                                    if ($orderBy == "user_name") {
-                                    ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                    <?php
-                                    }
-                                    ?>
+                                        <a href="comments-orderBy-user_name-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Auteur
+                                            <?php if ($orderBy == "user_name") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle th-width-100px">
-                                        <a href="comments-orderBy-status-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Statut
-                                            <?php 
-                                    if ($orderBy == "status") {
-                                    ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                            <?php
-                                    }
-                                    ?>
+                                        <a href="comments-orderBy-status-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Statut
+                                            <?php if ($orderBy == "status") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle th-width-130px">
                                         <a href="comments-orderBy-report_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
                                             class="sorting-indicator text-white">Date de signalement
-                                            <?php 
-                                    if ($orderBy == "report_date") {
-                                    ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                            <?php
-                                    }
-                                    ?>
+                                            <?php if ($orderBy == "report_date") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle th-width-130px">
-                                        <a href="comments-orderBy-nb_report-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Nb de signalements
-                                            <?php 
-                                    if ($orderBy == "nb_report") {
-                                    ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                            <?php
-                                    }
-                                    ?>
+                                        <a href="comments-orderBy-nb_report-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Nb de signalements
+                                            <?php if ($orderBy == "nb_report") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle th-width-100px">
-                                        <a href="comments-orderBy-creation_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Date de création
-                                            <?php 
-                                    if ($orderBy == "creation_date") {
-                                    ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                            <?php
-                                    }
-                                    ?>
+                                        <a href="comments-orderBy-creation_date-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
+                                            <?php if ($orderBy == "creation_date") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                 </tr>
@@ -149,48 +104,44 @@
                                 ?>
                                 <tr>
                                     <th scope="row">
-                                        <input type="checkbox" name="selectedComments[]"
-                                            id="comment<?= $comment->id() ?>" value="<?= $comment->id() ?>" class="" />
+                                        <input type="checkbox" name="selectedComments[]" id="comment<?= $comment->id() ?>" value="<?= $comment->id() ?>" class="" />
                                         <label for="selectedComments[]" class="sr-only">Sélectionner</label>
                                     </th>
-                                    <td><a href="post-<?= $comment->post_id() ?>"
-                                            class="text-dark"><?= $comment->content() ?></a></td>
+                                    <td><a href="post-<?= $comment->post_id() ?>" class="text-dark"><?= $comment->content() ?></a></td>
                                     <td>
-                                        <?php 
-                                        if (!empty($comment->user_name())) {
-                                            echo $comment->user_name();
-                                        } else {
-                                            if (!empty($comment->login())) {
-                                                echo $comment->login();
-                                            } else {
-                                                echo "Anonyme";
-                                            }
-                                        }
-                                        ?>
+                                    <?php 
+                                    if (!empty($comment->user_name())) {
+                                        echo $comment->user_name();
+                                    } elseif (!empty($comment->login())) {
+                                        echo $comment->login();
+                                    } else {
+                                        echo "Anonyme";
+                                    }
+                                    ?>
                                     </td>
                                     <td>
-                                        <?php 
-                                        switch($comment->status()) {
-                                            case 1:
-                                            echo "Non-modéré";
-                                            break;
-                                            case 2:
-                                            echo "Modéré";
-                                            break;
-                                            case 3:
-                                            echo "Signalé";
-                                            break;
-                                            defaut:
-                                            echo "Non-modéré";
-                                        }
-                                        ?>
+                                    <?php 
+                                    switch($comment->status()) {
+                                        case 1:
+                                        echo "Non-modéré";
+                                        break;
+                                        case 2:
+                                        echo "Modéré";
+                                        break;
+                                        case 3:
+                                        echo "Signalé";
+                                        break;
+                                        default:
+                                        echo "Non-modéré";
+                                    }
+                                    ?>
                                     </td>
                                     <td><?= $comment->report_date("") ?></td>
                                     <td><?= $comment->nb_report() ?></td>
                                     <td><?= $comment->creation_date("") ?></td>
                                 </tr>
                                 <?php
-                                }   
+                                }
                             }
                             ?>
                             </tbody>
@@ -198,10 +149,7 @@
                     </div>
                 </div>
             </form>
-
-            <?php $pagination->view(TRUE, TRUE); ?>
-            <!-- Ajoute la barre de pagination -->
-
+            <?php $pagination->view(TRUE, TRUE); ?> <!-- Ajoute la barre de pagination -->
         </section>
     </div>
 </div>

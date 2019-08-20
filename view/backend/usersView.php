@@ -3,7 +3,7 @@
 <?php ob_start(); ?>
 
 <div class="container">
-
+    <!-- Fil d'Ariane -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0">
             <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
@@ -14,14 +14,12 @@
 
     <div class="row min-vh-80">
         <section id="table-admin_users" class="col-md-12 table-admin">
-
             <h2 class="mb-4">Gestion des utilisateurs
                 <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>
             </h2>
 
             <?php 
-            $session->flash(); // Message en session flash
-
+            $session->flash(); 
             // Affiche les résultats si recherche
             if (isset($_POST["filter"]) || isset($_POST["filter_search"])) {
                 echo "<p> " . $nbItems . " résultat(s).</p>";
@@ -74,75 +72,33 @@
                                         <label for="allselectedUsers" class="sr-only">Tout sélectionner</label>
                                     </th>
                                     <th scope="col" class="align-middle th-width-150px">
-                                        <a href="users-orderBy-login-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Login
-                                        <?php 
-                                        if ($orderBy == "login") {
-                                        ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
-                                        }
-                                        ?>
+                                        <a href="users-orderBy-login-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Login
+                                            <?php if ($orderBy == "login") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle th-width-150px">
-                                        <a href="users-orderBy-name-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Nom
-                                        <?php 
-                                        if ($orderBy == "name") {
-                                        ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
-                                        }
-                                        ?>
+                                        <a href="users-orderBy-name-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Nom
+                                            <?php if ($orderBy == "name") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle th-width-120px">
-                                        <a href="users-orderBy-surname-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Prénom
-                                        <?php 
-                                        if ($orderBy == "surname") {
-                                        ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
-                                        }
-                                        ?>
+                                        <a href="users-orderBy-surname-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Prénom
+                                            <?php if ($orderBy == "surname") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle">
-                                        <a href="users-orderBy-email-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Email
-                                        <?php 
-                                        if ($orderBy == "email") {
-                                        ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
-                                        }
-                                        ?>
+                                        <a href="users-orderBy-email-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Email
+                                            <?php if ($orderBy == "email") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle th-width-120px">
-                                        <a href="users-orderBy-role-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Rôle
-                                        <?php 
-                                        if ($orderBy == "role") {
-                                        ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
-                                        }
-                                        ?>
+                                        <a href="users-orderBy-role-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Rôle
+                                            <?php if ($orderBy == "role") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                     <th scope="col" class="align-middle th-width-100px">
-                                        <a href="users-orderBy-registration_date-order-<?= $order == "desc" ? "asc" : "desc" ?>"
-                                            class="sorting-indicator text-white">Date de création
-                                        <?php 
-                                        if ($orderBy == "registration_date") {
-                                        ?>
-                                            <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span>
-                                        <?php   
-                                        }
-                                        ?>
+                                        <a href="users-orderBy-registration_date-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
+                                            <?php if ($orderBy == "registration_date") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                         </a>
                                     </th>
                                 </tr>
@@ -174,9 +130,7 @@
                     </div>
                 </div>
             </form>
-
             <?php $pagination->view(TRUE, TRUE); ?>
-
         </section>
     </div>
 </div>
