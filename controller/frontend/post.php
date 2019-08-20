@@ -14,8 +14,8 @@ function post() {
         header("Location: blog"); 
         exit();
     }
-    $post_id = htmlspecialchars($_GET["id"]);
-    $_SESSION["postID"] = $post_id;
+    $postId = htmlspecialchars($_GET["id"]);
+    $_SESSION["postID"] = $postId;
 
     // Vérifie les paramètres de modération
     $settings = $settingsManager->get();
@@ -42,9 +42,9 @@ function post() {
         if (isset($_POST["save_comment"])) {
             
             if (isset($_SESSION["user"]["id"])) {
-                $user_id = $_SESSION["user"]["id"];
+                $userId = $_SESSION["user"]["id"];
             } else {
-                $user_id = NULL;
+                $userId = NULL;
             }
 
             $validation = true;
@@ -59,7 +59,7 @@ function post() {
             if ($validation) {
                 $comment = new Comments([
                     "post_id" => $_SESSION["postID"],
-                    "user_id" => $user_id,
+                    "user_id" => $userId,
                     "user_name" => $name,
                     "content" => $_POST["content"],
                     "status" => $status
@@ -103,18 +103,18 @@ function post() {
     }
 
     // Récupère le post
-    $post = $postsManager->get($post_id); 
+    $post = $postsManager->get($postId); 
 
     // Compte le nombre de commentaires
-    $nbItems = $commentsManager->count("post_id = " . $post_id . " AND " . $filter);
+    $nbItems = $commentsManager->count("post_id = " . $postId . " AND " . $filter);
 
     // Initialise la pagination
-    $linkNbDisplayed = "post-" . $post_id;
-    $pagination = new Pagination("comments", $nbItems, "post-" . $post_id . "#comments", "post-" . $post_id . "-", "#comments");
+    $linkNbDisplayed = "post-" . $postId;
+    $pagination = new Pagination("comments", $nbItems, "post-" . $postId . "#comments", "post-" . $postId . "-", "#comments");
 
     // Récupère les commentaires si le nombre > 0 
     if ($nbItems) {
-        $comments = $commentsManager->getList("c.post_id = " . $post_id . " AND " . $filter, "c.creation_date", "DESC", $pagination->_nbLimit, $pagination->_nbDisplayed);
+        $comments = $commentsManager->getList("c.post_id = " . $postId . " AND " . $filter, "c.creation_date", "DESC", $pagination->_nbLimit, $pagination->_nbDisplayed);
     }
     require "view/frontend/postView.php";
 }
