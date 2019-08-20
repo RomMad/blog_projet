@@ -13,7 +13,25 @@ function profil() {
         // Récupère les informations de l'utilisateur
         $user = $usersManager->get($_SESSION["user"]["id"]);
     }
-
+    if (isset($_GET["delete_cookies"])) {
+        $cookies = [
+            "orderBy[adminComments]",
+            "orderBy[adminPosts]",
+            "orderBy[adminPosts]", 
+            "order[adminComments]",
+            "order[adminPosts]", 
+            "order[adminUsers]", 
+            "pagination[nbDisplayed_adminComments]", 
+            "pagination[nbDisplayed_adminPosts]",
+            "pagination[nbDisplayed_adminUsers]", 
+            "pagination[nbDisplayed_comments]", 
+            "pagination[nbDisplayed_posts]"
+        ];
+        foreach($cookies as $cookie) {
+            setcookie($cookie, "", time() - 3600, null, null, false, false);
+        }
+        $session->setFlash("Tous les cookies ont été supprimés.", "success");
+    }
     // Vérifie si informations dans variable POST
     if (!empty($_POST)) {
         $validation = true;
