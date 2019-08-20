@@ -34,7 +34,8 @@ class Comments extends Model {
         return $this->_status;
     }
     public function report_date() {
-        return $this->_report_date;
+        $report_date = new DateTime($this->_report_date);
+        return date_format($report_date,"d/m/Y H:i");
     }
     public function nb_report() {
         return $this->_nb_report;
