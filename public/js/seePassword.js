@@ -9,14 +9,19 @@ class SeePassword {
         this.passwordGroupElts.forEach(function (passwordGroupElt) {
             let passwordElt = passwordGroupElt.querySelector(".password");
             let showPasswordElt = passwordGroupElt.querySelector(".show-password");
-            // Affiche du mot de passe au clic sur l'oeil
-            showPasswordElt.addEventListener("mousedown", function () {
-                passwordElt.type = "text";
-            }.bind(this));
-            // Masque le mot de passe au relachement de la souris
-            document.addEventListener("mouseup", function () {
-                passwordElt.type = "password";
-            }.bind(this));
+
+            showPasswordElt.addEventListener("mousedown", this.see.bind(this, passwordElt)); // Affiche du mot de passe au clic sur l'oeil
+            document.addEventListener("mouseup", this.hide.bind(this, passwordElt)); // Masque le mot de passe au relachement de la souris
+            showPasswordElt.addEventListener("touchstart", this.see.bind(this, passwordElt)); // Affiche du mot de passe au touché tactile sur l'oeil
+            document.addEventListener("touchend", this.hide.bind(this, passwordElt)); // Masque le mot de passe au relachement du touché tactile
         }.bind(this));
+    }
+    // Affiche du mot de passe
+    see(passwordElt) {
+        passwordElt.type = "text";
+    }
+    // Masque le mot de passe
+    hide(passwordElt) {
+        passwordElt.type = "password";
     }
 }
