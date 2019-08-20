@@ -41,16 +41,20 @@ function settings() {
             $session->setFlash("L'adresse \"" .$settings->admin_email() . "\" est incorrecte.", "danger");
             $validation = false;
         }
+        // Vérifie le nombre de posts par ligne
+        if ($settings->posts_by_row() <= 0 || $settings->posts_by_row() > 2) {
+            $session->setFlash("Le nombre de posts par ligne est incorrect.", "danger");
+            $validation = false;
+        }
         // Met à jour les données si validation est vrai
         if ($validation == true) {
             $settingsManager->update($settings);
-            $_SESSION["blog_name"] = $settings->blog_name();
+            $_SESSION["settings"]->setBlog_name($settings->blog_name());
             $session->setFlash("Les paramètres ont été mis à jour.", "success");
         }  
     } else  {
     // Récupère les paramètres
     $settings = $settingsManager->get();
     }
-  
     require "view/backend/settingsView.php";
 }

@@ -49,7 +49,10 @@
 // var_dump($_GET);
 // echo "POST :";
 // var_dump($_POST);
+// echo "SESSION :";
 // var_dump($_SESSION);
+// echo "COOKIE :";
+// var_dump($_COOKIE);
 ?>
 
 <body>

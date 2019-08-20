@@ -3,7 +3,7 @@
 <?php ob_start(); ?>
 
 <div class="container">
-
+    <!-- Fil d'Ariane -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0">
             <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
@@ -14,7 +14,6 @@
 
     <div class="row min-vh-80">
         <section id="table-admin_comments" class="col-md-12 table-admin">
-
             <h2 class="mb-4">Gestion des commentaires
                 <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>
             </h2>
@@ -22,7 +21,8 @@
             <?php 
             $session->flash();
             // Affiche les résultats si recherche
-            if (isset($_POST["filter"])) {  echo "<p> " . $nbItems . " résultat(s).</p>"; } ?>
+            if (isset($_POST["filter"])) {  echo "<p> " . $nbItems . " résultat(s).</p>"; } 
+            ?>
 
             <form action="<?= $linkNbDisplayed ?>" method="post">
                 <div class="row">

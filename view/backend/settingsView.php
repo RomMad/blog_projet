@@ -60,8 +60,6 @@
                         <select name="posts_by_row" id="posts_by_row" class="custom-select form-control shadow-sm">
                             <option value="1" <?= $settings->posts_by_row() == 1 ? "selected" : "" ?>>1</option>
                             <option value="2" <?= $settings->posts_by_row() == 2 ? "selected" : "" ?>>2</option>
-                            <option value="3" <?= $settings->posts_by_row() == 3 ? "selected" : "" ?>>3</option>
-                            <option value="4" <?= $settings->posts_by_row() == 4 ? "selected" : "" ?>>4</option>
                         </select>
                     </div>
                 </div>
