@@ -12,13 +12,13 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
         integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="public/css/style.css" />
-    <!-- <link rel="icon" href="" /> -->
+    <link rel="icon" href="public/images/logo_blog.ico" />
     <title><?= $title ?></title>
     <meta property="og:title" content="<?= $title ?>" />
     <meta property="og:type" content="blog" />
-    <meta property="og:url" content="" />
-    <!-- <meta property="og:image" content="" /> -->
-    <meta name="description" content="..." />
+    <meta property="og:url" content="https://leblog.romain-mad.fr" />
+    <meta property="og:image" content="public/images/logo_blog.ico" />
+    <meta name="description" content="Le blog de Jean Forteroche." />
 
     <!-- Scripts TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/002hakdccklcsi43zdvvm0ug6hp1f83dx6abvrs923nlf6ay/tinymce/5/tinymce.min.js">
