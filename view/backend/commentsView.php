@@ -23,6 +23,7 @@
             // Affiche les résultats si recherche
             if (isset($_POST["filter"])) {  echo "<p> " . $nbItems . " résultat(s).</p>"; } 
             ?>
+            <?php $pagination->view(TRUE, TRUE); ?> <!-- Ajoute la barre de pagination -->
 
             <form action="<?= $linkNbDisplayed ?>" method="post">
                 <div class="row">

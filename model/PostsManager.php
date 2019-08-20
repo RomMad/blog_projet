@@ -80,7 +80,7 @@ class PostsManager extends Manager {
         return new Posts($post);
     }
     // Méthode de récupération d'une liste d'articles
-    public function getList($filter, $orderBy, $order, $nbLimit, $nbOffset) {
+    public function getList($filter, $orderBy, $order, $nbLimit, $nbPosts) {
         $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.status, p.creation_date, p.update_date, 
             IF(CHAR_LENGTH(p.content) > 1500, CONCAT(SUBSTRING(p.content, 1, 1500), '[...]'), p.content) AS content
             FROM posts p
@@ -88,7 +88,7 @@ class PostsManager extends Manager {
             ON p.user_id = u.id
             WHERE $filter 
             ORDER BY $orderBy $order
-            LIMIT $nbLimit, $nbOffset;");
+            LIMIT $nbLimit, $nbPosts");
         $req->execute();
         while ($datas = $req->fetch()) {
             $posts[] = new Posts($datas);

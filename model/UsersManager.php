@@ -92,14 +92,14 @@ class UsersManager extends Manager {
     }
 
     // Récupère une liste d'utilisateurs
-    public function getList($filter, $orderBy, $order, $nbLimit, $nbOffset) {
+    public function getList($filter, $orderBy, $order, $nbLimit, $nbUsers) {
         $req = $this->_db->prepare("SELECT u.id, u.login, u.name, u.surname, u.birthdate, u.email, u.role, r.role_user, u.registration_date, u.update_date
             FROM users u
             LEFT JOIN user_role r
             ON u.role = r.id
             WHERE $filter 
             ORDER BY $orderBy $order
-            LIMIT  $nbLimit, $nbOffset");
+            LIMIT  $nbLimit, $nbUsers");
         $req->execute();
 
         while ($datas = $req->fetch()) {
