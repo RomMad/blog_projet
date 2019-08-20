@@ -67,10 +67,10 @@
                         <div class="form-group row">
                             <label for="pass" class="col-md-4 col-form-label">Mot de passe</label>
                             <div class="col-md-8">
-                                <div class="div-user-pass">
-                                    <input type="password" name="pass" id="pass" class="form-control mb-4 shadow-sm"
+                                <div class="password-group">
+                                    <input type="password" name="pass" id="pass" class="password form-control mb-4 shadow-sm"
                                         value="<?= isset($user) ? $user->pass() : $token ?>">
-                                    <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                                        <span class="show-password fas fa-eye"></span>
                                 </div>
                             </div>
                         </div>

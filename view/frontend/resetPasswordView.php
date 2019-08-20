@@ -15,15 +15,15 @@
             <input type="email" name="email" id="email" class="form-control mb-4" placeholder="Email"
                 value="<?= isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "" ?>">
             <label for="new_pass" class="sr-only">Mot de passe</label>
-            <div class="div-user-pass">
-                <input type="password" name="new_pass" id="new_pass" class="form-control mb-2 shadow-sm"
+            <div class="password-group">
+                <input type="password" name="new_pass" id="new_pass" class="password form-control mb-2 shadow-sm"
                     placeholder="Nouveau mot de passe">
-                <div id="showPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                    <span class="show-password fas fa-eye"></span>
             </div>
-            <div class="div-user-pass">
-                <input type="password" name="new_pass_confirm" id="new_pass_confirm" class="form-control mb-4"
+            <div class="password-group">
+                <input type="password" name="new_pass_confirm" id="new_pass_confirm" class="password form-control mb-4"
                     placeholder="Confirmation du mot de passe">
-                <div id="showConfirmPassword" class="icon-eye"><span class="fas fa-eye"></span></div>
+                    <span class="show-password fas fa-eye"></span>
             </div>
             <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-blue btn-block mb-4 shadow">
 
@@ -31,8 +31,8 @@
     </section>
 </div>
 
-<?php $script ="<script> seePassword = new SeePassword(); </script>"; ?>
-
 <?php $content = ob_get_clean(); ?>
+
+<?php $script ="<script> seePassword = new SeePassword(); </script>"; ?>
 
 <?php require "view/template.php"; ?>

@@ -18,8 +18,8 @@
     </section>
 </div>
 
-<?php $script ="<script> seePassword = new SeePassword(); </script>"; ?>
-
 <?php $content = ob_get_clean(); ?>
+
+<?php $script ="<script> seePassword = new SeePassword(); </script>"; ?>
 
 <?php require "view/template.php"; ?>
