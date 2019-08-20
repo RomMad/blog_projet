@@ -102,33 +102,34 @@ Class Pagination {
         <div class="col-md-<?= $nbCol ?> my-2">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-end mb-0">
-                    <!-- Lien "Page précédente" -->
+                    <!-- Lien la page précédente -->
                     <li class="page-item <?= $this->_currentPage == 1 ? "disabled" : "" ?> shadow-sm">
                         <a class="page-link <?= $this->_currentPage == 1 ? "" : "text-blue" ?> font-weight-bold" 
-                        href="<?= $this->_link ?>page-<?= ($this->_currentPage - 1) . $this->_anchor ?>" 
-                        tabindex="-1" aria-disabled="true"><span aria-hidden="true">&laquo;</span></a>
+                            href="<?= $this->_link ?>page-<?= ($this->_currentPage - 1) . $this->_anchor ?>" 
+                            tabindex="-1" aria-disabled="true"><span aria-hidden="true">&laquo;</span></a>
                     </li> 
-                <?php if ($this->_currentPage > 2 && $this->_nbPages > 3) { ?>
+                    <?php if ($this->_currentPage > 2 && $this->_nbPages > 3) { ?>
+                    <!-- Lien vers la première page -->
                     <li class="page-item"><a class="page-link text-blue p-2 px-2 shadow-sm" 
                         href="<?= $this->_link ?>page-1<?= $this->_anchor ?>">1...</a></li>
-                <?php }
-                // Boucle pour afficher la pagination
-                for ($i = $this->_firstPage; $i <= $this->_nbPages && $i < $this->_lastPage ; $i++) {
-                ?> 
+                    <?php }
+                    // Boucle pour afficher la pagination
+                    for ($i = $this->_firstPage; $i <= $this->_nbPages && $i < $this->_lastPage ; $i++) {
+                    ?> 
                     <li class="page-item <?= $i == $this->_currentPage ? "active disabled" : "" ?> shadow-sm">
-                    <a class="page-link text-blue" href="<?= $this->_link ?>page-<?= $i . $this->_anchor ?>"><?= $i ?></a></li>
-                <?php 
-                }
-                if ($this->_currentPage < $this->_nbPages - 1 && $this->_nbPages > 3) { ?>
+                        <a class="page-link text-blue" href="<?= $this->_link ?>page-<?= $i . $this->_anchor ?>"><?= $i ?></a></li>
+                    <?php 
+                    }
+                    if ($this->_currentPage < $this->_nbPages - 1 && $this->_nbPages > 3) { ?>
+                    <!-- Lien vers la dernière page -->
                     <li class="page-item shadow-sm"><a class="page-link px-2 text-blue" 
                         href="<?= $this->_link ?>page-<?= $this->_nbPages . $this->_anchor ?>">...<?= $this->_nbPages ?></a></li>
-                <?php } ?>
-                <!-- Lien "Page suivante" -->
+                    <?php } ?>
+                    <!-- Lien vers la page suivante -->
                     <li class="page-item <?= $this->_currentPage != $this->_nbPages ? "" : "disabled" ?> shadow-sm">
                         <a class="page-link <?= $this->_currentPage != $this->_nbPages ? "text-blue" : "" ?> font-weight-bold" 
                             href="<?= $this->_link ?>page-<?= ($this->_currentPage + 1) . $this->_anchor ?>">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
+                            <span aria-hidden="true">&raquo;</span></a>
                     </li>
                 </ul>
             </nav>
