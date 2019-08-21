@@ -16,7 +16,7 @@ class Manager
 
     public function databaseConnection()
     {
-        // Vérifie si on est local ou en ligne
+        // Vérifie si on est en local ou en ligne
         if ($_SERVER["HTTP_HOST"] == "localhost") {
             $this->_dbHost = "localhost";
             $this->_dbName = "blog_projet";

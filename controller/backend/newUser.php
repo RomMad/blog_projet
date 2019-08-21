@@ -73,8 +73,16 @@ function newuser() {
             $token = bin2hex(random_bytes(32));
             // Ajoute un token pour la réinitialisation
             $usersManager->addToken($user, $token);
+
+            // Vérifie si on est en local ou en ligne
+            if ($_SERVER["HTTP_HOST"] == "localhost") {
+                $url = "http://localhost/blog_projet";
+            } else {
+                $url = "https://leblog.romain-mad.fr/blog_projet";
+            }
+
             // Initialise l'email
-            $link = "http://localhost/blog_projet/reset-password-" . $token;
+            $link = $url . "/reset-password-" . $token;
             $to = $user->email();
             $subject = "Création de compte";
             $message = "
