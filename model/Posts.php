@@ -36,7 +36,7 @@ class Posts extends Model {
         } elseif ($format == "raw_format") {
             return nl2br(strip_tags($this->_content));
         } else {
-            return htmlspecialchars($this->_content);
+            return ($this->_content);
         }
     }
     public function status() {
@@ -77,7 +77,7 @@ class Posts extends Model {
     }
     public function setContent($content) {
         if (is_string($content)) {
-            $this->_content = ($content);
+            $this->_content = $content;
         }
     }
     public function setStatus($status) {
