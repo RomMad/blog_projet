@@ -84,7 +84,10 @@ if (isset($_GET["action"])) {
             } else {
                 error404();
             }
-            break;       
+            break;   
+        case "error403":
+            error403();
+            break;      
         case "error404":
             error404();
             break;                  
@@ -93,6 +96,10 @@ if (isset($_GET["action"])) {
     } 
 } else {
     listPosts();
+}
+
+function error403() {
+    require "error/403.php";
 }
 
 function error404() {

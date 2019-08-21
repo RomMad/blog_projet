@@ -1,12 +1,13 @@
-<?php  $title = "Erreur 404 | " . $_SESSION["blog_name"] ?>
+<?php  $title = "Erreur 403 | " . $_SESSION["blog_name"] ?>
 
 <?php ob_start(); ?>
 
 <div class="container">
     <div class="row min-vh-80">
         <div class="col-sm-10 col-md-8 col-lg-6 m-auto text-center">
-            <h1 class="">Erreur 404<br />Cette page n'existe pas</h1>
-            <p class="my-4">La page que vous recherchez est introuvable.</p>
+            <h1 class="">Accès refusé</h1>
+            <p class="my-4">Vous n'avez pas les droits pour acccéder à cette page.</p>
+            <a href="connection" class="btn btn-blue mt-2 p-2 shadow">Se connecter</a>
             <a href="blog" class="btn btn-blue mt-2 p-2 shadow">Revenir à l'accueil</a>
         </div>
     </div>

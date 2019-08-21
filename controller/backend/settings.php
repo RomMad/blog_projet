@@ -18,7 +18,7 @@ function settings() {
     $userRole = $usersManager->getRole($_SESSION["user"]["id"]);
 
     if ($userRole != 1) {
-        header("Location: blog");
+        header("Location: error403"); 
         exit();
     }
 

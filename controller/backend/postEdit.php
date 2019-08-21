@@ -8,14 +8,13 @@ function postEdit() {
     // Vérifie si l'article existe
     if (isset($_GET["id"])) {
         $post = $postsManager->get($_GET["id"]);
-        if (!$post) {
-            $session->setFlash("Cet article n'existe pas.", "warning");
-            header("Location: blog"); 
-            exit();
-        }
         // Vérifie si l'utilisateur a les droit d'accès ou s'il est l'auteur de l'article
         if (!isset($_SESSION["user"]) || $_SESSION["user"]["role"] == 5 || ($_SESSION["user"]["role"] >= 3 && $_SESSION["user"]["id"] != $post->user_id())) {
-            $session->setFlash("Vous n'avez pas les droits pour accéder à cet article.", "warning");
+            header("Location: error403"); 
+            exit();
+        }
+        if (!$post) {
+            $session->setFlash("Cet article n'existe pas.", "warning");
             header("Location: blog"); 
             exit();
         }

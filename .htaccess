@@ -74,14 +74,7 @@ RewriteCond %{REQUEST_FILENAME}\.cache -f
 
 ErrorDocument 404 /blog_projet/index.php?action=error404
 ErrorDocument 500 /blog_projet/index.php?action=error404
-# or map them to one error document:
-# ErrorDocument 404 /pages/errors/error_redirect.php
-# ErrorDocument 500 /pages/errors/error_redirect.php
-
-#et du fait du [L], on se serait arrêté là si elle existait. 
-#sinon, on exécute le script page.php en passant le nom de la page demandée en paramètre : 
 RewriteRule ([^.]+)\.html$ /page.php?page=$1 [L] 
-
 
 
 #--------------------------------------------------
@@ -94,7 +87,7 @@ RewriteRule ^blog$ /blog_projet/index.php?action=listPosts [QSA,L]
 RewriteRule ^blog-page-([0-9]+)$ /blog_projet/index.php?action=listPosts&page=$1& [L]
 
 # Réécriture pages
-RewriteRule ^([a-zA-Z]+)$ /blog_projet/index.php?action=$1 [QSA,L]
+RewriteRule ^([a-zA-Z0-9]+)$ /blog_projet/index.php?action=$1 [QSA,L]
 
 # Réécriture page d'article
 RewriteRule ^post-([0-9]+)$ /blog_projet/index.php?action=post&id=$1 [QSA,L]
