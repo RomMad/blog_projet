@@ -68,8 +68,10 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" class="align-middle th-width-20px">
-                                        <input type="checkbox" name="allselectedUsers" id="all-checkbox" />
-                                        <label for="allselectedUsers" class="sr-only">Tout sélectionner</label>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" name="select-all" id="select-all" class="custom-control-input" />
+                                            <label class="custom-control-label" for="select-all"><span class="sr-only">Tout sélectionner<span></label>
+                                        </div>
                                     </th>
                                     <th scope="col" class="align-middle th-width-150px">
                                         <a href="users-orderBy-login-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Login
@@ -111,8 +113,11 @@
                             ?>
                                 <tr>
                                     <th scope="row">
-                                        <input type="checkbox" name="selectedUsers[]" id="User<?= $user->id() ?>" value="<?= $user->id() ?>" class="" />
-                                        <label for="selectedUsers[]" class="sr-only">Sélectionner</label>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input checkbox" name="selectedUsers[]" id="user-<?= $user->id() ?>"
+                                                value="<?= $user->id() ?>" class="checkbox" />
+                                            <label class="custom-control-label" for="user-<?= $user->id() ?>"><span class="sr-only">Sélectionner<span></label>
+                                        </div>
                                     </th>
                                     <td><a href="user-<?= $user->id() ?>" class="text-blue"><?= $user->login() ?></a></td>
                                     <td><?= $user->name() ?></td>
@@ -134,6 +139,8 @@
         </section>
     </div>
 </div>
+
+<?php $script ="<script> selectAllCheckboxes = new SelectAllCheckboxes() </script>"; ?>
 
 <?php $content = ob_get_clean(); ?>
 

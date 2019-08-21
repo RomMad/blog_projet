@@ -65,8 +65,12 @@
                     <table class="table table-bordered table-striped table-hover shadow">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col" class="align-middle th-width-20px"><input type="checkbox" name="allSelectedPosts"
-                                        id="all-checkbox" /><label for="allSelectedPosts"></label></th>
+                                <th scope="col" class="align-middle th-width-20px">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" name="select-all" id="select-all" class="custom-control-input" />
+                                        <label class="custom-control-label" for="select-all"><span class="sr-only">Tout sélectionner<span></label>
+                                    </div>
+                                </th>
                                 <th scope="col" class="align-middle">
                                     <a href="posts-orderBy-title-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Titre
                                         <?php if ($orderBy == "title") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
@@ -102,9 +106,11 @@
                             ?>
                             <tr>
                                 <th scope="row">
-                                    <input type="checkbox" name="selectedPosts[]" id="post<?= $post->id() ?>"
-                                        value="<?= $post->id() ?>" class="" />
-                                    <label for="selectedPosts[]" class="sr-only">Sélectionné</label>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input checkbox" name="selectedPosts[]" id="post-<?= $post->id() ?>"
+                                            value="<?= $post->id() ?>" class="checkbox" />
+                                        <label class="custom-control-label" for="post-<?= $post->id() ?>"><span class="sr-only">Sélectionner<span></label>
+                                    </div>
                                 </th>
                                 <td><a href="post-<?= $post->id() ?>"
                                         class="text-blue font-weight-bold"><?= $post->title() ?></a></td>
@@ -125,6 +131,8 @@
         </section>
     </div>
 </div>
+
+<?php $script ="<script> selectAllCheckboxes = new SelectAllCheckboxes() </script>"; ?>
 
 <?php $content = ob_get_clean(); ?>
 

@@ -60,8 +60,10 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" class="align-middle th-width-20px">
-                                        <input type="checkbox" name="allselectedComments" id="all-checkbox" />
-                                        <label for="allselectedComments" class="sr-only">Tout sélectionner</label>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" name="select-all" id="select-all" class="custom-control-input" />
+                                            <label class="custom-control-label" for="select-all"><span class="sr-only">Tout sélectionner<span></label>
+                                        </div>
                                     </th>
                                     <th scope="col" class="align-middle">
                                         <a href="comments-orderBy-content-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Contenu du commentaire
@@ -104,8 +106,11 @@
                                 ?>
                                 <tr>
                                     <th scope="row">
-                                        <input type="checkbox" name="selectedComments[]" id="comment<?= $comment->id() ?>" value="<?= $comment->id() ?>" class="" />
-                                        <label for="selectedComments[]" class="sr-only">Sélectionner</label>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input checkbox" name="selectedComments[]" id="comment-<?= $comment->id() ?>"
+                                                value="<?= $comment->id() ?>" class="checkbox" />
+                                            <label class="custom-control-label" for="comment-<?= $comment->id() ?>"><span class="sr-only">Sélectionner<span></label>
+                                        </div>
                                     </th>
                                     <td><a href="post-<?= $comment->post_id() ?>" class="text-dark"><?= $comment->content() ?></a></td>
                                     <td>
@@ -153,6 +158,8 @@
         </section>
     </div>
 </div>
+
+<?php $script ="<script> selectAllCheckboxes = new SelectAllCheckboxes() </script>"; ?>
 
 <?php $content = ob_get_clean(); ?>
 
