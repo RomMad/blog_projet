@@ -64,16 +64,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-md-4">Modération</div>
-                    <div class="col-md-8">
-                        <div class="form-check">
-                            <input type="checkbox" name="moderation" id="moderation" class="form-check-input"
-                                value="true" <?= $settings->moderation() == 1 ? "checked" : "" ?>>
-                            <label for="moderation" class="form-check-label sr-only">Modération</label>
+                    <div class="col-xs-4 col-sm-4">Modération</div>
+                    <div class="col-xs-8 col-sm-8">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input checkbox" name="moderation" id="moderation"
+                                value="true" <?= $settings->moderation() == 1 ? "checked" : "" ?>/>
+                            <label for="moderation" class="custom-control-label" ><span class="sr-only">Modération<span></label>
                         </div>
                     </div>
                 </div>
-
                 <div class="form-group row">
                     <div class="col-md-12">
                         <div class="float-right">
