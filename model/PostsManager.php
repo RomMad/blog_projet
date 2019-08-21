@@ -24,19 +24,23 @@ class PostsManager extends Manager {
     }
     // Méthode qui compte le nombre d'articles
     public function count($filter) {
-        $req = $this->_db->prepare("SELECT COUNT(*) FROM posts p WHERE " . $filter);
-        $req->execute();
-        $nbPosts = $req->fetchColumn();
-        return $nbPosts;
+        if (is_string($filter)) {
+            $req = $this->_db->prepare("SELECT COUNT(*) FROM posts p WHERE " . $filter);
+            $req->execute();
+            $nbPosts = $req->fetchColumn();
+            return $nbPosts;
+        }
     }
     // Vérifie si l'article existe
     public function exists($id) {
+        if (is_numeric($id) && (int) $id > 0) {
             $isPostExists = $this->_db->query("SELECT COUNT(*) FROM posts WHERE id = " . $id)->fetchColumn();
             return $isPostExists;
+        }
     }
     // Méthode de lecture d'un article
     public function getUserId($id) {
-        if (is_numeric($id) && ((int) $id > 0)) { 
+        if (is_numeric($id) && (int) $id > 0) {
             $req = $this->_db->prepare("SELECT user_id FROM posts WHERE id = ?");
             $req->execute([
                 $id
@@ -49,52 +53,58 @@ class PostsManager extends Manager {
     }    
     // Méthode de lecture d'un article
     public function get($id) {
-        $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.content, p.status, p.creation_date, p.update_date 
-            FROM posts p
-            LEFT JOIN users u
-            ON p.user_id = u.id
-            WHERE p.id = ?");
-        $req->execute([
-            $id
-        ]);
-        $post = $req->fetch();
-        if (!empty($post)) {
-        return new Posts($post);
-        } else {
-            return FALSE;
+        if (is_numeric($id) && (int) $id > 0) {
+            $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.content, p.status, p.creation_date, p.update_date 
+                FROM posts p
+                LEFT JOIN users u
+                ON p.user_id = u.id
+                WHERE p.id = ?");
+            $req->execute([
+                $id
+            ]);
+            $post = $req->fetch();
+            if (!empty($post)) {
+            return new Posts($post);
+            } else {
+                return FALSE;
+            }
         }
     }
     // Méthode de lecture d'un article
     public function lastCreate($userId) {
-        $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, u.login, p.content, p.status, p.creation_date, p.update_date 
-        FROM posts p 
-        LEFT JOIN users u 
-        ON p.user_id = u.id 
-        WHERE p.user_id = ? 
-        ORDER BY p.id DESC 
-        LIMIT 0, 1");
-        $req->execute([
-            $userId
-        ]);
-        $post = $req->fetch();
-        return new Posts($post);
+        if (is_numeric($userId) && (int) $userId > 0) {
+            $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, u.login, p.content, p.status, p.creation_date, p.update_date 
+            FROM posts p 
+            LEFT JOIN users u 
+            ON p.user_id = u.id 
+            WHERE p.user_id = ? 
+            ORDER BY p.id desc 
+            LIMIT 0, 1");
+            $req->execute([
+                $userId
+            ]);
+            $post = $req->fetch();
+            return new Posts($post);
+        }
     }
     // Méthode de récupération d'une liste d'articles
     public function getList($filter, $orderBy, $order, $nbLimit, $nbPosts) {
-        $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.status, p.creation_date, p.update_date, 
-            IF(CHAR_LENGTH(p.content) > 1500, CONCAT(SUBSTRING(p.content, 1, 1500), '[...]'), p.content) AS content
-            FROM posts p
-            LEFT JOIN users u
-            ON p.user_id = u.id
-            WHERE $filter 
-            ORDER BY $orderBy $order
-            LIMIT $nbLimit, $nbPosts");
-        $req->execute();
-        while ($datas = $req->fetch()) {
-            $posts[] = new Posts($datas);
-        }
-        if (isset($posts)) {
-            return $posts;
+        if (is_string($filter) && is_string($orderBy) && ($order == "asc" || $order == "desc") && ((int) $nbLimit >= 0) && ((int) $nbPosts > 0)) {
+            $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.status, p.creation_date, p.update_date, 
+                IF(CHAR_LENGTH(p.content) > 1500, CONCAT(SUBSTRING(p.content, 1, 1500), '[...]'), p.content) AS content
+                FROM posts p
+                LEFT JOIN users u
+                ON p.user_id = u.id
+                WHERE $filter 
+                ORDER BY $orderBy $order
+                LIMIT $nbLimit, $nbPosts");
+            $req->execute();
+            while ($datas = $req->fetch()) {
+                $posts[] = new Posts($datas);
+            }
+            if (isset($posts)) {
+                return $posts;
+            }
         }
     }
     // Méthode de mise à jour d'un article

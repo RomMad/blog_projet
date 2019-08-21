@@ -114,7 +114,7 @@ function post() {
 
     // Récupère les commentaires si le nombre > 0 
     if ($nbItems) {
-        $comments = $commentsManager->getList("c.post_id = " . $postId . " AND " . $filter, "c.creation_date", "DESC", $pagination->_nbLimit, $pagination->_nbDisplayed);
+        $comments = $commentsManager->getList("c.post_id = " . $postId . " AND " . $filter, "c.creation_date", "desc", $pagination->_nbLimit, $pagination->_nbDisplayed);
     }
     require "view/frontend/postView.php";
 }

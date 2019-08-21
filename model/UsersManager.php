@@ -5,7 +5,7 @@ class UsersManager extends Manager {
         $this->_db = $this->databaseConnection();
     }
 
-    // Ajout d'un utilisateur
+    // Ajoute un utilisateur
     public function add(Users $user) {
         $req =$this->_db->prepare("INSERT INTO users(login, email, name, surname, birthdate, pass) 
                                 VALUES(:login, :email, :name, :surname, :birthdate, :pass)");
@@ -19,7 +19,7 @@ class UsersManager extends Manager {
         ]);
     }
 
-    // Contrôle l'utilisateur
+    // Vérifie l'utilisateur
     public function verify($info) {
         // Vérifie si c'est une adresse email
         if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $info)) {
@@ -41,16 +41,17 @@ class UsersManager extends Manager {
         }
     }
 
-    // Vérifie si l'utilisateur
+    // Vérifie si l'utilisateur existe
     public function exists($id) {
-        $isUserExists = $this->_db->query("SELECT COUNT(*) FROM users WHERE id = " . $id)->fetchColumn();
-        return $isUserExists;
+        if (is_numeric($id) && (int) $id > 0) {
+            $isUserExists = $this->_db->query("SELECT COUNT(*) FROM users WHERE id = " . $id)->fetchColumn();
+            return $isUserExists;
+        }
     }
 
     // Récupère un utilisateur
     public function get($info) {
-        if (is_numeric($info)) {
-            $info = (int) $info;
+        if (is_numeric($info) && (int) $info > 0) {
             $filter = "u.id = '" . $info . "'";
         } else {
             $filter = "u.email = '" . $info . "'";
@@ -68,8 +69,7 @@ class UsersManager extends Manager {
     }
     // Récupère le role de l'utilisateur
     public function getRole($id) {
-        if (is_numeric($id)) {
-            $info = (int) $id;
+        if (is_numeric($id) && (int) $id > 0) {
             $req = $this->_db->prepare("SELECT role FROM users WHERE id = $id");
             $req->execute();
             $user = $req->fetch();
@@ -78,8 +78,7 @@ class UsersManager extends Manager {
     }
     // Récupère le mot de passe haché de l'utilisateur
     public function getPass($id) {
-        if (is_numeric($id)) {
-            $info = (int) $id;
+        if (is_numeric($id) && (int) $id > 0) {
             $req = $this->_db->prepare("SELECT pass FROM users WHERE id = $id");
             $req->execute();
             $user = $req->fetch();
@@ -93,20 +92,22 @@ class UsersManager extends Manager {
 
     // Récupère une liste d'utilisateurs
     public function getList($filter, $orderBy, $order, $nbLimit, $nbUsers) {
-        $req = $this->_db->prepare("SELECT u.id, u.login, u.name, u.surname, u.birthdate, u.email, u.role, r.role_user, u.registration_date, u.update_date
-            FROM users u
-            LEFT JOIN user_role r
-            ON u.role = r.id
-            WHERE $filter 
-            ORDER BY $orderBy $order
-            LIMIT  $nbLimit, $nbUsers");
-        $req->execute();
+        if (is_string($filter) && is_string($orderBy) && ($order == "asc" || $order == "desc") && ((int) $nbLimit >= 0) && ((int) $nbUsers > 0)) {
+            $req = $this->_db->prepare("SELECT u.id, u.login, u.name, u.surname, u.birthdate, u.email, u.role, r.role_user, u.registration_date, u.update_date
+                FROM users u
+                LEFT JOIN user_role r
+                ON u.role = r.id
+                WHERE $filter 
+                ORDER BY $orderBy $order
+                LIMIT  $nbLimit, $nbUsers");
+            $req->execute();
 
-        while ($datas = $req->fetch()) {
-            $users[] = new Users($datas);
-        }
-        if (isset($users)) {
-            return $users;
+            while ($datas = $req->fetch()) {
+                $users[] = new Users($datas);
+            }
+            if (isset($users)) {
+                return $users;
+            }
         }
     }
 
@@ -144,8 +145,7 @@ class UsersManager extends Manager {
 
     // Met le "remember" de la connection en VRAI
     public function rememberTrue($id) {
-        if (is_numeric($id)) {
-            $info = (int) $id;
+        if (is_numeric($id) && (int) $id > 0) {
             $req = $this->_db->prepare("UPDATE users SET remember = :remember WHERE id = :id");
             $req->execute([
                 "id" => $id,
@@ -163,18 +163,20 @@ class UsersManager extends Manager {
 
     //  Compte le nombre d'utilisateurs
     public function count($filter) {
-        $req = $this->_db->prepare("SELECT COUNT(*), u.login, u.email, u.role, r.id 
-            FROM users u
-            LEFT JOIN user_role r
-            ON u.role = r.id  
-            WHERE $filter");
-        $req->execute();
-        $nbUsers = $req->fetchColumn();
-        return $nbUsers;
+        if (is_string($filter)) {
+            $req = $this->_db->prepare("SELECT COUNT(*), u.login, u.email, u.role, r.id 
+                FROM users u
+                LEFT JOIN user_role r
+                ON u.role = r.id  
+                WHERE $filter");
+            $req->execute();
+            $nbUsers = $req->fetchColumn();
+            return $nbUsers;
+        }
     }
     
     // Ajoute la date de connexion de l'utilisateur
-    public function addConnectionDate($user) {
+    public function addConnectionDate(Users $user) {
         $req = $this->_db->prepare("INSERT INTO connections (user_id) values(:id)");
         $req->execute([
             "id" => $user->id()
@@ -182,9 +184,9 @@ class UsersManager extends Manager {
     }
 
     // Récupère la date de dernière connexion de l'utilisateur
-    public function getLastConnection($user) {
+    public function getLastConnection(Users $user) {
         $req = $this->_db->prepare("SELECT DATE_FORMAT(connection_date, \"%d/%m/%Y %H:%i\") AS connection_date_fr 
-            FROM connections WHERE user_id = :user_id ORDER BY id DESC LIMIT 0, 1");
+            FROM connections WHERE user_id = :user_id ORDER BY id desc LIMIT 0, 1");
         $req->execute([
             "user_id" => $user->id()
         ]);
@@ -193,7 +195,7 @@ class UsersManager extends Manager {
     }
     
     // Ajoute un token pour la réinitialisation
-    public function addToken($user, $token) {
+    public function addToken(Users $user, $token) {
         $req = $this->_db->prepare("INSERT INTO reset_passwords (user_ID, token) VALUES (:user_id, :token)");
         $req->execute([
             "user_id" => $user->id(),

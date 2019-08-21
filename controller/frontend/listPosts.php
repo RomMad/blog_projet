@@ -27,7 +27,7 @@ function listPosts() {
     $pagination = new Pagination("posts", $nbItems, "blog#blog", "blog-", "#blog");
 
     // Récupère les derniers articles
-    $posts = $postsManager->getList($_SESSION["filter"], "p.creation_date", "DESC", $pagination->_nbLimit, $pagination->_nbDisplayed);
+    $posts = $postsManager->getList($_SESSION["filter"], "p.creation_date", "desc", $pagination->_nbLimit, $pagination->_nbDisplayed);
 
     require "view/frontend/listPostsView.php";
 }
