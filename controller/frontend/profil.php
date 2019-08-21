@@ -148,7 +148,9 @@ function profil() {
                     "pass" => $newPassHash
                 ]);
                 $usersManager->updatePass($user);
-                $session->setFlash("Le mot de passe a été mis à jour.", "success");
+                $session->setFlash("Le mot de passe a été mis à jour.", "success");      
+                // Récupère les informations de l'utilisateur
+                $user = $usersManager->get($_SESSION["user"]["id"]);
             }
         }
     }

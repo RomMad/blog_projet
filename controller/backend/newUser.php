@@ -7,9 +7,9 @@ function newuser() {
     $usersManager = new UsersManager();
 
     if (!isset($_POST["pass"])) {
-        $bytes = random_bytes(8);
-        $token = bin2hex($bytes);
-        // $passHash = password_hash($token, PASSWORD_DEFAULT); // Hachage du mot de passe$token ;
+        $pass = bin2hex(random_bytes(8));
+    } else {
+        $pass = $_POST["pass"];
     }
 
     // Vérifie si informations dans variable POST
@@ -17,7 +17,7 @@ function newuser() {
         $user = new Users([
             "login" => $_POST["login"],
             "email" => $_POST["email"],
-            "pass" => $_POST["pass"],
+            "pass" => $pass,
             "name" => $_POST["name"],
             "surname" => $_POST["surname"],
             "role" => $_POST["role"]
@@ -67,13 +67,14 @@ function newuser() {
             $user->SetPass($passHash);
             // Insert les données dans la table users
             $usersManager->add($user);
-
             // Récupère l'ID de l'utilisateur et son password haché
             $user = $usersManager->verify($user->login());
-
+            // Génère un token
+            $token = bin2hex(random_bytes(32));
+            // Ajoute un token pour la réinitialisation
             $usersManager->addToken($user, $token);
             // Initialise l'email
-            $link = "http://localhost/blog_projet/reset-password-" . $user->pass();
+            $link = "http://localhost/blog_projet/reset-password-" . $token;
             $to = $user->email();
             $subject = "Création de compte";
             $message = "

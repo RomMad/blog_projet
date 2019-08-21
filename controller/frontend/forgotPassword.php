@@ -22,10 +22,9 @@ function forgotPassword() {
         }
         // Génère un email avec un token si validation est vraie
         if ($validation) {
-            $bytes = random_bytes(8);
-            $token = bin2hex($bytes);
-
-            // Ajout d'un tokkne pour la réinitialisation
+            // Génère un token
+            $token = bin2hex(random_bytes(32));
+            // Ajoute un token pour la réinitialisation
             $usersManager->addToken($user, $token);
             // Initialise l'email
             $link = "http://localhost/blog_projet/reset-password-" . $token;

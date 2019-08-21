@@ -69,7 +69,7 @@
                             <div class="col-md-8">
                                 <div class="password-group">
                                     <input type="password" name="pass" id="pass" class="password form-control mb-4 shadow-sm"
-                                        value="<?= isset($user) ? $user->pass() : $token ?>">
+                                        value="<?= isset($user) ? $user->pass() : $pass ?>">
                                         <span class="show-password fas fa-eye"></span>
                                 </div>
                             </div>
@@ -89,5 +89,7 @@
 </div>
 
 <?php $content = ob_get_clean(); ?>
+
+<?php $script ="<script> seePassword = new SeePassword(); </script>"; ?>
 
 <?php require "view/template.php"; ?>
