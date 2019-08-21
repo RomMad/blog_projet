@@ -6,7 +6,8 @@ class Posts extends Model {
                 $_user_login,
                 $_login,
                 $_content,
-                $_status;
+                $_status,
+                $_comment;
 
     public function __construct(array $datas) {
         $this->hydrate($datas);
@@ -31,11 +32,11 @@ class Posts extends Model {
 
     public function content($format) {
         if ($format == "html_format") {
-            return ($this->_content);
+            return $this->_content;
         } elseif ($format == "raw_format") {
-            return nl2br(strip_tags(($this->_content)));
+            return nl2br(strip_tags($this->_content));
         } else {
-            return ($this->_content);
+            return htmlspecialchars($this->_content);
         }
     }
     public function status() {
@@ -66,12 +67,12 @@ class Posts extends Model {
     }
     public function setUser_login($user_login) {
         if (is_string($user_login)) {
-            $this->_user_login = $user_login;
+            $this->_user_login = substr($user_login, 0, 50);
         }
     }
     public function setLogin($login) {
         if (is_string($login)) {
-            $this->_login = $login;
+            $this->_login = substr($login, 0, 50);
         }
     }
     public function setContent($content) {
@@ -80,8 +81,19 @@ class Posts extends Model {
         }
     }
     public function setStatus($status) {
-        if (is_string($status) && ($status == "Publié" || $status == "Brouillon")) {
+        if ($status == "Publié") {
             $this->_status = $status;
+        } else {
+            $this->_status = "Brouillon";
+        }
+    }
+    public function setComment_admin($comment_admin) {
+        if (is_string($comment_admin)) {
+            if (iconv_strlen($comment_admin) <= 255) {
+                $this->_comment_admin = $comment_admin;
+            } else {
+                $this->_comment_admin = substr($comment_admin, 0, 255);
+            }
         }
     }
 }

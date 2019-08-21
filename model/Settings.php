@@ -40,16 +40,20 @@ class Settings {
     // Setters 
     public function setBlog_name($blog_name) {
         if (is_string($blog_name)) {
-            $this->_blog_name = $blog_name;
-        } else {
-            echo "Erreur nom du blog <br />";
+            if (iconv_strlen($blog_name) < 50) {
+                $this->_blog_name = $blog_name;
+            } else {
+                $this->_blog_name = substr($blog_name, 0, 50);
+            }
         }
     }
     public function setAdmin_email($admin_email) {
         if (is_string($admin_email)) {
-            $this->_admin_email = $admin_email;
-        } else {
-            echo "Erreur adresse email <br />";
+            if (iconv_strlen($admin_email) < 50) {
+                $this->_admin_email = $admin_email;
+            } else {
+                $this->_admin_email = substr($admin_email, 0, 50);
+            }
         }
     }
     public function setDefault_role($default_role) {
@@ -57,7 +61,7 @@ class Settings {
         if ($default_role >= 1 && $default_role <= 5) {
             $this->_default_role = $default_role;
         } else {
-            echo "Erreur rôle par défaut <br />";
+            $this->_default_role = 5;
         }
     }
     public function setModeration($moderation) {
@@ -65,14 +69,15 @@ class Settings {
         if ($moderation == 0 || $moderation == 1) {
             $this->_moderation = $moderation;
         } else {
-            echo "Erreur modération <br />";
+            $this->_moderation = 1;
         }
     }
     public function setPosts_by_row($posts_by_row) {
         $posts_by_row = (int) $posts_by_row;
-        if ($posts_by_row >= 1 && $posts_by_row <= 4) {
+        if ($posts_by_row >= 1 && $posts_by_row <= 3) {
             $this->_posts_by_row = $posts_by_row;
+        } else {
+            $this->_posts_by_row = 1;
         }
     }
-
 }

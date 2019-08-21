@@ -51,10 +51,10 @@ class Model {
     }
 
     public function setCreation_date($creation_date) {
-        // $isDate = $this->validateDate($creation_date, "Y-m-d H:i:s");
-        // if ($isDate) {
-        $this->_creation_date = $creation_date;
-        // }
+        $isDate = $this->validateDate($creation_date, "Y-m-d H:i:s");
+        if ($isDate) {
+            $this->_creation_date = $creation_date;
+        }
     }
 
     public function setUpdate_date($update_date) {

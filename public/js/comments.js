@@ -43,7 +43,7 @@ class Comments {
             comment.reduce = false;
         } else {
             comment.content.style.transition = "max-height 0.5s ease";
-            comment.content.style.maxHeight = "2000px";
+            comment.content.style.maxHeight = "max-content";
             comment.content.style.overflow = "";
             comment.fadeout.className = "comment-fadeout d-none";
             comment.reduce = true;

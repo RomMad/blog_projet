@@ -58,8 +58,8 @@ if (isset($_GET["id"])) {
                             <label for="status">Statut</label>
                             <?php if ($_SESSION["user"]["role"] < 4) { ?>
                             <select name="status" class="form-control shadow-sm" id="status">
-                                <option <?= isset($post) && $post->status()=="Brouillon" ? "selected" : "" ?>>Brouillon</option>
-                                <option <?= isset($post) && $post->status()=="Publié" ? "selected" : "" ?>>Publié</option>
+                                <option <?= isset($post) && $post->status() == "Brouillon" ? "selected" : "" ?>>Brouillon</option>
+                                <option <?= isset($post) && $post->status() == "Publié" ? "selected" : "" ?>>Publié</option>
                             </select>
                             <?php } else { ?>
                             <input type="text" name="status" class="form-control shadow-sm" id="status"

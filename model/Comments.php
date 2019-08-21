@@ -56,22 +56,22 @@ class Comments extends Model {
     }
     public function setUser_name($user_name) {
         if (is_string($user_name)) {
-            $this->_user_name = $user_name;
+            $this->_user_name = substr($user_name, 0, 50);
         }
     }
     public function setLogin($login) {
         if (is_string($login)) {
-            $this->_login = $login;
+            $this->_login = substr($login, 0, 50);
         }
     }
     public function setContent($content) {
         if (is_string($content)) {
-            $this->_content = $content;
+            $this->_content = substr($content, 0, 5000);
         }
     }
     public function setStatus($status) {
         $status = (int) $status;
-        if ($status >= 1 && $status <=3) {
+        if ($status >= 1 && $status <= 3) {
             $this->_status =  $status;
         }
     }

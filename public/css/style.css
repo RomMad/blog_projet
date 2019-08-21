@@ -7,12 +7,13 @@ section {
     margin-bottom: 20px;
 }
 
-.min-vh-80 {
-    min-height: 80vh;
+/* Retour à la ligne pour le titre du blog */
+.navbar-brand {
+    white-space: normal;
 }
 
-.form-signin {
-    margin: auto;
+.min-vh-80 {
+    min-height: 80vh;
 }
 
 .card {
