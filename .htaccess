@@ -58,6 +58,7 @@
   Header set X-XSS-Protection "1; mode=block" 
 </IfModule>
 
+
 #--------------------------------------------------
 # Répertoire : /articles/
 #--------------------------------------------------
@@ -74,12 +75,13 @@ RewriteCond %{REQUEST_FILENAME}\.cache -f
 
 ErrorDocument 404 /blog_projet/index.php?action=error404
 ErrorDocument 500 /blog_projet/index.php?action=error404
-RewriteRule ([^.]+)\.html$ /page.php?page=$1 [L] 
 
 
 #--------------------------------------------------
 # Règles de réécriture d'URL :
 #--------------------------------------------------
+
+RewriteRule ([^.]+)\.html$  /blog_projet/index.php [L] 
 
 # Réécriture page d'accueil (blog)
 RewriteRule ^blog$ /blog_projet/index.php?action=listPosts [QSA,L]
