@@ -66,7 +66,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col" class="align-middle th-width-20px">
-                                    <div class="custom-control custom-checkbox">
+                                    <div class="custom-control custom-checkbox" data-toggle="tooltip" data-placement="top" title="Tout sélectionner">
                                         <input type="checkbox" name="select-all" id="select-all" class="custom-control-input" />
                                         <label class="custom-control-label" for="select-all"><span class="sr-only">Tout sélectionner<span></label>
                                     </div>
