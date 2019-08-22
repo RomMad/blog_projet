@@ -7,14 +7,15 @@ class UsersManager extends Manager {
 
     // Ajoute un utilisateur
     public function add(Users $user) {
-        $req =$this->_db->prepare("INSERT INTO users(login, email, name, surname, birthdate, pass) 
-                                VALUES(:login, :email, :name, :surname, :birthdate, :pass)");
+        $req =$this->_db->prepare("INSERT INTO users(login, email, name, surname, pass, role, birthdate) 
+                                VALUES(:login, :email, :name, :surname, :pass, :role, :birthdate)");
         $req->execute([
             "login" => $user->login(),
-            "pass" => $user->pass(),
             "email" => $user->email(),
             "name" => $user->name(),
             "surname" => $user->surname(),
+            "pass" => $user->pass(),
+            "role" => $user->role(),
             "birthdate" => $user->birthdate()
         ]);
     }

@@ -93,7 +93,7 @@ function newuser() {
                     <body>
                         <p>Bonjour, </p>
                         <p>Un compte utilisateur a été créé pour vous. <br />
-                        Veuillez cliquer sur le lien ci-dessous pour confirmer la création et personnaliser votr mot de passe : </p>
+                        Veuillez cliquer sur le lien ci-dessous pour confirmer la création et personnaliser votre mot de passe : </p>
                         <a href=" . $link . ">" . $link . "</a>
                         <p>--<br />Ceci est un message automatique, merci de ne pas y répondre. </p>
                     </body>
