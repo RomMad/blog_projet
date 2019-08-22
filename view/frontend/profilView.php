@@ -136,12 +136,13 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <div class="text-muted small">Le mot de passe doit contenir au minimum :
+                                        <div class="text-muted small">Le mot de passe doit respecter les critères suivants :
                                             <ul>
-                                                <li>6 caractères</li>
-                                                <li>1 lettre minuscule</li>
-                                                <li>1 lettre majuscule</li>
-                                                <li>1 chiffre</li>
+                                                <li>entre 6 et 20 caractères</li>
+                                                <li>au moins 1 lettre minuscule</li>
+                                                <li>au moins 1 lettre majuscule</li>
+                                                <li>au moins 1 chiffre</li>
+                                                <li>au moins 1 caractère spécial (?!*(){}[]-+=&<>§$...)</li>
                                             </ul>
                                         </div>
                                     </div>

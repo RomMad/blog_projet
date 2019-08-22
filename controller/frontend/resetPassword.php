@@ -33,11 +33,10 @@ function resetPassword() {
             $session->setFlash("Veuillez saisir votre nouveau mot de passe.", "danger");
             $validation = false;
         }
-        
-        // Vérifie si le nouveau mot de passe est valide (minimum 6 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre)
-        elseif (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $_POST["new_pass"])) {
-            $session->setFlash ("Le nouveau mot de passe n'est pas valide.", "danger");
-            $validation = false;
+        // Vérifie si le nouveau mot de passe est valide (entre 6 et 20 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre, 1 caractère spécial)
+        elseif (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{6,20}$#", $_POST["new_pass"])) {
+        $session->setFlash ("Le nouveau mot de passe n'est pas valide.", "danger");
+        $validation = false;
         }
         // Vérifie si le champ confirmation nouveau mot de passe est vide
         if (empty($_POST["new_pass_confirm"])) {

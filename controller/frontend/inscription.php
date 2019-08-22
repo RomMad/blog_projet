@@ -48,12 +48,18 @@ function inscription() {
             $session->setFlash("L'adresse email est déjà utilisée.", "danger");
             $validation = false;
         }
+        // Vérifie si le champ nouveau mot de passe est vide
+        if (empty($user->pass())) {
+            $session->setFlash("Le mot de passe est vide.", "danger");
+            $validation = false;
+        }
         // Vérifie si le mot de passe est correct
         // (?=.*[a-z])  : teste la présence d'une lettre minuscule
         // (?=.*[A-Z])  : teste la présence d'une lettre majuscule
         // (?=.*[0-9])  : teste la présence d'un chiffre de 0 à 9
-        // .{6,}$       : teste si au moins 6 caractères
-        if (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$#", $user->pass())) {
+        // (?=.*\W)     : teste la présence d'un caratère spécial ('\W' ce qui ne correspond pas à un mot)
+        // .{6,20}$     : teste si entre 6 et 20 caractères
+        elseif (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{6,20}$#", $user->pass())) {
             $session->setFlash("Le mot de passe n'est pas valide.", "danger");
             $validation = false;
         }

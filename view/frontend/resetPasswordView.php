@@ -26,7 +26,19 @@
                     <span class="show-password fas fa-eye"></span>
             </div>
             <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-blue btn-block mb-4 shadow">
-
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-muted small">Le mot de passe doit respecter les critères suivants :
+                        <ul>
+                            <li>entre 6 et 20 caractères</li>
+                            <li>au moins 1 lettre minuscule</li>
+                            <li>au moins 1 lettre majuscule</li>
+                            <li>au moins 1 chiffre</li>
+                            <li>au moins 1 caractère spécial (?!*(){}[]-+=&<>§$...)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </form>
     </section>
 </div>
