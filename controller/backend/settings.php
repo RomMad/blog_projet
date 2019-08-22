@@ -8,15 +8,14 @@ function settings() {
     $usersManager = new UsersManager();
     $settingsManager = new SettingsManager();
 
-    // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
-    if (empty($_SESSION["user"]["id"])) {
+    // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
+    if (!isset($_SESSION["user"])) {
         header("Location: connection");
         exit();
     } 
-
     // Récupère le rôle de l'utilisateur
     $userRole = $usersManager->getRole($_SESSION["user"]["id"]);
-
+    // Redirige vers la page d'erreur 403 si l'utilisateur n'a pas les droits
     if ($userRole != 1) {
         header("Location: error403"); 
         exit();

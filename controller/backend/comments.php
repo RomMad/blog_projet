@@ -8,13 +8,14 @@ function comments() {
     $usersManager = new UsersManager();
     $commentsManager = new CommentsManager();
 
-    // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté et n'a pas les droits
-    if (empty($_SESSION["user"]["id"])) {
-        header("Location: error403"); 
+    // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
+    if (!isset($_SESSION["user"])) {
+        header("Location: connection"); 
         exit;
     } else {
         // Récupère le rôle de l'utilisateur
         $userRole = $usersManager->getRole($_SESSION["user"]["id"]);
+        // Redirige vers la page d'erreur 403 si l'utilisateur n'a pas les droits
         if ($userRole >= 3) {
             header("Location: error403"); 
             exit;
