@@ -45,6 +45,43 @@ function settings() {
             $session->setFlash("Le nombre de posts par ligne est incorrect.", "danger");
             $validation = false;
         }
+        if (!empty($_FILES["logoFile"]["name"])) { 
+            $validExtensions = array("png", "gif", "jpg", "jpeg"); // extensions autorisées
+            $infoFile = pathinfo($_FILES["logoFile"]["name"]);
+            $extensionFile = $infoFile["extension"];
+            $maxSize = 2000000; // taille maximum (en octets) : 2 Mo
+            $size = filesize($_FILES["logoFile"]["tmp_name"]); // taille du fichier
+            $nameFile = basename($_FILES["logoFile"]["name"]);
+            $translate = array(
+                "é" => "e",
+                "è" => "e",
+                "à" => "a",
+                "ç" => "c",
+                "'" => "_",
+                );
+            $nameFile = strtr($_FILES["logoFile"]["name"], $translate); // remplace les lettres accentuées par les non accentuées
+            // ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ => AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy
+            $nameFile = preg_replace("/([^.a-zA-Z0-9]+)/i", "-", $nameFile); //remplace tout ce qui n'est pas une lettre ou chiffre par un tirer (-)
+            $nameFile = date("Y_m_d_His") . "_" . $nameFile;
+            $folder = "uploads/"; // Nom du dossier d'enregistrement
+            // Vérifie s'il n'y a pas d'erreur
+            if ($_FILES["logoFile"]["error"] != 0){
+                $session->setFlash("Une erreur s'est produite. Le fichier n'a pas pu être téléchargé.", "danger");
+                $validation = false;
+            } elseif(!in_array($extensionFile, $validExtensions)) {
+                $session->setFlash("Vous devez télécharger un fichier de type png, gif, jpg ou jpeg.", "danger");
+                $validation = false;
+            } elseif ($size > $maxSize) {
+                $session->setFlash("La taille du fichier dépasse la limite autorisée (2Mo).", "danger");
+                $validation = false;
+            } elseif (!move_uploaded_file($_FILES["logoFile"]["tmp_name"], $folder . $nameFile)) {
+                    $session->setFlash("Le fichier n'a pas pu être téléchargé.", "danger");
+                    $validation = false;
+            } else {
+            $session->setFlash("Le fichier a été téléchargé.", "success");
+            $validation = false;
+            }
+        }
         // Met à jour les données si validation est vrai
         if ($validation == true) {
             $settingsManager->update($settings);

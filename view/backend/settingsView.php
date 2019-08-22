@@ -24,7 +24,7 @@
     <div class="row">
 
         <div class="col-md-8 col-lg-6 mt-4">
-            <form action="settings" method="post" class="col-md-12 card shadow">
+            <form action="settings" method="post" enctype="multipart/form-data" class="col-md-12 card shadow">
                 <div class="form-group row">
                     <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Paramètres</h3>
                 </div>
@@ -61,6 +61,13 @@
                             <option value="1" <?= $settings->posts_by_row() == 1 ? "selected" : "" ?>>1</option>
                             <option value="2" <?= $settings->posts_by_row() == 2 ? "selected" : "" ?>>2</option>
                         </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4 col-form-label">Logo</div>
+                    <div class="custom-file col-md-6">
+                        <input type="file" name="logoFile" id="logoFile" class="custom-file-input">
+                        <label class="custom-file-label" for="logoFile">Choisir un fichier</label>
                     </div>
                 </div>
                 <div class="form-group row">
