@@ -1,7 +1,5 @@
 <?php 
 namespace controller\frontend;
-use  model\PostsManager;
-use  model\Pagination;
 
 class ListPostsController {
 
@@ -11,7 +9,8 @@ class ListPostsController {
 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_postsManager = new PostsManager();
+        spl_autoload_register("loadClass");
+        $this->_postsManager = new \model\PostsManager();
         $this->init();
     }
 
@@ -30,7 +29,7 @@ class ListPostsController {
         // Récupère le nombre d'articles
         $nbItems = $this->_postsManager->count($_SESSION["filter"]);
         // Initialise la pagination
-        $this->_pagination = new Pagination("posts", $nbItems, "blog#blog", "blog-", "#blog");
+        $this->_pagination = new \model\Pagination("posts", $nbItems, "blog#blog", "blog-", "#blog");
         // Récupère les derniers articles
         $posts = $this->_postsManager->getList($_SESSION["filter"], "p.creation_date", "desc", $this->_pagination->_nbLimit,  $this->_pagination->_nbDisplayed);
 

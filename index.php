@@ -1,11 +1,11 @@
 <?php
-spl_autoload_register();
+spl_autoload_register("loadClass");
 
 $session = new model\Session();
 $session->connect();
 
 if(!isset($_SESSION["settings"])) {
-    $settingsManager = new model\SettingsManager();
+    $settingsManager = new  model\SettingsManager();
     $_SESSION["settings"] = $settingsManager->get();
 }
 
@@ -87,4 +87,9 @@ function error403() {
 
 function error404() {
     require "error/404.php";
+}
+
+function loadClass($class) {
+    $path = str_replace("\\", DIRECTORY_SEPARATOR, $class);
+    require $path . ".php";
 }

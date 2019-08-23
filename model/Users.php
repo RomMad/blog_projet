@@ -1,6 +1,5 @@
 <?php
 namespace model;
-use DateTime;
 
 class Users extends Model {
     
@@ -49,7 +48,7 @@ class Users extends Model {
         return $this->_remember;
     }    
     public function registration_date() {
-        $registration_date = new DateTime($this->_registration_date);
+        $registration_date = new \DateTime($this->_registration_date);
         if (!empty($format) && $format == "special_format") {
             return date_format($registration_date,"d/m/Y à H:i");
         } else {

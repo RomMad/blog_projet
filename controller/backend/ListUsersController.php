@@ -1,7 +1,5 @@
 <?php 
 namespace controller\backend;
-use  model\UsersManager;
-use  model\Pagination;
 
 class ListUsersController {
 
@@ -12,7 +10,7 @@ class ListUsersController {
 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_usersManager = new UsersManager();
+        $this->_usersManager = new \model\UsersManager();
         $this->init();
     }
 
@@ -90,7 +88,7 @@ class ListUsersController {
 
         // Initialise la pagination
         $linkNbDisplayed = "users-orderBy-" . $orderBy . "-order-" . $order;
-        $this->_pagination = new Pagination("adminUsers", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table-admin_users");
+        $this->_pagination = new \model\Pagination("adminUsers", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table-admin_users");
 
         // Récupère les utilisateurs
         $users = $this->_usersManager->getlist($_SESSION["filter"], $orderBy, $order,  $this->_pagination->_nbLimit, $this->_pagination->_nbDisplayed);

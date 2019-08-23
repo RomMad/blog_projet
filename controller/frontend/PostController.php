@@ -1,9 +1,5 @@
 <?php 
 namespace controller\frontend;
-use  model\PostsManager;
-use  model\CommentsManager;
-use  model\Comments;
-use  model\Pagination;
 
 class PostController {
 
@@ -17,8 +13,8 @@ class PostController {
 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_postsManager = new PostsManager();
-        $this->_commentsManager = new CommentsManager();
+        $this->_postsManager = new \model\PostsManager();
+        $this->_commentsManager = new \model\CommentsManager();
         $this->init();
     }
 
@@ -72,7 +68,7 @@ class PostController {
 
                 // Ajoute le commentaire si le commentaire n'est pas vide
                 if ($validation) {
-                     $this->_comment = new Comments([
+                     $this->_comment = new \model\Comments([
                         "post_id" => $_SESSION["postID"],
                         "user_id" => $userId,
                         "user_name" => $name,
@@ -89,7 +85,7 @@ class PostController {
             }
             // Modifie le commentaire
             if (isset($_POST["editComment"])) {
-                 $this->_comment = new Comments([
+                 $this->_comment = new \model\Comments([
                     "id" => $_GET["comment"],
                     "content" => $_POST["comment-form-content-" . $_GET["comment"]],
                     "status" => $status,
@@ -103,7 +99,7 @@ class PostController {
 
         // Supprime le commentaire
         if (isset($_GET["delete"]) && $_GET["delete"]=="true") {
-             $this->_comment = new Comments([
+             $this->_comment = new \model\Comments([
                 "id" => $_GET["comment"],
             ]);
             $this->_commentsManager->delete( $this->_comment);
@@ -111,7 +107,7 @@ class PostController {
         }
         // Ajoute le signalement du commentaire
         if (isset($_GET["report"]) && $_GET["report"]=="true") {
-             $this->_comment = new Comments([
+             $this->_comment = new \model\Comments([
                 "id" => $_GET["comment"],
                 "status" => 3,
             ]);
@@ -127,7 +123,7 @@ class PostController {
 
         // Initialise la pagination
         $linkNbDisplayed = "post-" . $postId;
-        $this->_pagination = new Pagination("comments", $nbItems, "post-" . $postId . "#comments", "post-" . $postId . "-", "#comments");
+        $this->_pagination = new \model\Pagination("comments", $nbItems, "post-" . $postId . "#comments", "post-" . $postId . "-", "#comments");
 
         // Récupère les commentaires si le nombre > 0 
         if ($nbItems) {

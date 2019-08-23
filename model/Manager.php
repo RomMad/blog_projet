@@ -35,7 +35,7 @@ class Manager
         try
         {
             $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-            $this->_db = new PDO("mysql:host=" . $this->_dbHost . ";dbname=" . $this->_dbName . ";charset=utf8", $this->_dbUser, $this->_dbPass, $pdo_options);
+            $this->_db = new \PDO("mysql:host=" . $this->_dbHost . ";dbname=" . $this->_dbName . ";charset=utf8", $this->_dbUser, $this->_dbPass, $pdo_options);
         }
         catch(Exception $e) {
             // En cas d'erreur, on affiche un message et on arrête tout

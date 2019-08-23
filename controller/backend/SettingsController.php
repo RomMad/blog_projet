@@ -1,7 +1,5 @@
 <?php 
 namespace controller\backend;
-use  model\SettingsManager;
-use  model\Settings;
 
 class SettingsController {
 
@@ -11,7 +9,7 @@ class SettingsController {
                 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_settingsManager = new SettingsManager();
+        $this->_settingsManager = new \model\SettingsManager();
         $this->init();
     }
 
@@ -30,7 +28,7 @@ class SettingsController {
 
         if (!empty($_POST)) {
             $validation = true;
-            $this->_settings = new Settings([
+            $this->_settings = new \model\Settings([
                 "blog_name" => $_POST["blog_name"],
                 "admin_email" => $_POST["admin_email"],
                 "default_role" => $_POST["default_role"],

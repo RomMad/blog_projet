@@ -1,6 +1,5 @@
 <?php 
 namespace controller\frontend;
-use  model\UsersManager;
 
 class ForgotPasswordController {
 
@@ -10,7 +9,7 @@ class ForgotPasswordController {
 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_usersManager = new UsersManager();
+        $this->_usersManager = new \model\UsersManager();
         $this->init();
     }
 

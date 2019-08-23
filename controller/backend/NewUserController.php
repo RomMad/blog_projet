@@ -1,7 +1,5 @@
 <?php 
 namespace controller\backend;
-use  model\UsersManager;
-use  model\Users;
 
 class NewuserController {
 
@@ -11,7 +9,7 @@ class NewuserController {
                 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_usersManager = new UsersManager();
+        $this->_usersManager = new \model\UsersManager();
         $this->init();
     }
 
@@ -25,7 +23,7 @@ class NewuserController {
 
         // Vérifie si informations dans variable POST
         if (!empty($_POST)) {
-            $this->_user = new Users([
+            $this->_user = new \model\Users([
                 "login" => $_POST["login"],
                 "email" => $_POST["email"],
                 "pass" => $pass,

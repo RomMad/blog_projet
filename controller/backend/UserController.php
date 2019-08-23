@@ -1,7 +1,5 @@
 <?php 
 namespace controller\backend;
-use  model\UsersManager;
-use  model\Users;
 
 class UserController {
 
@@ -11,7 +9,7 @@ class UserController {
                 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_usersManager = new UsersManager();
+        $this->_usersManager = new \model\UsersManager();
         $this->init();
     }
 
@@ -48,7 +46,7 @@ class UserController {
 
             // Met à jour les informations du profil si validation est vraie
             if ($validation) {
-                $this->_user = new Users([
+                $this->_user = new \model\Users([
                     "id" => $_GET["id"],
                     "role" => $_POST["role"]
                 ]);

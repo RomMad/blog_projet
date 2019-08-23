@@ -1,7 +1,5 @@
 <?php 
 namespace controller\backend;
-use  model\PostsManager;
-use  model\Posts;
 
 class PostEditController {
 
@@ -11,7 +9,7 @@ class PostEditController {
 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_postsManager = new PostsManager();
+        $this->_postsManager = new \model\PostsManager();
         $this->init();
     }
 
@@ -36,7 +34,7 @@ class PostEditController {
 
         // Vérification si informations dans variable POST
         if (!empty($_POST)) {
-             $this->_post = new Posts([
+             $this->_post = new \model\Posts([
                 "title" => $_POST["title"],
                 "content" => $_POST["post_content"],
                 "status" => $_SESSION["user"]["role"] <= 3 ? $_POST["status"] : "Brouillon",

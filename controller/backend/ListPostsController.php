@@ -1,7 +1,5 @@
 <?php 
 namespace controller\backend;
-use  model\PostsManager;
-use  model\Pagination;
 
 class ListPostsController {
 
@@ -12,7 +10,7 @@ class ListPostsController {
 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_postsManager = new PostsManager();
+        $this->_postsManager = new \model\PostsManager();
         $this->init();
     }
 
@@ -113,7 +111,7 @@ class ListPostsController {
 
         // Initialise la pagination
         $linkNbDisplayed = "posts-orderBy-" . $orderBy . "-order-" . $order;
-        $this->_pagination = new Pagination("adminPosts", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table_admin_posts");
+        $this->_pagination = new \model\Pagination("adminPosts", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table_admin_posts");
 
         // Récupère les articles
         $posts = $this->_postsManager->getlist($_SESSION["filter"], $orderBy, $order, $this->_pagination->_nbLimit, $this->_pagination->_nbDisplayed);

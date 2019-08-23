@@ -1,7 +1,5 @@
 <?php 
 namespace controller\frontend;
-use  model\UsersManager;
-use  model\Users;
 
 class InscriptionController {
 
@@ -11,14 +9,14 @@ class InscriptionController {
 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_usersManager = new UsersManager();
+        $this->_usersManager = new \model\UsersManager();
         $this->init();
     }
 
     protected function init() {
         // Vérifie si informations dans variable POST
         if (!empty($_POST)) {
-            $this->_user = new Users([
+            $this->_user = new \model\Users([
                 "login" => htmlspecialchars($_POST["login"]),
                 "name" => htmlspecialchars($_POST["name"]),
                 "surname" => htmlspecialchars($_POST["surname"]),

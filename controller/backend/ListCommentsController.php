@@ -1,8 +1,5 @@
 <?php 
 namespace controller\backend;
-use  model\CommentsManager;
-use  model\Comments;
-use  model\Pagination;
 
 class ListCommentsController {
 
@@ -13,7 +10,7 @@ class ListCommentsController {
                 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_commentsManager = new CommentsManager();
+        $this->_commentsManager = new \model\CommentsManager();
         $this->init();
     }
 
@@ -35,7 +32,7 @@ class ListCommentsController {
                 // Supprime les commentaires sélectionnés via une boucle
                 if ($_POST["action_apply"] == "delete" && isset($_POST["selectedComments"])) {
                     foreach ($_POST["selectedComments"] as $selectedComment) {
-                        $comment = new Comments([
+                        $comment = new \model\Comments([
                             "id" => $selectedComment,
                         ]);
                         $this->_commentsManager->delete($comment);
@@ -51,7 +48,7 @@ class ListCommentsController {
                 // Modère les commentaires sélectionnés via une boucle
                 if ($_POST["action_apply"] == "moderate" && isset($_POST["selectedComments"])) {
                     foreach ($_POST["selectedComments"] as $selectedComment) {
-                        $comment = new Comments([
+                        $comment = new \model\Comments([
                             "id" => $selectedComment,
                             "status" => 2,
                             ]);
@@ -109,7 +106,7 @@ class ListCommentsController {
 
         // Initialise la pagination
         $linkNbDisplayed = "comments-orderBy-" . $orderBy . "-order-" . $order;
-        $this->_pagination = new Pagination("adminComments", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table-admin_comments");
+        $this->_pagination = new \model\Pagination("adminComments", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table-admin_comments");
 
         // Récupère les commentaires
         $comments = $this->_commentsManager->getlist($_SESSION["filter"], $orderBy, $order,  $this->_pagination->_nbLimit, $this->_pagination->_nbDisplayed);

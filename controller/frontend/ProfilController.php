@@ -1,7 +1,5 @@
 <?php 
 namespace controller\frontend;
-use  model\UsersManager;
-use  model\Users;
 
 class ProfilController {
 
@@ -11,7 +9,7 @@ class ProfilController {
                 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_usersManager = new UsersManager();
+        $this->_usersManager = new \model\UsersManager();
         $this->init();
     }
 
@@ -49,7 +47,7 @@ class ProfilController {
             
             // Mettre à jour les informations du profil
             if (isset($_POST["login"])) {
-                $user = new Users([
+                $user = new \model\Users([
                     "id" => $_SESSION["user"]["id"],
                     "login" => $_POST["login"],
                     "email" => $_POST["email"],
@@ -154,7 +152,7 @@ class ProfilController {
                 // Met à jour le mot de passe si validation est vraie
                 if ($validation) {
                     $newPassHash = password_hash($_POST["new_pass"], PASSWORD_DEFAULT); // Hachage du mot de passe
-                    $user = new Users([
+                    $user = new \model\Users([
                         "id" => $_SESSION["user"]["id"],
                         "pass" => $newPassHash
                     ]);

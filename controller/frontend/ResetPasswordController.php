@@ -1,6 +1,5 @@
 <?php 
 namespace controller\frontend;
-use  model\UsersManager;
 
 class ResetPasswordController {
 
@@ -10,7 +9,7 @@ class ResetPasswordController {
                 
     public function __construct($session) {
         $this->_session = $session;
-        $this->_usersManager = new UsersManager();
+        $this->_usersManager = new \model\UsersManager();
         $this->init();
     }
 
@@ -23,8 +22,8 @@ class ResetPasswordController {
             $resetDate = $this->_usersManager->verifyToken($_GET["token"], $_POST["email"]);
             
             // Calcule l'intervalle entre le moment de demande de réinitialisation et maintenant
-            $dateResetPassword = new DateTime($resetDate, timezone_open("Europe/Paris"));
-            $dateNow = new DateTime("now", timezone_open("Europe/Paris"));
+            $dateResetPassword = new \DateTime($resetDate, timezone_open("Europe/Paris"));
+            $dateNow = new \DateTime("now", timezone_open("Europe/Paris"));
             $interval = date_timestamp_get($dateNow)-date_timestamp_get($dateResetPassword);
             $delay = 15 * 60; // 15 minutes x 60 secondes = 900 secondes
             // Vérifie si le token ou l'adresse email sont corrects
@@ -71,7 +70,7 @@ class ResetPasswordController {
                 // Hachage du mot de passe
                 $newPassHash = password_hash(htmlspecialchars($_POST["new_pass"]), PASSWORD_DEFAULT);
                 // Créé une nouvelle entité user
-                $user = new Users([
+                $user = new \model\Users([
                     "id" => $user->id(),
                     "pass" => $newPassHash
                 ]);

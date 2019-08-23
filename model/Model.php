@@ -28,7 +28,7 @@ class Model {
     }
 
     public function creation_date($format) {
-        $creation_date = new DateTime($this->_creation_date);
+        $creation_date = new \DateTime($this->_creation_date);
         if (!empty($format) && $format == "special_format") {
             return date_format($creation_date,"d/m/Y à H:i");
         } else {
@@ -37,7 +37,7 @@ class Model {
     }
 
     public function update_date($format) {
-        $update_date = new DateTime($this->_update_date);
+        $update_date = new \DateTime($this->_update_date);
         if (!empty($format) && $format == "special_format") {
             return date_format($update_date,"d/m/Y à H:i");
         } else {
