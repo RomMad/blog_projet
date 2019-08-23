@@ -1,4 +1,7 @@
 <?php
+namespace model;
+use PDO;
+
 class Manager
 {
     //informations de connexion à la base de données

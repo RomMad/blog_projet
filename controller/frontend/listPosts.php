@@ -1,10 +1,8 @@
 <?php 
 function listPosts() {
-    spl_autoload_register("loadClass");
-
-    $session = new Session();
-    $settingsManager = new SettingsManager();
-    $postsManager = new PostsManager();
+    $session = new model\Session();
+    $settingsManager = new model\SettingsManager();
+    $postsManager = new model\PostsManager();
 
     // Récupère les paramètres du site
     $settings = $settingsManager->get();
@@ -24,7 +22,7 @@ function listPosts() {
     // Récupère le nombre d'articles
     $nbItems = $postsManager->count($_SESSION["filter"]);
     // Initialise la pagination
-    $pagination = new Pagination("posts", $nbItems, "blog#blog", "blog-", "#blog");
+    $pagination = new model\Pagination("posts", $nbItems, "blog#blog", "blog-", "#blog");
 
     // Récupère les derniers articles
     $posts = $postsManager->getList($_SESSION["filter"], "p.creation_date", "desc", $pagination->_nbLimit, $pagination->_nbDisplayed);

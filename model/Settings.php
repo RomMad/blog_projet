@@ -1,4 +1,6 @@
-<?php 
+<?php
+namespace model;
+
 class Settings {
 
     protected   $_blog_name,

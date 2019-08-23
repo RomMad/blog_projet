@@ -1,11 +1,8 @@
 <?php 
 
 function users() {
-    
-    spl_autoload_register("loadClass");
-
-    $session = new Session();
-    $usersManager = new UsersManager();
+    $session = new model\Session();
+    $usersManager = new model\UsersManager();
 
     // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
     if (!isset($_SESSION["user"])) {
@@ -81,7 +78,7 @@ function users() {
 
     // Initialise la pagination
     $linkNbDisplayed = "users-orderBy-" . $orderBy . "-order-" . $order;
-    $pagination = new Pagination("adminUsers", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table-admin_users");
+    $pagination = new model\Pagination("adminUsers", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table-admin_users");
 
     // Récupère les utilisateurs
     $users = $usersManager->getlist($_SESSION["filter"], $orderBy, $order,  $pagination->_nbLimit, $pagination->_nbDisplayed);

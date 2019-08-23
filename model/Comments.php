@@ -1,4 +1,7 @@
 <?php
+namespace model;
+use DateTime;
+
 class Comments extends Model {
 
     protected   $_post_id,

@@ -1,11 +1,9 @@
 <?php 
 function post() {
-    spl_autoload_register("loadClass");
-
-    $session = new Session();
-    $settingsManager = new SettingsManager();
-    $postsManager = new PostsManager();
-    $commentsManager = new CommentsManager();
+    $session = new model\Session();
+    $settingsManager = new model\SettingsManager();
+    $postsManager = new model\PostsManager();
+    $commentsManager = new model\CommentsManager();
 
     // Vérifie si l'article existe
     $post = $postsManager->get($_GET["id"]);
@@ -112,7 +110,7 @@ function post() {
 
     // Initialise la pagination
     $linkNbDisplayed = "post-" . $postId;
-    $pagination = new Pagination("comments", $nbItems, "post-" . $postId . "#comments", "post-" . $postId . "-", "#comments");
+    $pagination = new model\Pagination("comments", $nbItems, "post-" . $postId . "#comments", "post-" . $postId . "-", "#comments");
 
     // Récupère les commentaires si le nombre > 0 
     if ($nbItems) {

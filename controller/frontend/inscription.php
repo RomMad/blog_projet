@@ -1,9 +1,7 @@
 <?php 
 function inscription() {
-    spl_autoload_register("loadClass");
-
-    $session = new Session();
-    $usersManager = new UsersManager();
+    $session = new model\Session();
+    $usersManager = new model\UsersManager();
 
     // Vérifie si informations dans variable POST
     if (!empty($_POST)) {

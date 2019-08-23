@@ -1,4 +1,7 @@
-<?php 
+<?php
+namespace model;
+use DateTime;
+
 class Model {
 
     protected   $_id,

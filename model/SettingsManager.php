@@ -1,4 +1,6 @@
 <?php
+namespace model;
+
 class SettingsManager extends Manager {
 
     public function __construct() {

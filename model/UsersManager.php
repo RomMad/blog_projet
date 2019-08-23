@@ -1,4 +1,6 @@
 <?php
+namespace model;
+
 class UsersManager extends Manager {
 
     public function __construct() {

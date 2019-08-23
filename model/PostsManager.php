@@ -1,4 +1,6 @@
 <?php
+namespace model;
+
 class PostsManager extends Manager {
 
     public function __construct() {

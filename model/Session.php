@@ -1,4 +1,6 @@
-<?php 
+<?php
+namespace model;
+
 class Session {
 
     // Lancement de la session

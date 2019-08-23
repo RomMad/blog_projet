@@ -1,9 +1,7 @@
 <?php 
 function postEdit() {
-    spl_autoload_register("loadClass");
-
-    $session = new Session();
-    $postsManager = new PostsManager();
+    $session = new model\Session();
+    $postsManager = new model\PostsManager();
 
     // Vérifie si l'article existe
     if (isset($_GET["id"])) {

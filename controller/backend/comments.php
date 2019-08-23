@@ -1,12 +1,9 @@
 <?php 
 
 function comments() {
-    
-    spl_autoload_register("loadClass");
-
-    $session = new Session();
-    $usersManager = new UsersManager();
-    $commentsManager = new CommentsManager();
+    $session = new model\Session();
+    $usersManager = new model\UsersManager();
+    $commentsManager = new model\CommentsManager();
 
     // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
     if (!isset($_SESSION["user"])) {
@@ -101,7 +98,7 @@ function comments() {
 
     // Initialise la pagination
     $linkNbDisplayed = "comments-orderBy-" . $orderBy . "-order-" . $order;
-    $pagination = new Pagination("adminComments", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table-admin_comments");
+    $pagination = new model\Pagination("adminComments", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table-admin_comments");
 
     // Récupère les commentaires
     $comments = $commentsManager->getlist($_SESSION["filter"], $orderBy, $order,  $pagination->_nbLimit, $pagination->_nbDisplayed);

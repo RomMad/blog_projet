@@ -1,9 +1,7 @@
 <?php 
 function connection() {
-    spl_autoload_register("loadClass");
-
-    $session = new Session();
-    $usersManager = new UsersManager();
+    $session = new model\Session();
+    $usersManager = new model\UsersManager();
 
     // Redirige vers la page d'accueil si l'utilisateur est déjà connecté
     if (!empty($_SESSION["user"])) {

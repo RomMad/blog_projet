@@ -2,11 +2,10 @@
 
 function posts() {
     
-    spl_autoload_register("loadClass");
 
-    $session = new Session();
-    $usersManager = new UsersManager();
-    $postsManager = new PostsManager();
+    $session = new model\Session();
+    $usersManager = new model\UsersManager();
+    $postsManager = new model\PostsManager();
 
     // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
     if (!isset($_SESSION["user"])) {
@@ -106,7 +105,7 @@ function posts() {
 
     // Initialise la pagination
     $linkNbDisplayed = "posts-orderBy-" . $orderBy . "-order-" . $order;
-    $pagination = new Pagination("adminPosts", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table_admin_posts");
+    $pagination = new model\Pagination("adminPosts", $nbItems, $linkNbDisplayed, $linkNbDisplayed . "-", "#table_admin_posts");
 
     // Récupère les articles
     $posts = $postsManager->getlist($_SESSION["filter"], $orderBy, $order, $pagination->_nbLimit, $pagination->_nbDisplayed);

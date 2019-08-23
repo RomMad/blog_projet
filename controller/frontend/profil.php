@@ -1,9 +1,7 @@
 <?php 
 function profil() {
-    spl_autoload_register("loadClass");
-
-    $session = new Session();
-    $usersManager = new UsersManager();
+    $session = new model\Session();
+    $usersManager = new model\UsersManager();
 
     // Redirige vers la page de connexion si non connecté
     if (empty($_SESSION["user"]["id"])) {

@@ -1,4 +1,6 @@
-<?php 
+<?php
+namespace model;
+
 class Posts extends Model {
 
     protected   $_title,

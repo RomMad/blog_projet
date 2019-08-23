@@ -1,5 +1,7 @@
-<?php 
-Class Pagination {
+<?php
+namespace model;
+
+class Pagination {
 
     protected   $_typeItem,
                 $_nbItems,

@@ -1,10 +1,7 @@
 <?php 
 function newuser() {
-    
-    spl_autoload_register("loadClass");
-
-    $session = new Session();
-    $usersManager = new UsersManager();
+    $session = new model\Session();
+    $usersManager = new model\UsersManager();
 
     if (!isset($_POST["pass"])) {
         $pass = bin2hex(random_bytes(8));

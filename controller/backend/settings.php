@@ -1,12 +1,9 @@
 <?php 
 
 function settings() {
-    
-    spl_autoload_register("loadClass");
-
-    $session = new Session();
-    $usersManager = new UsersManager();
-    $settingsManager = new SettingsManager();
+    $session = new model\Session();
+    $usersManager = new model\UsersManager();
+    $settingsManager = new model\SettingsManager();
 
     // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
     if (!isset($_SESSION["user"])) {

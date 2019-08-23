@@ -1,10 +1,10 @@
 <?php
-spl_autoload_register("loadClass");
+spl_autoload_register();
 
-$session = new Session();
+$session = new model\Session();
 $session->connect();
 
-$settingsManager = new SettingsManager();
+$settingsManager = new model\SettingsManager();
 if(!isset($_SESSION["blog_name"])) {
     $settings = $settingsManager->get();
     $_SESSION["blog_name"] = $settings->blog_name();
@@ -106,35 +106,6 @@ function error404() {
     require "error/404.php";
 }
 
-
-function loadClass($classname) {
-    require "model/" . $classname . ".php";
-}
-
-// $controllers = [
-//     "listPosts" => "frontend",
-//     "post",
-//     "profil",
-//     "inscription",
-//     "connection",
-//     "forgotPassword",
-//     "resetPassword",
-//     "postEdit",
-//     "comments",
-//     "posts",
-//     "settings",
-//     "users",
-//     "newUser"
-// ];
-
-// var_dump($controllers);
-
-// if (isset($_GET["action"])) {
-//     foreach($controllers as $controller) {
-//         if ($_GET["action"] == $controller) {
-//             $controller();
-//         }
-//     }
-// } else {
-//     listPosts();
+// function loadClass($classname) {
+//     require "model/" . $classname . ".php";
 // }

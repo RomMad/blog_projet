@@ -1,10 +1,7 @@
 <?php 
 function resetPassword() {
-    
-    spl_autoload_register("loadClass");
-
-    $session = new Session();
-    $usersManager = new UsersManager();
+    $session = new model\Session();
+    $usersManager = new model\UsersManager();
 
     // Vérifie si informations dans variables POST et GET
     if (!empty($_POST) && isset($_GET["token"])) {
