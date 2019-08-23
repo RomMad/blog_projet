@@ -82,9 +82,11 @@ function post() {
             $commentsManager->update($comment);
             $session->setFlash("Le commentaire a été modifié.", "success");
         }
+        header("Location: post-" . $postId . "#form-comment"); 
+        exit();
     }
 
-    //
+    // Supprime le commentaire
     if (isset($_GET["delete"]) && $_GET["delete"]=="true") {
         $comment = new Comments([
             "id" => $_GET["comment"],
