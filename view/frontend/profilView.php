@@ -30,37 +30,37 @@
                                 <div class="row">
                                     <label for="login" class="col-md-4 col-form-label">Login</label>
                                     <div class="col-md-8">
-                                        <input type="text" name="login" id="login" class="form-control mb-4" value="<?= $user->login() ?>">
+                                        <input type="text" name="login" id="login" class="form-control mb-4" value="<?= $this->_user->login() ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <label for="email" class="col-md-4 col-form-label">Adresse email</label>
                                     <div class="col-md-8">
-                                        <input type="text" name="email" id="email" class="form-control mb-4" value="<?= $user->email() ?>">
+                                        <input type="text" name="email" id="email" class="form-control mb-4" value="<?= $this->_user->email() ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <label for="name" class="col-md-4 col-form-label">Nom</label>
                                     <div class="col-md-8">
-                                        <input type="text" name="name" id="name" class="form-control mb-4" value="<?= $user->name() ?>">
+                                        <input type="text" name="name" id="name" class="form-control mb-4" value="<?= $this->_user->name() ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <label for="surname" class="col-md-4 col-form-label">Prénom</label>
                                     <div class="col-md-8">
-                                        <input type="text" name="surname" id="surname" class="form-control mb-4" value="<?= $user->surname() ?>">
+                                        <input type="text" name="surname" id="surname" class="form-control mb-4" value="<?= $this->_user->surname() ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <label for="birthdate" class="col-md-4 col-form-label">Date de naissance</label>
                                     <div class="col-md-5">
-                                        <input type="date" name="birthdate" id="birthdate" class="form-control mb-4" value="<?= $user->birthdate() ?>">
+                                        <input type="date" name="birthdate" id="birthdate" class="form-control mb-4" value="<?= $this->_user->birthdate() ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="role" class="col-md-4 col-form-label">Rôle</label>
                                     <div class="col-md-5">
-                                        <input type="text" name="role" id="role" class="form-control mb-4" readonly value="<?= $user->role_user() ?>">
+                                        <input type="text" name="role" id="role" class="form-control mb-4" readonly value="<?= $this->_user->role_user() ?>">
                                     </div>
                                 </div>
                                 <div class="row">

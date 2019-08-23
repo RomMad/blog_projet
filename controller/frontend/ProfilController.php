@@ -20,7 +20,7 @@ class ProfilController {
             exit();
         } else {
             // Récupère les informations de l'utilisateur
-            $user = $this->_usersManager->get($_SESSION["user"]["id"]);
+            $this->_user = $this->_usersManager->get($_SESSION["user"]["id"]);
         }
         if (isset($_GET["delete_cookies"])) {
             $cookies = [
@@ -47,7 +47,7 @@ class ProfilController {
             
             // Mettre à jour les informations du profil
             if (isset($_POST["login"])) {
-                $user = new \model\Users([
+                $this->_user = new \model\Users([
                     "id" => $_SESSION["user"]["id"],
                     "login" => $_POST["login"],
                     "email" => $_POST["email"],
@@ -59,11 +59,11 @@ class ProfilController {
                 // Compare le pass envoyé via le formulaire avec la base
                 $isPasswordCorrect = password_verify($_POST["pass"], $this->_usersManager->getPass($_SESSION["user"]["id"])); 
                 // Vérifie si le login est déjà pris par un autre utilisateur
-                $loginUsed = $this->_usersManager->count("login = '" . $user->login() . "' AND u.id != " . $_SESSION["user"]["id"]);
+                $loginUsed = $this->_usersManager->count("login = '" . $this->_user->login() . "' AND u.id != " . $_SESSION["user"]["id"]);
                 // Vérifie si l'email est déjà pris par un autre utilisateur
-                $emailUsed = $this->_usersManager->count("email = '" . $user->email() . "' AND u.id != " . $_SESSION["user"]["id"]);
+                $emailUsed = $this->_usersManager->count("email = '" . $this->_user->email() . "' AND u.id != " . $_SESSION["user"]["id"]);
                 // Vérifie si le champ login est vide
-                if (empty($user->login())) {
+                if (empty($this->_user->login())) {
                     $this->_session->setFlash("Veuillez saisir un login.", "danger");
                     $validation = false;
                 }
@@ -73,13 +73,13 @@ class ProfilController {
                     $validation = false;
                 }
                 // Vérifie si le champ login est vide
-                if (empty($user->email())) {
+                if (empty($this->_user->email())) {
                     $this->_session->setFlash("L'adresse email est obligatoire.", "danger");
                     $validation = false;
                 }
                 // Vérifie si l'email est correct
-                elseif (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user->email())) {
-                    $this->_session->setFlash("L'adresse email " . $user->email() . " est incorrecte.", "danger");
+                elseif (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $this->_user->email())) {
+                    $this->_session->setFlash("L'adresse email " . $this->_user->email() . " est incorrecte.", "danger");
                     $validation = false;
                 }
                 // Vérifie si l'email est déjà pris par un autre utilisateur
@@ -109,8 +109,8 @@ class ProfilController {
                 }
                 // Met à jour les informations du profil si validation est vraie
                 if ($validation) {
-                    $this->_usersManager->updateProfil($user);
-                    $_SESSION["user"]["login"] = $user->login();
+                    $this->_usersManager->updateProfil($this->_user);
+                    $_SESSION["user"]["login"] = $this->_user->login();
                     $this->_session->setFlash("Le profil a été mis à jour.", "success");
                 }
             }
@@ -152,14 +152,14 @@ class ProfilController {
                 // Met à jour le mot de passe si validation est vraie
                 if ($validation) {
                     $newPassHash = password_hash($_POST["new_pass"], PASSWORD_DEFAULT); // Hachage du mot de passe
-                    $user = new \model\Users([
+                    $this->_user = new \model\Users([
                         "id" => $_SESSION["user"]["id"],
                         "pass" => $newPassHash
                     ]);
-                    $this->_usersManager->updatePass($user);
+                    $this->_usersManager->updatePass($this->_user);
                     $this->_session->setFlash("Le mot de passe a été mis à jour.", "success");      
                     // Récupère les informations de l'utilisateur
-                    $user = $this->_usersManager->get($_SESSION["user"]["id"]);
+                    $this->_user = $this->_usersManager->get($_SESSION["user"]["id"]);
                 }
             }
         }
