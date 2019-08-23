@@ -35,7 +35,7 @@
                 ?>
                 <div class="col-md-<?=  isset($settings) ? 12 / $settings->posts_by_row() : 12 ?> mb-4">
                     <div class="card h-100 mb-0 shadow">
-                        <div class="card-header bg-dark text-light">
+                        <div class="card-header bg-light text-dark">
                             <a class="text-blue" href="post-<?= $post->id() ?>">
                                 <h3 class="mt-1"><?= $post->title() ?></h3>
                             </a>

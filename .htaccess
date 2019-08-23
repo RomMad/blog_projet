@@ -62,8 +62,8 @@
 # Taille maximale des fichiers uploadés
 #--------------------------------------------------
 
-php_value upload_max_filesize 20M
-php_value post_max_size 20M
+#php_value upload_max_filesize 20M
+#php_value post_max_size 20M
 
 
 #--------------------------------------------------
@@ -81,7 +81,7 @@ RewriteBase /
 RewriteCond %{REQUEST_FILENAME}\.cache -f 
 
 ErrorDocument 404 /blog_projet/index.php?action=error404
-ErrorDocument 500 /blog_projet/index.php?action=error404
+#ErrorDocument 500 /blog_projet/index.php?action=error404
 
 
 #--------------------------------------------------

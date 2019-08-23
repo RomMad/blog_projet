@@ -14,7 +14,7 @@
     <!-- Affichage de l'article -->
     <section id="post">
         <div class="card shadow">
-            <div class="card-header bg-dark text-light">
+            <div class="card-header bg-light text-dark">
                 <h2 class="mt-2 mb-3"><?= $post->title() ?></h2>
                 <p class="my-0">
                     <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" 
