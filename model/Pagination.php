@@ -16,7 +16,7 @@ class Pagination {
     public  $_nbLimit,
             $_nbDisplayed;
             
-    function __construct($typeItem, $nbItems, $linkNbDisplayed, $link, $anchor) {
+    public function __construct($typeItem, $nbItems, $linkNbDisplayed, $link, $anchor) {
         $this->_typeItem = $typeItem;
         $this->_nbItems = $nbItems;
         $this->_linkNbDisplayed = $linkNbDisplayed;

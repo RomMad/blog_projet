@@ -1,4 +1,4 @@
-<?php  $title = $_SESSION["blog_name"] . " - Profil" ?>
+<?php  $title = $_SESSION["settings"]->blog_name() . " - Profil" ?>
 
 <?php ob_start(); ?>
 
@@ -15,7 +15,7 @@
 
         <div class="col-md-12 mx-auto mb-4">
 
-            <?php $session->flash(); // Message en session flash ?>
+            <?php $this->_session->flash(); // Message en session flash ?>
 
             <div class="row">
 

@@ -1,4 +1,4 @@
-<?php  $title = $_SESSION["blog_name"] . " - Connexion" ?>
+<?php  $title = $_SESSION["settings"]->blog_name() . " - Connexion" ?>
 
 <?php ob_start(); ?>
 
@@ -6,7 +6,7 @@
     <section id="connection" class="row min-vh-80">
         <form action="connection" method="post" class="form-signin m-auto text-center">
 
-            <?php $session->flash(); ?>
+            <?php $this->_session->flash(); ?>
 
             <h1 class="h3 mb-4 font-weight-normal">Merci de vous connecter</h1>
             <label for="login" class="sr-only">Login ou adresse email</label>

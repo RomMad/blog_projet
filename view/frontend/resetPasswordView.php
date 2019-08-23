@@ -1,4 +1,4 @@
-<?php  $title = $_SESSION["blog_name"] . " - Réinitialisation du mot de passe"; ?>
+<?php  $title = $_SESSION["settings"]->blog_name() . " - Réinitialisation du mot de passe"; ?>
 
 <?php ob_start(); ?>
 
@@ -8,7 +8,7 @@
         <form action="reset-password-<?= isset($_GET["token"]) ? htmlspecialchars($_GET["token"]) : "" ?>"
             method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 m-auto">
 
-            <?php $session->flash(); // Message en session flash ?>
+            <?php $this->_session->flash(); // Message en session flash ?>
 
             <h1 class="h3 mb-4 font-weight-normal text-center">Réinitialisation du mot de passe</h1>
             <label for="email" class="sr-only">Email</label>

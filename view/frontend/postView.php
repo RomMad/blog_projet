@@ -1,4 +1,4 @@
-<?php  $title = $_SESSION["blog_name"] . " - " . $post->title(); ?>
+<?php  $title = $_SESSION["settings"]->blog_name() . " - " .  $this->_post->title(); ?>
 
 <?php ob_start(); ?>
 
@@ -15,19 +15,19 @@
     <section id="post">
         <div class="card shadow">
             <div class="card-header bg-light text-dark">
-                <h2 class="mt-2 mb-3"><?= $post->title() ?></h2>
+                <h2 class="mt-2 mb-3"><?=  $this->_post->title() ?></h2>
                 <p class="my-0">
-                    <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue" 
-                        href="user-<?= $post->user_id() ?>"><?= $post->login() ?></a> 
-                        (Modifié le <?= $post->update_date("special_format") ?>)</em>
+                    <em>Créé le <?=  $this->_post->creation_date("special_format") ?> par <a class="text-blue" 
+                        href="user-<?=  $this->_post->user_id() ?>"><?=  $this->_post->login() ?></a> 
+                        (Modifié le <?=  $this->_post->update_date("special_format") ?>)</em>
                     <a href="#comments" class="badge badge-blue ml-2 my-1 py-1" data-toggle="tooltip"
                         data-placement="bottom" title="Voir les commentaires">Commentaires 
                         <span class="badge badge-light"><?= $nbItems ?></span></a>
                 </p>
                 <?php
-                if (isset($_SESSION["user"]) && ($_SESSION["user"]["role"] <= 2 || $_SESSION["user"]["id"] == $post->user_id())) {
+                if (isset($_SESSION["user"]) && ($_SESSION["user"]["role"] <= 2 || $_SESSION["user"]["id"] ==  $this->_post->user_id())) {
                 ?>
-                <a class="text-blue a-edit-post m-1" href="edit-post-<?= $post->id() ?>" 
+                <a class="text-blue a-edit-post m-1" href="edit-post-<?=  $this->_post->id() ?>" 
                     data-toggle="tooltip" data-placement="bottom" title="Modifier l'article">
                     <span class="far fa-edit"></span></a>
                 <?php 
@@ -35,11 +35,11 @@
                 ?>
             </div>
             <div id="post-content" class="card-body text-body">
-                <?= $post->content("html_format") ?>
+                <?=  $this->_post->content("html_format") ?>
             </div>
         </div>
         <?php 
-        if (isset($_SESSION["user"]) && ($_SESSION["user"]["role"] <= 2 || $_SESSION["user"]["id"] == $post->user_id())) {
+        if (isset($_SESSION["user"]) && ($_SESSION["user"]["role"] <= 2 || $_SESSION["user"]["id"] ==  $this->_post->user_id())) {
         ?>
         <a class="text-blue" href="edit-post-<?= $postId ?>"><span class="far fa-edit"></span> Modifier l'article</a>
         <?php 
@@ -49,7 +49,7 @@
 
     <!-- Formulaire d'ajout d'un commentaire -->
     <section id="form-comment" class="mt-4">
-        <?php $session->flash(); // Message en session flash ?>
+        <?php $this->_session->flash(); // Message en session flash ?>
         <div class="row">
             <div class="col-sm-12 col-md-10 col-lg-6">
                 <h3 class="mb-4">Nouveau commentaire</h3>
@@ -87,12 +87,12 @@
 
                 <h3 class="mb-4">Commentaires</h3>
                 <?php 
-                if (!isset($comments)) {
+                if (!isset( $this->_comments)) {
                     echo "Aucun commentaire.";
                 } else {
-                    $pagination->view(TRUE, TRUE); // Ajoute la barre de pagination
+                    $this->_pagination->view(TRUE, TRUE); // Ajoute la barre de pagination
                     // Récupère les messages
-                    foreach ($comments as $comment) {
+                    foreach ( $this->_comments as $comment) {
                         // Détermine le nom de l'utilisateur à faire apparaître
                         if (!empty($comment->login())) {
                             $userLogin = $comment->login();
@@ -121,7 +121,7 @@
                             </a>
                         </div>
                         <?php
-                        } elseif ($comment->status() == 2) { ?>
+                        } elseif ($comment->status() == 3) { ?>
                         <div class="report-comment"><span class="fas fa-flag text-danger"></span></div>
                         <?php
                         } else { ?>
@@ -158,7 +158,7 @@
                 </div>
                 <?php
                     }
-                    $pagination->view(FALSE, TRUE); // Ajoute la barre de pagination
+                    $this->_pagination->view(FALSE, TRUE); // Ajoute la barre de pagination
                 }
                 ?>
             </div>

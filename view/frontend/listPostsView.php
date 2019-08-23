@@ -1,4 +1,4 @@
-<?php  $title = $_SESSION["blog_name"]; ?>
+<?php  $title = $_SESSION["settings"]->blog_name(); ?>
 
 <?php ob_start(); ?>
 
@@ -22,9 +22,9 @@
             echo "<p> " . $nbItems . " résultat(s).</p>";
         }    
 
-        $session->flash(); // Message en session flash
+        $this->_session->flash(); // Message en session flash
 
-        $pagination->view(TRUE, TRUE); // Ajoute la barre de pagination
+        $this->_pagination->view(TRUE, TRUE); // Ajoute la barre de pagination
 
         ?>
             <div class="row">
@@ -73,7 +73,7 @@
 
             </div>
 
-            <?php $pagination->view(FALSE, TRUE); ?>
+            <?php  $this->_pagination->view(FALSE, TRUE); ?>
 
             <div class="mt-4 mb-4">
                 <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un nouvel article</a>

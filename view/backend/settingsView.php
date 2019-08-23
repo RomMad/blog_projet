@@ -1,4 +1,4 @@
-<?php  $title = $_SESSION["blog_name"] . " - Administration"; ?>
+<?php  $title = $_SESSION["settings"]->blog_name() . " - Administration"; ?>
 
 <?php ob_start(); ?>
 
@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <?php $session->flash(); // Message en session flash ?>
+    <?php $this->_session->flash(); // Message en session flash ?>
 
     <div class="row">
 
@@ -32,25 +32,25 @@
                     <label for="blog_name" class="col-md-4 col-form-label">Titre du blog</label>
                     <div class="col-md-8">
                         <input type="text" name="blog_name" id="blog_name" class="form-control mb-4 shadow-sm"
-                            value="<?= $settings->blog_name() ?>">
+                            value="<?= $this->_settings->blog_name() ?>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="admin_email" class="col-md-4 col-form-label">Adresse email</label>
                     <div class="col-md-8">
                         <input type="text" name="admin_email" id="admin_email" class="form-control mb-4 shadow-sm"
-                            value="<?= $settings->admin_email() ?>">
+                            value="<?= $this->_settings->admin_email() ?>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="default_role" class="col-md-4 col-form-label">Rôle par défaut des utilisateurs</label>
                     <div class="col-md-8">
                         <select name="default_role" id="default_role" class="custom-select form-control shadow-sm">
-                            <option value="1" <?= $settings->default_role() == 1 ? "selected" : "" ?>>Administrateur</option>
-                            <option value="2" <?= $settings->default_role() == 2 ? "selected" : "" ?>>Editeur</option>
-                            <option value="3" <?= $settings->default_role() == 3 ? "selected" : "" ?>>Auteur</option>
-                            <option value="4" <?= $settings->default_role() == 4 ? "selected" : "" ?>>Contributeur</option>
-                            <option value="5" <?= $settings->default_role() == 5 ? "selected" : "" ?>>Abonné</option>
+                            <option value="1" <?= $this->_settings->default_role() == 1 ? "selected" : "" ?>>Administrateur</option>
+                            <option value="2" <?= $this->_settings->default_role() == 2 ? "selected" : "" ?>>Editeur</option>
+                            <option value="3" <?= $this->_settings->default_role() == 3 ? "selected" : "" ?>>Auteur</option>
+                            <option value="4" <?= $this->_settings->default_role() == 4 ? "selected" : "" ?>>Contributeur</option>
+                            <option value="5" <?= $this->_settings->default_role() == 5 ? "selected" : "" ?>>Abonné</option>
                         </select>
                     </div>
                 </div>
@@ -58,8 +58,8 @@
                     <label for="posts_by_row" class="col-md-4 col-form-label">Nombre d'articles par rangée</label>
                     <div class="col-md-8">
                         <select name="posts_by_row" id="posts_by_row" class="custom-select form-control shadow-sm">
-                            <option value="1" <?= $settings->posts_by_row() == 1 ? "selected" : "" ?>>1</option>
-                            <option value="2" <?= $settings->posts_by_row() == 2 ? "selected" : "" ?>>2</option>
+                            <option value="1" <?= $this->_settings->posts_by_row() == 1 ? "selected" : "" ?>>1</option>
+                            <option value="2" <?= $this->_settings->posts_by_row() == 2 ? "selected" : "" ?>>2</option>
                         </select>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                     <div class="col-xs-8 col-sm-8">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input checkbox" name="moderation" id="moderation"
-                                value="true" <?= $settings->moderation() == 1 ? "checked" : "" ?>/>
+                                value="true" <?= $this->_settings->moderation() == 1 ? "checked" : "" ?>/>
                             <label for="moderation" class="custom-control-label" ><span class="sr-only">Modération<span></label>
                         </div>
                     </div>

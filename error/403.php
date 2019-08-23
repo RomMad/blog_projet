@@ -1,4 +1,4 @@
-<?php  $title = "Erreur 403 | " . $_SESSION["blog_name"] ?>
+<?php  $title = "Erreur 403 | " . $_SESSION["settings"]->blog_name() ?>
 
 <?php ob_start(); ?>
 

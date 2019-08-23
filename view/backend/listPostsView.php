@@ -1,4 +1,4 @@
-<?php  $title = $_SESSION["blog_name"] . " - Gestion des articles"; ?>
+<?php  $title = $_SESSION["settings"]->blog_name() . " - Gestion des articles"; ?>
 
 <?php ob_start(); ?>
 
@@ -19,7 +19,7 @@
             </h2>
 
             <?php 
-            $session->flash();
+            $this->_session->flash();
             // Affiche les résultats si recherche
             if (isset($_POST["filter"]) || isset($_POST["filter_search"])) { echo "<p> " . $nbItems . " résultat(s).</p>";}    
             ?>
@@ -127,7 +127,7 @@
                     </table>
                 </div>
             </form>
-            <?php $pagination->view(TRUE, TRUE); ?> <!-- Ajoute la barre de pagination -->
+            <?php $this->_pagination->view(TRUE, TRUE); ?> <!-- Ajoute la barre de pagination -->
         </section>
     </div>
 </div>
