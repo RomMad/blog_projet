@@ -4,9 +4,9 @@
 
 <div class="container">
 
-    <div id="blog" class="row">
-
+    <section id="blog" class="row">
         <div class="col-md-12">
+            <h1 class="mt-3 mb-4 text-dark">Billet simple pour l'Alaska</h1>
         <?php 
         // Vérifie si l'utilisateur a les droits pour écrire un article
         if (isset($_SESSION["user"]["role"]) && $_SESSION["user"]["role"]<5) {
@@ -79,7 +79,7 @@
                 <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
         </div>
-    </div>
+    </section>
 </div>
 
 <?php $content = ob_get_clean(); ?>

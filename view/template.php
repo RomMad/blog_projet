@@ -113,15 +113,15 @@
                         }
                         ?>
                     </ul>
-                    <form action="blog" method="get" class="form-inline my-2 my-lg-0">
+                    <form action="blog" method="get" class="form-inline my-2 my-lg-0 mr-3">
                         <label for="search" class="sr-only col-form-label">Recherche</label>
-                        <input name="search" id="search" type="search" class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search"
+                        <input name="search" id="search" type="search" class="form-control" placeholder="Recherche" aria-label="Search"
                             value="<?= isset($_SESSION["filter_search"]) ? htmlspecialchars($_SESSION["filter_search"]) : "" ?>">
-                        <button id="send-search" class="btn btn-outline-blue my-2 my-sm-0" type="submit">
+                        <button id="send-search" class="btn btn-outline-blue my-2 ml-1 px-2 py-1" type="submit">
                             <span class="fas fa-search"></span></button>
                     </form>
 
-                    <div class="ml-3 text-light">
+                    <div class="text-light">
                     <?php 
                     if (isset($_SESSION["user"])) {
                     ?>

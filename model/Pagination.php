@@ -80,7 +80,7 @@ Class Pagination {
     // Affiche la liste déroulante avec le nombre d'éléments à afficher
     protected function selectNumber() {
         ?>
-        <div class="col-md-6 my-2">
+        <div class="col-md-6 mt-1 mb-3">
             <form action="<?= $this->_linkNbDisplayed ?>" method="post" class="form-inline">
                 <label class="col-form-label mr-1" for="nbDisplayed">Affichés</label>
                 <select name="nbDisplayed" id="nbDisplayed" class="custom-select form-control-sm mr-1 shadow-sm" >
@@ -99,7 +99,7 @@ Class Pagination {
     // Affiche les liens de paginations 
     protected function selectPage($nbCol) {
     ?>
-        <div class="col-md-<?= $nbCol ?> my-2">
+        <div class="col-md-<?= $nbCol ?> mt-1 mb-3">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-end mb-0">
                     <!-- Lien la page précédente -->

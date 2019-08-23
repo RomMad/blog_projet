@@ -159,6 +159,7 @@ table .th-width-150px {
     width: 150px;
 }
 
+#search,
 .table-admin form input,
 .table-admin form select,
 .custom-select {
