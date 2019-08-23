@@ -12,18 +12,18 @@ if(!isset($_SESSION["settings"])) {
 if (isset($_GET["action"])) {
     switch ($_GET["action"]) {
         case "listPosts":
-            $listsPosts = new controller\frontend\ListPostsController($session);
+            $listsPostsController = new controller\frontend\ListPostsController($session);
             break;
         case "post":
             if (isset($_GET["id"]) && $_GET["id"] > 0) {
-                $listsPosts = new controller\frontend\PostController($session);
+                $postController = new controller\frontend\PostController($session);
             } else {
                 error404();
             }
             break;
         case "editPost":
             if (!isset($_GET["id"]) || (isset($_GET["id"]) && $_GET["id"] > 0)) {
-                $postEdit = new controller\backend\PostEditController($session);
+                $postEditController = new controller\backend\PostEditController($session);
             } else {
                 error404();
             }
