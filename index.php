@@ -29,41 +29,41 @@ if (isset($_GET["action"])) {
             }
             break;
         case "profil":
-            $profil = new controller\frontend\ProfilController($session);
+            $profilController = new controller\frontend\ProfilController($session);
             break;
         case "inscription":
-            $inscription = new controller\frontend\InscriptionController($session);
+            $inscriptionController = new controller\frontend\InscriptionController($session);
             break;
         case "connection":
-            $connection = new controller\frontend\ConnectionController($session);
+            $connectionController = new controller\frontend\ConnectionController($session);
             break;
         case "disconnection":
             $session->disconnect();
             break;
         case "forgotPassword":
-            $forgotPassword = new controller\frontend\ForgotPasswordController($session);
+            $forgotPasswordController = new controller\frontend\ForgotPasswordController($session);
             break;
         case "resetPassword":
-            $resetPassword = new controller\frontend\ResetPasswordController($session);
+            $resetPasswordController = new controller\frontend\ResetPasswordController($session);
             break;  
         case "comments":
-            $comments = new controller\backend\ListCommentsController($session);
+            $listCommentsController = new controller\backend\ListCommentsController($session);
             break;
         case "posts":
-            $posts = new controller\backend\ListPostsController($session);
+            $listPostsController = new controller\backend\ListPostsController($session);
+            break;
+        case "users":
+            $listUsersController = new controller\backend\ListUsersController($session);
+            break;
+        case "newUser":
+            $newUserController = new controller\backend\NewUserController($session);
             break;
         case "settings":
             $SettingsController = new controller\backend\SettingsController($session);
             break;
-        case "users":
-            $users = new controller\backend\ListUsersController($session);
-            break;
-        case "newUser":
-            $newUser = new controller\backend\NewUserController($session);
-            break;
         case "user":
             if (isset($_GET["id"]) && $_GET["id"] > 0) {
-                $user = new controller\backend\UserController($session);
+                $userController = new controller\backend\UserController($session);
             } else {
                 error404();
             }
@@ -78,7 +78,7 @@ if (isset($_GET["action"])) {
             error404();
     } 
 } else {
-    $listsPosts = new controller\frontend\ListPostsController($session);
+    $listsPostsController = new controller\frontend\ListPostsController($session);
 }
 
 function error403() {
