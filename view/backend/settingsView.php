@@ -14,7 +14,7 @@
     <section>
         <div class="row">
             <div class="col-md-12">
-                <h2 class="">Administration</h2>
+                <h2 class="mb-4">Administration</h2>
             </div>
         </div>
 

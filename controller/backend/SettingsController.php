@@ -57,113 +57,28 @@ class SettingsController {
                 $this->_session->setFlash("Le nombre de posts par ligne est incorrect.", "danger");
                 $validation = false;
             }
-            if (!empty($_FILES["logoFile"]["name"])) { 
+            if (!empty($_FILES["logoFile"]["name"])) {
+                $toFolder = "uploads/"; // Nom du dossier d'enregistrement
                 $validExtensions = array("png", "gif", "jpg", "jpeg"); // extensions autorisées
-                $infoFile = pathinfo($_FILES["logoFile"]["name"]);
-                $extensionFile = $infoFile["extension"];
-                $maxSize = 5000000; // taille maximum (en octets) : 2 Mo
-                $size = filesize($_FILES["logoFile"]["tmp_name"]); // taille du fichier
-                $file = basename($_FILES["logoFile"]["name"]);
-                $translate = array(
-                    "é" => "e",
-                    "è" => "e",
-                    "à" => "a",
-                    "ç" => "c",
-                    "'" => "_",
-                    );
-                $file = strtr($_FILES["logoFile"]["name"], $translate); // remplace les lettres accentuées par les non accentuées
-                // ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ => AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy
-                $file = preg_replace("/([^.a-zA-Z0-9]+)/i", "-", $file); //remplace tout ce qui n'est pas une lettre ou chiffre par un tirer (-)
-                $file = date("Y_m_d_His") . "_" . $file;
-                $nameFile = str_replace("." . $extensionFile, "", $file);
-                $folder = "uploads/"; // Nom du dossier d'enregistrement
+                $maxSize = 2000000; // taille maximum (en octets) : 2 Mo
+                $optimizeImage = new \model\OptimizeImage($_FILES["logoFile"], $toFolder, $validExtensions, $maxSize);
                 // Vérifie s'il n'y a pas d'erreur
                 if ($_FILES["logoFile"]["error"] != 0){
                     $this->_session->setFlash("Une erreur s'est produite. Le fichier n'a pas pu être téléchargé.", "danger");
                     $validation = false;
-                } elseif(!in_array($extensionFile, $validExtensions)) {
+                } elseif(!in_array($optimizeImage->fileExtension(), $validExtensions)) {
                     $this->_session->setFlash("Vous devez télécharger un fichier de type png, gif, jpg ou jpeg.", "danger");
                     $validation = false;
-                } elseif ($size > $maxSize) {
+                } elseif ($optimizeImage->fileSize() > $maxSize) {
                     $this->_session->setFlash("La taille du fichier dépasse la limite autorisée (2Mo).", "danger");
                     $validation = false;
                 } 
-                if (!$validation == true) {
+                if ($validation == true) {
+                    $createIcon = $optimizeImage->createIcon("public/images/logo.ico");
+                    $this->_session->setFlash($createIcon, "success");
+                } else {
                     $this->_session->setFlash("Le fichier n'a pas pu être téléchargé.", "danger");
                     $validation = false;
-                } else {
-                    $file = $nameFile . "-orignal." . $extensionFile;
-                    move_uploaded_file($_FILES["logoFile"]["tmp_name"], $folder . $file);
-
-                    // Tinify
-                    require_once("vendor/tinify/lib/Tinify/Exception.php");
-                    require_once("vendor/tinify/lib/Tinify/ResultMeta.php");
-                    require_once("vendor/tinify/lib/Tinify/Result.php");
-                    require_once("vendor/tinify/lib/Tinify/Source.php");
-                    require_once("vendor/tinify/lib/Tinify/Client.php");
-                    require_once("vendor/tinify/lib/Tinify.php");
-                    \Tinify\setKey("4zjwW4FvW8RS04JrqCZshmlF18V01sDH");
-
-                    try {
-                        // Use the Tinify API client.
-                    } catch(\Tinify\AccountException $e) {
-                        print("The error message is: " . $e->getMessage());
-                        // Verify your API key and account limit.
-                    } catch(\Tinify\ClientException $e) {
-                        // Check your source image and request options.
-                    } catch(\Tinify\ServerException $e) {
-                        // Temporary issue with the Tinify API.
-                    } catch(\Tinify\ConnectionException $e) {
-                        // A network connection error occurred.
-                    } catch(Exception $e) {
-                        // Something else went wrong, unrelated to the Tinify API.
-                    }
-           
-                    $source = \Tinify\fromFile($folder . $file);
-                    $optimizedFile = $nameFile . "-optimized." . $extensionFile;
-                    $newfile = $source->toFile($folder . $optimizedFile);
-                    $copyrighted = $source->preserve("copyright", "creation");
-                    $copyrighted->toFile($optimizedFile);
-                    // $message = "L'image a été compressée et enregistrée aux formats : ";
-                    // $imageFormats = array([
-                    //     "method" => "fit",
-                    //     "width" => 800,
-                    //     "height" => 450
-                    // ], 
-                    // [
-                    //     "method" => "cover",
-                    //     "width" => 800,
-                    //     "height" => 450
-                    // ], 
-                    // [
-                    //     "method" => "thumb",
-                    //     "width" => 150,
-                    //     "height" => 150
-                    // ]);
-                    // // Boucle pour les enregistrer les différents formats d'images
-                    // foreach($imageFormats as $imageFormat) {
-                    //     $source = \Tinify\fromFile($folder . $optimizedFile);
-                    //     $resized = $source->resize(array(
-                    //         "method" => $imageFormat["method"],
-                    //         "width" => $imageFormat["width"],
-                    //         "height" => $imageFormat["height"]
-                    //     ));
-                    //     $resized->toFile($folder . $nameFile . "-" . $imageFormat["method"] . "-" . $imageFormat["width"] . "x" . $imageFormat["height"] ."." . $extensionFile);
-                    //     $message = $message . $imageFormat["method"] . " (" . $imageFormat["width"] . "x" . $imageFormat["height"] . "), ";
-                    // }
-
-                    // Crée l'icon pour le logo
-                    // $compressionsThisMonth = \Tinify\compressionCount();
-                    // $message = $message . "<br/>" . $compressionsThisMonth . "/500 compressions réalisées au cours du mois.<br/>";
-                    $source = \Tinify\fromFile($folder . $optimizedFile);
-                    $resized = $source->resize(array(
-                        "method" => "thumb",
-                        "width" => 64,
-                        "height" => 64
-                    ));
-                    $resized->toFile("public/images/logo.ico");
-
-                    $this->_session->setFlash("Le logo a été mis à jour.", "success");
                 }
             }
             // Met à jour les données si validation est vrai
