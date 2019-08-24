@@ -6,7 +6,7 @@
 
     <section id="blog" class="row">
         <div class="col-md-12">
-            <h1 class="mt-3 mb-4 text-dark">Billet simple pour l'Alaska</h1>
+            <h1 class="mt-3 mb-4 text-dark"><?= $_SESSION["settings"]->title(); ?></h1>
         <?php 
         // Vérifie si l'utilisateur a les droits pour écrire un article
         if (isset($_SESSION["user"]["role"]) && $_SESSION["user"]["role"]<5) {
@@ -22,7 +22,7 @@
             echo "<p> " . $nbItems . " résultat(s).</p>";
         }    
 
-        $this->_session->flash(); // Message en session flash
+        $this->_session->flash();
 
         $this->_pagination->view(TRUE, TRUE); // Ajoute la barre de pagination
 
@@ -33,9 +33,9 @@
             if ($nbItems) {
                 foreach ($posts as $post) {
                 ?>
-                <div class="col-md-<?=  isset($settings) ? 12 / $settings->posts_by_row() : 12 ?> mb-4">
+                <div class="col-md-<?=  isset($_SESSION["settings"]) ? 12 / $_SESSION["settings"]->posts_by_row() : 12 ?> mb-4">
                     <div class="card h-100 mb-0 shadow">
-                        <div class="card-header bg-light text-dark">
+                        <div class="card-header bg-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "dark" ?> text-<?= $_SESSION["settings"]->style_blog() == "light" ? "dark" : "light" ?>">
                             <a class="text-blue" href="post-<?= $post->id() ?>">
                                 <h3 class="mt-1"><?= $post->title() ?></h3>
                             </a>

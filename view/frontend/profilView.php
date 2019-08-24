@@ -3,7 +3,7 @@
 <?php ob_start(); ?>
 
 <div class="container">
-
+    <!-- Fil d'Ariane -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent">
             <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
@@ -12,13 +12,12 @@
     </nav>
 
     <section id="profil" class="row">
-
         <div class="col-md-12 mx-auto mb-4">
 
-            <?php $this->_session->flash(); // Message en session flash ?>
+            <?php $this->_session->flash(); ?>
 
             <div class="row">
-
+            
                 <div class="col-md-6 mb-4">
                     <form action="profil" method="post" class="col-md-12 card h-100 shadow">
                         <div class="form-group row">

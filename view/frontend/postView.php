@@ -14,7 +14,7 @@
     <!-- Affichage de l'article -->
     <section id="post">
         <div class="card shadow">
-            <div class="card-header bg-light text-dark">
+            <div class="card-header bg-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "dark" ?> text-<?= $_SESSION["settings"]->style_blog() == "light" ? "dark" : "light" ?>">
                 <h2 class="mt-2 mb-3"><?=  $this->_post->title() ?></h2>
                 <p class="my-0">
                     <em>Créé le <?=  $this->_post->creation_date("special_format") ?> par <a class="text-blue" 

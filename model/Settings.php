@@ -4,10 +4,12 @@ namespace model;
 class Settings {
 
     protected   $_blog_name,
+                $_title,
                 $_admin_email,
                 $_default_role,
                 $_moderation,
-                $_posts_by_row;
+                $_posts_by_row,
+                $_style_blog;
 
     public function __construct(array $datas) {
         $this->hydrate($datas);
@@ -26,6 +28,9 @@ class Settings {
     public function blog_name() {
         return htmlspecialchars($this->_blog_name);
     }
+    public function title() {
+        return htmlspecialchars($this->_title);
+    }
     public function admin_email() {
         return htmlspecialchars($this->_admin_email);
     }
@@ -38,7 +43,9 @@ class Settings {
     public function posts_by_row() {
         return $this->_posts_by_row;
     }
-
+    public function style_blog() {
+        return htmlspecialchars($this->_style_blog);
+    }
     // Setters 
     public function setBlog_name($blog_name) {
         if (is_string($blog_name)) {
@@ -46,6 +53,15 @@ class Settings {
                 $this->_blog_name = $blog_name;
             } else {
                 $this->_blog_name = substr($blog_name, 0, 50);
+            }
+        }
+    }
+    public function setTitle($title) {
+        if (is_string($title)) {
+            if (iconv_strlen($title) < 50) {
+                $this->_title = $title;
+            } else {
+                $this->_title = substr($title, 0, 50);
             }
         }
     }
@@ -80,6 +96,15 @@ class Settings {
             $this->_posts_by_row = $posts_by_row;
         } else {
             $this->_posts_by_row = 1;
+        }
+    }
+    public function setStyle_blog($style_blog) {
+        if (is_string($style_blog)) {
+            if (iconv_strlen($style_blog) < 50) {
+                $this->_style_blog = $style_blog;
+            } else {
+                $this->_style_blog = substr($style_blog, 0, 50);
+            }
         }
     }
 }
