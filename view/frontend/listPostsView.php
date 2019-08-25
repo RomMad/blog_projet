@@ -53,15 +53,13 @@
                                 <?php if (strlen($post->content("raw_format")) > 200) { ?>
                                 <!-- Si le contenu est > à 1200 caractères, affiche le bouton 'Continuer la lecture' et ajoute un effet fade out -->
                                 <span class="post-fadeout"></span>
+                                <?php } ?>
                             </div>
                             <div>
                                 <a href="post-<?= $post->id() ?>"
                                     class="btn btn-outline-blue mt-2">Continuer la lecture
                                     <span class="fas fa-angle-right"></span>
                                 </a>
-                                <?php
-                            }
-                            ?>
                             </div>
                         </div>
                     </div>

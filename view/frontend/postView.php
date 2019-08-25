@@ -41,7 +41,7 @@
         <?php 
         if (isset($_SESSION["user"]) && ($_SESSION["user"]["role"] <= 2 || $_SESSION["user"]["id"] ==  $this->_post->user_id())) {
         ?>
-        <a class="text-blue" href="edit-post-<?= $postId ?>"><span class="far fa-edit"></span> Modifier l'article</a>
+        <a class="ml-2 text-blue" href="edit-post-<?= $postId ?>"><span class="far fa-edit"></span> Modifier l'article</a>
         <?php 
         } 
         ?>
