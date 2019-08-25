@@ -9,11 +9,10 @@
             <h1 class="mt-3 mb-4 text-dark"><?= $_SESSION["settings"]->title(); ?></h1>
         <?php 
         // Vérifie si l'utilisateur a les droits pour écrire un article
-        if (isset($_SESSION["user"]["role"]) && $_SESSION["user"]["role"]<5) {
+        if (isset($_SESSION["user"]["role"]) && $_SESSION["user"]["role"] < 5) {
         ?>
-            <div class="mt-4 mb-4">
-                <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un
-                    nouvel article</a>
+            <div class="my-4">
+                <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
         <?php
         }
@@ -73,9 +72,16 @@
 
             <?php  $this->_pagination->view(FALSE, TRUE); ?>
 
-            <div class="mt-4 mb-4">
+            <?php 
+        // Vérifie si l'utilisateur a les droits pour écrire un article
+        if (isset($_SESSION["user"]["role"]) && $_SESSION["user"]["role"] < 5) {
+        ?>
+            <div class="my-4">
                 <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
+        <?php
+        }
+         ?>
         </div>
     </section>
 </div>

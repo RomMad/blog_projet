@@ -14,15 +14,21 @@ class PostEditController {
     }
 
     protected function init() {
+        // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
+        if (!isset($_SESSION["user"])) {
+            header("Location: connection");
+            exit(); 
+        } 
+        // Redirige vers la page d'erreur 403 si l'utilisateur n'a pas les droits
+        elseif ($_SESSION["user"]["role"] == 5) {
+            header("Location: error403"); 
+            exit();
+        }
         // Vérifie si l'article existe
-        if (isset($_GET["id"])) {
+        elseif (isset($_GET["id"])) {
              $this->_post = $this->_postsManager->get($_GET["id"]);
-            // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
-            if (!isset($_SESSION["user"])) {
-                header("Location: connection");
-                exit(); 
             // Redirige vers la page d'erreur 403 si l'utilisateur n'a pas les droits
-            } elseif ($_SESSION["user"]["role"] == 5 || ($_SESSION["user"]["role"] >= 3 && $_SESSION["user"]["id"] !=  $this->_post->user_id())) {
+            if ($_SESSION["user"]["role"] >= 3 && $_SESSION["user"]["id"] !=  $this->_post->user_id()) {
                 header("Location: error403"); 
                 exit();
             } elseif (! $this->_post) {

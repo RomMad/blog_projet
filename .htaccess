@@ -108,7 +108,7 @@ RewriteRule ^post-([0-9]+)-page-([0-9]+)$ /blog_projet/index.php?action=post&id=
 RewriteRule ^post-([0-9]+)-comment-([0-9]+)-([a-z]{6})$ /blog_projet/index.php?action=post&id=$1&comment=$2&$3=true [QSA]
 
 # Réécriture page Edition d'article
-RewriteRule ^edit-post$ /blog_projet/index.php?action=editPost [L]
+RewriteRule ^edit-post(-)*$ /blog_projet/index.php?action=editPost [L]
 RewriteRule ^edit-post-([0-9]+)$ /blog_projet/index.php?action=editPost&id=$1 [L]
 
 # Réécriture page Profil
