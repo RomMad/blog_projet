@@ -46,7 +46,7 @@ class PostEditController {
                 "title" => $_POST["title"],
                 "content" => $_POST["post_content"],
                 "status" => $_SESSION["user"]["role"] <= 3 ? $_POST["status"] : "Brouillon",
-                "publication_date" => NULL,
+                "publication_date" => $_POST["publication_date"],
                 "id" => isset($_GET["id"]) ? $_GET["id"] : "",
                 "user_id" => $_SESSION["user"]["id"],
                 "user_login" => $_SESSION["user"]["login"],
@@ -59,7 +59,6 @@ class PostEditController {
                 exit();
             }
 
-        
             // Vérifie si le titre est vide
             if (empty($this->_post->title())) {
                 $this->_session->setFlash("Le titre de l'article est vide.", "danger");
@@ -74,10 +73,8 @@ class PostEditController {
             if ($_POST["status"] == "Publié" && empty($_POST["publication_date"])) {
                 $this->_post->Setpublication_date("Y-m-d H:i");
             } elseif (!empty($_POST["publication_date"])) {
-                if (empty($_POST["publication_time"])) {
-                    $_POST["publication_time"] = "00:00";
-                }
-                $publicationDate = $_POST["publication_date"] . " " . $_POST["publication_time"] . ":00";
+                $time = date_format(new \DateTime($_POST["publication_time"]),"H:i:s");
+                $publicationDate = $_POST["publication_date"] . " " . $time;
                 $this->_post->Setpublication_date($publicationDate);
             }
             // Ajoute ou modifie l'article si le titre n'est pas vide
