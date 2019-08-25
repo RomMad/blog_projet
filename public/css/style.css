@@ -12,7 +12,6 @@ section {
     white-space: normal;
 }
 
-/* Logo */
 #logo_blog {
     max-height: 40px;
 }
@@ -311,4 +310,10 @@ a.text-blue:focus {
 /* Notification TinyMCE */
 .tox-notification {
     display: none !important;
+}
+
+@media all and (max-width: 350px) {
+    #logo_blog {
+        max-height: 30px;
+    }
 }

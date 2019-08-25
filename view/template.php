@@ -64,14 +64,14 @@
     <main class="min-vh-100">
         <header id="header">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3 py-3 shadow">
-                <a class="navbar-brand text-blue"
+                <a class="navbar-brand mr-0 text-blue overflow-hidden"
                     href="blog"><img id="logo_blog" src="public/images/logo.ico"> <?= isset($_SESSION["settings"]) ? $_SESSION["settings"]->blog_name() : "Le blog" ?></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div id="navbarSupportedContent" class="collapse navbar-collapse ml-2">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
                             <a class="nav-link" href="blog"><span class="fas fa-home"></span> Accueil</a>
