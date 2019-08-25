@@ -17,7 +17,7 @@
             <div class="card-header bg-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "dark" ?> text-<?= $_SESSION["settings"]->style_blog() == "light" ? "dark" : "light" ?>">
                 <h2 class="mt-2 mb-3"><?=  $this->_post->title() ?></h2>
                 <p class="my-0">
-                    <em>Créé le <?=  $this->_post->creation_date("special_format") ?> par <a class="text-blue" 
+                    <em>Publié le <?=  $this->_post->publication_date("special_format") ?> par <a class="text-blue" 
                         href="user-<?=  $this->_post->user_id() ?>"><?=  $this->_post->login() ?></a> 
                         (Modifié le <?=  $this->_post->update_date("special_format") ?>)</em>
                     <a href="#comments" class="badge badge-blue ml-2 my-1 py-1" data-toggle="tooltip"

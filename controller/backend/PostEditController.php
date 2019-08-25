@@ -5,11 +5,13 @@ class PostEditController {
 
     protected   $_session,
                 $_postsManager,
-                $_post;
+                $_post,
+                $_validation;
 
     public function __construct($session) {
         $this->_session = $session;
         $this->_postsManager = new \model\PostsManager();
+        $this->_validation = true;
         $this->init();
     }
 
@@ -44,40 +46,50 @@ class PostEditController {
                 "title" => $_POST["title"],
                 "content" => $_POST["post_content"],
                 "status" => $_SESSION["user"]["role"] <= 3 ? $_POST["status"] : "Brouillon",
+                "publication_date" => NULL,
                 "id" => isset($_GET["id"]) ? $_GET["id"] : "",
                 "user_id" => $_SESSION["user"]["id"],
                 "user_login" => $_SESSION["user"]["login"],
             ]);
             // Supprime l'article
-            if (isset($_POST["delete"]) && !empty( $this->_post->id() && $_SESSION["user"]["role"] <= 3)) {
-                $this->_postsManager->delete( $this->_post);
+            if (isset($_POST["delete"]) && !empty($this->_post->id() && $_SESSION["user"]["role"] <= 3)) {
+                $this->_postsManager->delete($this->_post);
                 $this->_session->setFlash("L'article <b>".  $this->_post->title() . "</b> a été supprimé.", "warning");
                 header("Location: blog");
                 exit();
             }
 
-            $validation = true;
         
             // Vérifie si le titre est vide
-            if (empty( $this->_post->title())) {
+            if (empty($this->_post->title())) {
                 $this->_session->setFlash("Le titre de l'article est vide.", "danger");
-                $validation = false;
+                $this->_validation = false;
             }
             // Vérifie si le contenu de l'article est vide
-            if (empty( $this->_post->content("")) &&  $this->_post->status() == "Publié") {
+            if (empty($this->_post->content("")) &&  $this->_post->status() == "Publié") {
                 $this->_session->setFlash("L'article ne peut pas être publié si le contenu est vide.", "danger");
-                $validation = false;
+                $this->_validation = false;
+            }
+            // Vérifie si la date de publication est vide
+            if ($_POST["status"] == "Publié" && empty($_POST["publication_date"])) {
+                $this->_post->Setpublication_date("Y-m-d H:i");
+            } elseif (!empty($_POST["publication_date"])) {
+                if (empty($_POST["publication_time"])) {
+                    $_POST["publication_time"] = "00:00";
+                }
+                $publicationDate = $_POST["publication_date"] . " " . $_POST["publication_time"] . ":00";
+                $this->_post->Setpublication_date($publicationDate);
             }
             // Ajoute ou modifie l'article si le titre n'est pas vide
-            if ($validation) {
+            if ($this->_validation) {
                 // Met à jour l'article si article existant
-                if (isset($_POST["save"]) && !empty( $this->_post->id())) {
-                    $this->_postsManager->update( $this->_post);
+                if (isset($_POST["save"]) && !empty($this->_post->id())) {
+                    $this->_postsManager->update($this->_post);
                     $this->_session->setFlash("Les modifications ont été enregistrées.", "success");
                 }
                 // Ajoute l'article si nouvel article
-                elseif (isset($_POST["save"]) && empty( $this->_post->id())) {
-                    $this->_postsManager->add( $this->_post);
+                elseif (isset($_POST["save"]) && empty($this->_post->id())) {
+                    $this->_postsManager->add($this->_post);
                     $this->_session->setFlash("L'article a été enregistré.", "success");
                      $this->_post = $this->_postsManager->lastCreate($_SESSION["user"]["id"]);
                 }

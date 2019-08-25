@@ -29,22 +29,25 @@ class Model {
 
     public function creation_date($format) {
         $creation_date = new \DateTime($this->_creation_date);
-        if (!empty($format) && $format == "special_format") {
+        if ($format == "special_format") {
             return date_format($creation_date,"d/m/Y à H:i");
-        } else {
+        } elseif ($format == "") {
             return date_format($creation_date,"d/m/Y H:i");
+        } else {
+            return date_format($creation_date,"Y-m-d");
         }
     }
 
     public function update_date($format) {
         $update_date = new \DateTime($this->_update_date);
-        if (!empty($format) && $format == "special_format") {
+        if ($format == "special_format") {
             return date_format($update_date,"d/m/Y à H:i");
-        } else {
+        } elseif ($format == "") {
             return date_format($update_date,"d/m/Y H:i");
+        } else {
+            return date_format($update_date,"Y-m-d");
         }
     }
-
     // Setters
     public function setId($id) {
         $id = (int) $id;
@@ -54,10 +57,7 @@ class Model {
     }
 
     public function setCreation_date($creation_date) {
-        $isDate = $this->validateDate($creation_date, "Y-m-d H:i:s");
-        if ($isDate) {
             $this->_creation_date = $creation_date;
-        }
     }
 
     public function setUpdate_date($update_date) {
@@ -65,7 +65,7 @@ class Model {
     }
     
     // Vérifie si la date est valide
-    protected function validateDate($date, $format = 'Y-m-d H:i:s') {
+    protected function validateDate($date, $format = "Y-m-d H:i:s") {
         $d = DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) == $date;
     }

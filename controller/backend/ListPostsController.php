@@ -14,7 +14,7 @@ class ListPostsController {
         $this->init();
     }
 
-    protected function init() {      
+    protected function init() {
         // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
         if (!isset($_SESSION["user"])) {
             header("Location: connection"); 
@@ -79,29 +79,37 @@ class ListPostsController {
         // Compte le nombre d'articles
         $nbItems = $this->_postsManager->count($_SESSION["filter"]);
 
+        $optionsOrderBy = array(
+            "title",
+            "user_login",
+            "status",
+            "publication_date",
+            "creation_date",
+            "update_date"
+        );
         // Vérifie l'ordre de tri par type
-        if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "title" || $_GET["orderBy"] == "user_login" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "creation_date" || $_GET["orderBy"] == "update_date")) {
+        if (!empty($_GET["orderBy"]) && in_array($_GET["orderBy"], $optionsOrderBy)) {
             $orderBy = $_GET["orderBy"];
-        } else if (!empty($_COOKIE["orderBy"]["adminPosts"])) 
-        {
+        } else if (!empty($_COOKIE["orderBy"]["adminPosts"])) {
             $orderBy = $_COOKIE["orderBy"]["adminPosts"];
-        } else 
-        {
+        } else {
             $orderBy = "creation_date";
         }
+
+        $optionsOrder = array(
+            "desc",
+            "asc"
+        );        
         // Vérifie l'ordre de tri si ascendant ou descendant
-        if (!empty($_GET["order"]) && ($_GET["order"] == "desc" || $_GET["order"] == "asc")) 
-        {
+        if (!empty($_GET["order"]) && in_array($_GET["order"], $optionsOrder)) {
             $order = $_GET["order"];
-        } else if (!empty($_COOKIE["order"]["adminPosts"])) 
-        {
-            $order = $_COOKIE["order"]["adminPosts"];
+        } else if (!empty($_COOKIE["order"]["adminPosts"])) {
+            $order = $_COOKIE["order"]["adminPosts"]; 
         } else {
             $order = "desc";
         }
         // Si le tri par type vient de changer, alors le tri est toujours ascendant
-        if (!empty($_COOKIE["order"]["adminPosts"]) && $orderBy != $_COOKIE["orderBy"]["adminPosts"]) 
-        {
+        if (!empty($_COOKIE["order"]["adminPosts"]) && $orderBy != $_COOKIE["orderBy"]["adminPosts"]) {
             $order = "asc";
         }
 

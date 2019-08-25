@@ -9,7 +9,8 @@ class Posts extends Model {
                 $_login,
                 $_content,
                 $_status,
-                $_comment;
+                $_publication_date,
+                $_comment_admin;
 
     public function __construct(array $datas) {
         $this->hydrate($datas);
@@ -44,6 +45,30 @@ class Posts extends Model {
     public function status() {
         return htmlspecialchars($this->_status);
     }
+    
+    public function publication_date($format = "Y-m-d H:i") {
+        date_default_timezone_set("Europe/Paris");
+        if (!empty($this->_publication_date)) {
+            $publication_date = new \DateTime($this->_publication_date);
+        }
+        if ($format == "special_format") {
+            return date_format($publication_date,"d/m/Y à H:i");
+        }
+        if ($format == "datetime") {
+            return date_format($publication_date,"d/m/Y H:i");
+        } elseif ($format == "date") {
+            return date_format($publication_date,"Y-m-d");
+        } elseif ($format == "time") {
+            return date_format($publication_date,"H:i");
+        } else {
+            return $this->_publication_date;
+        }
+    }
+
+    public function comment_admin() {
+        return htmlspecialchars($this->_comment_admin);
+    }
+
 
     // Setters
     public function setId($id) {
@@ -87,6 +112,20 @@ class Posts extends Model {
             $this->_status = $status;
         } else {
             $this->_status = "Brouillon";
+        }
+    }
+    public function setPublication_date($publication_date) {
+        date_default_timezone_set("Europe/Paris");
+        if (!empty($publication_date)) {
+            $this->_publication_date = date($publication_date);
+            $isDate = $this->validateDate($publication_date, "Y-m-d H:i:s");
+            if ($isDate) {
+                $this->_publication_date = date($publication_date);
+            } else {
+                $this->_publication_date = date("Y-m-d H:i");
+            }
+        } else {
+            $this->_publication_date = NULL;
         }
     }
     public function setComment_admin($comment_admin) {

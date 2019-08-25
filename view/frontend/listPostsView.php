@@ -38,7 +38,7 @@
                             <a class="text-blue" href="post-<?= $post->id() ?>">
                                 <h3 class="mt-1"><?= $post->title() ?></h3>
                             </a>
-                            <em>Créé le <?= $post->creation_date("special_format") ?> par <a class="text-blue"
+                            <em>Publié le <?= $post->publication_date("special_format") ?> par <a class="text-blue"
                                     href="user-<?= $post->user_id() ?>"><?= $post->user_login() ?></a></em>
                             <?php if (isset($_SESSION["user"]) && ($_SESSION["user"]["role"] <= 2 || $_SESSION["user"]["id"] == $post->user_id())) { ?>
                             <a class="text-blue a-edit-post m-1"

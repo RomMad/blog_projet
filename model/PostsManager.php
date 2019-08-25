@@ -9,14 +9,15 @@ class PostsManager extends Manager {
 
     // Méthode d'ajout d'un article
     public function add(Posts $post) {
-        $req = $this->_db->prepare("INSERT INTO posts(user_id, user_login, title, content, status) 
-            VALUES(:user_id, :user_login, :title, :content, :status)");
+        $req = $this->_db->prepare("INSERT INTO posts(user_id, user_login, title, content, status, publication_date) 
+            VALUES(:user_id, :user_login, :title, :content, :status, :publication_date)");
         $req->execute([
             "user_id" => $post->user_id(),
             "user_login" => $post->user_login(),
             "title" => $post->title(),
             "content" => $post->content(""),
-            "status" => $post->status()
+            "status" => $post->status(),
+            "publication_date" => $post->publication_date()
         ]);
         // Hydrate l'article passé en paramètre avec assignation de son identifiant
         $post->hydrate([
@@ -52,11 +53,11 @@ class PostsManager extends Manager {
                 return new Posts($post);
             }
         }
-    }    
+    }     
     // Méthode de lecture d'un article
     public function get($id) {
         if (is_numeric($id) && (int) $id > 0) {
-            $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.content, p.status, p.creation_date, p.update_date 
+            $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.content, p.status, p.publication_date, p.creation_date, p.update_date 
                 FROM posts p
                 LEFT JOIN users u
                 ON p.user_id = u.id
@@ -72,10 +73,19 @@ class PostsManager extends Manager {
             }
         }
     }
+    // Donne la date de creation d'un article
+    public function getCreationDate(Posts $post) {
+        $req = $this->_db->prepare("SELECT creation_date FROM posts WHERE id = ?");
+        $req->execute([
+            $post->id()
+        ]);
+        $post = $req->fetch();
+            return $post["creation_date"];
+    } 
     // Méthode de lecture d'un article
     public function lastCreate($userId) {
         if (is_numeric($userId) && (int) $userId > 0) {
-            $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, u.login, p.content, p.status, p.creation_date, p.update_date 
+            $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, u.login, p.content, p.status, p.publication_date, p.creation_date, p.update_date 
             FROM posts p 
             LEFT JOIN users u 
             ON p.user_id = u.id 
@@ -92,7 +102,7 @@ class PostsManager extends Manager {
     // Méthode de récupération d'une liste d'articles
     public function getList($filter, $orderBy, $order, $nbLimit, $nbPosts) {
         if (is_string($filter) && is_string($orderBy) && ($order == "asc" || $order == "desc") && ((int) $nbLimit >= 0) && ((int) $nbPosts > 0)) {
-            $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.status, p.creation_date, p.update_date, 
+            $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.status, p.publication_date, p.creation_date, p.update_date, 
                 IF(CHAR_LENGTH(p.content) > 1500, CONCAT(SUBSTRING(p.content, 1, 1500), '[...]'), p.content) AS content
                 FROM posts p
                 LEFT JOIN users u
@@ -111,11 +121,12 @@ class PostsManager extends Manager {
     }
     // Méthode de mise à jour d'un article
     public function update(Posts $post) {
-        $req = $this->_db->prepare("UPDATE posts SET title = :newTitle, content = :newContent, status = :newStatus, update_date = NOW() WHERE id = :postId");
+        $req = $this->_db->prepare("UPDATE posts SET title = :newTitle, content = :newContent, status = :newStatus, publication_date = :newPublicationDate, update_date = NOW() WHERE id = :postId");
         $req->execute([
             "newTitle" => $post->title(),
             "newContent" => $post->content(""),
             "newStatus" => $post->status(),
+            "newPublicationDate" => $post->publication_date(""),
             "postId" => $post->id()
         ]);
         return "L'article a été modifié.";

@@ -86,13 +86,18 @@
                                         <?php if ($orderBy == "status") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                     </a>
                                 </th>
-                                <th scope="col" class="align-middle th-width-100px">
+                                <th scope="col" class="align-middle th-width-120px">
+                                    <a href="posts-orderBy-publication_date-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de publication
+                                        <?php if ($orderBy == "publication_date") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
+                                    </a>
+                                </th>
+                                <th scope="col" class="align-middle th-width-120px">
                                     <a href="posts-orderBy-creation_date-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de création
                                         <?php if ($orderBy == "creation_date") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                     </a>
                                 </th>
                                 <th scope="col" class="align-middle th-width-120px">
-                                    <a href="posts-orderBy-update_date-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de mise<br />à jour
+                                    <a href="posts-orderBy-update_date-order-<?= $order == "desc" ? "asc" : "desc" ?>" class="sorting-indicator text-white">Date de modification
                                         <?php if ($orderBy == "update_date") { ?> <span class="fas fa-caret-<?= $order == "desc" ? "up" : "down" ?>"></span> <?php } ?>
                                     </a>
                                 </th>
@@ -112,10 +117,13 @@
                                         <label class="custom-control-label" for="post-<?= $post->id() ?>"><span class="sr-only">Sélectionner<span></label>
                                     </div>
                                 </th>
-                                <td><a href="post-<?= $post->id() ?>"
-                                        class="text-blue font-weight-bold"><?= $post->title() ?></a></td>
+                                <td>
+                                    <a href="post-<?= $post->id() ?>" class="text-blue font-weight-bold"><?= $post->title() ?></a>
+                                    <a class="text-blue" href="edit-post-<?=  $post->id() ?>"><span class="far fa-edit small"></span></a>
+                                </td>
                                 <td><?= $post->login() ?></td>
                                 <td><?= $post->status() ?></td>
+                                <td><?= $post->publication_date("datetime") ?></td>
                                 <td><?= $post->creation_date("") ?></td>
                                 <td><?= $post->update_date("") ?></td>
                             </tr>
