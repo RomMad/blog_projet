@@ -50,6 +50,8 @@ class Posts extends Model {
         date_default_timezone_set("Europe/Paris");
         if (!empty($this->_publication_date)) {
             $publication_date = new \DateTime($this->_publication_date);
+        } else  {
+            return NULL;
         }
         if ($format == "special_format") {
             return date_format($publication_date,"d/m/Y à H:i");
