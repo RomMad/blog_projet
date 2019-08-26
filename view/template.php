@@ -11,13 +11,13 @@
     <!-- Bibliothèque Fontawesome-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
         integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    <link rel="stylesheet" href="public/css/style.css" />
-    <link rel="icon" href="public/images/logo.ico" />
+    <link rel="stylesheet" href="/blog_projet/public/css/style.css" />
+    <link rel="icon" href="/blog_projet/public/images/logo.ico" />
     <title><?= $title ?></title>
     <meta property="og:title" content="<?= $title ?>" />
     <meta property="og:type" content="blog" />
     <meta property="og:url" content="https://leblog.romain-mad.fr" />
-    <meta property="og:image" content="public/images/logo.ico" />
+    <meta property="og:image" content="/blog_projet/public/images/logo.ico" />
     <meta name="description" content="Le blog de Jean Forteroche." />
 
     <!-- Scripts TinyMCE -->
@@ -65,7 +65,7 @@
         <header id="header">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3 py-3 shadow">
                 <a class="navbar-brand mr-0 text-blue overflow-hidden"
-                    href="blog"><img id="logo_blog" src="public/images/logo.ico" alt="logo du blog"> <?= isset($_SESSION["settings"]) ? $_SESSION["settings"]->blog_name() : "Le blog" ?></a>
+                    href="/blog_projet/blog"><img id="logo_blog" src="/blog_projet/public/images/logo.ico" alt="logo du blog"> <?= isset($_SESSION["settings"]) ? $_SESSION["settings"]->blog_name() : "Le blog" ?></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -74,7 +74,7 @@
                 <div id="navbarSupportedContent" class="collapse navbar-collapse ml-2">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="blog"><span class="fas fa-home"></span> Accueil</a>
+                            <a class="nav-link" href="/blog_projet/blog"><span class="fas fa-home"></span> Accueil</a>
                         </li>
                         <?php 
                             
