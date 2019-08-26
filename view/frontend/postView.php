@@ -61,14 +61,14 @@
                             ?>
                             <div class="row">
                                 <label for="name" class="col-md-4 col-form-label">Nom</label>
-                                <input type="text" name="name" id="name" class="col-md-8 form-control mb-4 shadow-sm" value="">
+                                <input type="text" name="name" id="name" class="col-md-8 form-control mb-4 shadow-sm">
                             </div>
                             <?php
                             }
                             ?>
                             <div class="form-group row">
                                 <label for="content" class="sr-only">Contenu du message</label>
-                                <textarea name="content" class="col-md-12 form-control shadow-sm" id="content" rows="4"></textarea>
+                                <textarea name="content" id="content" class="col-md-12 form-control shadow-sm" rows="4" required></textarea>
                             </div>
                             <div class="form-group row float-right">
                                 <input type="submit" value="Envoyer" name="save_comment" id="save_comment" class="btn btn-blue shadow">

@@ -30,28 +30,28 @@
                     <div class="form-group row">
                         <label for="blog_name" class="col-md-4 col-form-label">Nom du site</label>
                         <div class="col-md-8">
-                            <input type="text" name="blog_name" id="blog_name" class="form-control mb-4 shadow-sm"
+                            <input type="text" name="blog_name" id="blog_name" class="form-control mb-4 shadow-sm" required
                                 value="<?= $this->_settings->blog_name() ?>">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="title" class="col-md-4 col-form-label">Titre du blog</label>
                         <div class="col-md-8">
-                            <input type="text" name="title" id="title" class="form-control mb-4 shadow-sm"
+                            <input type="text" name="title" id="title" class="form-control mb-4 shadow-sm" required
                                 value="<?= $this->_settings->title() ?>">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="admin_email" class="col-md-4 col-form-label">Adresse email</label>
                         <div class="col-md-8">
-                            <input type="text" name="admin_email" id="admin_email" class="form-control mb-4 shadow-sm"
+                            <input type="text" name="admin_email" id="admin_email" class="form-control mb-4 shadow-sm" required
                                 value="<?= $this->_settings->admin_email() ?>">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="default_role" class="col-md-4 col-form-label">Rôle par défaut des utilisateurs</label>
                         <div class="col-md-8">
-                            <select name="default_role" id="default_role" class="custom-select form-control w-50 shadow-sm">
+                            <select name="default_role" id="default_role" class="custom-select form-control w-50 shadow-sm" required>
                                 <option value="1" <?= $this->_settings->default_role() == 1 ? "selected" : "" ?>>Administrateur</option>
                                 <option value="2" <?= $this->_settings->default_role() == 2 ? "selected" : "" ?>>Editeur</option>
                                 <option value="3" <?= $this->_settings->default_role() == 3 ? "selected" : "" ?>>Auteur</option>
@@ -63,7 +63,7 @@
                     <div class="form-group row mb-4">
                         <label for="style_blog" class="col-md-4 col-form-label">Style du blog</label>
                         <div class="col-md-8">
-                            <select name="style_blog" id="style_blog" class="custom-select form-control w-50 shadow-sm">
+                            <select name="style_blog" id="style_blog" class="custom-select form-control w-50 shadow-sm" required>
                                 <option value="light" <?= $this->_settings->style_blog() == "light" ? "selected" : "" ?>>Clair</option>
                                 <option value="dark" <?= $this->_settings->style_blog() == "dark" ? "selected" : "" ?>>Foncé</option>
                             </select>
@@ -72,7 +72,7 @@
                     <div class="form-group row">
                         <label for="posts_by_row" class="col-md-4 col-form-label">Nombre d'articles par rangée</label>
                         <div class="col-md-8">
-                            <select name="posts_by_row" id="posts_by_row" class="custom-select form-control w-50 shadow-sm">
+                            <select name="posts_by_row" id="posts_by_row" class="custom-select form-control w-50 shadow-sm" required>
                                 <option value="1" <?= $this->_settings->posts_by_row() == 1 ? "selected" : "" ?>>1 article</option>
                                 <option value="2" <?= $this->_settings->posts_by_row() == 2 ? "selected" : "" ?>>2 articles</option>
                             </select>
@@ -91,7 +91,7 @@
                         <div class="col-xs-4 col-sm-4">Modération</div>
                         <div class="col-xs-8 col-sm-8">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input checkbox" name="moderation" id="moderation"
+                                <input type="checkbox" name="moderation" id="moderation" class="custom-control-input checkbox" required
                                     value="true" <?= $this->_settings->moderation() == 1 ? "checked" : "" ?>/>
                                 <label for="moderation" class="custom-control-label" ><span class="sr-only">Modération<span></label>
                             </div>

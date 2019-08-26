@@ -18,28 +18,28 @@
                         <div class="row">
                             <label for="login" class="col-md-4 col-form-label">Login</label>
                             <div class="col-md-8">
-                                <input type="text" name="login" id="login" class="form-control mb-4 shadow-sm"
+                                <input type="text" name="login" id="login" class="form-control mb-4 shadow-sm" required
                                     value="<?= isset($_POST["login"]) ? htmlspecialchars($_POST["login"]) : "" ?>">
                             </div>
                         </div>
                         <div class="row">
                             <label for="email" class="col-md-4 col-form-label">Adresse email</label>
                             <div class="col-md-8">
-                                <input type="email" name="email" id="email" class="form-control mb-4 shadow-sm"
+                                <input type="email" name="email" id="email" class="form-control mb-4 shadow-sm" required
                                     value="<?= isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "" ?>">
                             </div>
                         </div>
                         <div class="row">
                             <label for="name" class="col-md-4 col-form-label">Nom</label>
                             <div class="col-md-8">
-                                <input type="text" name="name" id="name" class="form-control mb-4 shadow-sm"
+                                <input type="text" name="name" id="name" class="form-control mb-4 shadow-sm" required
                                     value="<?= isset($_POST["name"]) ? htmlspecialchars($_POST["name"]) : "" ?>">
                             </div>
                         </div>
                         <div class="row">
                             <label for="surname" class="col-md-4 col-form-label">Prénom</label>
                             <div class="col-md-8">
-                                <input type="text" name="surname" id="surname" class="form-control mb-4 shadow-sm"
+                                <input type="text" name="surname" id="surname" class="form-control mb-4 shadow-sm" required
                                     value="<?= isset($_POST["surname"]) ? htmlspecialchars($_POST["surname"]) : "" ?>">
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                             <label for="pass" class="col-md-4 col-form-label">Mot de passe</label>
                             <div class="col-md-5">
                                 <div class="password-group">
-                                    <input type="password" name="pass" id="pass" class="password form-control mb-4 shadow-sm">
+                                    <input type="password" name="pass" id="pass" class="password form-control mb-4 shadow-sm" required>
                                     <span class="show-password fas fa-eye"></span>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                             <label for="pass_confirm" class="col-md-4 col-form-label">Confirmation mot de passe</label>
                             <div class="col-md-5">
                                 <div class="password-group">
-                                    <input type="password" name="pass_confirm" id="pass_confirm" class="password form-control mb-4 shadow-sm">
+                                    <input type="password" name="pass_confirm" id="pass_confirm" class="password form-control mb-4 shadow-sm" required>
                                     <span class="show-password fas fa-eye"></span>
                                 </div>
                             </div>

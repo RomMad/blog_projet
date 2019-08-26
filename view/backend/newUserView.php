@@ -26,14 +26,14 @@
                         <div class="row">
                             <label for="login" class="col-md-4 col-form-label">Login</label>
                             <div class="col-md-8">
-                                <input type="text" name="login" id="login" class="form-control mb-4 shadow-sm"
+                                <input type="text" name="login" id="login" class="form-control mb-4 shadow-sm" required
                                     value="<?= isset($this->_user) ? $this->_user->login() : "" ?>">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label">Adresse email</label>
                             <div class="col-md-8">
-                                <input type="email" name="email" id="email" class="form-control mb-4 shadow-sm"
+                                <input type="email" name="email" id="email" class="form-control mb-4 shadow-sm" required
                                     value="<?= isset($this->_user) ? $this->_user->email() : "" ?>">
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                         <div class="form-group row">
                             <label for="role" class="col-md-4 col-form-label">Rôle par défaut</label>
                             <div class="col-md-8">
-                                <select name="role" id="role" class="custom-select form-control shadow-sm">
+                                <select name="role" id="role" class="custom-select form-control shadow-sm" required>
                                     <option value="5" <?= isset($this->_user) && $this->_user->role() == 5 ? "selected" : "" ?>>Abonné</option>
                                     <option value="4" <?= isset($this->_user) && $this->_user->role() == 4 ? "selected" : "" ?>> Contributeur</option>
                                     <option value="3" <?= isset($this->_user) && $this->_user->role() == 3 ? "selected" : "" ?>>Auteur</option>
@@ -68,7 +68,7 @@
                             <label for="pass" class="col-md-4 col-form-label">Mot de passe</label>
                             <div class="col-md-8">
                                 <div class="password-group">
-                                    <input type="password" name="pass" id="pass" class="password form-control mb-4 shadow-sm"
+                                    <input type="password" name="pass" id="pass" class="password form-control mb-4 shadow-sm" required
                                         value="<?= isset($this->_user) ? $this->_user->pass() : $pass ?>">
                                         <span class="show-password fas fa-eye"></span>
                                 </div>

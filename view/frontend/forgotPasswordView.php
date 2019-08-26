@@ -12,7 +12,7 @@
             <h1 class="h3 mb-4 font-weight-normal">Mot de passe oublié</h1>
             <p>Saisissez votre adresse e-mail afin de recevoir un e-mail pour réinitialiser votre mot de passe.</p>
             <label for="email" class="sr-only">Email</label>
-            <input type="text" name="email" id="email" class="form-control mb-4 shadow-sm" placeholder="Email" autofocus="">
+            <input type="text" name="email" id="email" class="form-control mb-4 shadow-sm" placeholder="Email" required autofocus="">
             <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-blue btn-block mb-4 shadow">
         </form>
     </section>

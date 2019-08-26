@@ -58,7 +58,7 @@
                         <div class="form-group row">
                             <label for="role" class="col-md-4 col-form-label">Rôle</label>
                             <div class="col-md-6">
-                                <select name="role" id="role" class="form-control shadow-sm">
+                                <select name="role" id="role" class="form-control shadow-sm" required>
                                     <option value="5" <?= $this->_user->role() == 5 ? "selected" : "" ?>>Abonné</option>
                                     <option value="4" <?= $this->_user->role() == 4 ? "selected" : "" ?>>Contributeur</option>
                                     <option value="3" <?= $this->_user->role() == 3 ? "selected" : "" ?>>Auteur</option>

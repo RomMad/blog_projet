@@ -12,18 +12,18 @@
 
             <h1 class="h3 mb-4 font-weight-normal text-center">Réinitialisation du mot de passe</h1>
             <label for="email" class="sr-only">Email</label>
-            <input type="email" name="email" id="email" class="form-control mb-4" placeholder="Email"
+            <input type="email" name="email" id="email" class="form-control mb-4" placeholder="Email" required 
                 value="<?= isset($this->_user) ? $this->_user->email() : "" ?>">
             <div class="password-group">
                 <label for="pass" class="sr-only">Mot de passe</label>
                 <input type="password" name="pass" id="pass" class="password form-control mb-2 shadow-sm"
-                    placeholder="Nouveau mot de passe">
+                    placeholder="Nouveau mot de passe" required>
                     <span class="show-password fas fa-eye"></span>
             </div>
             <div class="password-group">
                 <label for="pass_confirm" class="sr-only">Confirmation du mot de passe</label>
                 <input type="password" name="pass_confirm" id="pass_confirm" class="password form-control mb-4"
-                    placeholder="Confirmation du mot de passe">
+                    placeholder="Confirmation du mot de passe" required>
                     <span class="show-password fas fa-eye"></span>
             </div>
             <input type="submit" value="Envoyer" id="submit" class="btn btn-lg btn-blue btn-block mb-4 shadow">

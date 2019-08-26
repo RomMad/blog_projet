@@ -29,7 +29,7 @@ if (isset($_GET["id"])) {
                         <div class="form-group">
                             <label for="title" class="sr-only">Titre</label>
                             <input type="text" name="title" class="form-control font-weight-bolder shadow-sm" id="title"
-                                value="<?= isset($this->_post) ? $this->_post->title() : "" ?>" placeholder="Saisissez le titre" autofocus>
+                                value="<?= isset($this->_post) ? $this->_post->title() : "" ?>" required placeholder="Saisissez le titre" autofocus>
                         </div>
                         <div class="form-group">
                             <label for="post_content" class="sr-only">Contenu de l'article</label>
@@ -55,7 +55,7 @@ if (isset($_GET["id"])) {
                                 <div class="form-group col-sm-6 col-md-4 col-lg-12">
                                     <label for="status">Statut</label>
                                     <?php if ($_SESSION["user"]["role"] < 4) { ?>
-                                    <select name="status" class="form-control shadow-sm" id="status">
+                                    <select name="status" class="form-control shadow-sm" id="status" required>
                                         <option <?= isset($this->_post) && $this->_post->status() == "Brouillon" ? "selected" : "" ?>>Brouillon</option>
                                         <option <?= isset($this->_post) && $this->_post->status() == "Publié" ? "selected" : "" ?>>Publié</option>
                                     </select>

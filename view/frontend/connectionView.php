@@ -10,11 +10,11 @@
 
             <h1 class="h3 mb-4 font-weight-normal">Merci de vous connecter</h1>
             <label for="login" class="sr-only">Login ou adresse email</label>
-            <input type="text" name="login" id="login" class="form-control mb-2 shadow-sm" placeholder="Login ou adresse email" 
+            <input type="text" name="login" id="login" class="form-control mb-2 shadow-sm" placeholder="Login ou adresse email" required
                 autofocus="" value="<?= isset($_COOKIE["user"]["login"]) ? $_COOKIE["user"]["login"] : "" ?>">
             <label for="pass" class="sr-only">Mot de passe</label>
             <div class="password-group">
-                <input type="password" name="pass" id="pass" class="password form-control mb-3 shadow-sm" placeholder="Mot de passe">
+                <input type="password" name="pass" id="pass" class="password form-control mb-3 shadow-sm" placeholder="Mot de passe" required>
                 <span class="show-password fas fa-eye"></span>
             </div>
             <div class="checkbox mb-3">
