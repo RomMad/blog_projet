@@ -18,11 +18,7 @@
                 <span class="badge badge-secondary font-weight-normal"><?= $nbItems ?> </span>
             </h2>
 
-            <?php 
-            $this->_session->flash();
-            // Affiche les résultats si recherche
-            if (isset($_POST["filter"]) || isset($_POST["filter_search"])) { echo "<p> " . $nbItems . " résultat(s).</p>";}    
-            ?>
+            <?= $this->_session->flash() ?>
 
             <form action="<?= $linkNbDisplayed ?>" method="post">
                 <div class="row">

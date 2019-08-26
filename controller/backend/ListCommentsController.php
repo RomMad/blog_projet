@@ -80,6 +80,10 @@ class ListCommentsController {
         // Compte le nombre de commentaires
         $nbItems = $this->_commentsManager->count($_SESSION["filter"]);
 
+        if (isset($_POST["filter"])) {
+            $this->_session->setFlash($nbItems . " résultat(s).", "light");
+        }
+
         // Vérifie l'ordre de tri par type
         if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "content" || $_GET["orderBy"] == "user_name" || $_GET["orderBy"] == "status" || $_GET["orderBy"] == "report_date" || $_GET["orderBy"] == "nb_report" || $_GET["orderBy"] == "creation_date" )) {
             $orderBy = htmlspecialchars($_GET["orderBy"]);

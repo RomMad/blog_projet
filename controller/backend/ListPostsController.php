@@ -79,6 +79,10 @@ class ListPostsController {
         // Compte le nombre d'articles
         $nbItems = $this->_postsManager->count($_SESSION["filter"]);
 
+        if (isset($_POST["filter"]) || isset($_POST["filter_search"])) {
+            $this->_session->setFlash($nbItems . " résultat(s).", "light");
+        }    
+        
         $optionsOrderBy = array(
             "title",
             "user_login",

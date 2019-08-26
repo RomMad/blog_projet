@@ -33,6 +33,10 @@ class ListPostsController {
         // Récupère les derniers articles
         $posts = $this->_postsManager->getList($_SESSION["filter"], "p.publication_date", "desc", $this->_pagination->_nbLimit,  $this->_pagination->_nbDisplayed);
 
+        if (isset($_GET["search"])) {
+        $this->_session->setFlash($nbItems . " résultat(s).", "light");
+        }
+
         require "view/frontend/listPostsView.php";
     }
 }

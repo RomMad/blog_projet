@@ -62,6 +62,10 @@ class ListUsersController {
         // Compte le nombre d'utilisateurs
         $nbItems = $this->_usersManager->count($_SESSION["filter"]);
 
+        if (isset($_POST["filter"]) || isset($_POST["search_user"])) {
+            $this->_session->setFlash($nbItems . " résultat(s).", "light");
+        }
+
         // Vérifie l'ordre de tri par type
         if (!empty($_GET["orderBy"]) && ($_GET["orderBy"] == "login" || $_GET["orderBy"] == "name" || $_GET["orderBy"] == "surname" || $_GET["orderBy"] == "email" || $_GET["orderBy"] == "role" | $_GET["orderBy"] == "registration_date")) {
             $orderBy = htmlspecialchars($_GET["orderBy"]);

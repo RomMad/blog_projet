@@ -15,11 +15,7 @@
                 <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un nouvel article</a>
             </div>
         <?php
-        }
-        // Affiche les résultats si recherche
-        if (!empty($_GET["search"])) {
-            echo "<p> " . $nbItems . " résultat(s).</p>";
-        }    
+        }   
 
         $this->_session->flash();
 
