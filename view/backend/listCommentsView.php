@@ -141,9 +141,9 @@
                                     }
                                     ?>
                                     </td>
-                                    <td><?= $comment->report_date("") ?></td>
+                                    <td><?= $comment->report_date("datetime_fr") ?></td>
                                     <td><?= $comment->nb_report() ?></td>
-                                    <td><?= $comment->creation_date("") ?></td>
+                                    <td><?= $comment->creation_date("datetime_fr") ?></td>
                                 </tr>
                                 <?php
                                 }

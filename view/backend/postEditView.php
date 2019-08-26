@@ -80,12 +80,12 @@ if (isset($_GET["id"])) {
                                 <div class="form-group col-sm-6 col-md-4 col-lg-12">
                                     <label for="creation_date">Date de création</label>
                                     <input type="text" name="creation_date" class="form-control shadow-sm" id="creation_date"
-                                        readonly value="<?= isset($this->_post) && !empty($this->_post->id()) ? $this->_post->creation_date("") : "" ?>">
+                                        readonly value="<?= isset($this->_post) && !empty($this->_post->id()) ? $this->_post->creation_date("datetime_fr") : "" ?>">
                                 </div>
                                 <div class="form-group col-sm-6 col-md-4 col-lg-12">
                                     <label for="update_date">Date de modification</label>
                                     <input type="text" name="update_date" class="form-control shadow-sm" id="update_date"
-                                        readonly value="<?= isset($this->_post) && !empty($this->_post->id()) ? $this->_post->update_date("") : "" ?>">
+                                        readonly value="<?= isset($this->_post) && !empty($this->_post->id()) ? $this->_post->update_date("datetime_fr") : "" ?>">
                                 </div>
                             </div>
                         </div>  

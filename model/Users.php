@@ -49,7 +49,7 @@ class Users extends Model {
     }    
     public function registration_date() {
         $registration_date = new \DateTime($this->_registration_date);
-        if (!empty($format) && $format == "special_format") {
+        if (!empty($format) && $format == "datetime_special") {
             return date_format($registration_date,"d/m/Y à H:i");
         } else {
             return date_format($registration_date,"d/m/Y H:i");

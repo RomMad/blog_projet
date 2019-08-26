@@ -17,7 +17,7 @@ class PostsManager extends Manager {
             "title" => $post->title(),
             "content" => $post->content(""),
             "status" => $post->status(),
-            "publication_date" => $post->publication_date()
+            "publication_date" => $post->publication_date("datetime")
         ]);
         // Hydrate l'article passé en paramètre avec assignation de son identifiant
         $post->hydrate([
@@ -127,7 +127,7 @@ class PostsManager extends Manager {
             "newTitle" => $post->title(),
             "newContent" => $post->content(""),
             "newStatus" => $post->status(),
-            "newPublicationDate" => $post->publication_date(""),
+            "newPublicationDate" => $post->publication_date("datetime"),
             "postId" => $post->id()
         ]);
         return "L'article a été modifié.";

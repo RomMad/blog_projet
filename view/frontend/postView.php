@@ -17,9 +17,9 @@
             <div class="card-header bg-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "dark" ?> text-<?= $_SESSION["settings"]->style_blog() == "light" ? "dark" : "light" ?>">
                 <h2 class="mt-2 mb-3"><?=  $this->_post->title() ?></h2>
                 <p class="my-0">
-                    <em>Publié le <?=  $this->_post->publication_date("special_format") ?> par <a class="text-blue" 
+                    <em>Publié le <?=  $this->_post->publication_date("datetime_special") ?> par <a class="text-blue" 
                         href="user-<?=  $this->_post->user_id() ?>"><?=  $this->_post->login() ?></a> 
-                        (Modifié le <?=  $this->_post->update_date("special_format") ?>)</em>
+                        (Modifié le <?=  $this->_post->update_date("datetime_special") ?>)</em>
                     <a href="#comments" class="badge badge-blue ml-2 my-1 py-1" data-toggle="tooltip"
                         data-placement="bottom" title="Voir les commentaires">Commentaires 
                         <span class="badge badge-light"><?= $nbItems ?></span></a>
@@ -105,8 +105,8 @@
 
                     <div id="comment-<?= $comment->id() ?>" class="comment card shadow">
                     <div class="card-body">
-                        <p><strong><?= $userLogin ?></strong>, le <?= $comment->creation_date("special_format") ?>
-                            <?php if ($comment->update_date("") != $comment->creation_date("")) { echo "(Modifié le " . $comment->update_date("special_format") . ")"; } ?>
+                        <p><strong><?= $userLogin ?></strong>, le <?= $comment->creation_date("datetime_special") ?>
+                            <?php if ($comment->update_date("datetime_fr") != $comment->creation_date("datetime_fr")) { echo "(Modifié le " . $comment->update_date("datetime_special") . ")"; } ?>
                         </p>
                         <div id="comment-content-<?= $comment->id() ?>" class="comment-content position relative"><?= nl2br($comment->content()) ?>
                             <span id="comment-fadeout-<?= $comment->id() ?>" class="comment-fadeout d-none"></span>

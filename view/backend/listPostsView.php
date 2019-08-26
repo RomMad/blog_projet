@@ -123,9 +123,9 @@
                                 </td>
                                 <td><?= $post->login() ?></td>
                                 <td><?= $post->status() ?></td>
-                                <td><?= $post->publication_date("datetime") ?></td>
-                                <td><?= $post->creation_date("") ?></td>
-                                <td><?= $post->update_date("") ?></td>
+                                <td><?= $post->publication_date("datetime_fr") ?></td>
+                                <td><?= $post->creation_date("datetime_fr") ?></td>
+                                <td><?= $post->update_date("datetime_fr") ?></td>
                             </tr>
                         <?php
                             }

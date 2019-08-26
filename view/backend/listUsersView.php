@@ -124,7 +124,7 @@
                                     <td><?= $user->surname() ?></td>
                                     <td><?= $user->email() ?></td>
                                     <td><?= $user->role_user() ?></td>
-                                    <td><?= $user->registration_date("") ?></td>
+                                    <td><?= $user->registration_date("datetime_fr") ?></td>
                                 </tr>
                                 <?php
                                 }

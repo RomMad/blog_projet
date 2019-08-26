@@ -53,18 +53,7 @@ class Posts extends Model {
         } else  {
             return NULL;
         }
-        if ($format == "special_format") {
-            return date_format($publication_date,"d/m/Y à H:i");
-        }
-        if ($format == "datetime") {
-            return date_format($publication_date,"d/m/Y H:i");
-        } elseif ($format == "date") {
-            return date_format($publication_date,"Y-m-d");
-        } elseif ($format == "time") {
-            return date_format($publication_date,"H:i");
-        } else {
-            return $this->_publication_date;
-        }
+        return $this->formatDate($publication_date, $format);
     }
 
     public function comment_admin() {
@@ -124,7 +113,7 @@ class Posts extends Model {
             if ($isDate) {
                 $this->_publication_date = date($publication_date);
             } else {
-                $this->_publication_date = date("Y-m-d H:i");
+                $this->_publication_date = date("Y-m-d H:i:s");
             }
         } else {
             $this->_publication_date = NULL;
