@@ -136,7 +136,7 @@
                         if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"] == $comment->user_id()) {
                         ?>
                         <div class="edit-comment mt-3">
-                            <a id="comment-edit-<?= $comment->id() ?>" href="#comment-<?= $comment->id() ?>"><span class="far fa-edit text-blue">Modifier</span></a>
+                            <a id="comment-edit-<?= $comment->id() ?>" href="#comment-<?= $comment->id() ?>"><span class="far fa-edit text-blue"> Modifier</span></a>
                         </div>
                         <?php
                         }

@@ -28,12 +28,12 @@ class PostEditController {
         }
         // Vérifie si l'article existe
         elseif (isset($_GET["id"])) {
-             $this->_post = $this->_postsManager->get($_GET["id"]);
+             $postUserId = $this->_postsManager->getUserId($_GET["id"]);
             // Redirige vers la page d'erreur 403 si l'utilisateur n'a pas les droits
-            if ($_SESSION["user"]["role"] >= 3 && $_SESSION["user"]["id"] !=  $this->_post->user_id()) {
+            if ($_SESSION["user"]["role"] >= 3 && $_SESSION["user"]["id"] !=  $postUserId) {
                 header("Location: error403"); 
                 exit();
-            } elseif (! $this->_post) {
+            } elseif (!$postUserId) {
                 $this->_session->setFlash("Cet article n'existe pas.", "warning");
                 header("Location: blog"); 
                 exit();
@@ -42,11 +42,18 @@ class PostEditController {
 
         // Vérification si informations dans variable POST
         if (!empty($_POST)) {
+            if ($_POST["status"] == "Publié" || !empty($_POST["publication_date"])) {
+                $date = date_format(new \DateTime($_POST["publication_date"]),"Y-m-d");
+                $time = date_format(new \DateTime($_POST["publication_time"]),"H:i:s");
+                $datetime = $date . " " . $time;
+            } else {
+                $datetime = NULL;
+            }
              $this->_post = new \model\Posts([
                 "title" => $_POST["title"],
                 "content" => $_POST["post_content"],
                 "status" => $_SESSION["user"]["role"] <= 3 ? $_POST["status"] : "Brouillon",
-                "publication_date" => $_POST["publication_date"],
+                "publication_date" => $datetime,
                 "id" => isset($_GET["id"]) ? $_GET["id"] : "",
                 "user_id" => $_SESSION["user"]["id"],
                 "user_login" => $_SESSION["user"]["login"],
@@ -68,14 +75,6 @@ class PostEditController {
             if (empty($this->_post->content("")) &&  $this->_post->status() == "Publié") {
                 $this->_session->setFlash("L'article ne peut pas être publié si le contenu est vide.", "danger");
                 $this->_validation = false;
-            }
-            // Vérifie si la date de publication est vide
-            if ($_POST["status"] == "Publié" && empty($_POST["publication_date"])) {
-                $this->_post->Setpublication_date("Y-m-d H:i");
-            } elseif (!empty($_POST["publication_date"])) {
-                $time = date_format(new \DateTime($_POST["publication_time"]),"H:i:s");
-                $publicationDate = $_POST["publication_date"] . " " . $time;
-                $this->_post->Setpublication_date($publicationDate);
             }
             // Ajoute ou modifie l'article si le titre n'est pas vide
             if ($this->_validation) {

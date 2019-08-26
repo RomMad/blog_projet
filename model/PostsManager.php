@@ -50,7 +50,7 @@ class PostsManager extends Manager {
             ]);
             $post = $req->fetch();
             if (isset($post)) {
-                return new Posts($post);
+                return $post["user_id"];
             }
         }
     }     

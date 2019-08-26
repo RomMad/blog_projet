@@ -37,7 +37,7 @@ class ListPostsController {
                         $this->_session->setFlash("L'article <b>" .  $post->title() . "</b> a été supprimé.", "warning");
                     }
                 }
-                // Met en brouillon les articles sélectionnés via une boucle
+                // Met en brouillon ou publie les articles sélectionnés via une boucle
                 if ($_POST["action_apply"] == "Brouillon" || $_POST["action_apply"] == "Publié") {
                     foreach ($_POST["selectedPosts"] as $selectedPost) {
                         $post = $this->_postsManager->get($selectedPost);
