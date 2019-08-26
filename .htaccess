@@ -121,7 +121,7 @@ RewriteRule ^profil-delete_cookies$ /blog_projet/index.php?action=profil&delete_
 RewriteRule ^user-([0-9]+)$ /blog_projet/index.php?action=user&id=$1 [L]
 
 # Réécriture page Réinitialisation du mot de passe
-RewriteRule ^reset-password-([a-zA-Z0-9]+)$ /blog_projet/index.php?action=resetPassword&token=$1 [L]
+RewriteRule ^((reset|create)-password)-([a-zA-Z0-9]+)$ /blog_projet/index.php?action=$1&token=$3 [L]
 
 # Réécriture page Gestion des commentaires (comments), des articles (posts) ou des utilisateurs (users)
 RewriteRule ^([a-z]{5,8})$ /blog_projet/index.php?action=$1 [L]

@@ -16,7 +16,7 @@
 
         <div class="col-sm-10 col-md-8 col-lg-6 mx-auto mt-4">
 
-            <?php $this->_session->flash(); // Message en session flash ?>
+            <?= $this->_session->flash() ?>
 
             <form action="user-<?= $this->_user->id() ?>" method="post" class="col-md-12 card shadow">
                 <div class="form-group row">

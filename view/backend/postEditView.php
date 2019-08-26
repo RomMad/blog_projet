@@ -22,7 +22,7 @@ if (isset($_GET["id"])) {
             <form action="edit-post<?= isset($this->_post) ? "-" . $this->_post->id() : "" ?>" method="post">
                 <h2 class="mb-4">Édition d'article</h2>
 
-                <?php $this->_session->flash(); ?>
+                <?= $this->_session->flash() ?>
 
                 <div class="row">
                     <div class="col-md-12 col-lg-9">

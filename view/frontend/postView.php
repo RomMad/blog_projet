@@ -49,7 +49,7 @@
 
     <!-- Formulaire d'ajout d'un commentaire -->
     <section id="form-comment" class="mt-4">
-        <?php $this->_session->flash(); // Message en session flash ?>
+        <?= $this->_session->flash() ?>
         <div class="row">
             <div class="col-sm-12 col-md-10 col-lg-6">
                 <h3 class="mb-4">Nouveau commentaire</h3>

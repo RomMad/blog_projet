@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <?php $this->_session->flash(); ?>
+        <?= $this->_session->flash() ?>
 
         <div class="row">
 

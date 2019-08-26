@@ -6,7 +6,7 @@
     <section id="connection" class="row min-vh-80">
         <form action="connection" method="post" class="form-signin m-auto text-center">
 
-            <?php $this->_session->flash(); ?>
+            <?= $this->_session->flash() ?>
 
             <h1 class="h3 mb-4 font-weight-normal">Merci de vous connecter</h1>
             <label for="login" class="sr-only">Login ou adresse email</label>

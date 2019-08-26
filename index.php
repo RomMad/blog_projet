@@ -43,9 +43,12 @@ if (isset($_GET["action"])) {
         case "forgotPassword":
             $forgotPasswordController = new controller\frontend\ForgotPasswordController($session);
             break;
-        case "resetPassword":
+        case "reset-password":
             $resetPasswordController = new controller\frontend\ResetPasswordController($session);
-            break;  
+            break;
+        case "create-password":
+            $resetPasswordController = new controller\frontend\ResetPasswordController($session);
+            break;               
         case "comments":
             $listCommentsController = new controller\backend\ListCommentsController($session);
             break;

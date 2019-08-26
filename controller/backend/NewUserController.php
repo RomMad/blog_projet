@@ -54,7 +54,7 @@ class NewuserController extends \controller\frontend\InscriptionController {
         }
 
         // Initialise l'email
-        $link = $url . "/reset-password-" . $token;
+        $link = $url . "/create-password-" . $token;
         $to = $this->_user->email();
         $subject = "Création de compte";
         $message = "

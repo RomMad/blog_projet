@@ -14,7 +14,7 @@
     <section id="profil" class="row">
         <div class="col-md-12 mx-auto mb-4">
 
-            <?php $this->_session->flash(); ?>
+            <?= $this->_session->flash() ?>
 
             <div class="row">
             

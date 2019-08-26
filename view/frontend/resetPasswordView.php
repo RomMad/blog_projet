@@ -8,9 +8,9 @@
         <form action="reset-password-<?= isset($_GET["token"]) ? htmlspecialchars($_GET["token"]) : "" ?>"
             method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 m-auto">
 
-            <?php $this->_session->flash(); // Message en session flash ?>
+            <?= $this->_session->flash() ?>
 
-            <h1 class="h3 mb-4 font-weight-normal text-center">Réinitialisation du mot de passe</h1>
+            <h1 class="h3 mb-4 font-weight-normal text-center"><?= $_GET["action"] == "reset-password" ? "Réinitialisation du mot de passe" : "Création du mot de passe" ?></h1>
             <label for="email" class="sr-only">Email</label>
             <input type="email" name="email" id="email" class="form-control mb-4" placeholder="Email" required 
                 value="<?= isset($this->_user) ? $this->_user->email() : "" ?>">

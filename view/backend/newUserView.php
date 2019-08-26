@@ -15,7 +15,7 @@
     <section id="inscription" class="row">
         <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
 
-            <?php $this->_session->flash(); // Message en session flash ?>
+            <?= $this->_session->flash() ?>
 
             <form action="new-user" method="post" class="col-md-12 card shadow mt-4">
                 <div class="form-group row">

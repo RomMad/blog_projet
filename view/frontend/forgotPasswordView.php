@@ -7,7 +7,7 @@
     <section class="row min-vh-80">
         <form action="forgotPassword" method="post" class="form-signin col-xs-8 col-sm-6 col-md-4 m-auto text-center">
 
-            <?php $this->_session->flash(); // Message en session flash ?>
+            <?= $this->_session->flash() ?>
 
             <h1 class="h3 mb-4 font-weight-normal">Mot de passe oublié</h1>
             <p>Saisissez votre adresse e-mail afin de recevoir un e-mail pour réinitialiser votre mot de passe.</p>

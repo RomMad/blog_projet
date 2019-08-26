@@ -81,7 +81,7 @@
                         if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] < 5) {
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="edit-post">Nouvel article</a>
+                            <a class="nav-link" href="edit-post">Créer un article</a>
                         </li>
                         <?php 
                         }
