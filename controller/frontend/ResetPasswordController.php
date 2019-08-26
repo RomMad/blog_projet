@@ -22,10 +22,12 @@ class ResetPasswordController extends \controller\frontend\InscriptionController
             $this->confirmPassCheck(); // Vérifie la confirmation du mot de passe
 
             // Si validation est vraie, met à jour le mot de passe 
-            if ($this->_validation) {      
+            if ($this->_validation == true) {      
                 // Récupère l'ID de l'utilisateur
                 $this->_user = $this->_usersManager->get($_POST["email"]);
+
                 $this->connectionUser(); // Connecte l'utilisateur
+                
                 // Hachage du mot de passe
                 $passHash = password_hash($_POST["pass"], PASSWORD_DEFAULT);
                 // Créé une nouvelle entité user
@@ -38,7 +40,8 @@ class ResetPasswordController extends \controller\frontend\InscriptionController
                 // Récupère la date de dernière connexion de l'utilisateur
                 $_SESSION["lastConnection"] = $this->_usersManager->getLastConnection($this->_user);
 
-                $this->_session->setFlash ("Le mot de passe a été modifié.", "success");
+                $this->_session->setFlash ("Bienvenue sur le site !", "success");
+                
                 header("Location: blog");
                 exit();
             }

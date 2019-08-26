@@ -22,6 +22,7 @@ class InscriptionController {
                 "login" => htmlspecialchars($_POST["login"]),
                 "email" => htmlspecialchars($_POST["email"]),
                 "pass" => htmlspecialchars($_POST["pass"]),
+                "role" => $_SESSION["settings"]->default_role(),
                 "name" => htmlspecialchars($_POST["name"]),
                 "surname" => htmlspecialchars($_POST["surname"]),
                 "birthdate" => !empty($_POST["birthdate"]) ? htmlspecialchars($_POST["birthdate"]) : NULL
@@ -127,7 +128,7 @@ class InscriptionController {
         // Ajoute les infos de l"utilisateurs dans la Session
         $_SESSION["user"]["id"] = $this->_user->id();
         $_SESSION["user"]["login"] = $this->_user->login();
-        $_SESSION["user"]["role"] = $_SESSION["settings"]->default_role();
+        $_SESSION["user"]["role"] = $this->_user->role();
         $_SESSION["user"]["profil"] = $this->_user->role_user();
         $_SESSION["user"]["name"] = $this->_user->name();
         $_SESSION["user"]["surname"] = $this->_user->surname();

@@ -1,4 +1,4 @@
-<?php  $title = $_SESSION["settings"]->blog_name() . " - Réinitialisation du mot de passe"; ?>
+<?php  $title = $_SESSION["settings"]->blog_name() . " - Mot de passe"; ?>
 
 <?php ob_start(); ?>
 
