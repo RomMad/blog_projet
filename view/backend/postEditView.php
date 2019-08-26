@@ -52,7 +52,7 @@ if (isset($_GET["id"])) {
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-sm-6 col-md-6 col-lg-12">
+                                <div class="form-group col-sm-6 col-md-4 col-lg-12">
                                     <label for="status">Statut</label>
                                     <?php if ($_SESSION["user"]["role"] < 4) { ?>
                                     <select name="status" class="form-control shadow-sm" id="status">
@@ -64,7 +64,7 @@ if (isset($_GET["id"])) {
                                         readonly value="<?= isset($this->_post) ? $this->_post->status() : "" ?>">
                                     <?php } ?> 
                                 </div>
-                                <div class="form-group col-sm-6 col-md-6 col-lg-12">
+                                <div class="form-group col-sm-6 col-md-4 col-lg-12">
                                     <label for="publication_date">Date de publication</label>
                                     <input type="date" name="publication_date" class="form-control mb-1 shadow-sm" id="publication_date"
                                         value="<?= isset($this->_post) && !empty($this->_post->publication_date()) ? $this->_post->publication_date("date") : NULL ?>">
@@ -72,17 +72,17 @@ if (isset($_GET["id"])) {
                                     <input type="time" name="publication_time" class="form-control shadow-sm" id="publication_time"
                                         value="<?= isset($this->_post) && !empty($this->_post->publication_date()) ? $this->_post->publication_date("time") : NULL ?>">
                                 </div>
-                                <div class="form-group col-sm-6 col-md-6 col-lg-12">
+                                <div class="form-group col-sm-6 col-md-4 col-lg-12">
                                     <label for="post_user_id">Auteur</label>
                                     <input type="text" name="post_user_id" class="form-control shadow-sm" id="post_user_id"
                                         readonly value="<?= isset($this->_post) ? $this->_post->login() : $_SESSION["user"]["login"] ?>">
                                 </div>
-                                <div class="form-group col-sm-6 col-md-6 col-lg-12">
+                                <div class="form-group col-sm-6 col-md-4 col-lg-12">
                                     <label for="creation_date">Date de création</label>
                                     <input type="text" name="creation_date" class="form-control shadow-sm" id="creation_date"
                                         readonly value="<?= isset($this->_post) && !empty($this->_post->id()) ? $this->_post->creation_date("") : "" ?>">
                                 </div>
-                                <div class="form-group col-sm-6 col-md-6 col-lg-12">
+                                <div class="form-group col-sm-6 col-md-4 col-lg-12">
                                     <label for="update_date">Date de modification</label>
                                     <input type="text" name="update_date" class="form-control shadow-sm" id="update_date"
                                         readonly value="<?= isset($this->_post) && !empty($this->_post->id()) ? $this->_post->update_date("") : "" ?>">
