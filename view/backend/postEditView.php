@@ -42,7 +42,7 @@ if (isset($_GET["id"])) {
                         <div id="info-post">
                             <div class="form-group row">
                                 <div class="col-xs-6 col-sm-6 col-lg-12">
-                                    <input type="submit" id="save" name="save" value="Enregistrer" class="btn btn-block btn-blue mb-2 shadow">
+                                    <input type="submit" id="save" name="save" value="<?= isset($this->_post) ? "Modifier" : "Enregistrer" ?>" class="btn btn-block btn-blue mb-2 shadow">
                                     <?php if (isset($this->_post) && $_SESSION["user"]["role"] < 4) { ?>
                                 </div>
                                 <div class="col-xs-6 col-sm-6 col-lg-12">
