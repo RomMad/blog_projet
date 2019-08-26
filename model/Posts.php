@@ -106,7 +106,6 @@ class Posts extends Model {
         }
     }
     public function setPublication_date($publication_date) {
-        date_default_timezone_set("Europe/Paris");
         if (!empty($publication_date)) {
             $this->_publication_date = date($publication_date);
             $isDate = $this->validateDate($publication_date, "Y-m-d H:i:s");
@@ -115,8 +114,6 @@ class Posts extends Model {
             } else {
                 $this->_publication_date = date("Y-m-d H:i:s");
             }
-        } else {
-            $this->_publication_date = NULL;
         }
     }
     public function setComment_admin($comment_admin) {
