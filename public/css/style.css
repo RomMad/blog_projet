@@ -116,6 +116,7 @@ section {
     overflow-x: auto;
 }
 
+
 /* Tableaux d'administration */
 table {
     font-size: 0.9rem;
@@ -310,6 +311,15 @@ a.text-blue:focus {
 /* Notification TinyMCE */
 .tox-notification {
     display: none !important;
+}
+
+
+@media all and (min-width: 992px) {
+
+    /* Barre latérale d'information sur le post */
+    #info-post {
+        max-width: 200px;
+    }
 }
 
 @media all and (max-width: 350px) {

@@ -38,7 +38,8 @@ if (isset($_GET["id"])) {
                         </div>
                     </div>
 
-                    <div id="info-post" class="col-md-12 col-lg-3 pl-lg-5">
+                    <div class="col-md-12 col-lg-3 d-flex justify-content-lg-end">
+                    <div id="info-post" class="">
                         <div class="form-group row">
                             <div class="col-xs-6 col-sm-6 col-lg-12">
                                 <input type="submit" id="save" name="save" value="Enregistrer" class="btn btn-block btn-blue mb-2 shadow">
@@ -65,7 +66,7 @@ if (isset($_GET["id"])) {
                             </div>
                             <div class="form-group col-sm-6 col-md-6 col-lg-12">
                                 <label for="publication_date">Date de publication</label>
-                                <input type="date" name="publication_date" class="form-control shadow-sm" id="publication_date"
+                                <input type="date" name="publication_date" class="form-control mb-1 shadow-sm" id="publication_date"
                                     value="<?= isset($this->_post) && !empty($this->_post->publication_date()) ? $this->_post->publication_date("date") : NULL ?>">
                                 <label for="publication_date" class="sr-only">Heure de publication</label>
                                 <input type="time" name="publication_time" class="form-control shadow-sm" id="publication_time"
@@ -87,6 +88,7 @@ if (isset($_GET["id"])) {
                                     readonly value="<?= isset($this->_post) && !empty($this->_post->id()) ? $this->_post->update_date("") : "" ?>">
                             </div>
                         </div>
+                    </div>  
                     </div>
                 </div>
             </form>
