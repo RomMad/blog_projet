@@ -90,10 +90,10 @@
                         ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="settings" id="navbarDropdown"
-                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
+                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Administration</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <?php if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] == 1) { ?> 
-                                <a class="dropdown-item" href="settings">Administration générale</a>
+                                <a class="dropdown-item" href="settings">Paramètres généraux</a>
                                 <div class="dropdown-divider"></div>
                             <?php }
                             if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] <= 4) { ?> 
@@ -105,7 +105,7 @@
                             if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] == 1) { ?> 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="users">Gestion des utilisateurs</a>
-                                <a class="dropdown-item" href="newUser">Ajouter un utilisateur</a>
+                                <a class="dropdown-item" href="new-user">Ajouter un utilisateur</a>
                             <?php } ?>
                             </div>
                         </li>

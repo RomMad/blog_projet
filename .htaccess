@@ -111,6 +111,9 @@ RewriteRule ^post-([0-9]+)-comment-([0-9]+)-([a-z]{6})$ /blog_projet/index.php?a
 RewriteRule ^edit-post(-)*$ /blog_projet/index.php?action=editPost [L]
 RewriteRule ^edit-post-([0-9]+)$ /blog_projet/index.php?action=editPost&id=$1 [L]
 
+# Réécriture page Nouvel utilisateur
+RewriteRule ^new-user$ /blog_projet/index.php?action=newUser [L]
+
 # Réécriture page Profil
 RewriteRule ^profil-delete_cookies$ /blog_projet/index.php?action=profil&delete_cookies=true [L]
 

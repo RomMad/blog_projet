@@ -7,14 +7,14 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent">
             <li class="breadcrumb-item"><a href="blog" class="text-blue">Accueil</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Administration</li>
+            <li class="breadcrumb-item active" aria-current="page">Paramètres généraux</li>
         </ol>
     </nav>
 
     <section>
         <div class="row">
             <div class="col-md-12">
-                <h2 class="mb-4">Administration</h2>
+                <h2 class="mb-4">Paramètres généraux</h2>
             </div>
         </div>
 
@@ -91,7 +91,7 @@
                         <div class="col-xs-4 col-sm-4">Modération</div>
                         <div class="col-xs-8 col-sm-8">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" name="moderation" id="moderation" class="custom-control-input checkbox" required
+                                <input type="checkbox" name="moderation" id="moderation" class="custom-control-input checkbox"
                                     value="true" <?= $this->_settings->moderation() == 1 ? "checked" : "" ?>/>
                                 <label for="moderation" class="custom-control-label" ><span class="sr-only">Modération<span></label>
                             </div>
@@ -113,7 +113,7 @@
                     <a href="posts" class="list-group-item list-group-item-action text-blue">Gestion des articles</a>
                     <a href="comments" class="list-group-item list-group-item-action text-blue">Gestion des commentaires</a>
                     <a href="users" class="list-group-item list-group-item-action text-blue">Gestion des utilisateurs</a>
-                    <a href="newUser" class="list-group-item list-group-item-action text-blue">Ajouter un utilisateur</a>
+                    <a href="new-user" class="list-group-item list-group-item-action text-blue">Ajouter un utilisateur</a>
                 </div>
             </div>
         </div>

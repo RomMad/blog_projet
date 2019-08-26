@@ -17,7 +17,7 @@
 
             <?php $this->_session->flash(); // Message en session flash ?>
 
-            <form action="newUser" method="post" class="col-md-12 card shadow mt-4">
+            <form action="new-user" method="post" class="col-md-12 card shadow mt-4">
                 <div class="form-group row">
                     <h3 class="h4 card-header col-md-12 h2 bg-light text-dark">Nouvel utilisateur</h3>
                 </div>
