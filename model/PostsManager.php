@@ -103,7 +103,8 @@ class PostsManager extends Manager {
     public function getList($filter, $orderBy, $order, $nbLimit, $nbPosts) {
         if (is_string($filter) && is_string($orderBy) && ($order == "asc" || $order == "desc") && ((int) $nbLimit >= 0) && ((int) $nbPosts > 0)) {
             $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.status, p.publication_date, p.creation_date, p.update_date, 
-                IF(CHAR_LENGTH(p.content) > 1500, CONCAT(SUBSTRING(p.content, 1, 1500), '[...]'), p.content) AS content
+                IF(CHAR_LENGTH(p.title) > 150, CONCAT(SUBSTRING(p.title, 1, 150), ' [...]'), p.title) AS title,
+                IF(CHAR_LENGTH(p.content) > 1500, CONCAT(SUBSTRING(p.content, 1, 1500), ' [...]'), p.content) AS content
                 FROM posts p
                 LEFT JOIN users u
                 ON p.user_id = u.id

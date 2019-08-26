@@ -86,6 +86,8 @@ class SettingsController {
                 $this->_settingsManager->update($this->_settings);
                 $_SESSION["settings"] = $this->_settings;
                 $this->_session->setFlash("Les paramètres ont été mis à jour.", "success");
+                header("Location: settings");
+                exit;
             }  
         } else  {
         // Récupère les paramètres

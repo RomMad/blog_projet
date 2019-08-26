@@ -38,7 +38,7 @@ if (isset($_GET["id"])) {
                         </div>
                     </div>
 
-                    <div class="col-md-12 col-lg-3 pl-lg-5">
+                    <div id="info-post" class="col-md-12 col-lg-3 pl-lg-5">
                         <div class="form-group row">
                             <div class="col-xs-6 col-sm-6 col-lg-12">
                                 <input type="submit" id="save" name="save" value="Enregistrer" class="btn btn-block btn-blue mb-2 shadow">

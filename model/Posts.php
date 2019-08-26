@@ -46,7 +46,7 @@ class Posts extends Model {
         return htmlspecialchars($this->_status);
     }
     
-    public function publication_date($format = "Y-m-d H:i") {
+    public function publication_date($format = "datetime") {
         date_default_timezone_set("Europe/Paris");
         if (!empty($this->_publication_date)) {
             $publication_date = new \DateTime($this->_publication_date);

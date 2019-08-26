@@ -65,7 +65,19 @@ class OptimizeImage {
         $this->_fileName = date("Y_m_d_His") . "_" . $this->_fileName;
         $this->_fileBaseName = $this->_fileName . "." . $this->_fileExtension;
         $this->_originalFile = $this->_fileName . "-original." . $this->_fileExtension;
+        $this->createFolder();
     }
+
+    // Crée le répertoire s'il n'existe pas
+    public function createFolder() {
+        $this->_toFolder = $this->_toFolder . date("Y/m/d/"); 
+        if(!is_dir($this->_toFolder)){
+            if (!mkdir($this->_toFolder, 0777, true)) {
+                die("Echec lors de la création du répertoire " . $this->_toFolder);
+            }
+        }
+    }
+
     // Compresse l'image
     public function compressImage() {
         move_uploaded_file($this->_file["tmp_name"], $this->_toFolder . $this->_originalFile);
@@ -78,7 +90,7 @@ class OptimizeImage {
         if (!$this->_optimizedFile) {
             $this->compressImage();
          }
-        // Method : fit (ex 800x450), cover (ex: 800x450), thumb (ex: 150x150)  
+        // Method : fit (ex 800x450), cover (ex: 800x450), thumb (ex: 150x150)
         $source = \Tinify\fromFile($this->_toFolder . $this->_optimizedFile);
         $resized = $source->resize([
             "method" => $method,
@@ -113,7 +125,7 @@ class OptimizeImage {
     }
     // Donne le nombre de compressions réalisées au cours du mois
     public function compressionCount() {
-         $compressionsThisMonth = \Tinify\compressionCount();      
+         $compressionsThisMonth = \Tinify\compressionCount();
          return $compressionsThisMonth . "/500 compressions réalisées au cours du mois.";
     }
 
