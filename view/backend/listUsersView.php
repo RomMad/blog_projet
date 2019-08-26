@@ -26,7 +26,7 @@
             }    
             ?>
 
-            <form action="<?= $linkNbDisplayed ?>" method="post" class="">
+            <form action="<?= $linkNbDisplayed ?>" method="post">
                 <div class="row">
 
                     <div class="col-md-4 form-inline mb-2 px-lg-3">
