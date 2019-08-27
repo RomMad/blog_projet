@@ -41,7 +41,7 @@
         <?php 
         if (isset($_SESSION["user"]) && ($_SESSION["user"]["role"] <= 2 || $_SESSION["user"]["id"] ==  $this->_post->user_id())) {
         ?>
-        <a class="ml-2 text-blue" href="edit-post-<?= $postId ?>"><span class="far fa-edit"></span> Modifier l'article</a>
+        <a class="ml-2 text-blue" href="edit-post-<?= $this->_post->id() ?>"><span class="far fa-edit"></span> Modifier l'article</a>
         <?php 
         } 
         ?>
@@ -55,7 +55,7 @@
                 <h3 class="mb-4">Nouveau commentaire</h3>
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="post-<?= $postId ?>#form-comment" method="post" class="px-3">
+                        <form action="post-<?= $this->_post->id() ?>#form-comment" method="post" class="px-3">
                             <?php 
                             if (!isset($_SESSION["user"]["id"])) {
                             ?>
@@ -68,10 +68,11 @@
                             ?>
                             <div class="form-group row">
                                 <label for="content" class="sr-only">Contenu du message</label>
-                                <textarea name="content" id="content" class="col-md-12 form-control shadow-sm" rows="4" required></textarea>
+                                <textarea name="content" id="content" class="col-md-12 form-control shadow-sm" rows="4" 
+                                    required><?= isset($_POST["content"]) ? htmlspecialchars($_POST["content"]) : "" ?></textarea>
                             </div>
                             <div class="form-group row float-right">
-                                <input type="submit" value="Envoyer" name="save_comment" id="save_comment" class="btn btn-blue shadow">
+                                <input type="submit" value="Envoyer" name="save-comment" id="save-comment" class="btn btn-blue shadow">
                             </div>
                         </form>
                     </div>
@@ -113,10 +114,10 @@
                             <span id="comment-fadeout-<?= $comment->id() ?>" class="comment-fadeout d-none"></span>
                         </div>
                         <?php
-                        if (isset($_SESSION["user"]) && (isset($_SESSION["user"]["role"]) == 1 || ($_SESSION["user"]["id"] == $comment->user_id()))) {
+                        if (isset($_SESSION["user"]) && ($_SESSION["user"]["role"] == 1 || ($_SESSION["user"]["id"] == $comment->user_id()))) {
                         ?>
                         <div>
-                            <a href="post-<?= isset($postId) ? $postId : "" ?>-comment-<?= $comment->id() ?>-delete#form-comment"
+                            <a href="post-<?= $this->_post->id() ?>-comment-<?= $comment->id() ?>-delete#form-comment"
                                 onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
                                 <span class="fas fa-times text-danger" data-toggle="tooltip" data-placement="bottom" title="Supprimer le commentaire"></span>
                             </a>
@@ -127,14 +128,14 @@
                         <?php
                         } else { ?>
                         <div class="report-comment">
-                            <a href="post-<?= isset($postId) ? $postId : "" ?>-comment-<?= $comment->id() ?>-report#form-comment"
+                            <a href="post-<?= $this->_post->id() ?>-comment-<?= $comment->id() ?>-report#form-comment"
                                 onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
                                 <span class="far fa-flag text-warning" data-toggle="tooltip" data-placement="bottom" title="Signaler le commentaire"></span>
                             </a>
                         </div>
                         <?php
                         }
-                        if (isset($_SESSION["user"]["id"]) && $_SESSION["user"]["id"] == $comment->user_id()) {
+                        if (isset($_SESSION["user"]) && $_SESSION["user"]["id"] == $comment->user_id()) {
                         ?>
                         <div class="edit-comment mt-3">
                             <a id="comment-edit-<?= $comment->id() ?>" href="#comment-<?= $comment->id() ?>"><span class="far fa-edit text-blue"> Modifier</span></a>
@@ -143,14 +144,14 @@
                         }
                         ?>
                         <div id="comment-form-<?= $comment->id() ?>" class="comment-form d-none">
-                            <form action="post-<?= $postId ?>-comment-<?= $comment->id() ?>#form-comment" method="post">
+                            <form action="post-<?= $this->_post->id() ?>-comment-<?= $comment->id() ?>#form-comment" method="post">
                                 <div class="form-group">
                                     <label for="comment-form-content-<?= $comment->id() ?>" class="sr-only">Contenu du message</label>
                                     <textarea name="comment-form-content-<?= $comment->id() ?>" class="form-control shadow-sm" id="comment-form-content-<?= $comment->id() ?>"
                                         rows="4"><?= $comment->content() ?></textarea>
                                 </div>
                                 <div class="form-group float-right">
-                                    <input type="submit" value="Envoyer" name="editComment" id="comment-form-edit-<?= $comment->id() ?>" class="btn btn-blue shadow">
+                                    <input type="submit" value="Envoyer" name="edit-comment" id="comment-form-edit-<?= $comment->id() ?>" class="btn btn-blue shadow">
                                     <button value="Annuler" id="comment-form-cancel-<?= $comment->id() ?>" class="comment-form-cancel btn btn-secondary shadow">Annuler</button>
                                 </div>
                             </form>
@@ -159,7 +160,7 @@
                 </div>
                 <?php
                     }
-                    $this->_pagination->view(FALSE, TRUE); // Ajoute la barre de pagination
+                    $this->_pagination->view(FALSE, TRUE);
                 }
                 ?>
             </div>
