@@ -61,11 +61,11 @@
                         </div>
                     </div>
                     <div class="form-group row mb-4">
-                        <label for="style_blog" class="col-md-4 col-form-label">Style du blog</label>
+                        <label for="style_blog" class="col-md-4 col-form-label">Thème du blog</label>
                         <div class="col-md-8 form-group">
                             <select name="style_blog" id="style_blog" class="custom-select form-control w-50 shadow-sm" required>
                                 <option value="light" <?= $this->_settings->style_blog() == "light" ? "selected" : "" ?>>Clair</option>
-                                <option value="dark" <?= $this->_settings->style_blog() == "dark" ? "selected" : "" ?>>Foncé</option>
+                                <option value="dark" <?= $this->_settings->style_blog() == "dark" ? "selected" : "" ?>>Sombre</option>
                             </select>
                         </div>
                     </div>

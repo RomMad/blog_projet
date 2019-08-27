@@ -63,9 +63,9 @@
 
     <main class="min-vh-100">
         <header id="header">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3 py-3 shadow">
-                <a class="navbar-brand mr-0 text-blue overflow-hidden"
-                    href="/blog_projet/blog"><img id="logo_blog" src="/blog_projet/public/images/logo.ico" alt="logo du blog"> <?= isset($_SESSION["settings"]) ? $_SESSION["settings"]->blog_name() : "Le blog" ?></a>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-<?= $_SESSION["settings"]->style_blog() == "light" ? "blue" : "dark" ?> mb-3 py-3 shadow">
+                <a class="navbar-brand mr-0 text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "blue" ?> overflow-hidden"
+                    href="/blog_projet/blog"><img id="logo_blog" src="/blog_projet/public/images/logo-<?= $_SESSION["settings"]->style_blog() == "light" ? "white" : "blue" ?>.ico" alt="logo du blog"> <?= isset($_SESSION["settings"]) ? $_SESSION["settings"]->blog_name() : "Le blog" ?></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -74,14 +74,14 @@
                 <div id="navbarSupportedContent" class="collapse navbar-collapse ml-2">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/blog_projet/blog"><span class="fas fa-home"></span> Accueil</a>
+                            <a class="nav-link text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "light" ?>" href="/blog_projet/blog"><span class="fas fa-home"></span> Accueil</a>
                         </li>
                         <?php 
                             
                         if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] < 5) {
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="edit-post">Créer un article</a>
+                            <a class="nav-link text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "light" ?>" href="edit-post">Créer un article</a>
                         </li>
                         <?php 
                         }
@@ -89,7 +89,7 @@
                         if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] <= 4) {
                         ?>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="settings" id="navbarDropdown"
+                            <a class="nav-link dropdown-toggle text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "light" ?>" href="settings" id="navbarDropdown"
                                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Administration</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <?php if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] == 1) { ?> 
@@ -117,7 +117,7 @@
                         <label for="search" class="sr-only col-form-label">Recherche</label>
                         <input name="search" id="search" type="search" class="form-control" placeholder="Recherche" aria-label="Search"
                             value="<?= isset($_SESSION["filter_search"]) ? htmlspecialchars($_SESSION["filter_search"]) : "" ?>">
-                        <button id="send-search" class="btn btn-outline-blue my-2 ml-1 px-2 py-1" type="submit">
+                        <button id="send-search" class="btn btn-outline-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "blue" ?> my-2 ml-1 px-2 py-1" type="submit">
                             <span class="fas fa-search"></span></button>
                     </form>
 
@@ -125,20 +125,20 @@
                     <?php 
                     if (isset($_SESSION["user"])) {
                     ?>
-                        <a class="text-blue font-weight-bold" href="profil" data-toggle="popover"
+                        <a class="text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "blue" ?> font-weight-bold" href="profil" data-toggle="popover"
                             data-trigger="hover" data-placement="bottom" data-html="true"
                             title="<?= htmlspecialchars($_SESSION["user"]["surname"]) ?> <?= htmlspecialchars($_SESSION["user"]["name"]) ?>"
                             data-content="Dernière connexion : <br /><?= htmlspecialchars($_SESSION["lastConnection"]) ?><br /> Profil : <?= htmlspecialchars($_SESSION["user"]["profil"]) ?>">
                             <span class="fas fa-user"></span> <?= $_SESSION["user"]["login"] ?>
                         </a>
                         <br />
-                        <a class="text-blue" href="disconnection">Se déconnecter</a>
+                        <a class="text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "blue" ?>" href="disconnection">Se déconnecter</a>
                         <?php 
                         } else {
                         ?>
-                        <a class="text-blue" href="connection">Se connecter</a>
+                        <a class="text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "blue" ?>" href="connection">Se connecter</a>
                         <br />
-                        <a class="text-blue" href="inscription">S'inscrire</a>
+                        <a class="text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "blue" ?>" href="inscription">S'inscrire</a>
                         <?php
                         }
                         ?>
@@ -153,7 +153,7 @@
         
     </main>
 
-    <footer class="bg-dark p-4 text-white shadow">
+    <footer class="bg-dark p-4 text-light shadow">
         <p>Ce site web est un blog réalisé dans le cadre d'une formation de développeur Web.</p>
         <p>© Romain MADELAINE | <a href="https://romain-mad.fr" target="_blank" class="text-blue">romain-mad.fr</a></p>
     </footer>
