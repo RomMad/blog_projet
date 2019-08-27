@@ -37,13 +37,13 @@ class ProfilController {
                 "pagination[nbDisplayed_posts]"
             ];
             foreach($cookies as $cookie) {
-                setcookie($cookie, "", time() - 3600, null, null, false, false);
+                setcookie($cookie, "", time() - 3600, NULL, NULL, FALSE, FALSE);
             }
             $this->_session->setFlash("Tous les cookies ont été supprimés.", "success");
         }
         // Vérifie si informations dans variable POST
         if (!empty($_POST)) {
-            $validation = true;
+            $validation = TRUE;
             
             // Mettre à jour les informations du profil
             if (isset($_POST["login"])) {
@@ -65,47 +65,47 @@ class ProfilController {
                 // Vérifie si le champ login est vide
                 if (empty($this->_user->login())) {
                     $this->_session->setFlash("Veuillez saisir un login.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si le login est déjà pris par un autre utilisateur
                 elseif ($loginUsed) {
                     $this->_session->setFlash("Ce login est déjà utilisé. Veuillez en choisir un autre.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si le champ login est vide
                 if (empty($this->_user->email())) {
                     $this->_session->setFlash("L'adresse email est obligatoire.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si l'email est correct
                 elseif (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $this->_user->email())) {
                     $this->_session->setFlash("L'adresse email " . $this->_user->email() . " est incorrecte.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si l'email est déjà pris par un autre utilisateur
                 elseif ($emailUsed) {
                     $this->_session->setFlash("Cette adresse email est déjà utilisée.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si le champ mot de passe est vide
                 if (empty($_POST["pass"])) {
                     $this->_session->setFlash("Veuillez saisir votre mot de passe.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si le mot de passe est correct
                 elseif (!$isPasswordCorrect) {
                     $this->_session->setFlash("Le mot de passe est incorrect.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si le champ de confirmation du mot de passe est vide
                 if (empty($_POST["pass_confirm"])) {
                     $this->_session->setFlash("Veuillez saisir la confirmation de votre mot de passe.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si la confirmation du mot de passe est identique
                 elseif ($_POST["pass"] != $_POST["pass_confirm"]) {
                     $this->_session->setFlash("Le mot de passe et la confirmation sont différents.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Met à jour les informations du profil si validation est vraie
                 if ($validation) {
@@ -122,32 +122,32 @@ class ProfilController {
                 // Vérifie si le champ ancien mot de passe est vide
                 if (empty(($_POST["old_pass"]))) {
                     $this->_session->setFlash("Veuillez saisir votre ancien mot de passe.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si l'ancien mot de passe est correct   
                 elseif (!$isPasswordCorrect) {
                     $this->_session->setFlash("L'ancien mot de passe est incorrect.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si le champ nouveau mot de passe est vide
                 if (empty($_POST["new_pass"])) {
                     $this->_session->setFlash("Veuillez saisir votre nouveau mot de passe.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si le nouveau mot de passe est valide (entre 6 et 20 caratères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre, 1 caractère spécial)
                 elseif (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{6,20}$#", $_POST["new_pass"])) {
                     $this->_session->setFlash("Le nouveau mot de passe n'est pas valide.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Vérifie si le champ confirmation nouveau mot de passe est vide
                 if (empty($_POST["new_pass_confirm"])) {
                     $this->_session->setFlash("Veuillez saisir la confirmation de votre nouveau mot de passe.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }       
                 // Vérifie si la confirmation du mot de passe est identique
                 elseif ($_POST["new_pass"] != $_POST["new_pass_confirm"]) {
                     $this->_session->setFlash("Le mot de passe et la confirmation sont différents.", "danger");
-                    $validation = false;
+                    $validation = FALSE;
                 }
                 // Met à jour le mot de passe si validation est vraie
                 if ($validation) {
