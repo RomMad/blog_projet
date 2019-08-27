@@ -171,7 +171,7 @@ table .th-width-150px {
     width: auto;
 }
 
-/* Loader /Spinner */
+/* Loader/Spinner */
 #loader {
     position: fixed;
     z-index: 9999;
@@ -200,12 +200,6 @@ table .th-width-150px {
         transform: rotate(360deg);
     }
 }
-
-
-
-
-
-
 
 
 .bg-blue,

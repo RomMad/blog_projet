@@ -88,7 +88,9 @@ class PostEditController {
                 elseif (isset($_POST["save"]) && empty($this->_post->id())) {
                     $this->_postsManager->add($this->_post);
                     $this->_session->setFlash("L'article a été enregistré.", "success");
-                     $this->_post = $this->_postsManager->lastCreate($_SESSION["user"]["id"]);
+                     $postId = $this->_postsManager->lastCreate($_SESSION["user"]["id"]);
+                     header("Location: edit-post-" . $postId);
+                     exit;
                 }
             }
         }

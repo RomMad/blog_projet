@@ -54,7 +54,7 @@ class PostsManager extends Manager {
             }
         }
     }     
-    // Méthode de lecture d'un article
+    // Récupère un article
     public function get($id) {
         if (is_numeric($id) && (int) $id > 0) {
             $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.content, p.status, p.publication_date, p.creation_date, p.update_date 
@@ -82,24 +82,18 @@ class PostsManager extends Manager {
         $post = $req->fetch();
             return $post["creation_date"];
     } 
-    // Méthode de lecture d'un article
+    // Récupère le dernier article
     public function lastCreate($userId) {
         if (is_numeric($userId) && (int) $userId > 0) {
-            $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, u.login, p.content, p.status, p.publication_date, p.creation_date, p.update_date 
-            FROM posts p 
-            LEFT JOIN users u 
-            ON p.user_id = u.id 
-            WHERE p.user_id = ? 
-            ORDER BY p.id desc 
-            LIMIT 0, 1");
+            $req = $this->_db->prepare("SELECT id FROM posts WHERE user_id = ? ORDER BY id desc LIMIT 0, 1");
             $req->execute([
                 $userId
             ]);
             $post = $req->fetch();
-            return new Posts($post);
+            return $post["id"];
         }
     }
-    // Méthode de récupération d'une liste d'articles
+    // Récupère une liste d'articles
     public function getList($filter, $orderBy, $order, $nbLimit, $nbPosts) {
         if (is_string($filter) && is_string($orderBy) && ($order == "asc" || $order == "desc") && ((int) $nbLimit >= 0) && ((int) $nbPosts > 0)) {
             $req = $this->_db->prepare("SELECT p.id, p.title, p.user_id, p.user_login, u.login, p.status, p.publication_date, p.creation_date, p.update_date, 

@@ -88,10 +88,6 @@ class UsersManager extends Manager {
             return  $user["pass"];
         }
     }
-    // Récupère le dernier utilisateur créé
-    public function lastCreate() {
-
-    }
 
     // Récupère une liste d'utilisateurs
     public function getList($filter, $orderBy, $order, $nbLimit, $nbUsers) {
