@@ -15,17 +15,15 @@ class ListPostsController {
     }
 
     protected function init() {
-        // Si recherche, filtre les résultats
         $filter = "status = 'Publié' AND p.publication_date <= NOW()";
+        // Si recherche, filtre les résultats
         if (isset($_GET["search"])) {
             $_SESSION["filter_search"] =  htmlspecialchars($_GET["search"]);
             $_SESSION["filter"] =  $filter . " AND (title like '%". $_SESSION["filter_search"] . "%' OR content like '%" . $_SESSION["filter_search"] . "%')";
-        }
-
-        if (!isset($_GET["search"]) && !isset($_GET["page"]) && !isset($_POST["nbDisplayed"])) {
+        } elseif (!isset($_GET["search"]) && !isset($_GET["page"]) && !isset($_POST["nbDisplayed"])) {
             $_SESSION["filter"] = $filter;
             $_SESSION["filter_search"] = "";
-        }
+        } 
         // Récupère le nombre d'articles
         $nbItems = $this->_postsManager->count($_SESSION["filter"]);
         // Initialise la pagination
@@ -36,7 +34,6 @@ class ListPostsController {
         if (isset($_GET["search"])) {
         $this->_session->setFlash($nbItems . " résultat(s).", "light");
         }
-
         require "view/frontend/listPostsView.php";
     }
 }
