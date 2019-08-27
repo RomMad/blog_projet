@@ -105,9 +105,10 @@
 
                     <div id="comment-<?= $comment->id() ?>" class="comment card shadow">
                     <div class="card-body">
-                        <p><strong><?= $userLogin ?></strong>, le <?= $comment->creation_date("datetime_special") ?>
+                        <p class="mb-2"><strong><?= $userLogin ?></strong>, le <?= $comment->creation_date("datetime_special") ?>
                             <?php if ($comment->update_date("datetime_fr") != $comment->creation_date("datetime_fr")) { echo "(Modifié le " . $comment->update_date("datetime_special") . ")"; } ?>
                         </p>
+                        <hr class="my-2">
                         <div id="comment-content-<?= $comment->id() ?>" class="comment-content position relative"><?= nl2br($comment->content()) ?>
                             <span id="comment-fadeout-<?= $comment->id() ?>" class="comment-fadeout d-none"></span>
                         </div>
