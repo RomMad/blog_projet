@@ -6,7 +6,7 @@ class NewuserController extends \controller\frontend\InscriptionController {
     public function __construct($session) {
         $this->_session = $session;
         $this->_usersManager = new \model\UsersManager();
-        $this->_validation = true;
+        $this->_validation = TRUE;
         $this->init();
     }
 

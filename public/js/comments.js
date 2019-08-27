@@ -14,7 +14,7 @@ class Comments {
                 aEdit: document.getElementById("comment-edit-" + idComment),
                 form: document.getElementById("comment-form-" + idComment),
                 cancelBtn: document.getElementById("comment-form-cancel-" + idComment),
-                reduce: true
+                reduce: TRUE
             };
 
             // Masque le contenu du commentaire quand celui dépasse les 200px de hauteur
@@ -37,16 +37,16 @@ class Comments {
     }
     // Affiche ou réduit le commentaire
     reduceOrSee(comment) {
-        if (comment.reduce === true) {
+        if (comment.reduce === TRUE) {
             comment.content.style.maxHeight = "140px";
             comment.content.style.overflow = "hidden";
-            comment.reduce = false;
+            comment.reduce = FALSE;
         } else {
             comment.content.style.maxHeight = "2000px";
             comment.content.style.overflow = "";
             comment.fadeout.className = "comment-fadeout d-none";
             comment.content.style.transition = "max-height 0.5s ease";
-            comment.reduce = true;
+            comment.reduce = TRUE;
         }
     }
     // Affiche le formulaire de commentaire

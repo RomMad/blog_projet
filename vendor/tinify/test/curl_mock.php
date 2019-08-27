@@ -18,7 +18,7 @@ class CurlMock {
 
     public $options = array();
     public $response;
-    public $closed = false;
+    public $closed = FALSE;
 
     public static function version_info() {
         return self::$version;
@@ -62,7 +62,7 @@ class CurlMock {
     }
 
     public function close() {
-        $this->closed = true;
+        $this->closed = TRUE;
     }
 
     public function exec() {
@@ -105,7 +105,7 @@ class CurlMock {
         } else if (isset($this->response["status"])) {
             return $this->response["headers"] . $this->response["body"];
         } else {
-            return false;
+            return FALSE;
         }
     }
 

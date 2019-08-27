@@ -30,7 +30,7 @@ class Pagination {
         // Vérification si informations dans variable POST
         if (!empty($_POST["nbDisplayed"])) {
             $this->_nbDisplayed = $_POST["nbDisplayed"];
-            setcookie("pagination[nbDisplayed_" . $this->_typeItem . "]", $this->_nbDisplayed, time() + 365*24*3600, null, null, false, false);
+            setcookie("pagination[nbDisplayed_" . $this->_typeItem . "]", $this->_nbDisplayed, time() + 365*24*3600, null, null, FALSE, FALSE);
         } elseif (!empty($_COOKIE["pagination"]["nbDisplayed_" . $this->_typeItem])) {
             $this->_nbDisplayed = $_COOKIE["pagination"]["nbDisplayed_" . $this->_typeItem];
         } else {
@@ -108,7 +108,7 @@ class Pagination {
                     <li class="page-item <?= $this->_currentPage == 1 ? "disabled" : "" ?> shadow-sm">
                         <a class="page-link <?= $this->_currentPage == 1 ? "" : "text-blue" ?> font-weight-bold" 
                             href="<?= $this->_link ?>page-<?= ($this->_currentPage - 1) . $this->_anchor ?>" 
-                            tabindex="-1" aria-disabled="true"><span aria-hidden="true">&laquo;</span></a>
+                            tabindex="-1" aria-disabled="TRUE"><span aria-hidden="TRUE">&laquo;</span></a>
                     </li> 
                     <?php if ($this->_currentPage > 2 && $this->_nbPages > 3) { ?>
                     <!-- Lien vers la première page -->
@@ -131,7 +131,7 @@ class Pagination {
                     <li class="page-item <?= $this->_currentPage != $this->_nbPages ? "" : "disabled" ?> shadow-sm">
                         <a class="page-link <?= $this->_currentPage != $this->_nbPages ? "text-blue" : "" ?> font-weight-bold" 
                             href="<?= $this->_link ?>page-<?= ($this->_currentPage + 1) . $this->_anchor ?>">
-                            <span aria-hidden="true">&raquo;</span></a>
+                            <span aria-hidden="TRUE">&raquo;</span></a>
                     </li>
                 </ul>
             </nav>

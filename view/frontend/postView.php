@@ -118,7 +118,7 @@
                         ?>
                         <div>
                             <a href="post-<?= $this->_post->id() ?>-comment-<?= $comment->id() ?>-delete#form-comment"
-                                onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
+                                onclick="if(window.confirm('Voulez-vous vraiment supprimer ce commentaire ?', 'Demande de confirmation')){return TRUE;}else{return FALSE;}">
                                 <span class="fas fa-times text-danger" data-toggle="tooltip" data-placement="bottom" title="Supprimer le commentaire"></span>
                             </a>
                         </div>
@@ -129,7 +129,7 @@
                         } else { ?>
                         <div class="report-comment">
                             <a href="post-<?= $this->_post->id() ?>-comment-<?= $comment->id() ?>-report#form-comment"
-                                onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return true;}else{return false;}">
+                                onclick="if(window.confirm('Voulez-vous vraiment signaler ce commentaire ?', 'Demande de confirmation')){return TRUE;}else{return FALSE;}">
                                 <span class="far fa-flag text-warning" data-toggle="tooltip" data-placement="bottom" title="Signaler le commentaire"></span>
                             </a>
                         </div>
