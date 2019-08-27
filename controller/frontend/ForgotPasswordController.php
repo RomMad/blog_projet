@@ -15,16 +15,7 @@ class ForgotPasswordController extends \controller\frontend\InscriptionControlle
         if (!empty($_POST)) {
             // Récupère l'ID de l'utilisateur et son password haché
             $this->_user = $this->_usersManager->get($_POST["email"]);
-            // Vérifie si le champ email est vide
-            if (empty($_POST["email"])) {
-                $this->_session->setFlash("L'adresse email est vide", "warning");
-                $this->_validation = FALSE;
-            }
-            // Vérifie si l'adresse email existe
-            elseif (!$this->_user) {
-                $this->_session->setFlash("Cette adresse email est inconnue", "danger");
-                $this->_validation = FALSE;
-            }
+            $this->validation();
             // Génère un email avec un token si validation est vraie
             if ($this->_validation) {
                 $this->sendEmail();
@@ -33,6 +24,21 @@ class ForgotPasswordController extends \controller\frontend\InscriptionControlle
         require "view/frontend/forgotPasswordView.php";
     }
 
+    // Vérifie la validité des informations transmises
+    protected function validation() {
+        // Vérifie si le champ email est vide
+        if (empty($_POST["email"])) {
+            $this->_session->setFlash("L'adresse email est vide", "warning");
+            $this->_validation = FALSE;
+        }
+        // Vérifie si l'adresse email existe
+        elseif (!$this->_user) {
+            $this->_session->setFlash("Cette adresse email est inconnue", "danger");
+            $this->_validation = FALSE;
+        }
+    }
+
+    // Envoie un email avec un token à l'utilisateur
     protected function sendEmail() {
         // Génère un token
         $token = bin2hex(random_bytes(32));
