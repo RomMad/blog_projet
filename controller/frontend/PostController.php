@@ -18,7 +18,7 @@ class PostController {
         $this->_session = $session;
         $this->_postsManager = new \model\PostsManager();
         $this->_commentsManager = new \model\CommentsManager();
-        $this->_validation = true;
+        $this->_validation = TRUE;
         $this->init();
     }
 

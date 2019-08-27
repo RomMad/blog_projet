@@ -105,8 +105,8 @@ class ListCommentsController {
             $order = "asc";
         }
         // Enregistre les tris en COOKIES
-        setcookie("orderBy[adminComments]", $orderBy, time() + 365*24*3600, null, null, false, false);
-        setcookie("order[adminComments]", $order, time() + 365*24*3600, null, null, false, false);
+        setcookie("orderBy[adminComments]", $orderBy, time() + 365*24*3600, NULL, NULL, FALSE, FALSE);
+        setcookie("order[adminComments]", $order, time() + 365*24*3600, NULL, NULL, FALSE, FALSE);
 
         // Initialise la pagination
         $linkNbDisplayed = "comments-orderBy-" . $orderBy . "-order-" . $order;

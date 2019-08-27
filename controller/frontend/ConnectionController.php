@@ -22,11 +22,11 @@ class ConnectionController {
 
         // Vérifie si informations dans variable POST
         if (!empty($_POST)) {
-            $validation = true;
+            $validation = TRUE;
 
             // Vérifie si le login est vide
             if (empty($_POST["login"]) || empty($_POST["pass"])) {
-                $validation = false;
+                $validation = FALSE;
                 $this->_session->setFlash("Veuillez saisir votre login <br />et votre mot de passe.", "danger");
             } else {
                 // Récupère l'ID de l'utilisateur et son password haché
@@ -36,12 +36,12 @@ class ConnectionController {
                     $isPasswordCorrect = password_verify($_POST["pass"], $this->_user->pass());// Compare le password envoyé via le formulaire avec la base  
                 }
                 if (!$this->_user || !$isPasswordCorrect) {
-                    $validation = false;
+                    $validation = FALSE;
                     $this->_session->setFlash("Login ou mot de passe incorrect.", "danger");
                 }
             }
 
-            if ($validation == true) {
+            if ($validation == TRUE) {
                 // Enregistre les informations de l'utilisateurs en session
                 $_SESSION["user"]["id"] = $this->_user->id();
                 $_SESSION["user"]["login"] = $this->_user->login();
@@ -52,8 +52,8 @@ class ConnectionController {
 
                 // Enregistre le login et le mot de passe en cookie si la case "Se souvenir de moi" est cochée
                 if (isset($_POST["remember"])) {
-                    setcookie("user[login]", $this->_user->login(), time() + 365*24*3600, null,null, false, true);
-                    // setcookie("user[pass]", htmlspecialchars($_POST["pass"]), time() + 365*24*3600, null,null, false, true);
+                    setcookie("user[login]", $this->_user->login(), time() + 365*24*3600, NULL,NULL, FALSE, TRUE);
+                    // setcookie("user[pass]", htmlspecialchars($_POST["pass"]), time() + 365*24*3600, NULL,NULL, FALSE, TRUE);
                 }
 
                 // Récupère la date de dernière connexion de l'utilisateur
