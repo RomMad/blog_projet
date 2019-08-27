@@ -62,7 +62,7 @@
                     </div>
                     <div class="form-group row mb-4">
                         <label for="style_blog" class="col-md-4 col-form-label">Style du blog</label>
-                        <div class="col-md-8">
+                        <div class="col-md-8 form-group">
                             <select name="style_blog" id="style_blog" class="custom-select form-control w-50 shadow-sm" required>
                                 <option value="light" <?= $this->_settings->style_blog() == "light" ? "selected" : "" ?>>Clair</option>
                                 <option value="dark" <?= $this->_settings->style_blog() == "dark" ? "selected" : "" ?>>Foncé</option>
@@ -88,12 +88,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-xs-4 col-sm-4">Modération</div>
+                        <div class="col-xs-4 col-sm-4">Modération <small><?= $this->_settings->moderation() == 1 ? "(activée)" : "(désactivée)" ?></small></div>
                         <div class="col-xs-8 col-sm-8">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" name="moderation" id="moderation" class="custom-control-input checkbox"
                                     value="true" <?= $this->_settings->moderation() == 1 ? "checked" : "" ?>/>
-                                <label for="moderation" class="custom-control-label" ><span class="sr-only">Modération<span></label>
+                                <label for="moderation" class="custom-control-label"><span class="sr-only">Modération<span></label>
                             </div>
                         </div>
                     </div>
