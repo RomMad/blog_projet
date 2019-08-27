@@ -73,7 +73,7 @@
 
                 <div id="navbarSupportedContent" class="collapse navbar-collapse ml-2">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a class="nav-link" href="/blog_projet/blog"><span class="fas fa-home"></span> Accueil</a>
                         </li>
                         <?php 

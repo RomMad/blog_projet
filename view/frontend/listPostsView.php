@@ -12,7 +12,7 @@
         if (isset($_SESSION["user"]["role"]) && $_SESSION["user"]["role"] < 5) {
         ?>
             <div class="my-4">
-                <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Créér un nouvel article</a>
             </div>
         <?php
         }   
@@ -73,7 +73,7 @@
         if (isset($_SESSION["user"]["role"]) && $_SESSION["user"]["role"] < 5) {
         ?>
             <div class="my-4">
-                <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Rédiger un nouvel article</a>
+                <a class="text-blue" href="edit-post"><span class="far fa-file"></span> Créér un nouvel article</a>
             </div>
         <?php
         }
