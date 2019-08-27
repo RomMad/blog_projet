@@ -88,9 +88,9 @@ function validate() {
     try {
         Tinify::getClient()->request("post", "/shrink");
     } catch (AccountException $err) {
-        if ($err->status == 429) return true;
+        if ($err->status == 429) return TRUE;
         throw $err;
     } catch (ClientException $err) {
-        return true;
+        return TRUE;
     }
 }

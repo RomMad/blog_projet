@@ -29,7 +29,7 @@
             height: 500,
             language_url: "vendor/tinymce/languages/fr_FR.js",
             language: "fr_FR",
-            menubar: true,
+            menubar: TRUE,
             plugins: [
                 'advlist autolink lists link image charmap print preview anchor textcolor',
                 'searchreplace visualblocks code fullscreen',
@@ -67,7 +67,7 @@
                 <a class="navbar-brand mr-0 text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "blue" ?> overflow-hidden"
                     href="/blog_projet/blog"><img id="logo_blog" src="/blog_projet/public/images/logo-<?= $_SESSION["settings"]->style_blog() == "light" ? "white" : "blue" ?>.ico" alt="logo du blog"> <?= isset($_SESSION["settings"]) ? $_SESSION["settings"]->blog_name() : "Le blog" ?></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    aria-controls="navbarSupportedContent" aria-expanded="FALSE" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -90,7 +90,7 @@
                         ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "light" ?>" href="settings" id="navbarDropdown"
-                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Administration</a>
+                                role="button" data-toggle="dropdown" aria-haspopup="TRUE" aria-expanded="FALSE">Administration</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <?php if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] == 1) { ?> 
                                 <a class="dropdown-item" href="settings">Paramètres généraux</a>
@@ -126,7 +126,7 @@
                     if (isset($_SESSION["user"])) {
                     ?>
                         <a class="text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "blue" ?> font-weight-bold" href="profil" data-toggle="popover"
-                            data-trigger="hover" data-placement="bottom" data-html="true"
+                            data-trigger="hover" data-placement="bottom" data-html="TRUE"
                             title="<?= htmlspecialchars($_SESSION["user"]["surname"]) ?> <?= htmlspecialchars($_SESSION["user"]["name"]) ?>"
                             data-content="Dernière connexion : <br /><?= htmlspecialchars($_SESSION["lastConnection"]) ?><br /> Profil : <?= htmlspecialchars($_SESSION["user"]["profil"]) ?>">
                             <span class="fas fa-user"></span> <?= $_SESSION["user"]["login"] ?>

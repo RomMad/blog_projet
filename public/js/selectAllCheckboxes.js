@@ -2,7 +2,7 @@ class SelectAllCheckboxes {
     constructor() {
         this.selectAll = document.getElementById("select-all");
         this.checkboxElts = document.querySelectorAll("table .checkbox");
-        this.checked = true;
+        this.checked = TRUE;
         this.init();
     }
 
@@ -11,10 +11,10 @@ class SelectAllCheckboxes {
     }
 
     checkAll() {
-        if (this.selectAll.checked === true) {
-            this.checked = true;
+        if (this.selectAll.checked === TRUE) {
+            this.checked = TRUE;
         } else {
-            this.checked = false;
+            this.checked = FALSE;
         }
         this.checkboxElts.forEach(function (checkbox) {
             checkbox.checked = this.checked;
