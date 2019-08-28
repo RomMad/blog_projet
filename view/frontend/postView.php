@@ -123,7 +123,7 @@
                         </div>
                         <?php
                         } elseif ($comment->status() == 3) { ?>
-                        <div class="report-comment"><span class="fas fa-flag text-danger"></span></div>
+                        <div class="report-comment"><span class="fas fa-flag text-danger" data-toggle="tooltip" data-placement="bottom" title="Le commentaire a été signalé"></span></div>
                         <?php
                         } else { ?>
                         <div class="report-comment">
