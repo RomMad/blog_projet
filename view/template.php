@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
         integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="/blog_projet/public/css/style.css" />
-    <link rel="icon" href="/blog_projet/public/images/logo.ico" />
+    <link rel="icon" href="/blog_projet/public/images/logo-<?= $_SESSION["settings"]->style_blog() == "light" ? "white" : "blue" ?>.ico" />
     <title><?= $title ?></title>
     <meta property="og:title" content="<?= $title ?>" />
     <meta property="og:type" content="blog" />
     <meta property="og:url" content="https://leblog.romain-mad.fr" />
-    <meta property="og:image" content="/blog_projet/public/images/logo.ico" />
+    <meta property="og:image" content="/blog_projet/public/images/logo-<?= $_SESSION["settings"]->style_blog() == "light" ? "white" : "blue" ?>.ico" />
     <meta name="description" content="Le blog de Jean Forteroche." />
 
     <!-- Scripts TinyMCE -->
