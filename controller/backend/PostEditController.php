@@ -43,9 +43,8 @@ class PostEditController {
         // Vérification si informations dans variable POST
         if (!empty($_POST)) {
             if ($_POST["status"] == "Publié" || !empty($_POST["publication_date"])) {
-                date_default_timezone_set("Europe/Paris");
-                $date = date_format(new \DateTime($_POST["publication_date"]),"Y-m-d");
-                $time = date_format(new \DateTime($_POST["publication_time"]),"H:i:s");
+                $date = date_format(new \DateTime($_POST["publication_date"], timezone_open("Europe/Paris")),"Y-m-d");
+                $time = date_format(new \DateTime($_POST["publication_time"], timezone_open("Europe/Paris")),"H:i:s");
                 $datetime = $date . " " . $time;
             } else {
                 $datetime = NULL;
