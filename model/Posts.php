@@ -47,9 +47,8 @@ class Posts extends Model {
     }
     
     public function publication_date($format = "datetime") {
-        date_default_timezone_set("Europe/Paris");
         if (!empty($this->_publication_date)) {
-            $publication_date = new \DateTime($this->_publication_date);
+            $publication_date = new \DateTime($this->_publication_date, timezone_open("Europe/Paris"));
         } else  {
             return NULL;
         }
