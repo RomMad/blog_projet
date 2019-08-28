@@ -32,12 +32,12 @@ class Client {
         }
 
         $this->options = array(
-            CURLOPT_BINARYTRANSFER => TRUE,
-            CURLOPT_RETURNTRANSFER => TRUE,
-            CURLOPT_HEADER => TRUE,
+            CURLOPT_BINARYTRANSFER => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => true,
             CURLOPT_USERPWD => "api:" . $key,
             CURLOPT_CAINFO => self::caBundle(),
-            CURLOPT_SSL_VERIFYPEER => TRUE,
+            CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_USERAGENT => join(" ", array_filter(array(self::userAgent(), $app_identifier))),
         );
 
@@ -82,7 +82,7 @@ class Client {
             }
 
             $request = curl_init();
-            if ($request === FALSE || $request === null) {
+            if ($request === false || $request === null) {
                 throw new ConnectionException(
                     "Error while connecting: curl extension is not functional or disabled."
                 );

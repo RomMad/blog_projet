@@ -105,7 +105,7 @@ RewriteRule ^post-([0-9]+)-comment-([0-9]+)$ /blog_projet/index.php?action=post&
 # Réécriture page d'article avec numéro de page
 RewriteRule ^post-([0-9]+)-page-([0-9]+)$ /blog_projet/index.php?action=post&id=$1&page=$2& [QSA,L]
 # Réécriture page d'article avec suppression (delete) ou signalement (report) d'un commentaire
-RewriteRule ^post-([0-9]+)-comment-([0-9]+)-([a-z]{6})$ /blog_projet/index.php?action=post&id=$1&comment=$2&$3=TRUE [QSA]
+RewriteRule ^post-([0-9]+)-comment-([0-9]+)-([a-z]{6})$ /blog_projet/index.php?action=post&id=$1&comment=$2&$3=true [QSA]
 
 # Réécriture page Edition d'article
 RewriteRule ^edit-post$ /blog_projet/index.php?action=editPost [L]
@@ -115,7 +115,7 @@ RewriteRule ^edit-post-([0-9]+)$ /blog_projet/index.php?action=editPost&id=$1 [L
 RewriteRule ^new-user$ /blog_projet/index.php?action=newUser [L]
 
 # Réécriture page Profil
-RewriteRule ^profil-delete_cookies$ /blog_projet/index.php?action=profil&delete_cookies=TRUE [L]
+RewriteRule ^profil-delete_cookies$ /blog_projet/index.php?action=profil&delete_cookies=true [L]
 
 # Réécriture page Utilisateur
 RewriteRule ^user-([0-9]+)$ /blog_projet/index.php?action=user&id=$1 [L]

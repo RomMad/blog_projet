@@ -42,7 +42,7 @@ class UserController {
 
         // Mettre à jour les informations du profil
         if (!empty($_POST) && !empty($_POST["role"])) {
-            $validation = TRUE;  
+            $validation = true;  
 
             // Met à jour les informations du profil si validation est vraie
             if ($validation) {

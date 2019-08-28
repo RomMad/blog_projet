@@ -19,7 +19,7 @@
             </div>
             <div class="checkbox mb-3">
                 <label for="remember">
-                    <input type="checkbox" name="remember" id="remember" value="TRUE"> Se souvenir de moi
+                    <input type="checkbox" name="remember" id="remember" value="true"> Se souvenir de moi
                 </label>
             </div>
             <input type="submit" value="Se connecter" id="validation" class="btn btn-lg btn-blue btn-block mb-4 shadow">

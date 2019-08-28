@@ -32,7 +32,7 @@ class Session {
                 <div id="msg-profil" class="alert alert-<?=$flash["typeAlert"] ?> alert-dismissible mb-3 fade show" role="alert">                     
                     <?= $flash["message"] ?>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="TRUE">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button> 
                 </div>
                 <?php

@@ -33,7 +33,7 @@
                         </select>
                         <input type="submit" id="apply" name="apply" alt="Appliquer"
                             class="btn btn-blue px-lg-3 px-md-2 py-1 shadow" value="OK"
-                            onclick="if(window.confirm('Confirmer l\'action ?')){return TRUE;}else{return FALSE;}">
+                            onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
                     </div>
                     <?php } ?>
                     <div class="col-md-4 form-inline mb-2 px-md-1 px-lg-3">

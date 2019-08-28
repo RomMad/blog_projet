@@ -118,8 +118,8 @@ class ListPostsController {
         }
 
         // Enregistre les tris en COOKIES
-        setcookie("orderBy[adminPosts]", $orderBy, time() + 365*24*3600, null, null, FALSE, TRUE);
-        setcookie("order[adminPosts]", $order, time() + 365*24*3600, null, null, FALSE, TRUE);
+        setcookie("orderBy[adminPosts]", $orderBy, time() + 365*24*3600, null, null, false, true);
+        setcookie("order[adminPosts]", $order, time() + 365*24*3600, null, null, false, true);
 
         // Initialise la pagination
         $linkNbDisplayed = "posts-orderBy-" . $orderBy . "-order-" . $order;

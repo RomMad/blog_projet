@@ -13,7 +13,7 @@ class Manager
                 $_connecte;
    
     public function __construct() {
-        $this->_connecte = FALSE;
+        $this->_connecte = false;
         $this->databaseConnection();
     }
 
@@ -42,7 +42,7 @@ class Manager
             die("Erreur : ".$e->getMessage());
         }
 
-        $this->_connecte = TRUE;
+        $this->_connecte = true;
         return  $this->_db;
     } 
  

@@ -153,7 +153,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12 mb-4">
-                    <a href="profil-delete_cookies" class="ml-2 text-blue" onclick="if(window.confirm('Voulez-vous vraiment supprimer vos cookies ?', 'Demande de confirmation')){return TRUE;}else{return FALSE;}">
+                    <a href="profil-delete_cookies" class="ml-2 text-blue" onclick="if(window.confirm('Voulez-vous vraiment supprimer vos cookies ?', 'Demande de confirmation')){return true;}else{return false;}">
                         Supprimer tous les cookies</a>
                 </div>
             </div>

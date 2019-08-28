@@ -92,7 +92,7 @@
                         <div class="col-xs-8 col-sm-8">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" name="moderation" id="moderation" class="custom-control-input checkbox"
-                                    value="TRUE" <?= $this->_settings->moderation() == 1 ? "checked" : "" ?>/>
+                                    value="true" <?= $this->_settings->moderation() == 1 ? "checked" : "" ?>/>
                                 <label for="moderation" class="custom-control-label"><span class="sr-only">Modération<span></label>
                             </div>
                         </div>

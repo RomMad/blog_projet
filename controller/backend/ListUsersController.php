@@ -87,8 +87,8 @@ class ListUsersController {
             $order = "asc";
         }
         // Enregistre les tris en COOKIES
-        setcookie("orderBy[adminUsers]", $orderBy, time() + 365*24*3600, null, null, FALSE, TRUE);
-        setcookie("order[adminUsers]", $order, time() + 365*24*3600, null, null, FALSE, TRUE);
+        setcookie("orderBy[adminUsers]", $orderBy, time() + 365*24*3600, null, null, false, true);
+        setcookie("order[adminUsers]", $order, time() + 365*24*3600, null, null, false, true);
 
         // Initialise la pagination
         $linkNbDisplayed = "users-orderBy-" . $orderBy . "-order-" . $order;
