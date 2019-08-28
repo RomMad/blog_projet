@@ -6,7 +6,7 @@ class ResetPasswordController extends \controller\frontend\InscriptionController
     public function __construct($session) {
         $this->_session = $session;
         $this->_usersManager = new \model\UsersManager();
-        $this->_validation = TRUE;
+        $this->_validation = true;
         $this->init();
     }
 
@@ -22,7 +22,7 @@ class ResetPasswordController extends \controller\frontend\InscriptionController
             $this->confirmPassCheck(); // Vérifie la confirmation du mot de passe
 
             // Si validation est vraie, met à jour le mot de passe 
-            if ($this->_validation == TRUE) {      
+            if ($this->_validation == true) {      
                 // Récupère l'ID de l'utilisateur
                 $this->_user = $this->_usersManager->get($_POST["email"]);
                 $this->addInfosSession(); // Ajoute les infos de l"utilisateurs en session
@@ -57,12 +57,12 @@ class ResetPasswordController extends \controller\frontend\InscriptionController
         // Vérifie si le token ou l'adresse email sont corrects
         if (!$resetDate) {
             $this->_session->setFlash ("Le lien de réinitialisation ou l'adresse email sont incorrects.", "danger");
-            $this->_validation = FALSE;
+            $this->_validation = false;
         }
         //  Vérifie si la demande de réinitialisation est inférieure à 15 minutes
         elseif ($interval>$delay) {
             $this->_session->setFlash ("Le lien de réinitialisation est périmé.", "danger");
-            $this->_validation = FALSE;
+            $this->_validation = false;
         }
     }
 }
