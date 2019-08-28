@@ -35,7 +35,8 @@ class InscriptionController {
             // Si validation est vrai, valide l'inscription de l'utilisateur
             if ($this->_validation) {
             $this->addUser(); // Ajoute l'utilisateur
-            $this->connectionUser(); // Connecte l'utilisateur
+            $this->_usersManager->addConnectionDate($this->_user); // Ajoute la date de connexion de l'utilisateur
+            $this->addInfosSession(); // Ajoute les infos de l"utilisateurs en session
             $this->_session->setFlash("Bienvenue sur le site !", "success");
             header("Location: blog");
             exit();
@@ -123,18 +124,14 @@ class InscriptionController {
         $this->_user = $this->_usersManager->verify($this->_user->login()); 
     }
 
-    // Connecte l'utilisateur
-    protected function connectionUser() {
-        // Ajoute les infos de l"utilisateurs dans la Session
+    // Ajoute les infos de l"utilisateurs en session
+    protected function addInfosSession() {
         $_SESSION["user"]["id"] = $this->_user->id();
         $_SESSION["user"]["login"] = $this->_user->login();
         $_SESSION["user"]["role"] = $this->_user->role();
         $_SESSION["user"]["profil"] = $this->_user->role_user();
         $_SESSION["user"]["name"] = $this->_user->name();
         $_SESSION["user"]["surname"] = $this->_user->surname();
-        // Ajoute la date de connexion de l'utilisateur
-        $this->_usersManager->addConnectionDate($this->_user);
-        // Récupère la date de dernière connexion de l'utilisateur
-        $_SESSION["lastConnection"] = $this->_usersManager->getLastConnection($this->_user);
+        $_SESSION["user"]["lastConnection"] = $this->_usersManager->getLastConnection($this->_user); // Récupère la date de dernière connexion de l'utilisateur
     }
 }

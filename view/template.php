@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
         integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="/blog_projet/public/css/style.css" />
-    <link rel="icon" href="/blog_projet/public/images/logo.ico" />
+    <link rel="icon" href="/blog_projet/public/images/logo-<?= $_SESSION["settings"]->style_blog() == "light" ? "white" : "blue" ?>.ico" />
     <title><?= $title ?></title>
     <meta property="og:title" content="<?= $title ?>" />
     <meta property="og:type" content="blog" />
     <meta property="og:url" content="https://leblog.romain-mad.fr" />
-    <meta property="og:image" content="/blog_projet/public/images/logo.ico" />
+    <meta property="og:image" content="/blog_projet/public/images/logo-<?= $_SESSION["settings"]->style_blog() == "light" ? "white" : "blue" ?>.ico" />
     <meta name="description" content="Le blog de Jean Forteroche." />
 
     <!-- Scripts TinyMCE -->
@@ -43,17 +43,6 @@
         });
     </script>
 </head>
-
-<?php
-// echo "GET :";
-// var_dump($_GET);
-// echo "POST :";
-// var_dump($_POST);
-// echo "SESSION :";
-// var_dump($_SESSION);
-// echo "COOKIE :";
-// var_dump($_COOKIE);
-?>
 
 <body>
 
@@ -128,7 +117,7 @@
                         <a class="text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "blue" ?> font-weight-bold" href="profil" data-toggle="popover"
                             data-trigger="hover" data-placement="bottom" data-html="true"
                             title="<?= htmlspecialchars($_SESSION["user"]["surname"]) ?> <?= htmlspecialchars($_SESSION["user"]["name"]) ?>"
-                            data-content="Dernière connexion : <br /><?= htmlspecialchars($_SESSION["lastConnection"]) ?><br /> Profil : <?= htmlspecialchars($_SESSION["user"]["profil"]) ?>">
+                            data-content="Dernière connexion : <br /><?= $_SESSION["user"]["lastConnection"] ?><br /> Profil : <?= $_SESSION["user"]["profil"] ?>">
                             <span class="fas fa-user"></span> <?= $_SESSION["user"]["login"] ?>
                         </a>
                         <br />

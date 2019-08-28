@@ -103,8 +103,7 @@
                             $userLogin = "Anonyme";
                         }
                     ?>
-
-                    <div id="comment-<?= $comment->id() ?>" class="comment card shadow">
+                <div id="comment-<?= $comment->id() ?>" class="comment card shadow">
                     <div class="card-body">
                         <p class="mb-2"><strong><?= $userLogin ?></strong>, le <?= $comment->creation_date("datetime_special") ?>
                             <?php if ($comment->update_date("datetime_fr") != $comment->creation_date("datetime_fr")) { echo "(Modifié le " . $comment->update_date("datetime_special") . ")"; } ?>
@@ -158,11 +157,7 @@
                         </div>
                     </div>
                 </div>
-                <?php
-                    }
-                    $this->_pagination->view(FALSE, TRUE);
-                }
-                ?>
+                <?php } $this->_pagination->view(FALSE, TRUE); } ?>
             </div>
         </div>
     </section>

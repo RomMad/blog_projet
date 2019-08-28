@@ -9,7 +9,6 @@ class ListPostsController {
 
     public function __construct($session) {
         $this->_session = $session;
-        spl_autoload_register("loadClass");
         $this->_postsManager = new \model\PostsManager();
         $this->init();
     }
