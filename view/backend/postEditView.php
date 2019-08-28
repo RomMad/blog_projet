@@ -21,7 +21,7 @@ if (isset($_GET["id"])) {
 
     <section id="post_form" class="row min-vh-80">
         <div class="col-sm-12 col-md-12 m-auto">
-            <form action="edit-post<?= isset($this->_post) ? "-" . $this->_post->id() : "" ?>" method="post">
+            <form action="edit-post<?= isset($this->_post) && $this->_post->id() != NULL ? "-" . $this->_post->id() : "" ?>" method="post">
                 <h2 class="mb-4">Édition d'article</h2>
 
                 <?= $this->_session->flash() ?>
@@ -44,7 +44,7 @@ if (isset($_GET["id"])) {
                         <div id="info-post">
                             <div class="form-group row">
                                 <div class="col-xs-6 col-sm-6 col-lg-12">
-                                    <input type="submit" id="save" name="save" value="<?= isset($this->_post) ? "Modifier" : "Enregistrer" ?>" class="btn btn-block btn-blue mb-2 shadow">
+                                    <input type="submit" id="save" name="save" value="<?= isset($this->_post) && $this->_post->id() != NULL ? "Modifier" : "Enregistrer" ?>" class="btn btn-block btn-blue mb-2 shadow">
                                     <?php if (isset($this->_post) && $_SESSION["user"]["role"] < 4) { ?>
                                 </div>
                                 <div class="col-xs-6 col-sm-6 col-lg-12">

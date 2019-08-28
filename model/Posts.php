@@ -33,13 +33,13 @@ class Posts extends Model {
         return htmlspecialchars($this->_login);
     }
 
-    public function content($format) {
+    public function content($format = "html_format") {
         if ($format == "html_format") {
             return $this->_content;
         } elseif ($format == "raw_format") {
             return nl2br(strip_tags($this->_content));
         } else {
-            return ($this->_content);
+            return $this->_content;
         }
     }
     public function status() {
@@ -69,11 +69,7 @@ class Posts extends Model {
     }
     public function setTitle($title) {
         if (is_string($title)) {
-            if (iconv_strlen($title) <= 255) {
-                $this->_title = $title;
-            } else {
-                $this->_title = substr($title, 0, 255);
-            }
+            $this->_title = $title;
         }
     }
     public function setUser_Id($user_id) {
