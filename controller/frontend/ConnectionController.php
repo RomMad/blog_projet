@@ -1,7 +1,7 @@
 <?php 
 namespace controller\frontend;
 
-class ConnectionController {
+class ConnectionController extends \controller\frontend\InscriptionController {
 
     protected   $_session,
                 $_usersManager,
@@ -53,23 +53,13 @@ class ConnectionController {
 
     // Connecte l'utilisateur
     protected function connection() {
-        // Enregistre les informations de l'utilisateurs en session
-        $_SESSION["user"]["id"] = $this->_user->id();
-        $_SESSION["user"]["login"] = $this->_user->login();
-        $_SESSION["user"]["role"] = $this->_user->role();
-        $_SESSION["user"]["profil"] = $this->_user->role_user();
-        $_SESSION["user"]["name"] = $this->_user->name();
-        $_SESSION["user"]["surname"] = $this->_user->surname();
-
         // Enregistre le login et le mot de passe en cookie si la case "Se souvenir de moi" est cochée
         if (isset($_POST["remember"])) {
             setcookie("user[login]", $this->_user->login(), time() + 365*24*3600, NULL,NULL, FALSE, TRUE);
             // setcookie("user[pass]", htmlspecialchars($_POST["pass"]), time() + 365*24*3600, NULL,NULL, FALSE, TRUE);
         }
-
-        // Récupère la date de dernière connexion de l'utilisateur
-        $_SESSION["lastConnection"] = $this->_usersManager->getLastConnection($this->_user);
-
+        // Ajoute les infos de l"utilisateurs en session
+        $this->addInfosSession(); 
         // Ajoute la date de connexion de l'utilisateur
         $this->_usersManager->addConnectionDate($this->_user);
 

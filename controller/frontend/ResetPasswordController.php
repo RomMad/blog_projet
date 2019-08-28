@@ -25,9 +25,9 @@ class ResetPasswordController extends \controller\frontend\InscriptionController
             if ($this->_validation == TRUE) {      
                 // Récupère l'ID de l'utilisateur
                 $this->_user = $this->_usersManager->get($_POST["email"]);
+                $this->addInfosSession(); // Ajoute les infos de l"utilisateurs en session
+                $this->_usersManager->addConnectionDate($this->_user); // Ajoute la date de connexion de l'utilisateur
 
-                $this->connectionUser(); // Connecte l'utilisateur
-                
                 // Hachage du mot de passe
                 $passHash = password_hash($_POST["pass"], PASSWORD_DEFAULT);
                 // Créé une nouvelle entité user
@@ -37,13 +37,9 @@ class ResetPasswordController extends \controller\frontend\InscriptionController
                 ]);
                 $this->_usersManager->updatePass($this->_user);
 
-                // Récupère la date de dernière connexion de l'utilisateur
-                $_SESSION["lastConnection"] = $this->_usersManager->getLastConnection($this->_user);
-
                 $this->_session->setFlash ("Bienvenue sur le site !", "success");
-                
                 header("Location: blog");
-                exit();
+                exit;
             }
         }
         require "view/frontend/resetPasswordView.php";

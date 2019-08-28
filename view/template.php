@@ -44,17 +44,6 @@
     </script>
 </head>
 
-<?php
-// echo "GET :";
-// var_dump($_GET);
-// echo "POST :";
-// var_dump($_POST);
-// echo "SESSION :";
-// var_dump($_SESSION);
-// echo "COOKIE :";
-// var_dump($_COOKIE);
-?>
-
 <body>
 
     <div id="loader">
@@ -128,7 +117,7 @@
                         <a class="text-<?= $_SESSION["settings"]->style_blog() == "light" ? "light" : "blue" ?> font-weight-bold" href="profil" data-toggle="popover"
                             data-trigger="hover" data-placement="bottom" data-html="true"
                             title="<?= htmlspecialchars($_SESSION["user"]["surname"]) ?> <?= htmlspecialchars($_SESSION["user"]["name"]) ?>"
-                            data-content="Dernière connexion : <br /><?= htmlspecialchars($_SESSION["lastConnection"]) ?><br /> Profil : <?= htmlspecialchars($_SESSION["user"]["profil"]) ?>">
+                            data-content="Dernière connexion : <br /><?= $_SESSION["user"]["lastConnection"] ?><br /> Profil : <?= $_SESSION["user"]["profil"] ?>">
                             <span class="fas fa-user"></span> <?= $_SESSION["user"]["login"] ?>
                         </a>
                         <br />
