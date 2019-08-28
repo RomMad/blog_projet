@@ -11,7 +11,7 @@ class PostEditController {
     public function __construct($session) {
         $this->_session = $session;
         $this->_postsManager = new \model\PostsManager();
-        $this->_validation = true;
+        $this->_validation = TRUE;
         $this->init();
     }
 
@@ -69,12 +69,12 @@ class PostEditController {
             // Vérifie si le titre est vide
             if (empty($this->_post->title())) {
                 $this->_session->setFlash("Le titre de l'article est vide.", "danger");
-                $this->_validation = false;
+                $this->_validation = FALSE;
             }
             // Vérifie si le contenu de l'article est vide
             if (empty($this->_post->content("")) &&  $this->_post->status() == "Publié") {
                 $this->_session->setFlash("L'article ne peut pas être publié si le contenu est vide.", "danger");
-                $this->_validation = false;
+                $this->_validation = FALSE;
             }
             // Ajoute ou modifie l'article si le titre n'est pas vide
             if ($this->_validation) {
