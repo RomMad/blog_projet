@@ -148,7 +148,7 @@ class UsersManager extends Manager {
             $req = $this->_db->prepare("UPDATE users SET remember = :remember WHERE id = :id");
             $req->execute([
                 "id" => $id,
-                "remember" => TRUE
+                "remember" => true
             ]);
         }
     }

@@ -33,7 +33,7 @@
                         </select>
                         <input type="submit" id="apply" name="apply" alt="Appliquer" class="btn btn-blue py-1 shadow"
                             value="Appliquer"
-                            onclick="if(window.confirm('Confirmer l\'action ?')){return TRUE;}else{return FALSE;}">
+                            onclick="if(window.confirm('Confirmer l\'action ?')){return true;}else{return false;}">
                     </div>
 
                     <div class="col-md-6 mb-2">

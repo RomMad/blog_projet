@@ -6,7 +6,7 @@ class ForgotPasswordController extends \controller\frontend\InscriptionControlle
     public function __construct($session) {
         $this->_session = $session;
         $this->_usersManager = new \model\UsersManager();
-        $this->_validation = TRUE;
+        $this->_validation = true;
         $this->init();
     }
 
@@ -18,12 +18,12 @@ class ForgotPasswordController extends \controller\frontend\InscriptionControlle
             // Vérifie si le champ email est vide
             if (empty($_POST["email"])) {
                 $this->_session->setFlash("L'adresse email est vide", "warning");
-                $this->_validation = FALSE;
+                $this->_validation = false;
             }
             // Vérifie si l'adresse email existe
             elseif (!$this->_user) {
                 $this->_session->setFlash("Cette adresse email est inconnue", "danger");
-                $this->_validation = FALSE;
+                $this->_validation = false;
             }
             // Génère un email avec un token si validation est vraie
             if ($this->_validation) {

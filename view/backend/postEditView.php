@@ -49,7 +49,7 @@ if (isset($_GET["id"])) {
                                 </div>
                                 <div class="col-xs-6 col-sm-6 col-lg-12">
                                     <input type="submit" id="delete" name="delete" alt="Supprimer l'article" class="btn btn-block btn-danger mb-2 shadow" value="Supprimer"
-                                        onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return TRUE;} else{return FALSE;}">
+                                        onclick="if(window.confirm('Voulez-vous vraiment supprimer l\'article ?')){return true;} else{return false;}">
                                     <?php } ?>
                                 </div>
                             </div>

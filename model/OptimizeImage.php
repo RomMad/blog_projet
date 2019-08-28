@@ -72,7 +72,7 @@ class OptimizeImage {
     public function createFolder() {
         $this->_toFolder = $this->_toFolder . date("Y/m/d/"); 
         if(!is_dir($this->_toFolder)){
-            if (!mkdir($this->_toFolder, 0777, TRUE)) {
+            if (!mkdir($this->_toFolder, 0777, true)) {
                 die("Echec lors de la création du répertoire " . $this->_toFolder);
             }
         }
