@@ -15,7 +15,7 @@ class PostsManager extends Manager {
             "user_id" => $post->user_id(),
             "user_login" => $post->user_login(),
             "title" => $post->title(),
-            "content" => $post->content(""),
+            "content" => $post->content(),
             "status" => $post->status(),
             "publication_date" => $post->publication_date("datetime")
         ]);
@@ -119,7 +119,7 @@ class PostsManager extends Manager {
         $req = $this->_db->prepare("UPDATE posts SET title = :newTitle, content = :newContent, status = :newStatus, publication_date = :newPublicationDate, update_date = NOW() WHERE id = :postId");
         $req->execute([
             "newTitle" => $post->title(),
-            "newContent" => $post->content(""),
+            "newContent" => $post->content(),
             "newStatus" => $post->status(),
             "newPublicationDate" => $post->publication_date("datetime"),
             "postId" => $post->id()
