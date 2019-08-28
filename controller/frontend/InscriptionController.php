@@ -11,7 +11,7 @@ class InscriptionController {
     public function __construct($session) {
         $this->_session = $session;
         $this->_usersManager = new \model\UsersManager();
-        $this->_validation = true;
+        $this->_validation = TRUE;
         $this->init();
     }
 
@@ -51,12 +51,12 @@ class InscriptionController {
         // Vérifie si le champ login est vide
         if (empty($this->_user->login())) {
             $this->_session->setFlash("Le login est non renseigné.", "danger");
-            $this->_validation = false;
+            $this->_validation = FALSE;
         }
         // Vérifie si le login est déjà utilisé
         elseif ($loginUsed) {
             $this->_session->setFlash("Ce login est déjà utilisé. Veuillez en utiliser un autre.", "danger");
-            $this->_validation = false;
+            $this->_validation = FALSE;
         }
     }
 
@@ -66,17 +66,17 @@ class InscriptionController {
         // Vérifie si l'adresse email est vide
         if (empty($this->_user->email())) {
             $this->_session->setFlash("L'adresse email est vide.", "danger");
-            $this->_validation = false;
+            $this->_validation = FALSE;
         } 
         // Vérifie si l'adresse email est correcte
         elseif (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $this->_user->email())) {
             $this->_session->setFlash("L'adresse \"" .$this->_user->email() . "\" est incorrecte.", "danger");
-            $this->_validation = false;
+            $this->_validation = FALSE;
         }
         // Vérifie si l'adresse email est déjà utilisée
         elseif ($emailUsed) {
             $this->_session->setFlash("L'adresse email est déjà utilisée.", "danger");
-            $this->_validation = false;
+            $this->_validation = FALSE;
         }
     }
 
@@ -85,7 +85,7 @@ class InscriptionController {
         // Vérifie si le champ nouveau mot de passe est vide
         if (empty($this->_user->pass())) {
             $this->_session->setFlash("Le mot de passe est vide.", "danger");
-            $this->_validation = false;
+            $this->_validation = FALSE;
         }
         // Vérifie si le mot de passe est correct
         // (?=.*[a-z])  : teste la présence d'une lettre minuscule
@@ -95,7 +95,7 @@ class InscriptionController {
         // .{6,20}$     : teste si entre 6 et 20 caractères
         elseif (!preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{6,20}$#", $this->_user->pass())) {
             $this->_session->setFlash("Le mot de passe n'est pas valide.", "danger");
-            $this->_validation = false;
+            $this->_validation = FALSE;
         }
     }
 
@@ -104,12 +104,12 @@ class InscriptionController {
         // Vérifie si la confirmation du mot de passe est identique
         if (empty($_POST["pass_confirm"])) {
             $this->_session->setFlash("La confirmation du mot de passe est vide.", "danger");
-            $this->_validation = false;
+            $this->_validation = FALSE;
         }
         // Vérifie si la confirmation du mot de passe est identique
         elseif ($this->_user->pass()!=$_POST["pass_confirm"]) {
             $this->_session->setFlash("Le mot de passe et la confirmation sont différents.", "danger");
-            $this->_validation = false;
+            $this->_validation = FALSE;
         }
     }
 

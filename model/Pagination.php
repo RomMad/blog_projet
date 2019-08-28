@@ -30,7 +30,7 @@ class Pagination {
         // Vérification si informations dans variable POST
         if (!empty($_POST["nbDisplayed"])) {
             $this->_nbDisplayed = $_POST["nbDisplayed"];
-            setcookie("pagination[nbDisplayed_" . $this->_typeItem . "]", $this->_nbDisplayed, time() + 365*24*3600, null, null, false, false);
+            setcookie("pagination[nbDisplayed_" . $this->_typeItem . "]", $this->_nbDisplayed, time() + 365*24*3600, NULL, NULL, FALSE, FALSE);
         } elseif (!empty($_COOKIE["pagination"]["nbDisplayed_" . $this->_typeItem])) {
             $this->_nbDisplayed = $_COOKIE["pagination"]["nbDisplayed_" . $this->_typeItem];
         } else {
