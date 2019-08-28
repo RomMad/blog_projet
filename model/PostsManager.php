@@ -7,7 +7,7 @@ class PostsManager extends Manager {
         $this->_db = $this->databaseConnection();
     }
 
-    // Méthode d'ajout d'un article
+    // Ajoute un article
     public function add(Posts $post) {
         $req = $this->_db->prepare("INSERT INTO posts(user_id, user_login, title, content, status, publication_date) 
             VALUES(:user_id, :user_login, :title, :content, :status, :publication_date)");
@@ -25,7 +25,7 @@ class PostsManager extends Manager {
         ]);
         return "L'article a été enregistré.";
     }
-    // Méthode qui compte le nombre d'articles
+    // Compte le nombre d'articles
     public function count($filter) {
         if (is_string($filter)) {
             $req = $this->_db->prepare("SELECT COUNT(*) FROM posts p WHERE " . $filter);
@@ -41,7 +41,7 @@ class PostsManager extends Manager {
             return $isPostExists;
         }
     }
-    // Méthode de lecture d'un article
+    // Donne l'id de l'auteur de l'article
     public function getUserId($id) {
         if (is_numeric($id) && (int) $id > 0) {
             $req = $this->_db->prepare("SELECT user_id FROM posts WHERE id = ?");
@@ -114,7 +114,7 @@ class PostsManager extends Manager {
             }
         }
     }
-    // Méthode de mise à jour d'un article
+    // Met à jour un article
     public function update(Posts $post) {
         $req = $this->_db->prepare("UPDATE posts SET title = :newTitle, content = :newContent, status = :newStatus, publication_date = :newPublicationDate, update_date = NOW() WHERE id = :postId");
         $req->execute([
@@ -126,7 +126,7 @@ class PostsManager extends Manager {
         ]);
         return "L'article a été modifié.";
     }
-    // Méthode de mise à jour du statut d'un article
+    // Met à jour le statut d'un article
     public function updateStatus(Posts $post) {
         $req = $this->_db->prepare("UPDATE posts SET status = :newStatus WHERE id = :id");
         $req->execute([
@@ -134,7 +134,7 @@ class PostsManager extends Manager {
             "newStatus" => $post->status(),
         ]);
     }
-    // Méthode de suppresion d'un article
+    // Supprime un un article
     public function delete(Posts $post) {
         $req = $this->_db->prepare("DELETE FROM posts WHERE id = :id");
         $req->execute([
