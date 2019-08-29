@@ -131,7 +131,7 @@
                     </table>
                 </div>
             </form>
-            <?php $this->_pagination->view(TRUE, TRUE); ?> <!-- Ajoute la barre de pagination -->
+            <?php $this->_pagination->view(); ?> <!-- Ajoute la barre de pagination -->
         </section>
     </div>
 </div>

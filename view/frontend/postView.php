@@ -91,7 +91,7 @@
                 if (!isset( $this->_comments)) {
                     echo "Aucun commentaire.";
                 } else {
-                    $this->_pagination->view(TRUE, TRUE); // Ajoute la barre de pagination
+                    $this->_pagination->view(); // Ajoute la barre de pagination
                     // Récupère les messages
                     foreach ( $this->_comments as $comment) {
                         // Détermine le nom de l'utilisateur à faire apparaître

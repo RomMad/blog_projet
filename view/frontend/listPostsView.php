@@ -19,7 +19,7 @@
 
         $this->_session->flash();
 
-        $this->_pagination->view(TRUE, TRUE); // Ajoute la barre de pagination
+        $this->_pagination->view(); // Ajoute la barre de pagination
 
         ?>
             <div class="row">

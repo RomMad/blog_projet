@@ -129,7 +129,7 @@
                     </div>
                 </div>
             </form>
-            <?php $this->_pagination->view(TRUE, TRUE); ?>
+            <?php $this->_pagination->view(); ?>
         </section>
     </div>
 </div>
