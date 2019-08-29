@@ -22,7 +22,7 @@ class Manager
         // Vérifie si on est en local ou en ligne
         if ($_SERVER["HTTP_HOST"] == "localhost") {
             $this->_dbHost = "localhost";
-            $this->_dbName = "blog_projet";
+            $this->_dbName = "blog";
             $this->_dbUser = "root";
             $this->_dbPass = "";
         } else {

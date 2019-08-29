@@ -46,9 +46,9 @@ class ForgotPasswordController extends \controller\frontend\InscriptionControlle
         $this->_usersManager->addToken($this->_user, $token);
         // Vérifie si on est en local ou en ligne
         if ($_SERVER["HTTP_HOST"] == "localhost") {
-            $url = "http://localhost/blog_projet";
+            $url = "http://localhost/blog";
         } else {
-            $url = "https://leblog.romain-mad.fr/blog_projet";
+            $url = "https://leblog.romain-mad.fr/blog";
         }
         // Initialise l'email
         $link = $url . "/reset-password-" . $token;

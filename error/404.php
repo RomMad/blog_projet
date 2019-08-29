@@ -7,7 +7,7 @@
         <div class="col-sm-10 col-md-8 col-lg-6 m-auto text-center">
             <h1>Erreur 404<br />Cette page n'existe pas</h1>
             <p class="my-4">La page que vous recherchez est introuvable.</p>
-            <a href="/blog_projet/blog" class="btn btn-blue mt-2 p-2 shadow">Revenir à l'accueil</a>
+            <a href="/blog/blog" class="btn btn-blue mt-2 p-2 shadow">Revenir à l'accueil</a>
         </div>
     </div>
 </div>
