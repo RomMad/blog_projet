@@ -40,6 +40,7 @@ class Comments {
         if (comment.reduce === true) {
             comment.content.style.maxHeight = "140px";
             comment.content.style.overflow = "hidden";
+            comment.fadeout.className = "comment-fadeout d-block";
             comment.reduce = false;
         } else {
             comment.content.style.maxHeight = "2000px";
