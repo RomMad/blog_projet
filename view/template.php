@@ -44,6 +44,9 @@
     </script>
 </head>
 
+<?php var_dump($_POST);
+?>
+
 <body>
 
     <div id="loader">

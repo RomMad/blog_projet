@@ -46,7 +46,7 @@
                             <option <?= $_SESSION["filter_status"] == 3 ? "selected" : "" ?> value="3">Signalé</option>
                         </select>
                         <input type="submit" id="filter" name="filter" alt="Filtrer" class="btn btn-blue py-1 shadow"
-                            value="Filtrer">
+                            value="OK">
                     </div>
                 </div>
 

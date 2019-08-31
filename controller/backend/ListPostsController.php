@@ -61,7 +61,7 @@ class ListPostsController {
                 $_SESSION["filter_status"] = NULL;
             }
             // Si recherche, enregistre le filtre
-            if (!empty($_POST["search_post"])) {
+            if (!empty($_POST["search_post"]) || isset($_POST["filter_search"])) {
                 $_SESSION["search_post"] = htmlspecialchars($_POST["search_post"]);
                 $_SESSION["filter"] = $_SESSION["filter"] . " AND (title LIKE '%" .  $_SESSION["search_post"] . "%' OR content LIKE '%" .  $_SESSION["search_post"] . "%')";
             }

@@ -48,7 +48,7 @@ class ListUsersController {
                 $_SESSION["filter_role"] = NULL;
             }
             // Si recherche, enregistre le filtre
-            if (!empty($_POST["search_user"])) {
+            if (!empty($_POST["search_user"] || isset($_POST["filter_search"]))) {
                 $_SESSION["search_user"] = htmlspecialchars($_POST["search_user"]);
                 $_SESSION["filter"] = $_SESSION["filter"] . " AND (login LIKE '%" .  $_SESSION["search_user"] . "%' OR email LIKE '%" .  $_SESSION["search_user"] . "%' OR name LIKE '%" . $_SESSION["search_user"] . "%' OR surname LIKE '%"  . $_SESSION["search_user"] . "%')";
             }

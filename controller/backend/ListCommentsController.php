@@ -68,11 +68,10 @@ class ListCommentsController {
             if (isset($_POST["filter_status"]) && $_POST["filter_status"] >= 1) {
                 $_SESSION["filter_status"] = htmlspecialchars($_POST["filter_status"]);
                 $_SESSION["filter"] = "status = " . $_SESSION["filter_status"];
-
             }
         }
 
-        if (empty($_POST) && !isset($_GET["order"])) {
+        if ((empty($_POST) && !isset($_GET["order"])) || (isset($_POST["filter"]) && empty($_POST["filter_status"]))) {
             $_SESSION["filter_status"] = NULL;
             $_SESSION["filter"] = "c.id > 0";
         }
